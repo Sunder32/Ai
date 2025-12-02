@@ -10,7 +10,9 @@ from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Coo
 
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
+NOVA_API_URL = "http://localhost:5050/api/chat"  # Альтернативный сервер
 MODEL_NAME = "deepseek-project-model:latest"  # Обученная модель проекта
+USE_NOVA_SERVER = True  # Использовать ваш локальный сервер вместо прямого Ollama
 
 
 class AIConfigurationService:
