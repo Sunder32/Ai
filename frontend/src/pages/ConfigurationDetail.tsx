@@ -3,13 +3,17 @@ import { useParams } from 'react-router-dom';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { configurationAPI } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Dock from '../components/Dock';
 import type { PCConfiguration } from '../types';
-import { FaMicrochip, FaVideo, FaMemory, FaHdd, FaBolt, FaBoxOpen, FaSnowflake, FaServer, FaCheckCircle, FaExclamationTriangle, FaLightbulb } from 'react-icons/fa';
+import { FaMicrochip, FaVideo, FaMemory, FaHdd, FaBolt, FaBoxOpen, FaSnowflake, FaServer, FaCheckCircle, FaExclamationTriangle, FaLightbulb, FaDesktop, FaCouch, FaKeyboard } from 'react-icons/fa';
+
+type Section = 'pc' | 'workspace' | 'peripherals';
 
 const ConfigurationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [config, setConfig] = useState<PCConfiguration | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<Section>('pc');
 
   useEffect(() => {
     if (id) {
@@ -88,8 +92,30 @@ const ConfigurationDetail: React.FC = () => {
     </div>
   );
 
+  const dockItems = [
+    {
+      icon: React.createElement(FaDesktop as any, { className: "text-2xl" }),
+      label: 'Компоненты ПК',
+      onClick: () => setActiveSection('pc'),
+      active: activeSection === 'pc',
+    },
+    {
+      icon: React.createElement(FaCouch as any, { className: "text-2xl" }),
+      label: 'Рабочее место',
+      onClick: () => setActiveSection('workspace'),
+      active: activeSection === 'workspace',
+    },
+    {
+      icon: React.createElement(FaKeyboard as any, { className: "text-2xl" }),
+      label: 'Периферия',
+      onClick: () => setActiveSection('peripherals'),
+      active: activeSection === 'peripherals',
+    },
+  ];
+
   return (
-    <div>
+    <div className="pb-24">
+      {/* Header Section */}
       <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 mb-8">
         <h1 className="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
           Конфигурация #{config.id}
@@ -137,7 +163,12 @@ const ConfigurationDetail: React.FC = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      {/* Content Sections with Fade Animation */}
+      <div className="relative">
+        {/* PC Components Section */}
+        {activeSection === 'pc' && (
+          <div className="animate-fadeIn">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Components List */}
         <div>
           <h2 className="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
@@ -305,6 +336,218 @@ const ConfigurationDetail: React.FC = () => {
           )}
         </div>
       </div>
+          </div>
+        )}
+
+        {/* Workspace Section */}
+        {activeSection === 'workspace' && config.workspace && (
+          <div className="animate-fadeIn">
+            <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
+              🪑 Рабочее место
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Desk */}
+            {config.workspace.desk_detail && (
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-emerald-400/30 transition-all duration-300">
+                <h3 className="text-xl font-bold text-emerald-400 mb-3">🪑 Стол</h3>
+                <p className="text-2xl font-semibold text-white mb-2">{config.workspace.desk_detail.name}</p>
+                <p className="text-white/70 mb-3">{config.workspace.desk_detail.manufacturer}</p>
+                <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                  <div className="flex justify-between border-b border-white/10 pb-1">
+                    <span className="text-white/70">Размер:</span>
+                    <span className="text-white font-semibold">{config.workspace.desk_detail.width}x{config.workspace.desk_detail.depth}см</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/10 pb-1">
+                    <span className="text-white/70">Регулируемый:</span>
+                    <span className="text-white font-semibold">{config.workspace.desk_detail.height_adjustable ? 'Да' : 'Нет'}</span>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-emerald-400">₽{parseFloat(String(config.workspace.desk_detail.price)).toLocaleString()}</p>
+              </div>
+            )}
+
+            {/* Chair */}
+            {config.workspace.chair_detail && (
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-emerald-400/30 transition-all duration-300">
+                <h3 className="text-xl font-bold text-emerald-400 mb-3">💺 Кресло</h3>
+                <p className="text-2xl font-semibold text-white mb-2">{config.workspace.chair_detail.name}</p>
+                <p className="text-white/70 mb-3">{config.workspace.chair_detail.manufacturer}</p>
+                <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                  <div className="flex justify-between border-b border-white/10 pb-1">
+                    <span className="text-white/70">Эргономичное:</span>
+                    <span className="text-white font-semibold">{config.workspace.chair_detail.ergonomic ? 'Да' : 'Нет'}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/10 pb-1">
+                    <span className="text-white/70">Поясничная поддержка:</span>
+                    <span className="text-white font-semibold">{config.workspace.chair_detail.lumbar_support ? 'Да' : 'Нет'}</span>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-emerald-400">₽{parseFloat(String(config.workspace.chair_detail.price)).toLocaleString()}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Lighting Recommendations */}
+          {config.workspace.lighting_recommendation && (
+            <div className="backdrop-blur-xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-2xl p-8 mt-6">
+              <div className="flex items-center gap-3 mb-4">
+                {React.createElement(FaLightbulb as any, { className: "text-3xl text-yellow-400" })}
+                <h3 className="text-2xl font-bold text-yellow-300">💡 Рекомендации по освещению</h3>
+              </div>
+              <p className="text-white/90 leading-relaxed whitespace-pre-line">{config.workspace.lighting_recommendation}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+        {/* Peripherals Section */}
+        {activeSection === 'peripherals' && config.workspace && (
+          <div className="animate-fadeIn">
+            <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+              🖥️ Периферия
+            </h2>
+
+            <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 mb-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-2xl font-bold text-white">Общая стоимость периферии</h3>
+                <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
+                  ₽{parseFloat(String(config.workspace.total_price)).toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Monitor */}
+              {config.workspace.monitor_primary_detail && (
+                <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-cyan-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-cyan-400 mb-3">🖥️ Монитор</h3>
+                  <p className="text-2xl font-semibold text-white mb-2">{config.workspace.monitor_primary_detail.name}</p>
+                  <p className="text-white/70 mb-3">{config.workspace.monitor_primary_detail.manufacturer}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Разрешение:</span>
+                      <span className="text-white font-semibold">{config.workspace.monitor_primary_detail.resolution}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Частота:</span>
+                      <span className="text-white font-semibold">{config.workspace.monitor_primary_detail.refresh_rate}Hz</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Размер:</span>
+                      <span className="text-white font-semibold">{config.workspace.monitor_primary_detail.screen_size}"</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Тип:</span>
+                      <span className="text-white font-semibold">{config.workspace.monitor_primary_detail.panel_type}</span>
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-cyan-400">₽{parseFloat(String(config.workspace.monitor_primary_detail.price)).toLocaleString()}</p>
+                </div>
+              )}
+
+              {/* Keyboard */}
+              {config.workspace.keyboard_detail && (
+                <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-cyan-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-cyan-400 mb-3">⌨️ Клавиатура</h3>
+                  <p className="text-2xl font-semibold text-white mb-2">{config.workspace.keyboard_detail.name}</p>
+                  <p className="text-white/70 mb-3">{config.workspace.keyboard_detail.manufacturer}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Тип:</span>
+                      <span className="text-white font-semibold capitalize">{config.workspace.keyboard_detail.switch_type}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">RGB:</span>
+                      <span className="text-white font-semibold">{config.workspace.keyboard_detail.rgb ? 'Да' : 'Нет'}</span>
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-cyan-400">₽{parseFloat(String(config.workspace.keyboard_detail.price)).toLocaleString()}</p>
+                </div>
+              )}
+
+              {/* Mouse */}
+              {config.workspace.mouse_detail && (
+                <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-cyan-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-cyan-400 mb-3">🖱️ Мышь</h3>
+                  <p className="text-2xl font-semibold text-white mb-2">{config.workspace.mouse_detail.name}</p>
+                  <p className="text-white/70 mb-3">{config.workspace.mouse_detail.manufacturer}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">DPI:</span>
+                      <span className="text-white font-semibold">{config.workspace.mouse_detail.dpi}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Сенсор:</span>
+                      <span className="text-white font-semibold capitalize">{config.workspace.mouse_detail.sensor_type}</span>
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-cyan-400">₽{parseFloat(String(config.workspace.mouse_detail.price)).toLocaleString()}</p>
+                </div>
+              )}
+
+              {/* Headset */}
+              {config.workspace.headset_detail && (
+                <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-cyan-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-cyan-400 mb-3">🎧 Гарнитура</h3>
+                  <p className="text-2xl font-semibold text-white mb-2">{config.workspace.headset_detail.name}</p>
+                  <p className="text-white/70 mb-3">{config.workspace.headset_detail.manufacturer}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Объемный звук:</span>
+                      <span className="text-white font-semibold">{config.workspace.headset_detail.surround_sound ? 'Да' : 'Нет'}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Шумоподавление:</span>
+                      <span className="text-white font-semibold">{config.workspace.headset_detail.noise_cancellation ? 'Да' : 'Нет'}</span>
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-cyan-400">₽{parseFloat(String(config.workspace.headset_detail.price)).toLocaleString()}</p>
+                </div>
+              )}
+
+              {/* Webcam */}
+              {config.workspace.webcam_detail && (
+                <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-purple-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-purple-400 mb-3">📹 Веб-камера</h3>
+                  <p className="text-2xl font-semibold text-white mb-2">{config.workspace.webcam_detail.name}</p>
+                  <p className="text-white/70 mb-3">{config.workspace.webcam_detail.manufacturer}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Разрешение:</span>
+                      <span className="text-white font-semibold">{config.workspace.webcam_detail.resolution}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">FPS:</span>
+                      <span className="text-white font-semibold">{config.workspace.webcam_detail.fps}</span>
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-purple-400">₽{parseFloat(String(config.workspace.webcam_detail.price)).toLocaleString()}</p>
+                </div>
+              )}
+
+              {/* Microphone */}
+              {config.workspace.microphone_detail && (
+                <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-purple-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-purple-400 mb-3">🎤 Микрофон</h3>
+                  <p className="text-2xl font-semibold text-white mb-2">{config.workspace.microphone_detail.name}</p>
+                  <p className="text-white/70 mb-3">{config.workspace.microphone_detail.manufacturer}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
+                      <span className="text-white/70">Тип:</span>
+                      <span className="text-white font-semibold capitalize">{config.workspace.microphone_detail.mic_type}</span>
+                    </div>
+                  </div>
+                  <p className="text-2xl font-bold text-purple-400">₽{parseFloat(String(config.workspace.microphone_detail.price)).toLocaleString()}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Dock Navigation */}
+      <Dock items={dockItems} />
     </div>
   );
 };

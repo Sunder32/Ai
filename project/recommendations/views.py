@@ -1,3 +1,4 @@
+import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,7 +9,14 @@ from .serializers import (
     RecommendationSerializer, ConfigurationRequestSerializer
 )
 from .services import ConfigurationService
-from .ai_service import AIConfigurationService
+
+logger = logging.getLogger(__name__)
+
+try:
+    from .ai_service import AIConfigurationService
+except ImportError:
+    AIConfigurationService = None
+    logger.warning("AIConfigurationService not available")
 
 
 class PCConfigurationViewSet(viewsets.ModelViewSet):
@@ -48,47 +56,54 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def generate(self, request):
-        """Генерация конфигурации на основе профиля пользователя"""
+        """
+        Генерация конфигурации на основе профиля пользователя
+        
+        Параметры:
+        - include_workspace: bool - включить ли подбор периферии и рабочего места (по умолчанию False)
+        - use_ai: bool - использовать ли AI для подбора (по умолчанию False)
+        """
         serializer = ConfigurationRequestSerializer(data=request.data)
         
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        # Пробуем сначала ИИ-сервис
-        ai_service = AIConfigurationService(serializer.validated_data)
+        # Получаем дополнительные параметры
+        include_workspace = serializer.validated_data.get('include_workspace', False)
+        use_ai = serializer.validated_data.get('use_ai', False)
+        peripheral_budget_percent = serializer.validated_data.get('peripheral_budget_percent', 30)
+        
+        logger.info(f"Configuration generation request: include_workspace={include_workspace}, use_ai={use_ai}, peripheral_budget={peripheral_budget_percent}%")
         
         try:
-            # Проверяем доступность Ollama
-            if ai_service.check_ollama_available():
-                print("[API] Using AI service for configuration generation")
-                configuration, ai_info = ai_service.generate_ai_configuration(request.user)
-                
-                if configuration:
-                    # Проверяем совместимость
-                    rule_service = ConfigurationService(serializer.validated_data)
-                    rule_service.check_compatibility(configuration)
-                    
-                    result_serializer = PCConfigurationSerializer(configuration)
-                    response_data = result_serializer.data
-                    response_data['ai_info'] = ai_info
-                    return Response(response_data, status=status.HTTP_201_CREATED)
-                else:
-                    print(f"[API] AI failed: {ai_info.get('error')}, falling back to rule-based")
-            
-            # Fallback на обычный алгоритм
-            print("[API] Using rule-based service for configuration generation")
-            service = ConfigurationService(serializer.validated_data)
-            configuration = service.generate_configuration(request.user)
+            # Используем правило-основанный сервис с опциональным AI
+            service = ConfigurationService(serializer.validated_data, use_ai=use_ai)
+            configuration, workspace = service.generate_configuration(
+                request.user, 
+                include_workspace=include_workspace
+            )
             service.check_compatibility(configuration)
             
+            # Формируем ответ
             result_serializer = PCConfigurationSerializer(configuration)
             response_data = result_serializer.data
-            response_data['ai_info'] = {"ai_used": False, "summary": "Конфигурация подобрана алгоритмически"}
+            
+            if workspace:
+                workspace_serializer = WorkspaceSetupSerializer(workspace)
+                response_data['workspace'] = workspace_serializer.data
+                logger.info(f"Workspace included in response: ${workspace.total_price}")
+            
+            response_data['ai_info'] = {
+                "ai_used": use_ai and service.ai_service is not None,
+                "summary": "Конфигурация подобрана с использованием AI" if (use_ai and service.ai_service) else "Конфигурация подобрана алгоритмически"
+            }
+            
             return Response(response_data, status=status.HTTP_201_CREATED)
         
         except Exception as e:
             import traceback
             traceback.print_exc()
+            logger.error(f"Configuration generation error: {str(e)}")
             return Response(
                 {'error': f'Ошибка при генерации конфигурации: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -198,9 +198,89 @@ export interface Headset {
   connection_type: string;
   wireless: boolean;
   microphone: boolean;
-  surround: boolean;
-  noise_cancelling: boolean;
+  surround_sound: boolean;
+  noise_cancellation: boolean;
   price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Webcam {
+  id: number;
+  name: string;
+  manufacturer: string;
+  resolution: string;
+  fps: number;
+  autofocus: boolean;
+  microphone: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Microphone {
+  id: number;
+  name: string;
+  manufacturer: string;
+  mic_type: 'condenser' | 'dynamic' | 'usb';
+  polar_pattern?: string;
+  frequency_response?: string;
+  connection_type: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Desk {
+  id: number;
+  name: string;
+  manufacturer: string;
+  width: number;
+  depth: number;
+  height_adjustable: boolean;
+  material?: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Chair {
+  id: number;
+  name: string;
+  manufacturer: string;
+  ergonomic: boolean;
+  lumbar_support: boolean;
+  armrests_adjustable: boolean;
+  max_weight?: number;
+  material?: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceSetup {
+  id: number;
+  configuration: number;
+  monitor_primary?: Monitor | number;
+  monitor_primary_detail?: Monitor;
+  monitor_secondary?: Monitor | number;
+  monitor_secondary_detail?: Monitor;
+  keyboard?: Keyboard | number;
+  keyboard_detail?: Keyboard;
+  mouse?: Mouse | number;
+  mouse_detail?: Mouse;
+  headset?: Headset | number;
+  headset_detail?: Headset;
+  webcam?: Webcam | number;
+  webcam_detail?: Webcam;
+  microphone?: Microphone | number;
+  microphone_detail?: Microphone;
+  desk?: Desk | number;
+  desk_detail?: Desk;
+  chair?: Chair | number;
+  chair_detail?: Chair;
+  lighting_recommendation?: string;
+  total_price: string | number;
   created_at: string;
   updated_at: string;
 }
@@ -231,6 +311,7 @@ export interface PCConfiguration {
   case_detail?: Case;
   cooling?: Cooling | number;
   cooling_detail?: Cooling;
+  workspace?: WorkspaceSetup;
   total_price: string | number;
   compatibility_check?: boolean;
   is_compatible?: boolean;
@@ -268,6 +349,65 @@ export interface ConfigurationRequest {
   streaming: boolean;
   has_existing_components: boolean;
   existing_components_description?: string;
+  include_workspace?: boolean;
+  use_ai?: boolean;
+  
+  // Расширенные параметры PC
+  preferred_cpu_manufacturer?: 'intel' | 'amd' | 'any';
+  preferred_gpu_manufacturer?: 'nvidia' | 'amd' | 'any';
+  min_cpu_cores?: number;
+  min_gpu_vram?: number;
+  min_ram_capacity?: number;
+  storage_type_preference?: 'nvme' | 'sata' | 'hdd' | 'any';
+  min_storage_capacity?: number;
+  cooling_preference?: 'air' | 'aio' | 'custom' | 'any';
+  rgb_preference?: boolean;
+  case_size_preference?: 'mini' | 'mid' | 'full' | 'any';
+  overclocking_support?: boolean;
+  
+  // Настройки периферии
+  peripheral_budget_percent?: number;
+  need_monitor?: boolean;
+  need_keyboard?: boolean;
+  need_mouse?: boolean;
+  need_headset?: boolean;
+  need_webcam?: boolean;
+  need_microphone?: boolean;
+  need_desk?: boolean;
+  need_chair?: boolean;
+  
+  // Расширенные параметры периферии
+  monitor_min_refresh_rate?: number;
+  monitor_min_resolution?: string;
+  monitor_size_preference?: number;
+  monitor_panel_type?: 'ips' | 'va' | 'tn' | 'oled' | 'any';
+  keyboard_type_preference?: 'mechanical' | 'membrane' | 'any';
+  keyboard_switch_type?: 'linear' | 'tactile' | 'clicky' | 'any';
+  keyboard_rgb?: boolean;
+  mouse_min_dpi?: number;
+  mouse_sensor_type?: 'optical' | 'laser' | 'any';
+  mouse_wireless?: boolean;
+  headset_wireless?: boolean;
+  headset_noise_cancellation?: boolean;
+  webcam_min_resolution?: '720p' | '1080p' | '4k' | 'any';
+  microphone_type?: 'condenser' | 'dynamic' | 'usb' | 'any';
+  
+  // Расширенные параметры workspace
+  desk_min_width?: number;
+  desk_min_depth?: number;
+  desk_height_adjustable?: boolean;
+  desk_material_preference?: 'wood' | 'metal' | 'glass' | 'any';
+  desk_cable_management?: boolean;
+  chair_ergonomic?: boolean;
+  chair_lumbar_support?: boolean;
+  chair_armrests_adjustable?: boolean;
+  chair_max_weight?: number;
+  chair_material_preference?: 'leather' | 'fabric' | 'mesh' | 'any';
+  workspace_rgb_lighting?: boolean;
+  workspace_lighting_type?: 'warm' | 'neutral' | 'cold' | 'adjustable' | 'any';
+  workspace_sound_dampening?: boolean;
+  monitor_arm?: boolean;
+  cable_management_accessories?: boolean;
 }
 
 export interface PaginatedResponse<T> {

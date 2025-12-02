@@ -102,3 +102,28 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     streaming = serializers.BooleanField(default=False)
     has_existing_components = serializers.BooleanField(default=False)
     existing_components_description = serializers.CharField(required=False, allow_blank=True)
+    
+    # Параметры периферии
+    include_workspace = serializers.BooleanField(default=False)
+    use_ai = serializers.BooleanField(default=False)
+    peripheral_budget_percent = serializers.IntegerField(default=30, min_value=10, max_value=50)
+    
+    # Выбор устройств
+    need_monitor = serializers.BooleanField(default=True)
+    need_keyboard = serializers.BooleanField(default=True)
+    need_mouse = serializers.BooleanField(default=True)
+    need_headset = serializers.BooleanField(default=True)
+    need_webcam = serializers.BooleanField(default=False)
+    need_microphone = serializers.BooleanField(default=False)
+    need_desk = serializers.BooleanField(default=True)
+    need_chair = serializers.BooleanField(default=True)
+    
+    # Требования к устройствам
+    monitor_min_refresh_rate = serializers.IntegerField(default=60, required=False)
+    monitor_min_resolution = serializers.CharField(default='1920x1080', required=False)
+    keyboard_type_preference = serializers.ChoiceField(
+        choices=[('any', 'Любая'), ('mechanical', 'Механическая'), ('membrane', 'Мембранная')],
+        default='any',
+        required=False
+    )
+    mouse_min_dpi = serializers.IntegerField(default=1000, required=False)
