@@ -1,74 +1,6 @@
-# AI-Configure - платформа для сборки ПК или рабочего места с использованием ИИ помощника 
+# AI PC Configurator - Текущее состояние проекта
 
-> ### Цель проекта: Создание интеллектуального веб-приложения для автоматической подборки конфигурации компьютера и организации рабочего места на основе профиля пользователя, бюджета и предпочтений.
-
----
-
-> ## Основная ветка для работы Dev
-
----
-
-## Стек разработки
-
-> ### Backend
-![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
-![Django](https://img.shields.io/badge/Django-5.2.8-green.svg)
-![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
-
----
-
-> ### Frontend
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwind-css&logoColor=white)
-
----
-
-## 📚 Документация
-
-Для детальной информации о текущем состоянии проекта, установке и использовании см. файл [CURRENT_PROJECT.md](./CURRENT_PROJECT.md)
-
-## 🚀 Быстрый старт
-
-### Backend
-```powershell
-cd project
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-pip install django djangorestframework django-cors-headers drf-spectacular django-filter python-decouple
-python manage.py migrate
-python manage.py populate_db
-python manage.py runserver
-```
-
-### Frontend
-```powershell
-cd frontend
-npm install
-npm start
-```
-
-## 🔗 Ссылки
-
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:8000/api
-- **API Documentation:** http://localhost:8000/api/docs
-- **Admin Panel:** http://localhost:8000/admin
-
-## 📋 Статус задач
-
-См. [Tasks/tasks.md](./Tasks/tasks.md) для полного списка задач
-
-## 📊 Отчеты
-
-См. [Отчеты/project_report.md](./Отчеты/project_report.md) для детального отчета о прогрессе
-
-## 👨‍💻 Разработка
-
-**Автор:** Sunder32  
-**Репозиторий:** [github.com/Sunder32/Ai](https://github.com/Sunder32/Ai)  
-**Ветка:** dev
+Интеллектуальная система подбора конфигураций компьютеров с использованием искусственного интеллекта.
 
 ## 🚀 Технологии
 
@@ -113,7 +45,7 @@ D:\Aicfgpc\
 │   ├── recommendations/    # Конфигурации и рекомендации
 │   └── config/            # Настройки Django
 │
-└── README.md              # Этот файл
+└── README.md              # Главный файл документации
 ```
 
 ## 🛠 Установка и запуск
@@ -206,7 +138,7 @@ Frontend будет доступен на: **http://localhost:3000**
 ## 🎨 Особенности дизайна
 
 ### Glassmorphism
-Все компоненты используютк стеклянный эффет:
+Все компоненты используют стеклянный эффект:
 - `backdrop-blur-xl` - размытие фона
 - `bg-white/5` - полупрозрачный фон
 - `border border-white/10` - тонкая граница
@@ -339,16 +271,6 @@ API использует Token Authentication:
 - `peripherals` - периферия (Monitor, Keyboard, Mouse, Headset, Webcam, Microphone, Desk, Chair)
 - `recommendations` - конфигурации ПК и рекомендации
 
-## 📝 Лицензия
+## 📝 Дата обновления
 
-MIT
-
-## 👨‍💻 Автор
-
-**Sunder32**
-
-GitHub: [@Sunder32](https://github.com/Sunder32)
-
----
-
-**Дата создания:** Декабрь 2025
+**Декабрь 2025**
