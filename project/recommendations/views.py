@@ -1,13 +1,14 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import PCConfiguration, WorkspaceSetup, Recommendation
 from .serializers import (
     PCConfigurationSerializer, WorkspaceSetupSerializer, 
     RecommendationSerializer, ConfigurationRequestSerializer
 )
 from .services import ConfigurationService
+from .ai_service import AIConfigurationService
 
 
 class PCConfigurationViewSet(viewsets.ModelViewSet):
@@ -53,21 +54,55 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        # Создание сервиса подбора конфигурации
-        service = ConfigurationService(serializer.validated_data)
+        # Пробуем сначала ИИ-сервис
+        ai_service = AIConfigurationService(serializer.validated_data)
         
         try:
+            # Проверяем доступность Ollama
+            if ai_service.check_ollama_available():
+                print("[API] Using AI service for configuration generation")
+                configuration, ai_info = ai_service.generate_ai_configuration(request.user)
+                
+                if configuration:
+                    # Проверяем совместимость
+                    rule_service = ConfigurationService(serializer.validated_data)
+                    rule_service.check_compatibility(configuration)
+                    
+                    result_serializer = PCConfigurationSerializer(configuration)
+                    response_data = result_serializer.data
+                    response_data['ai_info'] = ai_info
+                    return Response(response_data, status=status.HTTP_201_CREATED)
+                else:
+                    print(f"[API] AI failed: {ai_info.get('error')}, falling back to rule-based")
+            
+            # Fallback на обычный алгоритм
+            print("[API] Using rule-based service for configuration generation")
+            service = ConfigurationService(serializer.validated_data)
             configuration = service.generate_configuration(request.user)
             service.check_compatibility(configuration)
             
             result_serializer = PCConfigurationSerializer(configuration)
-            return Response(result_serializer.data, status=status.HTTP_201_CREATED)
+            response_data = result_serializer.data
+            response_data['ai_info'] = {"ai_used": False, "summary": "Конфигурация подобрана алгоритмически"}
+            return Response(response_data, status=status.HTTP_201_CREATED)
         
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             return Response(
                 {'error': f'Ошибка при генерации конфигурации: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    @action(detail=False, methods=['get'])
+    def ai_status(self, request):
+        """Проверить статус ИИ сервиса"""
+        ai_service = AIConfigurationService({})
+        available = ai_service.check_ollama_available()
+        return Response({
+            'ai_available': available,
+            'model': 'deepseek-r1:8b' if available else None
+        })
 
 
 class WorkspaceSetupViewSet(viewsets.ModelViewSet):

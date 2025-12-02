@@ -19,7 +19,7 @@ import type {
   PaginatedResponse,
 } from '../types';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'http://localhost:8001/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -108,7 +108,7 @@ export const configurationAPI = {
     api.get<PCConfiguration>(`/recommendations/configurations/${id}/`),
   
   generateConfiguration: (data: ConfigurationRequest) =>
-    api.post<{ configuration: PCConfiguration; compatibility: { is_compatible: boolean; issues: string[] } }>(
+    api.post<PCConfiguration & { ai_info?: { ai_used: boolean; summary: string; reasoning?: Record<string, string> } }>(
       '/recommendations/configurations/generate/',
       data
     ),
@@ -117,6 +117,9 @@ export const configurationAPI = {
     api.post<{ is_compatible: boolean; issues: string[]; notes: string }>(
       `/recommendations/configurations/${id}/check_compatibility/`
     ),
+  
+  getAIStatus: () =>
+    api.get<{ ai_available: boolean; model: string | null }>('/recommendations/configurations/ai_status/'),
   
   saveConfiguration: (id: number, data: Partial<PCConfiguration>) =>
     api.patch<PCConfiguration>(`/recommendations/configurations/${id}/`, data),

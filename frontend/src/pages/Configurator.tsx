@@ -43,10 +43,16 @@ const Configurator: React.FC = () => {
 
     try {
       const response = await configurationAPI.generateConfiguration(formData);
-      const config = response.data.configuration;
-      navigate(`/configuration/${config.id}`);
+      const config = response.data;
+      
+      if (config.id) {
+        navigate(`/configuration/${config.id}`);
+      } else {
+        setError('Не удалось получить ID конфигурации');
+      }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Ошибка при генерации конфигурации');
+      console.error('Configuration error:', err);
+      setError(err.response?.data?.error || err.response?.data?.message || 'Ошибка при генерации конфигурации');
     } finally {
       setLoading(false);
     }
