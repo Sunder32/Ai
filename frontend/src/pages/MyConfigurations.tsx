@@ -45,14 +45,14 @@ const MyConfigurations: React.FC = () => {
   return (
     <div>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-12">
-        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400">
           Мои конфигурации
         </h1>
         <Link
           to="/configurator"
           className="group relative px-6 py-3 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 transition-opacity group-hover:opacity-90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 transition-opacity group-hover:opacity-90"></div>
           <div className="relative flex items-center gap-2">
             {React.createElement(FaPlus as any, { className: "text-lg" })}
             <span>Создать новую</span>
@@ -69,7 +69,7 @@ const MyConfigurations: React.FC = () => {
             to="/configurator"
             className="group relative inline-block px-10 py-4 rounded-2xl font-bold text-white text-lg overflow-hidden transition-all duration-300 hover:scale-105"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600"></div>
             <div className="relative flex items-center gap-3">
               {React.createElement(FaPlus as any, { className: "text-xl" })}
               <span>Начать подбор</span>
@@ -80,7 +80,7 @@ const MyConfigurations: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {configurations.map((config) => (
             <div key={config.id} className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 hover:scale-[1.02] transition-all duration-300">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-5">
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-600 p-5">
                 <h3 className="text-xl font-bold text-white">
                   {config.name || `Конфигурация #${config.id}`}
                 </h3>
@@ -152,7 +152,7 @@ const MyConfigurations: React.FC = () => {
                 <div className="flex gap-3">
                   <Link
                     to={`/configuration/${config.id}`}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center py-3 rounded-xl hover:opacity-90 transition font-semibold flex items-center justify-center gap-2"
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center py-3 rounded-xl hover:opacity-90 transition font-semibold flex items-center justify-center gap-2"
                   >
                     {React.createElement(FaEye as any, {})}
                     <span>Подробнее</span>

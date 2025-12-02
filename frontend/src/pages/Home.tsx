@@ -29,7 +29,7 @@ const Home: React.FC = () => {
       Icon: FaMicrochip,
       title: 'Совместимость',
       description: 'Автоматическая проверка совместимости всех компонентов системы',
-      gradient: 'from-purple-500 to-pink-500'
+      gradient: 'from-teal-500 to-cyan-500'
     },
     {
       Icon: FaChartLine,
@@ -48,7 +48,7 @@ const Home: React.FC = () => {
   const userTypes = [
     { Icon: FaGamepad, title: 'Геймер', type: 'gamer', color: 'from-red-500 to-pink-500' },
     { Icon: FaCode, title: 'Программист', type: 'programmer', color: 'from-blue-500 to-cyan-500' },
-    { Icon: FaPaintBrush, title: 'Дизайнер', type: 'designer', color: 'from-purple-500 to-pink-500' },
+    { Icon: FaPaintBrush, title: 'Дизайнер', type: 'designer', color: 'from-cyan-500 to-blue-500' },
     { Icon: FaBriefcase, title: 'Офис', type: 'office', color: 'from-gray-500 to-slate-500' },
     { Icon: FaGraduationCap, title: 'Студент', type: 'student', color: 'from-green-500 to-emerald-500' },
     { Icon: FaVideo, title: 'Контент-мейкер', type: 'content_creator', color: 'from-orange-500 to-yellow-500' }
@@ -66,12 +66,12 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <div className="text-center py-16">
         <div className="inline-block mb-6">
-          <div className="p-4 rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/10">
+          <div className="p-4 rounded-3xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-white/10">
             {React.createElement(FaRocket as any, { className: "text-6xl text-white" })}
           </div>
         </div>
         <h1 className="text-6xl font-bold mb-6">
-          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
             AI PC Configurator
           </span>
         </h1>
