@@ -15,13 +15,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
+from django.http import HttpResponse
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+import os
+
+
+def serve_react_app(request):
+    """Serve React SPA index.html for all frontend routes"""
+    index_path = os.path.join(settings.BASE_DIR, 'static', 'frontend', 'index.html')
+    try:
+        with open(index_path, 'r', encoding='utf-8') as f:
+            return HttpResponse(f.read(), content_type='text/html')
+    except FileNotFoundError:
+        return HttpResponse('<h1>Frontend not built</h1><p>Run: cd frontend && npm run build</p>', status=404)
 
 
 @api_view(['GET'])
@@ -71,3 +84,9 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Serve React app for all non-API routes (must be last!)
+# This catches all routes that don't match API or static files
+urlpatterns += [
+    re_path(r'^(?!api|admin|static|media).*$', serve_react_app, name='react-app'),
+]

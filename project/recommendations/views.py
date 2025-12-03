@@ -12,6 +12,7 @@ from .serializers import (
 )
 from .services import ConfigurationService
 
+
 logger = logging.getLogger(__name__)
 
 try:
@@ -19,6 +20,12 @@ try:
 except ImportError:
     AIConfigurationService = None
     logger.warning("AIConfigurationService not available")
+
+try:
+    from .generative_ai_service import GenerativeAIService
+except ImportError:
+    GenerativeAIService = None
+    logger.warning("GenerativeAIService not available")
 
 
 class PCConfigurationViewSet(viewsets.ModelViewSet):
@@ -88,34 +95,68 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         # Получаем дополнительные параметры
         include_workspace = serializer.validated_data.get('include_workspace', False)
         use_ai = serializer.validated_data.get('use_ai', False)
+        ai_generation_mode = serializer.validated_data.get('ai_generation_mode', 'database')
         peripheral_budget_percent = serializer.validated_data.get('peripheral_budget_percent', 30)
         
-        logger.info(f"Configuration generation request: include_workspace={include_workspace}, use_ai={use_ai}, peripheral_budget={peripheral_budget_percent}%")
+        logger.info(f"Configuration generation request: include_workspace={include_workspace}, use_ai={use_ai}, ai_generation_mode={ai_generation_mode}, peripheral_budget={peripheral_budget_percent}%")
         
         try:
-            # Используем правило-основанный сервис с опциональным AI
-            service = ConfigurationService(serializer.validated_data, use_ai=use_ai)
-            configuration, workspace = service.generate_configuration(
-                request.user, 
-                include_workspace=include_workspace
-            )
-            service.check_compatibility(configuration)
+            # Выбор режима генерации
+            if use_ai and ai_generation_mode == 'generative' and GenerativeAIService:
+                # Полностью генеративный режим - AI создает компоненты
+                logger.info("Using fully generative AI mode")
+                generative_service = GenerativeAIService(serializer.validated_data)
+                configuration, ai_info = generative_service.generate_configuration(request.user)
+                
+                if not configuration:
+                    return Response(
+                        {'error': ai_info.get('error', 'AI не смог сгенерировать конфигурацию')},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
+                
+                # Проверяем совместимость сгенерированных компонентов
+                compat_service = ConfigurationService({
+                    'user_type': 'student',
+                    'min_budget': 0,
+                    'max_budget': 0
+                })
+                compat_service.check_compatibility(configuration)
+                
+                # Формируем ответ
+                result_serializer = PCConfigurationSerializer(configuration)
+                response_data = result_serializer.data
+                response_data['ai_info'] = ai_info
+                
+                logger.info(f"Returning generative AI configuration ID: {response_data.get('id')} with total: {response_data.get('total_price')}")
+                return Response(response_data, status=status.HTTP_201_CREATED)
             
-            # Формируем ответ
-            result_serializer = PCConfigurationSerializer(configuration)
-            response_data = result_serializer.data
-            
-            if workspace:
-                workspace_serializer = WorkspaceSetupSerializer(workspace)
-                response_data['workspace'] = workspace_serializer.data
-                logger.info(f"Workspace included in response: ${workspace.total_price}")
-            
-            response_data['ai_info'] = {
-                "ai_used": use_ai and service.ai_service is not None,
-                "summary": "Конфигурация подобрана с использованием AI" if (use_ai and service.ai_service) else "Конфигурация подобрана алгоритмически"
-            }
-            
-            return Response(response_data, status=status.HTTP_201_CREATED)
+            else:
+                # Режим выбора из БД (с опциональным AI-анализом)
+                logger.info(f"Using database selection mode (AI analysis: {use_ai})")
+                service = ConfigurationService(serializer.validated_data, use_ai=use_ai)
+                configuration, workspace = service.generate_configuration(
+                    request.user, 
+                    include_workspace=include_workspace
+                )
+                service.check_compatibility(configuration)
+                
+                # Формируем ответ
+                result_serializer = PCConfigurationSerializer(configuration)
+                response_data = result_serializer.data
+                
+                if workspace:
+                    workspace_serializer = WorkspaceSetupSerializer(workspace)
+                    response_data['workspace'] = workspace_serializer.data
+                    logger.info(f"Workspace included in response: ${workspace.total_price}")
+                
+                response_data['ai_info'] = {
+                    "ai_used": use_ai and service.ai_service is not None,
+                    "generation_mode": "database",
+                    "summary": "Конфигурация подобрана с использованием AI" if (use_ai and service.ai_service) else "Конфигурация подобрана алгоритмически"
+                }
+                
+                logger.info(f"Returning configuration ID: {response_data.get('id')} with total: {response_data.get('total_price')}")
+                return Response(response_data, status=status.HTTP_201_CREATED)
         
         except Exception as e:
             logger.exception(f"Configuration generation error: {str(e)}")

@@ -131,6 +131,9 @@ class WorkspaceSetup(models.Model):
     desk = models.ForeignKey(Desk, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Стол')
     chair = models.ForeignKey(Chair, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кресло')
     
+    # Рекомендации
+    lighting_recommendation = models.TextField(blank=True, verbose_name='Рекомендации по освещению')
+    
     total_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,

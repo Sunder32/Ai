@@ -351,7 +351,8 @@ export interface ConfigurationRequest {
   existing_components_description?: string;
   include_workspace?: boolean;
   use_ai?: boolean;
-  
+  ai_generation_mode?: 'database' | 'generative';
+
   // Расширенные параметры PC
   preferred_cpu_manufacturer?: 'intel' | 'amd' | 'any';
   preferred_gpu_manufacturer?: 'nvidia' | 'amd' | 'any';
@@ -364,7 +365,7 @@ export interface ConfigurationRequest {
   rgb_preference?: boolean;
   case_size_preference?: 'mini' | 'mid' | 'full' | 'any';
   overclocking_support?: boolean;
-  
+
   // Настройки периферии
   peripheral_budget_percent?: number;
   need_monitor?: boolean;
@@ -375,7 +376,7 @@ export interface ConfigurationRequest {
   need_microphone?: boolean;
   need_desk?: boolean;
   need_chair?: boolean;
-  
+
   // Расширенные параметры периферии
   monitor_min_refresh_rate?: number;
   monitor_min_resolution?: string;
@@ -391,7 +392,7 @@ export interface ConfigurationRequest {
   headset_noise_cancellation?: boolean;
   webcam_min_resolution?: '720p' | '1080p' | '4k' | 'any';
   microphone_type?: 'condenser' | 'dynamic' | 'usb' | 'any';
-  
+
   // Расширенные параметры workspace
   desk_min_width?: number;
   desk_min_depth?: number;

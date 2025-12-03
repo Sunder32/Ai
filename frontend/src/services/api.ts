@@ -19,11 +19,11 @@ import type {
   PaginatedResponse,
 } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-const API_TIMEOUT = parseInt(process.env.REACT_APP_API_TIMEOUT || '30000', 10);
+// Увеличен таймаут для AI генерации (5 минут)
+const API_TIMEOUT = 300000;
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  // baseURL будет установлен динамически через interceptor
   timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
@@ -31,13 +31,28 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Добавляем токен к каждому запросу
+// Интерсептор для динамического определения baseURL и токена
 api.interceptors.request.use(
   (config) => {
+    // Динамически определяем baseURL при каждом запросе
+    let baseURL = '/api'; // по умолчанию относительный путь
+    
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      // Только для localhost используем абсолютный URL
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        baseURL = 'http://localhost:8001/api';
+      }
+    }
+    
+    config.baseURL = baseURL;
+    
+    // Добавляем токен авторизации
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Token ${token}`;
     }
+    
     return config;
   },
   (error) => {

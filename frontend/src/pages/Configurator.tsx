@@ -13,7 +13,7 @@ const Configurator: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<Section>('pc');
-  
+
   const [formData, setFormData] = useState<ConfigurationRequest>({
     user_type: 'gamer',
     min_budget: 50000,
@@ -28,7 +28,8 @@ const Configurator: React.FC = () => {
     has_existing_components: false,
     include_workspace: false,
     use_ai: false,
-    
+    ai_generation_mode: 'database',
+
     // Расширенные параметры PC
     preferred_cpu_manufacturer: 'any',
     preferred_gpu_manufacturer: 'any',
@@ -41,7 +42,7 @@ const Configurator: React.FC = () => {
     rgb_preference: false,
     case_size_preference: 'any',
     overclocking_support: false,
-    
+
     // Настройки периферии
     peripheral_budget_percent: 30,
     need_monitor: true,
@@ -52,7 +53,7 @@ const Configurator: React.FC = () => {
     need_microphone: false,
     need_desk: true,
     need_chair: true,
-    
+
     // Расширенные параметры периферии
     monitor_min_refresh_rate: 60,
     monitor_min_resolution: '1080p',
@@ -68,7 +69,7 @@ const Configurator: React.FC = () => {
     headset_noise_cancellation: false,
     webcam_min_resolution: 'any',
     microphone_type: 'any',
-    
+
     // Расширенные параметры workspace
     desk_min_width: 120,
     desk_min_depth: 60,
@@ -92,7 +93,7 @@ const Configurator: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : type === 'number' ? Number(value) : value,
@@ -105,17 +106,41 @@ const Configurator: React.FC = () => {
     setError(null);
 
     try {
+      console.log('Sending configuration request...', formData);
       const response = await configurationAPI.generateConfiguration(formData);
-      const config = response.data;
+      console.log('Configuration response:', response);
+      const config = response.data as any;
+
+      // Получаем ID из ответа
+      const configId = config.id;
       
-      if (config.id) {
-        navigate(`/configuration/${config.id}`);
+      if (configId) {
+        console.log('Navigating to configuration:', configId);
+        // Небольшая задержка для гарантии сохранения в БД
+        setTimeout(() => {
+          navigate(`/configuration/${configId}`);
+        }, 100);
       } else {
-        setError('Не удалось получить ID конфигурации');
+        console.error('No ID in response:', config);
+        setError('Конфигурация создана, но не удалось получить ID. Проверьте список конфигураций.');
       }
     } catch (err: any) {
       console.error('Configuration error:', err);
-      setError(err.response?.data?.error || err.response?.data?.message || 'Ошибка при генерации конфигурации');
+      
+      // Более детальная обработка ошибок
+      let errorMessage = 'Ошибка при генерации конфигурации';
+      
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        errorMessage = 'Превышено время ожидания. AI генерация может занять до 5 минут. Попробуйте еще раз.';
+      } else if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -164,158 +189,158 @@ const Configurator: React.FC = () => {
                 {React.createElement(FaUser as any, { className: "text-3xl text-blue-400" })}
                 <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Профиль пользователя</h2>
               </div>
-          
-          <div className="mb-6">
-            <label className="block text-white/90 font-medium mb-3">
-              Для каких задач нужен компьютер?
-            </label>
-            <select
-              name="user_type"
-              value={formData.user_type}
-              onChange={handleInputChange}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
-            >
-              <option value="gamer" className="bg-gray-900">Геймер</option>
-              <option value="designer" className="bg-gray-900">Дизайнер</option>
-              <option value="programmer" className="bg-gray-900">Программист</option>
-              <option value="content_creator" className="bg-gray-900">Контент-криэйтор</option>
-              <option value="office" className="bg-gray-900">Офисный работник</option>
-              <option value="student" className="bg-gray-900">Студент</option>
-            </select>
-          </div>
 
-          <div className="mb-4">
-            <label className="block text-white/90 font-medium mb-3">
-              Приоритет
-            </label>
-            <select
-              name="priority"
-              value={formData.priority}
-              onChange={handleInputChange}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
-            >
-              <option value="performance" className="bg-gray-900">Производительность</option>
-              <option value="silence" className="bg-gray-900">Тишина работы</option>
-              <option value="compactness" className="bg-gray-900">Компактность</option>
-              <option value="aesthetics" className="bg-gray-900">Эстетика</option>
-            </select>
-          </div>
-        </div>
+              <div className="mb-6">
+                <label className="block text-white/90 font-medium mb-3">
+                  Для каких задач нужен компьютер?
+                </label>
+                <select
+                  name="user_type"
+                  value={formData.user_type}
+                  onChange={handleInputChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
+                >
+                  <option value="gamer" className="bg-gray-900">Геймер</option>
+                  <option value="designer" className="bg-gray-900">Дизайнер</option>
+                  <option value="programmer" className="bg-gray-900">Программист</option>
+                  <option value="content_creator" className="bg-gray-900">Контент-криэйтор</option>
+                  <option value="office" className="bg-gray-900">Офисный работник</option>
+                  <option value="student" className="bg-gray-900">Студент</option>
+                </select>
+              </div>
 
-        {/* Бюджет */}
-        <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
-          <div className="flex items-center gap-3 mb-6">
-            {React.createElement(FaDollarSign as any, { className: "text-2xl text-green-400" })}
-            <h2 className="text-2xl font-semibold text-white">Бюджет</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-white/90 font-medium mb-3">
-                Минимальный бюджет (₽)
-              </label>
-              <input
-                type="number"
-                name="min_budget"
-                value={formData.min_budget}
-                onChange={handleInputChange}
-                min="10000"
-                step="1000"
-                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
-              />
+              <div className="mb-4">
+                <label className="block text-white/90 font-medium mb-3">
+                  Приоритет
+                </label>
+                <select
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleInputChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
+                >
+                  <option value="performance" className="bg-gray-900">Производительность</option>
+                  <option value="silence" className="bg-gray-900">Тишина работы</option>
+                  <option value="compactness" className="bg-gray-900">Компактность</option>
+                  <option value="aesthetics" className="bg-gray-900">Эстетика</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label className="block text-white/90 font-medium mb-3">
-                Максимальный бюджет (₽)
-              </label>
-              <input
-                type="number"
-                name="max_budget"
-                value={formData.max_budget}
-                onChange={handleInputChange}
-                min="20000"
-                step="1000"
-                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
-              />
+
+            {/* Бюджет */}
+            <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                {React.createElement(FaDollarSign as any, { className: "text-2xl text-green-400" })}
+                <h2 className="text-2xl font-semibold text-white">Бюджет</h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-white/90 font-medium mb-3">
+                    Минимальный бюджет (₽)
+                  </label>
+                  <input
+                    type="number"
+                    name="min_budget"
+                    value={formData.min_budget}
+                    onChange={handleInputChange}
+                    min="10000"
+                    step="1000"
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-white/90 font-medium mb-3">
+                    Максимальный бюджет (₽)
+                  </label>
+                  <input
+                    type="number"
+                    name="max_budget"
+                    value={formData.max_budget}
+                    onChange={handleInputChange}
+                    min="20000"
+                    step="1000"
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* Специфические требования */}
-        <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
-          <div className="flex items-center gap-3 mb-6">
-            {React.createElement(FaCheckCircle as any, { className: "text-2xl text-purple-400" })}
-            <h2 className="text-2xl font-semibold text-white">Специфические требования</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="multitasking"
-                checked={formData.multitasking}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-              />
-              <span className="text-white/90 group-hover:text-white transition-colors">Многозадачность</span>
-            </label>
+            {/* Специфические требования */}
+            <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                {React.createElement(FaCheckCircle as any, { className: "text-2xl text-purple-400" })}
+                <h2 className="text-2xl font-semibold text-white">Специфические требования</h2>
+              </div>
 
-            <label className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="work_with_4k"
-                checked={formData.work_with_4k}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-              />
-              <span className="text-white/90 group-hover:text-white transition-colors">Работа с 4K</span>
-            </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name="multitasking"
+                    checked={formData.multitasking}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                  />
+                  <span className="text-white/90 group-hover:text-white transition-colors">Многозадачность</span>
+                </label>
 
-            <label className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="vr_support"
-                checked={formData.vr_support}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-              />
-              <span className="text-white/90 group-hover:text-white transition-colors">Поддержка VR</span>
-            </label>
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name="work_with_4k"
+                    checked={formData.work_with_4k}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                  />
+                  <span className="text-white/90 group-hover:text-white transition-colors">Работа с 4K</span>
+                </label>
 
-            <label className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="video_editing"
-                checked={formData.video_editing}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-              />
-              <span className="text-white/90 group-hover:text-white transition-colors">Видеомонтаж</span>
-            </label>
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name="vr_support"
+                    checked={formData.vr_support}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                  />
+                  <span className="text-white/90 group-hover:text-white transition-colors">Поддержка VR</span>
+                </label>
 
-            <label className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="gaming"
-                checked={formData.gaming}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-              />
-              <span className="text-white/90 group-hover:text-white transition-colors">Гейминг</span>
-            </label>
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name="video_editing"
+                    checked={formData.video_editing}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                  />
+                  <span className="text-white/90 group-hover:text-white transition-colors">Видеомонтаж</span>
+                </label>
 
-            <label className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="streaming"
-                checked={formData.streaming}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-              />
-              <span className="text-white/90 group-hover:text-white transition-colors">Стриминг</span>
-            </label>
-          </div>
-        </div>
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name="gaming"
+                    checked={formData.gaming}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                  />
+                  <span className="text-white/90 group-hover:text-white transition-colors">Гейминг</span>
+                </label>
+
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name="streaming"
+                    checked={formData.streaming}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                  />
+                  <span className="text-white/90 group-hover:text-white transition-colors">Стриминг</span>
+                </label>
+              </div>
+            </div>
 
             {/* Расширенные параметры PC */}
             <div className="backdrop-blur-xl bg-gradient-to-br from-white/5 to-purple-500/5 rounded-2xl border border-purple-500/20 p-8 hover:border-purple-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
@@ -573,7 +598,7 @@ const Configurator: React.FC = () => {
                 {React.createElement(FaCouch as any, { className: "text-3xl text-emerald-400" })}
                 <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Рабочее место</h2>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Стол */}
                 <div className="space-y-4 p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border-2 border-emerald-500/30 rounded-xl">
@@ -806,7 +831,7 @@ const Configurator: React.FC = () => {
                 {/* Аксессуары */}
                 <div className="p-6 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border-2 border-blue-500/30 rounded-xl">
                   <p className="text-xl font-bold text-blue-200 mb-4">🔧 Аксессуары</p>
-                  
+
                   <div className="space-y-2">
                     <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-blue-500/5 transition-all">
                       <input
@@ -856,10 +881,10 @@ const Configurator: React.FC = () => {
               {/* Итоговая информация */}
               <div className="mt-6 p-6 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-2 border-emerald-500/30 rounded-xl">
                 <p className="text-emerald-200 font-bold text-lg mb-2">
-                  ✓ {formData.need_desk && formData.need_chair ? 'Будет подобран полный комплект для рабочего места' : 
-                       formData.need_desk ? 'Будет подобран только стол' :
-                       formData.need_chair ? 'Будет подобрано только кресло' :
-                       'Выберите элементы рабочего места'}
+                  ✓ {formData.need_desk && formData.need_chair ? 'Будет подобран полный комплект для рабочего места' :
+                    formData.need_desk ? 'Будет подобран только стол' :
+                      formData.need_chair ? 'Будет подобрано только кресло' :
+                        'Выберите элементы рабочего места'}
                 </p>
                 <p className="text-white/70 text-sm mt-1">
                   + Персональные рекомендации по освещению и эргономике
@@ -892,7 +917,7 @@ const Configurator: React.FC = () => {
                 {React.createElement(FaKeyboard as any, { className: "text-3xl text-cyan-400" })}
                 <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Периферия</h2>
               </div>
-              
+
               <label className="flex items-start space-x-3 cursor-pointer group p-4 rounded-xl hover:bg-cyan-500/5 transition-all">
                 <input
                   type="checkbox"
@@ -919,399 +944,399 @@ const Configurator: React.FC = () => {
                   {React.createElement(FaCheckCircle as any, { className: "text-3xl text-cyan-400" })}
                   <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Детальные настройки</h2>
                 </div>
-                
+
                 <div className="space-y-6">
-                {/* Бюджет на периферию */}
-                <div className="p-6 backdrop-blur-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
-                  <label className="block text-cyan-200 font-bold text-lg mb-4">
-                    💰 Бюджет на периферию: {formData.peripheral_budget_percent}%
-                  </label>
-                  <input
-                    type="range"
-                    name="peripheral_budget_percent"
-                    value={formData.peripheral_budget_percent}
-                    onChange={handleInputChange}
-                    min="10"
-                    max="50"
-                    step="5"
-                    className="w-full h-3 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
-                  />
-                  <div className="flex justify-between mt-3">
-                    <span className="text-sm text-white/60">10%</span>
-                    <span className="text-lg font-bold text-cyan-300">
-                      ~₽{Math.round((formData.max_budget * (formData.peripheral_budget_percent || 30)) / 100).toLocaleString()}
-                    </span>
-                    <span className="text-sm text-white/60">50%</span>
-                  </div>
-                </div>
-
-                {/* Выбор устройств по категориям */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Базовые устройства */}
-                  <div className="p-6 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
-                    <p className="text-cyan-300 font-bold text-lg mb-4">🖥️ Базовые устройства</p>
-                    <div className="space-y-3">
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="need_monitor"
-                          checked={formData.need_monitor}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Монитор</span>
-                      </label>
-
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="need_keyboard"
-                          checked={formData.need_keyboard}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Клавиатура</span>
-                      </label>
-
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="need_mouse"
-                          checked={formData.need_mouse}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Мышь</span>
-                      </label>
-
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="need_headset"
-                          checked={formData.need_headset}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Гарнитура</span>
-                      </label>
+                  {/* Бюджет на периферию */}
+                  <div className="p-6 backdrop-blur-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
+                    <label className="block text-cyan-200 font-bold text-lg mb-4">
+                      💰 Бюджет на периферию: {formData.peripheral_budget_percent}%
+                    </label>
+                    <input
+                      type="range"
+                      name="peripheral_budget_percent"
+                      value={formData.peripheral_budget_percent}
+                      onChange={handleInputChange}
+                      min="10"
+                      max="50"
+                      step="5"
+                      className="w-full h-3 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
+                    />
+                    <div className="flex justify-between mt-3">
+                      <span className="text-sm text-white/60">10%</span>
+                      <span className="text-lg font-bold text-cyan-300">
+                        ~₽{Math.round((formData.max_budget * (formData.peripheral_budget_percent || 30)) / 100).toLocaleString()}
+                      </span>
+                      <span className="text-sm text-white/60">50%</span>
                     </div>
                   </div>
 
-                  {/* Дополнительно */}
-                  <div className="p-6 bg-purple-500/5 border border-purple-500/20 rounded-xl">
-                    <p className="text-purple-300 font-bold text-lg mb-4">📹 Дополнительно</p>
-                    <div className="space-y-3">
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="need_webcam"
-                          checked={formData.need_webcam}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Веб-камера</span>
-                      </label>
-
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="need_microphone"
-                          checked={formData.need_microphone}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Микрофон</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Расширенные параметры монитора */}
-                {formData.need_monitor && (
-                  <div className="p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-2 border-cyan-500/30 rounded-xl">
-                    <p className="text-cyan-200 font-bold text-xl mb-5 flex items-center gap-2">
-                      🖥️ Параметры монитора
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Частота обновления</label>
-                        <select
-                          name="monitor_min_refresh_rate"
-                          value={formData.monitor_min_refresh_rate}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="60" className="bg-gray-900">60 Hz (стандарт)</option>
-                          <option value="75" className="bg-gray-900">75 Hz</option>
-                          <option value="120" className="bg-gray-900">120 Hz</option>
-                          <option value="144" className="bg-gray-900">144 Hz (игровой)</option>
-                          <option value="165" className="bg-gray-900">165 Hz</option>
-                          <option value="240" className="bg-gray-900">240 Hz (pro)</option>
-                        </select>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Разрешение</label>
-                        <select
-                          name="monitor_min_resolution"
-                          value={formData.monitor_min_resolution}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="1920x1080" className="bg-gray-900">Full HD (1920x1080)</option>
-                          <option value="2560x1440" className="bg-gray-900">2K (2560x1440)</option>
-                          <option value="3840x2160" className="bg-gray-900">4K (3840x2160)</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">
-                          Диагональ: {formData.monitor_size_preference}"
+                  {/* Выбор устройств по категориям */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Базовые устройства */}
+                    <div className="p-6 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
+                      <p className="text-cyan-300 font-bold text-lg mb-4">🖥️ Базовые устройства</p>
+                      <div className="space-y-3">
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="need_monitor"
+                            checked={formData.need_monitor}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Монитор</span>
                         </label>
-                        <input
-                          type="range"
-                          name="monitor_size_preference"
-                          value={formData.monitor_size_preference}
-                          onChange={handleInputChange}
-                          min="21"
-                          max="34"
-                          step="1"
-                          className="w-full h-2 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
-                        />
-                        <div className="flex justify-between text-xs text-white/60 mt-1">
-                          <span>21"</span>
-                          <span>27"</span>
-                          <span>34"</span>
-                        </div>
-                      </div>
 
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Тип матрицы</label>
-                        <select
-                          name="monitor_panel_type"
-                          value={formData.monitor_panel_type}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любая</option>
-                          <option value="ips" className="bg-gray-900">IPS (лучшие углы обзора)</option>
-                          <option value="va" className="bg-gray-900">VA (высокая контрастность)</option>
-                          <option value="tn" className="bg-gray-900">TN (быстрый отклик)</option>
-                          <option value="oled" className="bg-gray-900">OLED (премиум)</option>
-                        </select>
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="need_keyboard"
+                            checked={formData.need_keyboard}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Клавиатура</span>
+                        </label>
+
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="need_mouse"
+                            checked={formData.need_mouse}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Мышь</span>
+                        </label>
+
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="need_headset"
+                            checked={formData.need_headset}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Гарнитура</span>
+                        </label>
                       </div>
                     </div>
-                  </div>
-                )}
 
-                {/* Расширенные параметры клавиатуры */}
-                {formData.need_keyboard && (
-                  <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 rounded-xl">
-                    <p className="text-purple-200 font-bold text-xl mb-5 flex items-center gap-2">
-                      ⌨️ Параметры клавиатуры
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Тип клавиатуры</label>
-                        <select
-                          name="keyboard_type_preference"
-                          value={formData.keyboard_type_preference}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любая</option>
-                          <option value="mechanical" className="bg-gray-900">Механическая (быстрый отклик)</option>
-                          <option value="membrane" className="bg-gray-900">Мембранная (тихая)</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Тип переключателей</label>
-                        <select
-                          name="keyboard_switch_type"
-                          value={formData.keyboard_switch_type}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любой</option>
-                          <option value="linear" className="bg-gray-900">Linear (плавные)</option>
-                          <option value="tactile" className="bg-gray-900">Tactile (с откликом)</option>
-                          <option value="clicky" className="bg-gray-900">Clicky (с щелчком)</option>
-                        </select>
-                      </div>
-
-                      <div className="md:col-span-2">
+                    {/* Дополнительно */}
+                    <div className="p-6 bg-purple-500/5 border border-purple-500/20 rounded-xl">
+                      <p className="text-purple-300 font-bold text-lg mb-4">📹 Дополнительно</p>
+                      <div className="space-y-3">
                         <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
                           <input
                             type="checkbox"
-                            name="keyboard_rgb"
-                            checked={formData.keyboard_rgb}
+                            name="need_webcam"
+                            checked={formData.need_webcam}
                             onChange={handleInputChange}
                             className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
                           />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">RGB подсветка</span>
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Веб-камера</span>
+                        </label>
+
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="need_microphone"
+                            checked={formData.need_microphone}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Микрофон</span>
                         </label>
                       </div>
                     </div>
                   </div>
-                )}
 
-                {/* Расширенные параметры мыши */}
-                {formData.need_mouse && (
-                  <div className="p-6 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 rounded-xl">
-                    <p className="text-blue-200 font-bold text-xl mb-5 flex items-center gap-2">
-                      🖱️ Параметры мыши
-                    </p>
-                    <div className="space-y-5">
-                      <div>
-                        <label className="block text-white/90 font-medium mb-3">
-                          Минимальный DPI: {formData.mouse_min_dpi}
-                        </label>
-                        <input
-                          type="range"
-                          name="mouse_min_dpi"
-                          value={formData.mouse_min_dpi}
-                          onChange={handleInputChange}
-                          min="800"
-                          max="25600"
-                          step="400"
-                          className="w-full h-3 bg-blue-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
-                        />
-                        <div className="flex justify-between text-xs text-white/60 mt-2">
-                          <span>800 (офис)</span>
-                          <span>6400 (стандарт)</span>
-                          <span>25600 (pro)</span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Расширенные параметры монитора */}
+                  {formData.need_monitor && (
+                    <div className="p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-2 border-cyan-500/30 rounded-xl">
+                      <p className="text-cyan-200 font-bold text-xl mb-5 flex items-center gap-2">
+                        🖥️ Параметры монитора
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                          <label className="block text-white/90 font-medium mb-2">Тип сенсора</label>
+                          <label className="block text-white/90 font-medium mb-2">Частота обновления</label>
                           <select
-                            name="mouse_sensor_type"
-                            value={formData.mouse_sensor_type}
+                            name="monitor_min_refresh_rate"
+                            value={formData.monitor_min_refresh_rate}
                             onChange={handleInputChange}
-                            className="w-full bg-white/10 border border-blue-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
+                            className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
                           >
-                            <option value="any" className="bg-gray-900">Любой</option>
-                            <option value="optical" className="bg-gray-900">Optical (точный)</option>
-                            <option value="laser" className="bg-gray-900">Laser (универсальный)</option>
+                            <option value="60" className="bg-gray-900">60 Hz (стандарт)</option>
+                            <option value="75" className="bg-gray-900">75 Hz</option>
+                            <option value="120" className="bg-gray-900">120 Hz</option>
+                            <option value="144" className="bg-gray-900">144 Hz (игровой)</option>
+                            <option value="165" className="bg-gray-900">165 Hz</option>
+                            <option value="240" className="bg-gray-900">240 Hz (pro)</option>
                           </select>
                         </div>
 
-                        <div className="flex items-end">
-                          <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-blue-500/5 transition-all w-full">
+                        <div>
+                          <label className="block text-white/90 font-medium mb-2">Разрешение</label>
+                          <select
+                            name="monitor_min_resolution"
+                            value={formData.monitor_min_resolution}
+                            onChange={handleInputChange}
+                            className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
+                          >
+                            <option value="1920x1080" className="bg-gray-900">Full HD (1920x1080)</option>
+                            <option value="2560x1440" className="bg-gray-900">2K (2560x1440)</option>
+                            <option value="3840x2160" className="bg-gray-900">4K (3840x2160)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-white/90 font-medium mb-2">
+                            Диагональ: {formData.monitor_size_preference}"
+                          </label>
+                          <input
+                            type="range"
+                            name="monitor_size_preference"
+                            value={formData.monitor_size_preference}
+                            onChange={handleInputChange}
+                            min="21"
+                            max="34"
+                            step="1"
+                            className="w-full h-2 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
+                          />
+                          <div className="flex justify-between text-xs text-white/60 mt-1">
+                            <span>21"</span>
+                            <span>27"</span>
+                            <span>34"</span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-white/90 font-medium mb-2">Тип матрицы</label>
+                          <select
+                            name="monitor_panel_type"
+                            value={formData.monitor_panel_type}
+                            onChange={handleInputChange}
+                            className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
+                          >
+                            <option value="any" className="bg-gray-900">Любая</option>
+                            <option value="ips" className="bg-gray-900">IPS (лучшие углы обзора)</option>
+                            <option value="va" className="bg-gray-900">VA (высокая контрастность)</option>
+                            <option value="tn" className="bg-gray-900">TN (быстрый отклик)</option>
+                            <option value="oled" className="bg-gray-900">OLED (премиум)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Расширенные параметры клавиатуры */}
+                  {formData.need_keyboard && (
+                    <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 rounded-xl">
+                      <p className="text-purple-200 font-bold text-xl mb-5 flex items-center gap-2">
+                        ⌨️ Параметры клавиатуры
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                          <label className="block text-white/90 font-medium mb-2">Тип клавиатуры</label>
+                          <select
+                            name="keyboard_type_preference"
+                            value={formData.keyboard_type_preference}
+                            onChange={handleInputChange}
+                            className="w-full bg-white/10 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
+                          >
+                            <option value="any" className="bg-gray-900">Любая</option>
+                            <option value="mechanical" className="bg-gray-900">Механическая (быстрый отклик)</option>
+                            <option value="membrane" className="bg-gray-900">Мембранная (тихая)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-white/90 font-medium mb-2">Тип переключателей</label>
+                          <select
+                            name="keyboard_switch_type"
+                            value={formData.keyboard_switch_type}
+                            onChange={handleInputChange}
+                            className="w-full bg-white/10 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
+                          >
+                            <option value="any" className="bg-gray-900">Любой</option>
+                            <option value="linear" className="bg-gray-900">Linear (плавные)</option>
+                            <option value="tactile" className="bg-gray-900">Tactile (с откликом)</option>
+                            <option value="clicky" className="bg-gray-900">Clicky (с щелчком)</option>
+                          </select>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
                             <input
                               type="checkbox"
-                              name="mouse_wireless"
-                              checked={formData.mouse_wireless}
+                              name="keyboard_rgb"
+                              checked={formData.keyboard_rgb}
                               onChange={handleInputChange}
-                              className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                              className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
                             />
-                            <span className="text-white/90 font-medium group-hover:text-white transition-colors">Беспроводная</span>
+                            <span className="text-white/90 font-medium group-hover:text-white transition-colors">RGB подсветка</span>
                           </label>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Параметры гарнитуры */}
-                {formData.need_headset && (
-                  <div className="p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-2 border-green-500/30 rounded-xl">
-                    <p className="text-green-200 font-bold text-xl mb-5 flex items-center gap-2">
-                      🎧 Параметры гарнитуры
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-green-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="headset_wireless"
-                          checked={formData.headset_wireless}
+                  {/* Расширенные параметры мыши */}
+                  {formData.need_mouse && (
+                    <div className="p-6 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 rounded-xl">
+                      <p className="text-blue-200 font-bold text-xl mb-5 flex items-center gap-2">
+                        🖱️ Параметры мыши
+                      </p>
+                      <div className="space-y-5">
+                        <div>
+                          <label className="block text-white/90 font-medium mb-3">
+                            Минимальный DPI: {formData.mouse_min_dpi}
+                          </label>
+                          <input
+                            type="range"
+                            name="mouse_min_dpi"
+                            value={formData.mouse_min_dpi}
+                            onChange={handleInputChange}
+                            min="800"
+                            max="25600"
+                            step="400"
+                            className="w-full h-3 bg-blue-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
+                          />
+                          <div className="flex justify-between text-xs text-white/60 mt-2">
+                            <span>800 (офис)</span>
+                            <span>6400 (стандарт)</span>
+                            <span>25600 (pro)</span>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-white/90 font-medium mb-2">Тип сенсора</label>
+                            <select
+                              name="mouse_sensor_type"
+                              value={formData.mouse_sensor_type}
+                              onChange={handleInputChange}
+                              className="w-full bg-white/10 border border-blue-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
+                            >
+                              <option value="any" className="bg-gray-900">Любой</option>
+                              <option value="optical" className="bg-gray-900">Optical (точный)</option>
+                              <option value="laser" className="bg-gray-900">Laser (универсальный)</option>
+                            </select>
+                          </div>
+
+                          <div className="flex items-end">
+                            <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-blue-500/5 transition-all w-full">
+                              <input
+                                type="checkbox"
+                                name="mouse_wireless"
+                                checked={formData.mouse_wireless}
+                                onChange={handleInputChange}
+                                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
+                              />
+                              <span className="text-white/90 font-medium group-hover:text-white transition-colors">Беспроводная</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Параметры гарнитуры */}
+                  {formData.need_headset && (
+                    <div className="p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-2 border-green-500/30 rounded-xl">
+                      <p className="text-green-200 font-bold text-xl mb-5 flex items-center gap-2">
+                        🎧 Параметры гарнитуры
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-green-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="headset_wireless"
+                            checked={formData.headset_wireless}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-green-600 rounded border-white/30 bg-white/10 focus:ring-green-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Беспроводная</span>
+                        </label>
+
+                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-green-500/5 transition-all">
+                          <input
+                            type="checkbox"
+                            name="headset_noise_cancellation"
+                            checked={formData.headset_noise_cancellation}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-green-600 rounded border-white/30 bg-white/10 focus:ring-green-500/50"
+                          />
+                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Шумоподавление</span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Параметры веб-камеры */}
+                  {formData.need_webcam && (
+                    <div className="p-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500/30 rounded-xl">
+                      <p className="text-orange-200 font-bold text-xl mb-5 flex items-center gap-2">
+                        📹 Параметры веб-камеры
+                      </p>
+                      <div>
+                        <label className="block text-white/90 font-medium mb-2">Минимальное разрешение</label>
+                        <select
+                          name="webcam_min_resolution"
+                          value={formData.webcam_min_resolution}
                           onChange={handleInputChange}
-                          className="w-5 h-5 text-green-600 rounded border-white/30 bg-white/10 focus:ring-green-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Беспроводная</span>
-                      </label>
+                          className="w-full bg-white/10 border border-orange-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-orange-500/50 focus:border-orange-400 transition-all backdrop-blur-sm"
+                        >
+                          <option value="any" className="bg-gray-900">Любое</option>
+                          <option value="720p" className="bg-gray-900">720p HD</option>
+                          <option value="1080p" className="bg-gray-900">1080p Full HD</option>
+                          <option value="4k" className="bg-gray-900">4K Ultra HD</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
 
-                      <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-green-500/5 transition-all">
-                        <input
-                          type="checkbox"
-                          name="headset_noise_cancellation"
-                          checked={formData.headset_noise_cancellation}
+                  {/* Параметры микрофона */}
+                  {formData.need_microphone && (
+                    <div className="p-6 bg-gradient-to-br from-pink-500/10 to-rose-500/10 border-2 border-pink-500/30 rounded-xl">
+                      <p className="text-pink-200 font-bold text-xl mb-5 flex items-center gap-2">
+                        🎤 Параметры микрофона
+                      </p>
+                      <div>
+                        <label className="block text-white/90 font-medium mb-2">Тип микрофона</label>
+                        <select
+                          name="microphone_type"
+                          value={formData.microphone_type}
                           onChange={handleInputChange}
-                          className="w-5 h-5 text-green-600 rounded border-white/30 bg-white/10 focus:ring-green-500/50"
-                        />
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors">Шумоподавление</span>
-                      </label>
+                          className="w-full bg-white/10 border border-pink-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400 transition-all backdrop-blur-sm"
+                        >
+                          <option value="any" className="bg-gray-900">Любой</option>
+                          <option value="condenser" className="bg-gray-900">Condenser (студийный)</option>
+                          <option value="dynamic" className="bg-gray-900">Dynamic (универсальный)</option>
+                          <option value="usb" className="bg-gray-900">USB (удобный)</option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Параметры веб-камеры */}
-                {formData.need_webcam && (
-                  <div className="p-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500/30 rounded-xl">
-                    <p className="text-orange-200 font-bold text-xl mb-5 flex items-center gap-2">
-                      📹 Параметры веб-камеры
+                  {/* Итоговая информация */}
+                  <div className="p-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-2 border-green-500/30 rounded-xl">
+                    <p className="text-green-200 font-bold text-lg mb-2">
+                      ✓ Будет подобрано: {[
+                        formData.need_monitor && 'монитор',
+                        formData.need_keyboard && 'клавиатура',
+                        formData.need_mouse && 'мышь',
+                        formData.need_headset && 'гарнитура',
+                        formData.need_webcam && 'веб-камера',
+                        formData.need_microphone && 'микрофон',
+                        formData.need_desk && 'стол',
+                        formData.need_chair && 'кресло'
+                      ].filter(Boolean).join(', ')}
                     </p>
-                    <div>
-                      <label className="block text-white/90 font-medium mb-2">Минимальное разрешение</label>
-                      <select
-                        name="webcam_min_resolution"
-                        value={formData.webcam_min_resolution}
-                        onChange={handleInputChange}
-                        className="w-full bg-white/10 border border-orange-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-orange-500/50 focus:border-orange-400 transition-all backdrop-blur-sm"
-                      >
-                        <option value="any" className="bg-gray-900">Любое</option>
-                        <option value="720p" className="bg-gray-900">720p HD</option>
-                        <option value="1080p" className="bg-gray-900">1080p Full HD</option>
-                        <option value="4k" className="bg-gray-900">4K Ultra HD</option>
-                      </select>
-                    </div>
-                  </div>
-                )}
-
-                {/* Параметры микрофона */}
-                {formData.need_microphone && (
-                  <div className="p-6 bg-gradient-to-br from-pink-500/10 to-rose-500/10 border-2 border-pink-500/30 rounded-xl">
-                    <p className="text-pink-200 font-bold text-xl mb-5 flex items-center gap-2">
-                      🎤 Параметры микрофона
+                    <p className="text-white/70 text-sm mt-1">
+                      + Персональные рекомендации по освещению рабочего места
                     </p>
-                    <div>
-                      <label className="block text-white/90 font-medium mb-2">Тип микрофона</label>
-                      <select
-                        name="microphone_type"
-                        value={formData.microphone_type}
-                        onChange={handleInputChange}
-                        className="w-full bg-white/10 border border-pink-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400 transition-all backdrop-blur-sm"
-                      >
-                        <option value="any" className="bg-gray-900">Любой</option>
-                        <option value="condenser" className="bg-gray-900">Condenser (студийный)</option>
-                        <option value="dynamic" className="bg-gray-900">Dynamic (универсальный)</option>
-                        <option value="usb" className="bg-gray-900">USB (удобный)</option>
-                      </select>
-                    </div>
                   </div>
-                )}
-
-                {/* Итоговая информация */}
-                <div className="p-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-2 border-green-500/30 rounded-xl">
-                  <p className="text-green-200 font-bold text-lg mb-2">
-                    ✓ Будет подобрано: {[
-                      formData.need_monitor && 'монитор',
-                      formData.need_keyboard && 'клавиатура',
-                      formData.need_mouse && 'мышь',
-                      formData.need_headset && 'гарнитура',
-                      formData.need_webcam && 'веб-камера',
-                      formData.need_microphone && 'микрофон',
-                      formData.need_desk && 'стол',
-                      formData.need_chair && 'кресло'
-                    ].filter(Boolean).join(', ')}
-                  </p>
-                  <p className="text-white/70 text-sm mt-1">
-                    + Персональные рекомендации по освещению рабочего места
-                  </p>
-                </div>
                 </div>
               </div>
             )}
@@ -1323,8 +1348,83 @@ const Configurator: React.FC = () => {
           </div>
         )}
 
+        {/* AI Toggle - показывается во всех секциях */}
+        <div className="flex justify-center animate-fadeIn mb-6">
+          <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 rounded-2xl p-6 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
+            <label className="flex items-center space-x-4 cursor-pointer group mb-4">
+              <input
+                type="checkbox"
+                name="use_ai"
+                checked={formData.use_ai}
+                onChange={handleInputChange}
+                className="w-6 h-6 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50 cursor-pointer"
+              />
+              <div className="flex items-center gap-3">
+                <div className="text-3xl">🤖</div>
+                <div>
+                  <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 group-hover:from-purple-300 group-hover:to-pink-300 transition-all">
+                    Использовать AI для подбора
+                  </span>
+                  <p className="text-white/60 text-sm mt-1">
+                    Нейросеть deepseek-project-model подберет оптимальную конфигурацию
+                  </p>
+                </div>
+              </div>
+            </label>
+
+            {/* Режим работы AI */}
+            {formData.use_ai && (
+              <div className="mt-4 pt-4 border-t border-purple-500/30 animate-fadeIn">
+                <p className="text-purple-200 font-semibold mb-3 text-sm">🎯 Режим работы AI:</p>
+                <div className="space-y-3">
+                  <label className="flex items-start space-x-3 cursor-pointer group p-3 rounded-xl hover:bg-purple-500/10 transition-all">
+                    <input
+                      type="radio"
+                      name="ai_generation_mode"
+                      value="database"
+                      checked={formData.ai_generation_mode === 'database'}
+                      onChange={handleInputChange}
+                      className="w-5 h-5 mt-0.5 text-purple-600 border-white/30 bg-white/10 focus:ring-purple-500/50"
+                    />
+                    <div>
+                      <span className="text-white font-medium block group-hover:text-purple-200 transition-colors">
+                        📦 Выбор из базы данных
+                      </span>
+                      <span className="text-white/50 text-xs block mt-1">
+                        AI анализирует профиль и подбирает оптимальные компоненты из существующей базы
+                      </span>
+                    </div>
+                  </label>
+                  
+                  <label className="flex items-start space-x-3 cursor-pointer group p-3 rounded-xl hover:bg-pink-500/10 transition-all">
+                    <input
+                      type="radio"
+                      name="ai_generation_mode"
+                      value="generative"
+                      checked={formData.ai_generation_mode === 'generative'}
+                      onChange={handleInputChange}
+                      className="w-5 h-5 mt-0.5 text-pink-600 border-white/30 bg-white/10 focus:ring-pink-500/50"
+                    />
+                    <div>
+                      <span className="text-white font-medium block group-hover:text-pink-200 transition-colors">
+                        ✨ Генерация компонентов AI
+                      </span>
+                      <span className="text-white/50 text-xs block mt-1">
+                        AI сама создаёт спецификации реальных компонентов с актуальными ценами (декабрь 2025)
+                      </span>
+                      <span className="text-yellow-400/80 text-xs block mt-1">
+                        ⚡ Экспериментальный режим — AI генерирует компоненты с нуля
+                      </span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Кнопка отправки - показывается во всех секциях */}
-        <div className="flex justify-center animate-fadeIn">
+        <div className="flex flex-col items-center animate-fadeIn gap-4">
           <button
             type="submit"
             disabled={loading}
@@ -1333,7 +1433,12 @@ const Configurator: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 transition-opacity group-hover:opacity-90"></div>
             <div className="relative flex items-center gap-3">
               {loading ? (
-                <LoadingSpinner />
+                <>
+                  <LoadingSpinner />
+                  <span>{formData.use_ai && formData.ai_generation_mode === 'generative' 
+                    ? 'AI генерирует сборку...' 
+                    : 'Подбор конфигурации...'}</span>
+                </>
               ) : (
                 <>
                   {React.createElement(FaRocket as any, { className: "text-xl" })}
@@ -1342,6 +1447,18 @@ const Configurator: React.FC = () => {
               )}
             </div>
           </button>
+          
+          {/* Информация о времени генерации */}
+          {loading && formData.use_ai && formData.ai_generation_mode === 'generative' && (
+            <div className="text-center animate-pulse">
+              <p className="text-purple-300 text-sm">
+                🤖 AI анализирует требования и создаёт оптимальную сборку...
+              </p>
+              <p className="text-white/50 text-xs mt-1">
+                Это может занять до 1-2 минут
+              </p>
+            </div>
+          )}
         </div>
       </form>
 

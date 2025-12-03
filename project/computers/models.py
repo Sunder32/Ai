@@ -13,6 +13,12 @@ class CPU(models.Model):
     tdp = models.IntegerField(verbose_name='TDP (Вт)')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     performance_score = models.IntegerField(verbose_name='Оценка производительности', default=0)
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -44,6 +50,12 @@ class GPU(models.Model):
     recommended_psu = models.IntegerField(verbose_name='Рекомендуемый БП (Вт)')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     performance_score = models.IntegerField(verbose_name='Оценка производительности', default=0)
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -75,6 +87,12 @@ class Motherboard(models.Model):
     pcie_slots = models.IntegerField(verbose_name='Количество PCIe слотов')
     m2_slots = models.IntegerField(verbose_name='Количество M.2 слотов', default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -100,6 +118,12 @@ class RAM(models.Model):
     modules = models.IntegerField(verbose_name='Количество модулей', default=1)
     cas_latency = models.CharField(max_length=50, verbose_name='CAS латентность', blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -130,6 +154,12 @@ class Storage(models.Model):
     read_speed = models.IntegerField(verbose_name='Скорость чтения (МБ/с)', null=True, blank=True)
     write_speed = models.IntegerField(verbose_name='Скорость записи (МБ/с)', null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -149,6 +179,12 @@ class PSU(models.Model):
     efficiency_rating = models.CharField(max_length=50, verbose_name='Сертификат 80 PLUS')
     modular = models.BooleanField(default=False, verbose_name='Модульный')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -169,6 +205,12 @@ class Case(models.Model):
     fan_slots = models.IntegerField(verbose_name='Слоты для вентиляторов', default=0)
     rgb = models.BooleanField(default=False, verbose_name='RGB подсветка')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -195,6 +237,12 @@ class Cooling(models.Model):
     max_tdp = models.IntegerField(verbose_name='Макс. TDP (Вт)')
     noise_level = models.IntegerField(verbose_name='Уровень шума (дБ)', null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    
+    # AI Generation fields
+    is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
+    ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
+    ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

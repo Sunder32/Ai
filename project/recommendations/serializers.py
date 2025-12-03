@@ -106,6 +106,14 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     # Параметры периферии
     include_workspace = serializers.BooleanField(default=False)
     use_ai = serializers.BooleanField(default=False)
+    ai_generation_mode = serializers.ChoiceField(
+        choices=[
+            ('database', 'Выбор из базы данных'),
+            ('generative', 'Генерация компонентов AI'),
+        ],
+        default='database',
+        required=False
+    )
     peripheral_budget_percent = serializers.IntegerField(default=30, min_value=10, max_value=50)
     
     def validate(self, attrs):

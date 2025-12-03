@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+requests
+python-multipart
+chromadb
+pypdf
+langchain
+langchain-community
+python-docx

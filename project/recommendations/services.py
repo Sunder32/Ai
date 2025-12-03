@@ -148,10 +148,10 @@ class ConfigurationService:
             
             if not cpu:
                 logger.warning(f"No CPU found for budget {budget} and requirements")
-                raise ConfigurationError(f"Не найден подходящий процессор в пределах бюджета {budget}₽")
+                raise ConfigurationError(f"Не найден подходящий процессор в пределах бюджета {budget} RUB")
             
             reason = self._generate_cpu_reason(cpu)
-            logger.debug(f"Selected CPU: {cpu.name} (₽{cpu.price})")
+            logger.debug(f"Selected CPU: {cpu.name} ({cpu.price} RUB)")
             return cpu, reason
         except Exception as e:
             logger.error(f"Error selecting CPU: {str(e)}")
@@ -316,11 +316,11 @@ class ConfigurationService:
                 pc_percent = 100 - peripheral_percent
                 pc_budget = self.max_budget * Decimal(str(pc_percent / 100))
                 peripheral_budget = self.max_budget * Decimal(str(peripheral_percent / 100))
-                logger.info(f"Budget split: PC={pc_percent}% (₽{pc_budget}), Peripherals={peripheral_percent}% (₽{peripheral_budget})")
+                logger.info(f"Budget split: PC={pc_percent}% ({pc_budget} RUB), Peripherals={peripheral_percent}% ({peripheral_budget} RUB)")
             else:
                 pc_budget = self.max_budget
                 peripheral_budget = None
-                logger.info(f"PC-only configuration with budget: ₽{pc_budget}")
+                logger.info(f"PC-only configuration with budget: {pc_budget} RUB")
             
             components = {}
             reasons = {}
@@ -382,7 +382,7 @@ class ConfigurationService:
             
             config.calculate_total_price()
             config.save()
-            logger.info(f"PC Configuration created: {config.name} (₽{config.total_price})")
+            logger.info(f"PC Configuration created: {config.name} ({config.total_price} RUB)")
             
             # Сохранение обоснований для компонентов ПК
             for component_type, reason in reasons.items():
@@ -431,9 +431,9 @@ class ConfigurationService:
             
                 workspace.calculate_total_price()
                 workspace.save()
-                logger.info(f"Workspace setup created for configuration: {config.name} (₽{workspace.total_price})")
+                logger.info(f"Workspace setup created for configuration: {config.name} ({workspace.total_price} RUB)")
             
-            logger.info(f"Configuration generation completed successfully. Total: ₽{config.total_price + (workspace.total_price if workspace else 0)}")
+            logger.info(f"Configuration generation completed successfully. Total: {config.total_price + (workspace.total_price if workspace else 0)} RUB")
             return config, workspace
             
         except ConfigurationError:
