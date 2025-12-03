@@ -2,10 +2,11 @@
 AI-сервис для генерации умных рекомендаций конфигураций ПК
 Использует Ollama с моделью DeepSeek для анализа требований пользователя
 """
+import logging
 import requests
 import json
 from decimal import Decimal
-from typing import Dict, List, Optional, Tuple
+from typing import Optional, Tuple
 from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 
 
@@ -13,6 +14,9 @@ OLLAMA_API_URL = "http://localhost:11434/api/generate"
 NOVA_API_URL = "http://localhost:5050/api/chat"  # Альтернативный сервер
 MODEL_NAME = "deepseek-project-model:latest"  # Обученная модель проекта
 USE_NOVA_SERVER = True  # Использовать ваш локальный сервер вместо прямого Ollama
+
+
+logger = logging.getLogger(__name__)
 
 
 class AIConfigurationService:
@@ -167,7 +171,7 @@ class AIConfigurationService:
             
             return None
         except json.JSONDecodeError as e:
-            print(f"[AI] JSON parse error: {e}")
+            logger.error(f"JSON parse error: {e}")
             return None
     
     def generate_ai_configuration(self, user) -> Tuple[Optional[dict], dict]:
@@ -186,19 +190,19 @@ class AIConfigurationService:
         
         # Строим промпт и вызываем ИИ
         prompt = self._build_ai_prompt(components)
-        print(f"[AI] Sending request to Ollama...")
+        logger.info("Sending request to Ollama...")
         
         ai_response = self._call_ollama(prompt)
         
         if not ai_response:
-            print("[AI] No response from Ollama, falling back to rule-based selection")
+            logger.warning("No response from Ollama, falling back to rule-based selection")
             return None, {"error": "ИИ недоступен, используется алгоритмический подбор"}
         
         # Парсим ответ
         parsed = self._parse_ai_response(ai_response)
         
         if not parsed:
-            print(f"[AI] Failed to parse response: {ai_response[:500]}")
+            logger.error(f"Failed to parse AI response: {ai_response[:200]}...")
             return None, {"error": "Не удалось распознать ответ ИИ"}
         
         # Получаем компоненты из базы
@@ -248,7 +252,7 @@ class AIConfigurationService:
             }
             
         except Exception as e:
-            print(f"[AI] Error creating configuration: {e}")
+            logger.error(f"Error creating AI configuration: {e}")
             return None, {"error": f"Ошибка создания конфигурации: {str(e)}"}
     
     def check_ollama_available(self) -> bool:
@@ -256,5 +260,6 @@ class AIConfigurationService:
         try:
             response = requests.get("http://localhost:11434/api/tags", timeout=5)
             return response.status_code == 200
-        except:
+        except Exception as e:
+            logger.error(f"Error checking Ollama availability: {e}")
             return False

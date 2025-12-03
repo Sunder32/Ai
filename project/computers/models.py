@@ -20,6 +20,12 @@ class CPU(models.Model):
         verbose_name = 'Процессор'
         verbose_name_plural = 'Процессоры'
         ordering = ['-performance_score']
+        indexes = [
+            models.Index(fields=['price', 'performance_score']),
+            models.Index(fields=['manufacturer', 'socket']),
+            models.Index(fields=['-performance_score', 'price']),
+            models.Index(fields=['socket', 'price']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name}'
@@ -45,6 +51,12 @@ class GPU(models.Model):
         verbose_name = 'Видеокарта'
         verbose_name_plural = 'Видеокарты'
         ordering = ['-performance_score']
+        indexes = [
+            models.Index(fields=['price', 'performance_score']),
+            models.Index(fields=['manufacturer', 'memory']),
+            models.Index(fields=['-performance_score', 'price']),
+            models.Index(fields=['memory', 'price']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name}'
@@ -69,6 +81,10 @@ class Motherboard(models.Model):
     class Meta:
         verbose_name = 'Материнская плата'
         verbose_name_plural = 'Материнские платы'
+        indexes = [
+            models.Index(fields=['socket', 'price']),
+            models.Index(fields=['manufacturer', 'form_factor']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name}'
@@ -90,6 +106,10 @@ class RAM(models.Model):
     class Meta:
         verbose_name = 'Оперативная память'
         verbose_name_plural = 'Оперативная память'
+        indexes = [
+            models.Index(fields=['capacity', 'price']),
+            models.Index(fields=['memory_type', 'speed']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name} {self.capacity}GB'

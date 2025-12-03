@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Configurator from './pages/Configurator';
@@ -10,18 +11,20 @@ import Login from './pages/Login';
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/configurator" element={<Configurator />} />
-          <Route path="/components" element={<Components />} />
-          <Route path="/configuration/:id" element={<ConfigurationDetail />} />
-          <Route path="/my-configurations" element={<MyConfigurations />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/configurator" element={<Configurator />} />
+            <Route path="/components" element={<Components />} />
+            <Route path="/configuration/:id" element={<ConfigurationDetail />} />
+            <Route path="/my-configurations" element={<MyConfigurations />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

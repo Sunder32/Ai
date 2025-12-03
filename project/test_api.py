@@ -1,7 +1,7 @@
 import requests
 
 try:
-    response = requests.get('http://localhost:8000/api/computers/cpu/')
+    response = requests.get('http://localhost:8000/api/computers/cpu/', timeout=10)
     print(f"Status Code: {response.status_code}")
     if response.status_code == 200:
         data = response.json()

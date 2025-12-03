@@ -1,4 +1,5 @@
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 from .serializers import (
@@ -7,9 +8,19 @@ from .serializers import (
 )
 
 
+class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
+    """Разрешает чтение всем авторизованным, создание/изменение только админам"""
+    def has_permission(self, request, view):
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return request.user and request.user.is_authenticated
+        return request.user and request.user.is_staff
+
+
 class CPUViewSet(viewsets.ModelViewSet):
+    """ViewSet для процессоров. Чтение - авторизованным, изменение - только админам"""
     queryset = CPU.objects.all()
     serializer_class = CPUSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'socket', 'cores']
     search_fields = ['name', 'manufacturer']
@@ -17,8 +28,10 @@ class CPUViewSet(viewsets.ModelViewSet):
 
 
 class GPUViewSet(viewsets.ModelViewSet):
+    """ViewSet для видеокарт. Чтение - авторизованным, изменение - только админам"""
     queryset = GPU.objects.all()
     serializer_class = GPUSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'memory']
     search_fields = ['name', 'manufacturer', 'chipset']
@@ -26,8 +39,10 @@ class GPUViewSet(viewsets.ModelViewSet):
 
 
 class MotherboardViewSet(viewsets.ModelViewSet):
+    """ViewSet для материнских плат. Чтение - авторизованным, изменение - только админам"""
     queryset = Motherboard.objects.all()
     serializer_class = MotherboardSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'socket', 'form_factor', 'chipset']
     search_fields = ['name', 'manufacturer']
@@ -35,8 +50,10 @@ class MotherboardViewSet(viewsets.ModelViewSet):
 
 
 class RAMViewSet(viewsets.ModelViewSet):
+    """ViewSet для оперативной памяти. Чтение - авторизованным, изменение - только админам"""
     queryset = RAM.objects.all()
     serializer_class = RAMSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'memory_type', 'capacity', 'speed']
     search_fields = ['name', 'manufacturer']
@@ -44,8 +61,10 @@ class RAMViewSet(viewsets.ModelViewSet):
 
 
 class StorageViewSet(viewsets.ModelViewSet):
+    """ViewSet для накопителей. Чтение - авторизованным, изменение - только админам"""
     queryset = Storage.objects.all()
     serializer_class = StorageSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'storage_type', 'capacity']
     search_fields = ['name', 'manufacturer']
@@ -53,8 +72,10 @@ class StorageViewSet(viewsets.ModelViewSet):
 
 
 class PSUViewSet(viewsets.ModelViewSet):
+    """ViewSet для блоков питания. Чтение - авторизованным, изменение - только админам"""
     queryset = PSU.objects.all()
     serializer_class = PSUSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'wattage', 'efficiency_rating', 'modular']
     search_fields = ['name', 'manufacturer']
@@ -62,8 +83,10 @@ class PSUViewSet(viewsets.ModelViewSet):
 
 
 class CaseViewSet(viewsets.ModelViewSet):
+    """ViewSet для корпусов. Чтение - авторизованным, изменение - только админам"""
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'form_factor', 'rgb']
     search_fields = ['name', 'manufacturer']
@@ -71,8 +94,10 @@ class CaseViewSet(viewsets.ModelViewSet):
 
 
 class CoolingViewSet(viewsets.ModelViewSet):
+    """ViewSet для систем охлаждения. Чтение - авторизованным, изменение - только админам"""
     queryset = Cooling.objects.all()
     serializer_class = CoolingSerializer
+    permission_classes = [ReadOnlyOrAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['manufacturer', 'cooling_type', 'max_tdp']
     search_fields = ['name', 'manufacturer']

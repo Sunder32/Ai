@@ -1,15 +1,21 @@
+import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 from .models import User, UserProfile
 from .serializers import UserSerializer, UserProfileSerializer, UserRegistrationSerializer
 
+logger = logging.getLogger(__name__)
 
+
+@method_decorator(ratelimit(key='ip', rate='3/m', method='POST'), name='create')
 class UserViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления пользователями"""
+    """ViewSet для управления пользователями. Rate limit: 3 регистрации/мин на IP"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     
@@ -65,8 +71,9 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@ratelimit(key='ip', rate='5/m', method='POST')
 def login_view(request):
-    """Вход пользователя"""
+    """Вход пользователя. Rate limit: 5 попыток/мин на IP"""
     username = request.data.get('username')
     password = request.data.get('password')
     

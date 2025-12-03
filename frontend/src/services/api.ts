@@ -19,10 +19,12 @@ import type {
   PaginatedResponse,
 } from '../types';
 
-const API_BASE_URL = 'http://localhost:8001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+const API_TIMEOUT = parseInt(process.env.REACT_APP_API_TIMEOUT || '30000', 10);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },

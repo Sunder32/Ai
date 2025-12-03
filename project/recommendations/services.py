@@ -3,6 +3,8 @@
 """
 import logging
 from decimal import Decimal
+from django.db import transaction
+from django.core.exceptions import ValidationError
 from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 from peripherals.models import Monitor, Keyboard, Mouse, Headset, Webcam, Microphone, Desk, Chair
 from recommendations.models import PCConfiguration, WorkspaceSetup, Recommendation
@@ -13,6 +15,11 @@ except ImportError:
     AIRecommendationService = None
 
 logger = logging.getLogger(__name__)
+
+
+class ConfigurationError(Exception):
+    """Кастомное исключение для ошибок конфигурации"""
+    pass
 
 
 class ConfigurationService:
@@ -117,22 +124,38 @@ class ConfigurationService:
     
     def select_cpu(self, budget):
         """Подбор процессора"""
-        query = CPU.objects.filter(price__lte=budget)
-        
-        if self.requirements['multitasking'] or self.requirements['video_editing']:
-            query = query.filter(cores__gte=8)
-        
-        if self.priority == 'performance':
-            query = query.order_by('-performance_score')
-        elif self.priority == 'silence':
-            query = query.order_by('tdp')
-        else:
-            query = query.order_by('-performance_score')
-        
-        cpu = query.first()
-        
-        reason = self._generate_cpu_reason(cpu)
-        return cpu, reason
+        try:
+            query = CPU.objects.filter(price__lte=budget)
+            
+            # Применяем фильтры на основе пользовательских предпочтений
+            preferred_manufacturer = self.user_profile_data.get('preferred_cpu_manufacturer')
+            if preferred_manufacturer and preferred_manufacturer != 'any':
+                query = query.filter(manufacturer__icontains=preferred_manufacturer)
+            
+            min_cores = self.user_profile_data.get('min_cpu_cores', 4)
+            if self.requirements['multitasking'] or self.requirements['video_editing']:
+                min_cores = max(min_cores, 8)
+            query = query.filter(cores__gte=min_cores)
+            
+            if self.priority == 'performance':
+                query = query.order_by('-performance_score')
+            elif self.priority == 'silence':
+                query = query.order_by('tdp')
+            else:
+                query = query.order_by('-performance_score')
+            
+            cpu = query.first()
+            
+            if not cpu:
+                logger.warning(f"No CPU found for budget {budget} and requirements")
+                raise ConfigurationError(f"Не найден подходящий процессор в пределах бюджета {budget}₽")
+            
+            reason = self._generate_cpu_reason(cpu)
+            logger.debug(f"Selected CPU: {cpu.name} (₽{cpu.price})")
+            return cpu, reason
+        except Exception as e:
+            logger.error(f"Error selecting CPU: {str(e)}")
+            raise ConfigurationError(f"Ошибка при подборе процессора: {str(e)}")
     
     def select_gpu(self, budget):
         """Подбор видеокарты"""
@@ -267,110 +290,117 @@ class ConfigurationService:
         reason = "Корпус подобран с учетом ваших приоритетов"
         return case, reason
     
+    @transaction.atomic
     def generate_configuration(self, user, include_workspace=False):
         """
         Генерация полной конфигурации ПК с опциональным подбором рабочего места
         
         Args:
-            user: User - пользователь, для которого создается конфигурация
+            user: User - пользователь, для которого создается конфигурации
             include_workspace: bool - включить ли подбор периферии и рабочего места
             
         Returns:
             tuple: (PCConfiguration, WorkspaceSetup или None)
+            
+        Raises:
+            ConfigurationError: Если не удалось подобрать конфигурацию
         """
-        budget_dist = self.get_budget_distribution()
+        logger.info(f"Starting configuration generation for user {user.username}, type: {self.user_type}")
         
-        # Распределяем бюджет с учетом пользовательских настроек
-        if include_workspace:
-            peripheral_percent = self.user_profile_data.get('peripheral_budget_percent', 30)
-            pc_percent = 100 - peripheral_percent
-            pc_budget = self.max_budget * Decimal(str(pc_percent / 100))
-            peripheral_budget = self.max_budget * Decimal(str(peripheral_percent / 100))
-            logger.info(f"Budget split: PC={pc_percent}% (${pc_budget}), Peripherals={peripheral_percent}% (${peripheral_budget})")
-        else:
-            pc_budget = self.max_budget
-            peripheral_budget = None
-            logger.info(f"PC-only configuration with budget: ${pc_budget}")
+        try:
+            budget_dist = self.get_budget_distribution()
+            
+            # Распределяем бюджет с учетом пользовательских настроек
+            if include_workspace:
+                peripheral_percent = self.user_profile_data.get('peripheral_budget_percent', 30)
+                pc_percent = 100 - peripheral_percent
+                pc_budget = self.max_budget * Decimal(str(pc_percent / 100))
+                peripheral_budget = self.max_budget * Decimal(str(peripheral_percent / 100))
+                logger.info(f"Budget split: PC={pc_percent}% (₽{pc_budget}), Peripherals={peripheral_percent}% (₽{peripheral_budget})")
+            else:
+                pc_budget = self.max_budget
+                peripheral_budget = None
+                logger.info(f"PC-only configuration with budget: ₽{pc_budget}")
+            
+            components = {}
+            reasons = {}
+            
+            # Подбор процессора
+            cpu_budget = pc_budget * Decimal(str(budget_dist['cpu']))
+            cpu, cpu_reason = self.select_cpu(cpu_budget)
+            components['cpu'] = cpu
+            reasons['cpu'] = cpu_reason
+            
+            # Подбор видеокарты
+            gpu_budget = pc_budget * Decimal(str(budget_dist['gpu']))
+            gpu, gpu_reason = self.select_gpu(gpu_budget)
+            components['gpu'] = gpu
+            reasons['gpu'] = gpu_reason
+            
+            # Подбор материнской платы
+            mb_budget = pc_budget * Decimal(str(budget_dist['motherboard']))
+            motherboard, mb_reason = self.select_motherboard(cpu, mb_budget)
+            components['motherboard'] = motherboard
+            reasons['motherboard'] = mb_reason
+            
+            # Подбор оперативной памяти
+            ram_budget = pc_budget * Decimal(str(budget_dist['ram']))
+            ram, ram_reason = self.select_ram(ram_budget)
+            components['ram'] = ram
+            reasons['ram'] = ram_reason
+            
+            # Подбор накопителей
+            storage_budget = pc_budget * Decimal(str(budget_dist['storage']))
+            storage_primary, storage1_reason = self.select_storage(storage_budget, True)
+            components['storage_primary'] = storage_primary
+            reasons['storage_primary'] = storage1_reason
+            
+            # Подбор блока питания
+            psu_budget = pc_budget * Decimal(str(budget_dist['psu']))
+            psu, psu_reason = self.select_psu(cpu, gpu, psu_budget)
+            components['psu'] = psu
+            reasons['psu'] = psu_reason
+            
+            # Подбор охлаждения
+            cooling_budget = pc_budget * Decimal(str(budget_dist['cooling']))
+            cooling, cooling_reason = self.select_cooling(cpu, cooling_budget)
+            components['cooling'] = cooling
+            reasons['cooling'] = cooling_reason
+            
+            # Подбор корпуса
+            case_budget = pc_budget * Decimal(str(budget_dist['case']))
+            case, case_reason = self.select_case(case_budget)
+            components['case'] = case
+            reasons['case'] = case_reason
         
-        components = {}
-        reasons = {}
-        
-        # Подбор процессора
-        cpu_budget = pc_budget * Decimal(str(budget_dist['cpu']))
-        cpu, cpu_reason = self.select_cpu(cpu_budget)
-        components['cpu'] = cpu
-        reasons['cpu'] = cpu_reason
-        
-        # Подбор видеокарты
-        gpu_budget = pc_budget * Decimal(str(budget_dist['gpu']))
-        gpu, gpu_reason = self.select_gpu(gpu_budget)
-        components['gpu'] = gpu
-        reasons['gpu'] = gpu_reason
-        
-        # Подбор материнской платы
-        mb_budget = pc_budget * Decimal(str(budget_dist['motherboard']))
-        motherboard, mb_reason = self.select_motherboard(cpu, mb_budget)
-        components['motherboard'] = motherboard
-        reasons['motherboard'] = mb_reason
-        
-        # Подбор оперативной памяти
-        ram_budget = pc_budget * Decimal(str(budget_dist['ram']))
-        ram, ram_reason = self.select_ram(ram_budget)
-        components['ram'] = ram
-        reasons['ram'] = ram_reason
-        
-        # Подбор накопителей
-        storage_budget = pc_budget * Decimal(str(budget_dist['storage']))
-        storage_primary, storage1_reason = self.select_storage(storage_budget, True)
-        components['storage_primary'] = storage_primary
-        reasons['storage_primary'] = storage1_reason
-        
-        # Подбор блока питания
-        psu_budget = pc_budget * Decimal(str(budget_dist['psu']))
-        psu, psu_reason = self.select_psu(cpu, gpu, psu_budget)
-        components['psu'] = psu
-        reasons['psu'] = psu_reason
-        
-        # Подбор охлаждения
-        cooling_budget = pc_budget * Decimal(str(budget_dist['cooling']))
-        cooling, cooling_reason = self.select_cooling(cpu, cooling_budget)
-        components['cooling'] = cooling
-        reasons['cooling'] = cooling_reason
-        
-        # Подбор корпуса
-        case_budget = pc_budget * Decimal(str(budget_dist['case']))
-        case, case_reason = self.select_case(case_budget)
-        components['case'] = case
-        reasons['case'] = case_reason
-        
-        # Создание конфигурации ПК
-        config = PCConfiguration.objects.create(
-            user=user,
-            name=f"Конфигурация для {self.user_type}",
-            **components
-        )
-        
-        config.calculate_total_price()
-        config.save()
-        logger.info(f"PC Configuration created: {config.name} (${config.total_price})")
-        
-        # Сохранение обоснований для компонентов ПК
-        for component_type, reason in reasons.items():
-            component = components.get(component_type)
-            if component:
-                Recommendation.objects.create(
-                    configuration=config,
-                    component_type=component_type,
-                    component_id=component.id,
-                    reason=reason
-                )
-        
-        # Опционально: подбор рабочего места и периферии
-        workspace = None
-        if include_workspace and peripheral_budget:
-            logger.info("Starting workspace peripheral selection...")
-            # Передаем предпочтения пользователя в select_workspace_peripherals
-            peripheral_preferences = {
+            # Создание конфигурации ПК
+            config = PCConfiguration.objects.create(
+                user=user,
+                name=f"Конфигурация для {self.user_type}",
+                **components
+            )
+            
+            config.calculate_total_price()
+            config.save()
+            logger.info(f"PC Configuration created: {config.name} (₽{config.total_price})")
+            
+            # Сохранение обоснований для компонентов ПК
+            for component_type, reason in reasons.items():
+                component = components.get(component_type)
+                if component:
+                    Recommendation.objects.create(
+                        configuration=config,
+                        component_type=component_type,
+                        component_id=component.id,
+                        reason=reason
+                    )
+            
+            # Опционально: подбор рабочего места и периферии
+            workspace = None
+            if include_workspace and peripheral_budget:
+                logger.info("Starting workspace peripheral selection...")
+                # Передаем предпочтения пользователя в select_workspace_peripherals
+                peripheral_preferences = {
                 'need_monitor': self.user_profile_data.get('need_monitor', True),
                 'need_keyboard': self.user_profile_data.get('need_keyboard', True),
                 'need_mouse': self.user_profile_data.get('need_mouse', True),
@@ -381,12 +411,12 @@ class ConfigurationService:
                 'need_chair': self.user_profile_data.get('need_chair', True),
                 'monitor_min_refresh_rate': self.user_profile_data.get('monitor_min_refresh_rate'),
                 'monitor_min_resolution': self.user_profile_data.get('monitor_min_resolution'),
-                'keyboard_type_preference': self.user_profile_data.get('keyboard_type_preference'),
-                'mouse_min_dpi': self.user_profile_data.get('mouse_min_dpi'),
-            }
-            peripheral_selection = self.select_workspace_peripherals(peripheral_budget, peripheral_preferences)
-            
-            workspace = WorkspaceSetup.objects.create(
+                    'keyboard_type_preference': self.user_profile_data.get('keyboard_type_preference'),
+                    'mouse_min_dpi': self.user_profile_data.get('mouse_min_dpi'),
+                }
+                peripheral_selection = self.select_workspace_peripherals(peripheral_budget, peripheral_preferences)
+                
+                workspace = WorkspaceSetup.objects.create(
                 configuration=config,
                 monitor_primary=peripheral_selection['monitor_primary'],
                 keyboard=peripheral_selection['keyboard'],
@@ -395,15 +425,23 @@ class ConfigurationService:
                 webcam=peripheral_selection['webcam'],
                 microphone=peripheral_selection['microphone'],
                 desk=peripheral_selection['desk'],
-                chair=peripheral_selection['chair'],
-                lighting_recommendation=peripheral_selection['lighting_recommendation']
-            )
+                    chair=peripheral_selection['chair'],
+                    lighting_recommendation=peripheral_selection['lighting_recommendation']
+                )
             
-            workspace.calculate_total_price()
-            workspace.save()
-            logger.info(f"Workspace setup created for configuration: {config.name} (${workspace.total_price})")
-        
-        return config, workspace
+                workspace.calculate_total_price()
+                workspace.save()
+                logger.info(f"Workspace setup created for configuration: {config.name} (₽{workspace.total_price})")
+            
+            logger.info(f"Configuration generation completed successfully. Total: ₽{config.total_price + (workspace.total_price if workspace else 0)}")
+            return config, workspace
+            
+        except ConfigurationError:
+            logger.error("Configuration generation failed", exc_info=True)
+            raise
+        except Exception as e:
+            logger.error(f"Unexpected error during configuration generation: {str(e)}", exc_info=True)
+            raise ConfigurationError(f"Не удалось создать конфигурацию: {str(e)}")
     
     def check_compatibility(self, configuration):
         """Проверка совместимости компонентов"""

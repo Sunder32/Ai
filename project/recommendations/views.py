@@ -2,7 +2,9 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 from .models import PCConfiguration, WorkspaceSetup, Recommendation
 from .serializers import (
     PCConfigurationSerializer, WorkspaceSetupSerializer, 
@@ -27,9 +29,22 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         """Пользователи видят только свои конфигурации"""
+        base_queryset = PCConfiguration.objects.select_related(
+            'user',
+            'cpu',
+            'gpu',
+            'motherboard',
+            'ram',
+            'storage_primary',
+            'storage_secondary',
+            'psu',
+            'case',
+            'cooling'
+        ).prefetch_related('recommendations')
+        
         if self.request.user.is_staff:
-            return PCConfiguration.objects.all()
-        return PCConfiguration.objects.filter(user=self.request.user)
+            return base_queryset
+        return base_queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):
         """Автоматически привязываем конфигурацию к текущему пользователю"""
@@ -54,10 +69,12 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             'notes': configuration.compatibility_notes
         })
     
+    @method_decorator(ratelimit(key='user', rate='3/m', method='POST'))
     @action(detail=False, methods=['post'])
     def generate(self, request):
         """
         Генерация конфигурации на основе профиля пользователя
+        Rate limit: 3 запроса в минуту на пользователя
         
         Параметры:
         - include_workspace: bool - включить ли подбор периферии и рабочего места (по умолчанию False)
@@ -101,17 +118,16 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_201_CREATED)
         
         except Exception as e:
-            import traceback
-            traceback.print_exc()
-            logger.error(f"Configuration generation error: {str(e)}")
+            logger.exception(f"Configuration generation error: {str(e)}")
             return Response(
                 {'error': f'Ошибка при генерации конфигурации: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    @method_decorator(ratelimit(key='ip', rate='10/m', method='GET'))
     @action(detail=False, methods=['get'])
     def ai_status(self, request):
-        """Проверить статус ИИ сервиса"""
+        """Проверить статус ИИ сервиса. Rate limit: 10 запросов/мин на IP"""
         ai_service = AIConfigurationService({})
         available = ai_service.check_ollama_available()
         return Response({
@@ -121,16 +137,30 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
 
 
 class WorkspaceSetupViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления настройками рабочего места"""
+    """ViewSet для управления рабочими местами"""
     queryset = WorkspaceSetup.objects.all()
     serializer_class = WorkspaceSetupSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои настройки"""
+        """Пользователи видят только свои рабочие места"""
+        base_queryset = WorkspaceSetup.objects.select_related(
+            'user',
+            'configuration',
+            'monitor_primary',
+            'monitor_secondary',
+            'keyboard',
+            'mouse',
+            'headset',
+            'webcam',
+            'microphone',
+            'desk',
+            'chair'
+        )
+        
         if self.request.user.is_staff:
-            return WorkspaceSetup.objects.all()
-        return WorkspaceSetup.objects.filter(user=self.request.user)
+            return base_queryset
+        return base_queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):
         """Автоматически привязываем настройку к текущему пользователю"""

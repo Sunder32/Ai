@@ -19,6 +19,10 @@ class Monitor(models.Model):
     class Meta:
         verbose_name = 'Монитор'
         verbose_name_plural = 'Мониторы'
+        indexes = [
+            models.Index(fields=['price', 'refresh_rate']),
+            models.Index(fields=['screen_size', 'resolution']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name} {self.screen_size}"'
@@ -46,6 +50,9 @@ class Keyboard(models.Model):
     class Meta:
         verbose_name = 'Клавиатура'
         verbose_name_plural = 'Клавиатуры'
+        indexes = [
+            models.Index(fields=['price', 'switch_type']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name}'
@@ -73,6 +80,9 @@ class Mouse(models.Model):
     class Meta:
         verbose_name = 'Мышь'
         verbose_name_plural = 'Мыши'
+        indexes = [
+            models.Index(fields=['price', 'dpi']),
+        ]
     
     def __str__(self):
         return f'{self.manufacturer} {self.name}'
