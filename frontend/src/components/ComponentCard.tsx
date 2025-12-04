@@ -1,5 +1,5 @@
 import React from 'react';
-import MagicCard from './MagicCard';
+import { FiCheck } from 'react-icons/fi';
 
 interface ComponentCardProps {
   title: string;
@@ -9,7 +9,6 @@ interface ComponentCardProps {
   specs: Record<string, string | number | boolean>;
   onSelect?: () => void;
   isSelected?: boolean;
-  glowColor?: string;
 }
 
 const ComponentCard: React.FC<ComponentCardProps> = ({
@@ -20,40 +19,47 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
   specs,
   onSelect,
   isSelected,
-  glowColor = '59, 130, 246',
 }) => {
   return (
-    <MagicCard
-      className={`backdrop-blur-xl rounded-2xl shadow-2xl transition-all duration-300 p-6 cursor-pointer border ${
-        isSelected ? 'border-blue-500/50 bg-white/20' : 'border-white/10 bg-white/10 hover:bg-white/15'
+    <div
+      className={`card-accent p-5 cursor-pointer transition-all duration-200 ${
+        isSelected 
+          ? 'border-primary bg-primary/5' 
+          : ''
       }`}
-      glowColor={glowColor}
-      enableParticles={true}
-      enableTilt={true}
       onClick={onSelect}
     >
+      {/* Header */}
       <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
-          <p className="text-sm text-white/60">{manufacturer}</p>
+        <div className="flex-1 pr-4">
+          <h3 className="text-base font-heading font-semibold text-white mb-1 line-clamp-2">
+            {title}
+          </h3>
+          <p className="text-xs text-gray-500">{manufacturer}</p>
         </div>
-        <div className="text-right">
-          <p className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="text-right flex-shrink-0">
+          <p className="text-lg font-heading font-bold text-primary">
             {Number(price).toLocaleString('ru-RU')} ₽
           </p>
         </div>
       </div>
 
+      {/* Image */}
       {image && (
-        <div className="mb-4">
-          <img src={image} alt={title} className="w-full h-48 object-cover rounded-xl" />
+        <div className="mb-4 bg-bg-surface">
+          <img 
+            src={image} 
+            alt={title} 
+            className="w-full h-40 object-cover opacity-90 hover:opacity-100 transition-opacity" 
+          />
         </div>
       )}
 
-      <div className="space-y-2">
+      {/* Specs */}
+      <div className="space-y-2 text-sm">
         {Object.entries(specs).map(([key, value]) => (
-          <div key={key} className="flex justify-between text-sm border-b border-white/5 pb-2">
-            <span className="text-white/60">{key}:</span>
+          <div key={key} className="flex justify-between py-1.5 border-b border-border-dark last:border-0">
+            <span className="text-gray-500">{key}</span>
             <span className="font-medium text-white">
               {typeof value === 'boolean' ? (value ? 'Да' : 'Нет') : value}
             </span>
@@ -61,18 +67,26 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
         ))}
       </div>
 
+      {/* Select Button */}
       {onSelect && (
         <button
-          className={`mt-4 w-full py-3 rounded-xl transition-all duration-300 font-semibold ${
+          className={`mt-4 w-full py-2.5 text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
             isSelected
-              ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/50'
-              : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+              ? 'btn-primary'
+              : 'btn-secondary'
           }`}
         >
-          {isSelected ? '✓ Выбрано' : 'Выбрать'}
+          {isSelected ? (
+            <>
+              {React.createElement(FiCheck as any, {})}
+              <span>Выбрано</span>
+            </>
+          ) : (
+            <span>Выбрать</span>
+          )}
         </button>
       )}
-    </MagicCard>
+    </div>
   );
 };
 

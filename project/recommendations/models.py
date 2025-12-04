@@ -1,7 +1,11 @@
 from django.db import models
 from accounts.models import User
 from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
-from peripherals.models import Monitor, Keyboard, Mouse, Headset, Webcam, Microphone, Desk, Chair
+from peripherals.models import (
+    Monitor, Keyboard, Mouse, Headset, Webcam, Microphone, Desk, Chair,
+    Speakers, Mousepad, MonitorArm, USBHub, DeskLighting, StreamDeck,
+    CaptureCard, Gamepad, Headphonestand
+)
 
 
 class PCConfiguration(models.Model):
@@ -51,6 +55,9 @@ class PCConfiguration(models.Model):
     compatibility_notes = models.TextField(blank=True, verbose_name='Примечания по совместимости')
     
     is_saved = models.BooleanField(default=False, verbose_name='Сохранена')
+    is_public = models.BooleanField(default=False, verbose_name='Публичная сборка')
+    share_code = models.CharField(max_length=32, blank=True, null=True, unique=True, verbose_name='Код для шаринга')
+    
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
     
@@ -131,6 +138,17 @@ class WorkspaceSetup(models.Model):
     desk = models.ForeignKey(Desk, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Стол')
     chair = models.ForeignKey(Chair, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кресло')
     
+    # Дополнительная периферия
+    speakers = models.ForeignKey(Speakers, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Колонки')
+    mousepad = models.ForeignKey(Mousepad, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Коврик')
+    monitor_arm = models.ForeignKey(MonitorArm, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кронштейн')
+    usb_hub = models.ForeignKey(USBHub, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='USB-хаб')
+    lighting = models.ForeignKey(DeskLighting, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Освещение')
+    stream_deck = models.ForeignKey(StreamDeck, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Стрим-пульт')
+    capture_card = models.ForeignKey(CaptureCard, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Карта захвата')
+    gamepad = models.ForeignKey(Gamepad, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Геймпад')
+    headphone_stand = models.ForeignKey(Headphonestand, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Подставка для наушников')
+    
     # Рекомендации
     lighting_recommendation = models.TextField(blank=True, verbose_name='Рекомендации по освещению')
     
@@ -154,26 +172,19 @@ class WorkspaceSetup(models.Model):
     
     def calculate_total_price(self):
         """Рассчитать общую стоимость рабочего места"""
-        total = self.configuration.total_price
+        total = self.configuration.total_price if self.configuration else 0
         
-        if self.monitor_primary:
-            total += self.monitor_primary.price
-        if self.monitor_secondary:
-            total += self.monitor_secondary.price
-        if self.keyboard:
-            total += self.keyboard.price
-        if self.mouse:
-            total += self.mouse.price
-        if self.headset:
-            total += self.headset.price
-        if self.webcam:
-            total += self.webcam.price
-        if self.microphone:
-            total += self.microphone.price
-        if self.desk:
-            total += self.desk.price
-        if self.chair:
-            total += self.chair.price
+        peripherals = [
+            self.monitor_primary, self.monitor_secondary, self.keyboard, self.mouse,
+            self.headset, self.webcam, self.microphone, self.desk, self.chair,
+            self.speakers, self.mousepad, self.monitor_arm, self.usb_hub,
+            self.lighting, self.stream_deck, self.capture_card, self.gamepad,
+            self.headphone_stand
+        ]
+        
+        for peripheral in peripherals:
+            if peripheral and hasattr(peripheral, 'price'):
+                total += peripheral.price
         
         self.total_price = total
         return total

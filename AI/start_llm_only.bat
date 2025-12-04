@@ -54,7 +54,7 @@ goto :after_pip
 
 :pip_install
 echo [INFO] Installing Python deps (requirements.txt)...
-call "%PY_CMD%" -m pip install -r requirements.txt >nul
+call "%PY_CMD%" -m pip install -r requirements.txt
 :after_pip
 
 :: Start FastAPI backend with the chosen model (in this window)

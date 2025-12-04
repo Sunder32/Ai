@@ -1,70 +1,120 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaPhone, FaGithub, FaTelegram, FaDiscord } from 'react-icons/fa';
+import { FiGithub, FiMail, FiMessageSquare } from 'react-icons/fi';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="relative mt-16 backdrop-blur-xl bg-white/5 border-t border-white/10">
-      <div className="container mx-auto px-6 py-12">
+    <footer className="mt-auto border-t border-border-dark bg-bg-card">
+      <div className="container-main py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Brand Section */}
           <div>
-            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              AI PC Configurator
-            </h3>
-            <p className="text-white/70 leading-relaxed">
-              Интеллектуальный подбор конфигураций ПК на основе ваших требований и бюджета.
-            </p>
-            <div className="flex space-x-4 mt-6">
-              <a href="#" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-300">
-                {React.createElement(FaGithub as any, { className: "text-xl" })}
-              </a>
-              <a href="#" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-300">
-                {React.createElement(FaTelegram as any, { className: "text-xl" })}
-              </a>
-              <a href="#" className="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-300">
-                {React.createElement(FaDiscord as any, { className: "text-xl" })}
-              </a>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 flex items-center justify-center bg-primary">
+                <span className="text-sm font-heading font-bold text-white">AI</span>
+              </div>
+              <span className="text-lg font-heading font-semibold text-white">
+                PC Configurator
+              </span>
             </div>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              Интеллектуальный подбор компьютерных конфигураций с использованием ИИ
+            </p>
           </div>
+          
+          {/* Navigation Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-white">Навигация</h3>
-            <ul className="space-y-3">
+            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
+              Навигация
+            </h3>
+            <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-white/70 hover:text-white transition-colors duration-300 flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
-                  <span>Главная</span>
+                <Link 
+                  to="/" 
+                  className="text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  Главная
                 </Link>
               </li>
               <li>
-                <Link to="/configurator" className="text-white/70 hover:text-white transition-colors duration-300 flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-                  <span>Конфигуратор</span>
+                <Link 
+                  to="/configurator" 
+                  className="text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  Конфигуратор
                 </Link>
               </li>
               <li>
-                <Link to="/components" className="text-white/70 hover:text-white transition-colors duration-300 flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
-                  <span>Каталог компонентов</span>
+                <Link 
+                  to="/components" 
+                  className="text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  Компоненты
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/my-configurations" 
+                  className="text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  Мои сборки
                 </Link>
               </li>
             </ul>
           </div>
+          
+          {/* Contact Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-white">Контакты</h3>
-            <div className="space-y-3">
-              <p className="flex items-center space-x-3 text-white/70">
-                {React.createElement(FaEnvelope as any, { className: "text-blue-400" })}
-                <span>support@aipc.ru</span>
-              </p>
-              <p className="flex items-center space-x-3 text-white/70">
-                {React.createElement(FaPhone as any, { className: "text-purple-400" })}
-                <span>+7 (999) 123-45-67</span>
-              </p>
-            </div>
+            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
+              Контакты
+            </h3>
+            <ul className="space-y-3">
+              <li>
+                <a 
+                  href="mailto:support@aipc.ru" 
+                  className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  {React.createElement(FiMail as any, { className: "text-lg" })}
+                  <span>support@aipc.ru</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#" 
+                  className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  {React.createElement(FiMessageSquare as any, { className: "text-lg" })}
+                  <span>Telegram</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#" 
+                  className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
+                >
+                  {React.createElement(FiGithub as any, { className: "text-lg" })}
+                  <span>GitHub</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="border-t border-white/10 mt-8 pt-8 text-center text-white/50">
-          <p>&copy; 2025 AI PC Configurator. Все права защищены.</p>
+        
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-6 border-t border-border-dark">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-gray-600 text-sm">
+              © 2025 AI PC Configurator. Все права защищены.
+            </p>
+            <div className="flex items-center gap-6 text-sm">
+              <Link to="#" className="text-gray-500 hover:text-primary transition-colors duration-200">
+                Политика конфиденциальности
+              </Link>
+              <Link to="#" className="text-gray-500 hover:text-primary transition-colors duration-200">
+                Условия использования
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

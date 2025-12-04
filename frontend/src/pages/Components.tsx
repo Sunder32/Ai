@@ -3,7 +3,7 @@ import { computerAPI } from '../services/api';
 import ComponentCard from '../components/ComponentCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { CPU, GPU, RAM, Storage } from '../types';
-import { FaMicrochip, FaVideo, FaMemory, FaHdd } from 'react-icons/fa';
+import { FiCpu, FiMonitor, FiDatabase, FiHardDrive } from 'react-icons/fi';
 
 const Components: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'cpu' | 'gpu' | 'ram' | 'storage'>('cpu');
@@ -46,41 +46,66 @@ const Components: React.FC = () => {
   }, [loadComponents]);
 
   const tabs = [
-    { id: 'cpu', name: 'Процессоры', Icon: FaMicrochip },
-    { id: 'gpu', name: 'Видеокарты', Icon: FaVideo },
-    { id: 'ram', name: 'Память', Icon: FaMemory },
-    { id: 'storage', name: 'Накопители', Icon: FaHdd },
+    { id: 'cpu', name: 'Процессоры', Icon: FiCpu },
+    { id: 'gpu', name: 'Видеокарты', Icon: FiMonitor },
+    { id: 'ram', name: 'Память', Icon: FiDatabase },
+    { id: 'storage', name: 'Накопители', Icon: FiHardDrive },
   ];
 
+  const getItemCount = () => {
+    switch (activeTab) {
+      case 'cpu': return cpus.length;
+      case 'gpu': return gpus.length;
+      case 'ram': return ram.length;
+      case 'storage': return storage.length;
+      default: return 0;
+    }
+  };
+
   return (
-    <div>
-      <h1 className="text-5xl font-bold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-center">
-        Каталог компонентов
-      </h1>
+    <div className="py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-heading text-3xl md:text-4xl text-white mb-2">
+          Каталог компонентов
+        </h1>
+        <p className="text-gray-500">
+          Выберите категорию для просмотра доступных компонентов
+        </p>
+      </div>
 
       {/* Tabs */}
-      <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-3 mb-8">
-        <div className="flex flex-wrap gap-3">
-          {tabs.map((tab) => {
-            const Icon = tab.Icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 min-w-[140px] py-4 px-5 rounded-xl font-semibold transition-all duration-300 ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105'
-                    : 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white border border-white/10'
-                }`}
-              >
-                <div className="flex items-center justify-center gap-2">
-                  {React.createElement(Icon as any, { className: "text-xl" })}
-                  <span>{tab.name}</span>
-                </div>
-              </button>
-            );
-          })}
+      <div className="flex flex-wrap gap-2 mb-8 p-1 bg-bg-card border border-border-dark">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex-1 min-w-[120px] py-3 px-4 font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                isActive
+                  ? 'bg-primary text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-bg-surface'
+              }`}
+            >
+              {React.createElement(tab.Icon as any, { className: "text-lg" })}
+              <span>{tab.name}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Status bar */}
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-border-dark">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 bg-primary rounded-full" />
+          <span className="text-sm text-gray-500">
+            {loading ? 'Загрузка...' : `${getItemCount()} компонентов`}
+          </span>
         </div>
+        <span className="text-sm text-gray-500">
+          {tabs.find(t => t.id === activeTab)?.name}
+        </span>
       </div>
 
       {/* Components Grid */}
@@ -159,17 +184,18 @@ const Components: React.FC = () => {
         </div>
       )}
 
-      {!loading && (
-        <div>
-          {(activeTab === 'cpu' && cpus.length === 0) ||
-          (activeTab === 'gpu' && gpus.length === 0) ||
-          (activeTab === 'ram' && ram.length === 0) ||
-          (activeTab === 'storage' && storage.length === 0) ? (
-            <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-12 text-center">
-              <p className="text-2xl font-semibold text-white mb-2">Компоненты не найдены</p>
-              <p className="text-white/70">Попробуйте добавить компоненты через админ-панель</p>
-            </div>
-          ) : null}
+      {/* Empty state */}
+      {!loading && getItemCount() === 0 && (
+        <div className="card p-12 text-center">
+          <div className="w-16 h-16 mx-auto flex items-center justify-center bg-bg-surface mb-4">
+            {React.createElement(FiDatabase as any, { className: "text-3xl text-gray-500" })}
+          </div>
+          <h3 className="text-xl font-heading font-semibold text-white mb-2">
+            Нет данных
+          </h3>
+          <p className="text-gray-500">
+            Компоненты в этой категории пока не добавлены
+          </p>
         </div>
       )}
     </div>

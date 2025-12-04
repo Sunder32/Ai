@@ -14,6 +14,19 @@ import type {
   Keyboard,
   Mouse,
   Headset,
+  Webcam,
+  Microphone,
+  Desk,
+  Chair,
+  Speakers,
+  Mousepad,
+  MonitorArm,
+  USBHub,
+  DeskLighting,
+  StreamDeck,
+  CaptureCard,
+  Gamepad,
+  HeadphoneStand,
   PCConfiguration,
   ConfigurationRequest,
   PaginatedResponse,
@@ -114,6 +127,45 @@ export const peripheralAPI = {
   
   getHeadsets: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Headset>>('/peripherals/headsets/', { params }),
+  
+  getWebcams: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Webcam>>('/peripherals/webcams/', { params }),
+  
+  getMicrophones: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Microphone>>('/peripherals/microphones/', { params }),
+  
+  getDesks: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Desk>>('/peripherals/desks/', { params }),
+  
+  getChairs: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Chair>>('/peripherals/chairs/', { params }),
+  
+  getSpeakers: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Speakers>>('/peripherals/speakers/', { params }),
+  
+  getMousepads: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Mousepad>>('/peripherals/mousepads/', { params }),
+  
+  getMonitorArms: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<MonitorArm>>('/peripherals/monitor-arms/', { params }),
+  
+  getUSBHubs: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<USBHub>>('/peripherals/usb-hubs/', { params }),
+  
+  getLighting: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<DeskLighting>>('/peripherals/lighting/', { params }),
+  
+  getStreamDecks: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<StreamDeck>>('/peripherals/stream-decks/', { params }),
+  
+  getCaptureCards: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<CaptureCard>>('/peripherals/capture-cards/', { params }),
+  
+  getGamepads: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<Gamepad>>('/peripherals/gamepads/', { params }),
+  
+  getHeadphoneStands: (params?: Record<string, any>) =>
+    api.get<PaginatedResponse<HeadphoneStand>>('/peripherals/headphone-stands/', { params }),
 };
 
 // API методы для конфигураций
@@ -143,7 +195,58 @@ export const configurationAPI = {
   
   deleteConfiguration: (id: number) =>
     api.delete(`/recommendations/configurations/${id}/`),
+  
+  // Новые методы для Build Yourself
+  saveBuild: (data: BuildRequest) =>
+    api.post<PCConfiguration & { share_url?: string }>('/recommendations/configurations/save_build/', data),
+  
+  getPublicBuild: (shareCode: string) =>
+    api.get<PCConfiguration>(`/recommendations/configurations/public/${shareCode}/`),
+  
+  getMyBuilds: () =>
+    api.get<PCConfiguration[]>('/recommendations/configurations/my_builds/'),
+  
+  compareBuilds: (ids: number[]) =>
+    api.get<PCConfiguration[]>('/recommendations/configurations/compare/', { 
+      params: { ids: ids.join(',') },
+      paramsSerializer: () => ids.map(id => `ids=${id}`).join('&')
+    }),
 };
+
+// Тип запроса для сохранения сборки
+export interface BuildRequest {
+  name: string;
+  is_public?: boolean;
+  // PC компоненты
+  cpu?: number | null;
+  gpu?: number | null;
+  motherboard?: number | null;
+  ram?: number | null;
+  storage_primary?: number | null;
+  storage_secondary?: number | null;
+  psu?: number | null;
+  case?: number | null;
+  cooling?: number | null;
+  // Периферия
+  monitor_primary?: number | null;
+  monitor_secondary?: number | null;
+  keyboard?: number | null;
+  mouse?: number | null;
+  headset?: number | null;
+  webcam?: number | null;
+  microphone?: number | null;
+  desk?: number | null;
+  chair?: number | null;
+  speakers?: number | null;
+  mousepad?: number | null;
+  monitor_arm?: number | null;
+  usb_hub?: number | null;
+  lighting?: number | null;
+  stream_deck?: number | null;
+  capture_card?: number | null;
+  gamepad?: number | null;
+  headphone_stand?: number | null;
+}
 
 // API методы для пользователей
 export const userAPI = {
@@ -170,7 +273,7 @@ export const authAPI = {
   login: (data: { username: string; password: string }) =>
     api.post<{ token: string; user: User }>('/accounts/login/', data),
   
-  register: (data: { username: string; email: string; password: string }) =>
+  register: (data: { username: string; email: string; password: string; password2: string }) =>
     api.post<{ token: string; user: User }>('/accounts/register/', data),
   
   logout: () => api.post('/accounts/logout/'),

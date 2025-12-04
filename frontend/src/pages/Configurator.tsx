@@ -1,18 +1,200 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { configurationAPI } from '../services/api';
 import type { ConfigurationRequest } from '../types';
 import LoadingSpinner from '../components/LoadingSpinner';
-import Dock from '../components/Dock';
-import { FaRocket, FaUser, FaDollarSign, FaCheckCircle, FaDesktop, FaCouch, FaKeyboard, FaMicrochip, FaVideo, FaMemory, FaHdd, FaSnowflake, FaBoxOpen } from 'react-icons/fa';
+import { FiCpu, FiMonitor, FiSettings, FiDollarSign, FiCheck, FiArrowRight, FiCode, FiEdit3, FiBriefcase, FiBookOpen, FiVideo } from 'react-icons/fi';
 
 type Section = 'pc' | 'workspace' | 'peripherals';
+type UserType = 'gamer' | 'programmer' | 'designer' | 'office' | 'student' | 'content_creator';
+
+// Пресеты для разных профилей пользователей
+const profilePresets: Record<UserType, Partial<ConfigurationRequest>> = {
+  gamer: {
+    user_type: 'gamer',
+    priority: 'performance',
+    min_budget: 80000,
+    max_budget: 150000,
+    gaming: true,
+    streaming: false,
+    video_editing: false,
+    multitasking: true,
+    work_with_4k: false,
+    vr_support: true,
+    min_cpu_cores: 6,
+    min_gpu_vram: 8,
+    min_ram_capacity: 16,
+    min_storage_capacity: 1000,
+    storage_type_preference: 'nvme',
+    rgb_preference: true,
+    overclocking_support: true,
+    monitor_min_refresh_rate: 144,
+    monitor_min_resolution: '1440p',
+    mouse_min_dpi: 16000,
+    headset_wireless: true,
+  },
+  programmer: {
+    user_type: 'programmer',
+    priority: 'performance',
+    min_budget: 60000,
+    max_budget: 120000,
+    gaming: false,
+    streaming: false,
+    video_editing: false,
+    multitasking: true,
+    work_with_4k: true,
+    vr_support: false,
+    min_cpu_cores: 8,
+    min_gpu_vram: 4,
+    min_ram_capacity: 32,
+    min_storage_capacity: 1000,
+    storage_type_preference: 'nvme',
+    rgb_preference: false,
+    overclocking_support: false,
+    monitor_min_refresh_rate: 60,
+    monitor_min_resolution: '1440p',
+    monitor_size_preference: 27,
+    keyboard_type_preference: 'mechanical',
+    chair_ergonomic: true,
+    chair_lumbar_support: true,
+  },
+  designer: {
+    user_type: 'designer',
+    priority: 'performance',
+    min_budget: 100000,
+    max_budget: 200000,
+    gaming: false,
+    streaming: false,
+    video_editing: true,
+    multitasking: true,
+    work_with_4k: true,
+    vr_support: false,
+    min_cpu_cores: 8,
+    min_gpu_vram: 8,
+    min_ram_capacity: 32,
+    min_storage_capacity: 2000,
+    storage_type_preference: 'nvme',
+    rgb_preference: false,
+    overclocking_support: false,
+    monitor_min_refresh_rate: 60,
+    monitor_min_resolution: '4k',
+    monitor_size_preference: 27,
+    monitor_panel_type: 'ips',
+    keyboard_type_preference: 'mechanical',
+  },
+  office: {
+    user_type: 'office',
+    priority: 'silence',
+    min_budget: 30000,
+    max_budget: 60000,
+    gaming: false,
+    streaming: false,
+    video_editing: false,
+    multitasking: true,
+    work_with_4k: false,
+    vr_support: false,
+    min_cpu_cores: 4,
+    min_gpu_vram: 2,
+    min_ram_capacity: 8,
+    min_storage_capacity: 256,
+    storage_type_preference: 'sata',
+    rgb_preference: false,
+    overclocking_support: false,
+    monitor_min_refresh_rate: 60,
+    monitor_min_resolution: '1080p',
+    monitor_size_preference: 24,
+    case_size_preference: 'mini',
+  },
+  student: {
+    user_type: 'student',
+    priority: 'performance',
+    min_budget: 40000,
+    max_budget: 80000,
+    gaming: true,
+    streaming: false,
+    video_editing: false,
+    multitasking: true,
+    work_with_4k: false,
+    vr_support: false,
+    min_cpu_cores: 6,
+    min_gpu_vram: 6,
+    min_ram_capacity: 16,
+    min_storage_capacity: 512,
+    storage_type_preference: 'nvme',
+    rgb_preference: false,
+    overclocking_support: false,
+    monitor_min_refresh_rate: 75,
+    monitor_min_resolution: '1080p',
+    monitor_size_preference: 24,
+  },
+  content_creator: {
+    user_type: 'content_creator',
+    priority: 'performance',
+    min_budget: 120000,
+    max_budget: 250000,
+    gaming: true,
+    streaming: true,
+    video_editing: true,
+    multitasking: true,
+    work_with_4k: true,
+    vr_support: false,
+    min_cpu_cores: 12,
+    min_gpu_vram: 12,
+    min_ram_capacity: 64,
+    min_storage_capacity: 2000,
+    storage_type_preference: 'nvme',
+    rgb_preference: true,
+    overclocking_support: true,
+    monitor_min_refresh_rate: 144,
+    monitor_min_resolution: '1440p',
+    monitor_size_preference: 27,
+    need_webcam: true,
+    need_microphone: true,
+    webcam_min_resolution: '4k',
+  },
+};
+
+// Иконки и названия профилей
+const profileInfo: Record<UserType, { icon: any; label: string; description: string }> = {
+  gamer: { 
+    icon: FiMonitor, 
+    label: 'Геймер',
+    description: 'Высокая производительность в играх, RGB подсветка, VR поддержка'
+  },
+  programmer: { 
+    icon: FiCode, 
+    label: 'Разработчик',
+    description: 'Много ядер, большой объем RAM, качественный монитор'
+  },
+  designer: { 
+    icon: FiEdit3, 
+    label: 'Дизайнер',
+    description: 'Мощная графика, 4K монитор с IPS матрицей, цветопередача'
+  },
+  office: { 
+    icon: FiBriefcase, 
+    label: 'Офис',
+    description: 'Тихая работа, надежность, компактные размеры'
+  },
+  student: { 
+    icon: FiBookOpen, 
+    label: 'Студент',
+    description: 'Баланс цены и производительности, универсальность'
+  },
+  content_creator: { 
+    icon: FiVideo, 
+    label: 'Стример',
+    description: 'Стриминг, видеомонтаж, качественный микрофон и камера'
+  },
+};
 
 const Configurator: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<Section>('pc');
+  const [selectedProfile, setSelectedProfile] = useState<UserType | null>(null);
 
   const [formData, setFormData] = useState<ConfigurationRequest>({
     user_type: 'gamer',
@@ -29,8 +211,6 @@ const Configurator: React.FC = () => {
     include_workspace: false,
     use_ai: false,
     ai_generation_mode: 'database',
-
-    // Расширенные параметры PC
     preferred_cpu_manufacturer: 'any',
     preferred_gpu_manufacturer: 'any',
     min_cpu_cores: 4,
@@ -42,8 +222,6 @@ const Configurator: React.FC = () => {
     rgb_preference: false,
     case_size_preference: 'any',
     overclocking_support: false,
-
-    // Настройки периферии
     peripheral_budget_percent: 30,
     need_monitor: true,
     need_keyboard: true,
@@ -53,8 +231,6 @@ const Configurator: React.FC = () => {
     need_microphone: false,
     need_desk: true,
     need_chair: true,
-
-    // Расширенные параметры периферии
     monitor_min_refresh_rate: 60,
     monitor_min_resolution: '1080p',
     monitor_size_preference: 24,
@@ -69,8 +245,6 @@ const Configurator: React.FC = () => {
     headset_noise_cancellation: false,
     webcam_min_resolution: 'any',
     microphone_type: 'any',
-
-    // Расширенные параметры workspace
     desk_min_width: 120,
     desk_min_depth: 60,
     desk_height_adjustable: false,
@@ -88,12 +262,31 @@ const Configurator: React.FC = () => {
     cable_management_accessories: true,
   });
 
+  // Применение пресета профиля
+  const applyProfile = (profileType: UserType) => {
+    const preset = profilePresets[profileType];
+    setFormData(prev => ({
+      ...prev,
+      ...preset,
+    }));
+    setSelectedProfile(profileType);
+    // Обновляем URL
+    setSearchParams({ type: profileType });
+  };
+
+  // Читаем параметр type из URL при загрузке
+  useEffect(() => {
+    const typeParam = searchParams.get('type') as UserType | null;
+    if (typeParam && profilePresets[typeParam]) {
+      applyProfile(typeParam);
+    }
+  }, []);
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : type === 'number' ? Number(value) : value,
@@ -106,75 +299,149 @@ const Configurator: React.FC = () => {
     setError(null);
 
     try {
-      console.log('Sending configuration request...', formData);
       const response = await configurationAPI.generateConfiguration(formData);
-      console.log('Configuration response:', response);
       const config = response.data as any;
-
-      // Получаем ID из ответа
       const configId = config.id;
       
       if (configId) {
-        console.log('Navigating to configuration:', configId);
-        // Небольшая задержка для гарантии сохранения в БД
         setTimeout(() => {
           navigate(`/configuration/${configId}`);
         }, 100);
       } else {
-        console.error('No ID in response:', config);
-        setError('Конфигурация создана, но не удалось получить ID. Проверьте список конфигураций.');
+        setError('Конфигурация создана, но не удалось получить ID.');
       }
     } catch (err: any) {
-      console.error('Configuration error:', err);
-      
-      // Более детальная обработка ошибок
       let errorMessage = 'Ошибка при генерации конфигурации';
-      
-      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
-        errorMessage = 'Превышено время ожидания. AI генерация может занять до 5 минут. Попробуйте еще раз.';
+      if (err.code === 'ECONNABORTED') {
+        errorMessage = 'Превышено время ожидания. Попробуйте еще раз.';
       } else if (err.response?.data?.error) {
         errorMessage = err.response.data.error;
-      } else if (err.response?.data?.message) {
-        errorMessage = err.response.data.message;
-      } else if (err.message) {
-        errorMessage = err.message;
       }
-      
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const dockItems = [
-    {
-      icon: React.createElement(FaDesktop as any, { className: "text-2xl" }),
-      label: 'Компоненты ПК',
-      onClick: () => setActiveSection('pc'),
-      active: activeSection === 'pc',
-    },
-    {
-      icon: React.createElement(FaCouch as any, { className: "text-2xl" }),
-      label: 'Рабочее место',
-      onClick: () => setActiveSection('workspace'),
-      active: activeSection === 'workspace',
-    },
-    {
-      icon: React.createElement(FaKeyboard as any, { className: "text-2xl" }),
-      label: 'Периферия',
-      onClick: () => setActiveSection('peripherals'),
-      active: activeSection === 'peripherals',
-    },
+  const sections = [
+    { id: 'pc', name: 'Компоненты', icon: FiCpu },
+    { id: 'workspace', name: 'Рабочее место', icon: FiSettings },
+    { id: 'peripherals', name: 'Периферия', icon: FiMonitor },
   ];
 
+  if (loading) {
+    return (
+      <div className="py-20">
+        <LoadingSpinner text="Генерация конфигурации..." size="lg" />
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-4xl mx-auto pb-24">
-      <h1 className="text-5xl font-bold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 text-center">
-        Конфигуратор ПК
-      </h1>
+    <div className="max-w-4xl mx-auto py-8">
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h1 className="text-heading text-3xl md:text-4xl text-white mb-3">
+          Конфигуратор ПК
+        </h1>
+        <p className="text-gray-500">
+          Настройте параметры и получите оптимальную конфигурацию
+        </p>
+      </div>
+
+      {/* Profile Cards - Quick Selection */}
+      <div className="mb-8">
+        <div className="text-center mb-4">
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+            Быстрый выбор профиля
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {(Object.keys(profilePresets) as UserType[]).map((profileKey) => {
+            const profile = profileInfo[profileKey];
+            const isSelected = selectedProfile === profileKey;
+            return (
+              <button
+                key={profileKey}
+                type="button"
+                onClick={() => applyProfile(profileKey)}
+                className={`group relative p-4 text-center transition-all duration-300 border-2 ${
+                  isSelected
+                    ? 'bg-primary/10 border-primary shadow-lg shadow-primary/20'
+                    : 'bg-bg-card border-border-dark hover:border-primary/50 hover:bg-bg-surface'
+                }`}
+              >
+                {/* Selected indicator */}
+                {isSelected && (
+                  <div className="absolute top-2 right-2">
+                    {React.createElement(FiCheck as any, { className: "w-4 h-4 text-primary" })}
+                  </div>
+                )}
+                
+                <div className={`w-12 h-12 mx-auto flex items-center justify-center mb-3 transition-colors duration-300 ${
+                  isSelected 
+                    ? 'bg-primary/20' 
+                    : 'bg-bg-surface group-hover:bg-primary/10'
+                }`}>
+                  {React.createElement(profile.icon as any, { 
+                    className: `text-xl ${isSelected ? 'text-primary' : 'text-gray-400 group-hover:text-primary'} transition-colors duration-300` 
+                  })}
+                </div>
+                
+                <span className={`text-sm font-medium transition-colors duration-300 ${
+                  isSelected ? 'text-primary' : 'text-gray-400 group-hover:text-white'
+                }`}>
+                  {profile.label}
+                </span>
+
+                {/* Tooltip on hover */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 border border-gray-700 
+                  text-xs text-gray-300 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                  transition-all duration-200 whitespace-nowrap z-10 pointer-events-none shadow-lg">
+                  {profile.description}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        
+        {/* Selected profile info */}
+        {selectedProfile && (
+          <div className="mt-4 p-4 bg-primary/5 border border-primary/20 flex items-center gap-3 animate-fade-in">
+            {React.createElement(profileInfo[selectedProfile].icon as any, { className: "text-xl text-primary flex-shrink-0" })}
+            <div>
+              <span className="text-primary font-medium">{profileInfo[selectedProfile].label}:</span>
+              <span className="text-gray-400 ml-2 text-sm">{profileInfo[selectedProfile].description}</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Section Tabs */}
+      <div className="flex gap-2 mb-8 p-1 bg-bg-card border border-border-dark">
+        {sections.map((section) => {
+          const isActive = activeSection === section.id;
+          return (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => setActiveSection(section.id as Section)}
+              className={`flex-1 py-3 px-4 text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                isActive
+                  ? 'bg-primary text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-bg-surface'
+              }`}
+            >
+              {React.createElement(section.icon as any, { className: "text-lg" })}
+              <span className="hidden sm:inline">{section.name}</span>
+            </button>
+          );
+        })}
+      </div>
 
       {error && (
-        <div className="backdrop-blur-xl bg-red-500/10 border border-red-500/30 text-red-300 px-6 py-4 rounded-2xl mb-6">
+        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
           {error}
         </div>
       )}
@@ -182,63 +449,58 @@ const Configurator: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* PC Section */}
         {activeSection === 'pc' && (
-          <div className="space-y-6 animate-fadeIn">
-            {/* Тип пользователя */}
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/5 to-blue-500/5 rounded-2xl border border-blue-500/20 p-8 hover:border-blue-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
-              <div className="flex items-center gap-3 mb-6">
-                {React.createElement(FaUser as any, { className: "text-3xl text-blue-400" })}
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Профиль пользователя</h2>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-white/90 font-medium mb-3">
-                  Для каких задач нужен компьютер?
-                </label>
-                <select
-                  name="user_type"
-                  value={formData.user_type}
-                  onChange={handleInputChange}
-                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
-                >
-                  <option value="gamer" className="bg-gray-900">Геймер</option>
-                  <option value="designer" className="bg-gray-900">Дизайнер</option>
-                  <option value="programmer" className="bg-gray-900">Программист</option>
-                  <option value="content_creator" className="bg-gray-900">Контент-криэйтор</option>
-                  <option value="office" className="bg-gray-900">Офисный работник</option>
-                  <option value="student" className="bg-gray-900">Студент</option>
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-white/90 font-medium mb-3">
-                  Приоритет
-                </label>
-                <select
-                  name="priority"
-                  value={formData.priority}
-                  onChange={handleInputChange}
-                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
-                >
-                  <option value="performance" className="bg-gray-900">Производительность</option>
-                  <option value="silence" className="bg-gray-900">Тишина работы</option>
-                  <option value="compactness" className="bg-gray-900">Компактность</option>
-                  <option value="aesthetics" className="bg-gray-900">Эстетика</option>
-                </select>
+          <div className="space-y-6 animate-fade-in">
+            {/* Profile */}
+            <div className="card p-6">
+              <h2 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+                {React.createElement(FiSettings as any, { className: "text-primary" })}
+                Профиль использования
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="label">Тип пользователя</label>
+                  <select
+                    name="user_type"
+                    value={formData.user_type}
+                    onChange={handleInputChange}
+                    className="input"
+                  >
+                    <option value="gamer">Геймер</option>
+                    <option value="designer">Дизайнер</option>
+                    <option value="programmer">Программист</option>
+                    <option value="content_creator">Контент-криэйтор</option>
+                    <option value="office">Офис</option>
+                    <option value="student">Студент</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="label">Приоритет</label>
+                  <select
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleInputChange}
+                    className="input"
+                  >
+                    <option value="performance">Производительность</option>
+                    <option value="silence">Тишина работы</option>
+                    <option value="compactness">Компактность</option>
+                    <option value="aesthetics">Эстетика</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            {/* Бюджет */}
-            <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                {React.createElement(FaDollarSign as any, { className: "text-2xl text-green-400" })}
-                <h2 className="text-2xl font-semibold text-white">Бюджет</h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Budget */}
+            <div className="card p-6">
+              <h2 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+                {React.createElement(FiDollarSign as any, { className: "text-primary" })}
+                Бюджет
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-white/90 font-medium mb-3">
-                    Минимальный бюджет (₽)
-                  </label>
+                  <label className="label">Минимум (₽)</label>
                   <input
                     type="number"
                     name="min_budget"
@@ -246,13 +508,11 @@ const Configurator: React.FC = () => {
                     onChange={handleInputChange}
                     min="10000"
                     step="1000"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
+                    className="input"
                   />
                 </div>
                 <div>
-                  <label className="block text-white/90 font-medium mb-3">
-                    Максимальный бюджет (₽)
-                  </label>
+                  <label className="label">Максимум (₽)</label>
                   <input
                     type="number"
                     name="max_budget"
@@ -260,121 +520,71 @@ const Configurator: React.FC = () => {
                     onChange={handleInputChange}
                     min="20000"
                     step="1000"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
+                    className="input"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Специфические требования */}
-            <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                {React.createElement(FaCheckCircle as any, { className: "text-2xl text-purple-400" })}
-                <h2 className="text-2xl font-semibold text-white">Специфические требования</h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name="multitasking"
-                    checked={formData.multitasking}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                  />
-                  <span className="text-white/90 group-hover:text-white transition-colors">Многозадачность</span>
-                </label>
-
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name="work_with_4k"
-                    checked={formData.work_with_4k}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                  />
-                  <span className="text-white/90 group-hover:text-white transition-colors">Работа с 4K</span>
-                </label>
-
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name="vr_support"
-                    checked={formData.vr_support}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                  />
-                  <span className="text-white/90 group-hover:text-white transition-colors">Поддержка VR</span>
-                </label>
-
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name="video_editing"
-                    checked={formData.video_editing}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                  />
-                  <span className="text-white/90 group-hover:text-white transition-colors">Видеомонтаж</span>
-                </label>
-
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name="gaming"
-                    checked={formData.gaming}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                  />
-                  <span className="text-white/90 group-hover:text-white transition-colors">Гейминг</span>
-                </label>
-
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name="streaming"
-                    checked={formData.streaming}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                  />
-                  <span className="text-white/90 group-hover:text-white transition-colors">Стриминг</span>
-                </label>
+            {/* Requirements */}
+            <div className="card p-6">
+              <h2 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+                {React.createElement(FiCheck as any, { className: "text-primary" })}
+                Требования
+              </h2>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {[
+                  { name: 'multitasking', label: 'Многозадачность' },
+                  { name: 'work_with_4k', label: 'Работа с 4K' },
+                  { name: 'vr_support', label: 'Поддержка VR' },
+                  { name: 'video_editing', label: 'Видеомонтаж' },
+                  { name: 'gaming', label: 'Гейминг' },
+                  { name: 'streaming', label: 'Стриминг' },
+                ].map((item) => (
+                  <label
+                    key={item.name}
+                    className="flex items-center gap-2 p-3 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      name={item.name}
+                      checked={(formData as any)[item.name]}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 accent-primary"
+                    />
+                    <span className="text-sm text-gray-400">{item.label}</span>
+                  </label>
+                ))}
               </div>
             </div>
 
-            {/* Расширенные параметры PC */}
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/5 to-purple-500/5 rounded-2xl border border-purple-500/20 p-8 hover:border-purple-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
-              <div className="flex items-center gap-3 mb-6">
-                {React.createElement(FaMicrochip as any, { className: "text-3xl text-purple-400" })}
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Расширенные параметры</h2>
-              </div>
-
+            {/* Advanced Settings */}
+            <div className="card p-6">
+              <h2 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+                {React.createElement(FiCpu as any, { className: "text-primary" })}
+                Расширенные параметры
+              </h2>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Процессор */}
-                <div className="space-y-4 p-6 bg-purple-500/5 border border-purple-500/20 rounded-xl">
-                  <h3 className="text-lg font-semibold text-purple-300 flex items-center gap-2">
-                    {React.createElement(FaMicrochip as any, { className: "text-xl" })}
-                    Процессор
-                  </h3>
-
+                {/* CPU */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">Процессор</h3>
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">Производитель</label>
+                    <label className="label">Производитель</label>
                     <select
                       name="preferred_cpu_manufacturer"
                       value={formData.preferred_cpu_manufacturer}
                       onChange={handleInputChange}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
+                      className="input"
                     >
-                      <option value="any" className="bg-gray-900">Любой</option>
-                      <option value="intel" className="bg-gray-900">Intel</option>
-                      <option value="amd" className="bg-gray-900">AMD</option>
+                      <option value="any">Любой</option>
+                      <option value="intel">Intel</option>
+                      <option value="amd">AMD</option>
                     </select>
                   </div>
-
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">
-                      Минимум ядер: {formData.min_cpu_cores}
-                    </label>
+                    <label className="label">Минимум ядер: {formData.min_cpu_cores}</label>
                     <input
                       type="range"
                       name="min_cpu_cores"
@@ -383,53 +593,29 @@ const Configurator: React.FC = () => {
                       min="2"
                       max="32"
                       step="2"
-                      className="w-full h-2 bg-purple-500/20 rounded-lg appearance-none cursor-pointer slider-purple"
+                      className="w-full accent-primary"
                     />
-                    <div className="flex justify-between text-xs text-white/60 mt-1">
-                      <span>2</span>
-                      <span>8</span>
-                      <span>16</span>
-                      <span>32</span>
-                    </div>
                   </div>
-
-                  <label className="flex items-center space-x-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      name="overclocking_support"
-                      checked={formData.overclocking_support}
-                      onChange={handleInputChange}
-                      className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
-                    />
-                    <span className="text-white/90 group-hover:text-white transition-colors">Разгон (OC)</span>
-                  </label>
                 </div>
 
-                {/* Видеокарта */}
-                <div className="space-y-4 p-6 bg-green-500/5 border border-green-500/20 rounded-xl">
-                  <h3 className="text-lg font-semibold text-green-300 flex items-center gap-2">
-                    {React.createElement(FaVideo as any, { className: "text-xl" })}
-                    Видеокарта
-                  </h3>
-
+                {/* GPU */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">Видеокарта</h3>
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">Производитель</label>
+                    <label className="label">Производитель</label>
                     <select
                       name="preferred_gpu_manufacturer"
                       value={formData.preferred_gpu_manufacturer}
                       onChange={handleInputChange}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-400 transition-all backdrop-blur-sm"
+                      className="input"
                     >
-                      <option value="any" className="bg-gray-900">Любой</option>
-                      <option value="nvidia" className="bg-gray-900">NVIDIA</option>
-                      <option value="amd" className="bg-gray-900">AMD</option>
+                      <option value="any">Любой</option>
+                      <option value="nvidia">NVIDIA</option>
+                      <option value="amd">AMD</option>
                     </select>
                   </div>
-
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">
-                      Минимум VRAM: {formData.min_gpu_vram} GB
-                    </label>
+                    <label className="label">Минимум VRAM: {formData.min_gpu_vram} GB</label>
                     <input
                       type="range"
                       name="min_gpu_vram"
@@ -438,28 +624,16 @@ const Configurator: React.FC = () => {
                       min="2"
                       max="24"
                       step="2"
-                      className="w-full h-2 bg-green-500/20 rounded-lg appearance-none cursor-pointer slider-green"
+                      className="w-full accent-primary"
                     />
-                    <div className="flex justify-between text-xs text-white/60 mt-1">
-                      <span>2 GB</span>
-                      <span>8 GB</span>
-                      <span>16 GB</span>
-                      <span>24 GB</span>
-                    </div>
                   </div>
                 </div>
 
-                {/* Память */}
-                <div className="space-y-4 p-6 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
-                  <h3 className="text-lg font-semibold text-yellow-300 flex items-center gap-2">
-                    {React.createElement(FaMemory as any, { className: "text-xl" })}
-                    Память
-                  </h3>
-
+                {/* RAM */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">Память</h3>
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">
-                      Минимум RAM: {formData.min_ram_capacity} GB
-                    </label>
+                    <label className="label">Минимум RAM: {formData.min_ram_capacity} GB</label>
                     <input
                       type="range"
                       name="min_ram_capacity"
@@ -468,43 +642,30 @@ const Configurator: React.FC = () => {
                       min="8"
                       max="128"
                       step="8"
-                      className="w-full h-2 bg-yellow-500/20 rounded-lg appearance-none cursor-pointer slider-yellow"
+                      className="w-full accent-primary"
                     />
-                    <div className="flex justify-between text-xs text-white/60 mt-1">
-                      <span>8 GB</span>
-                      <span>32 GB</span>
-                      <span>64 GB</span>
-                      <span>128 GB</span>
-                    </div>
                   </div>
                 </div>
 
-                {/* Накопитель */}
-                <div className="space-y-4 p-6 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
-                  <h3 className="text-lg font-semibold text-cyan-300 flex items-center gap-2">
-                    {React.createElement(FaHdd as any, { className: "text-xl" })}
-                    Накопитель
-                  </h3>
-
+                {/* Storage */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">Накопитель</h3>
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">Тип накопителя</label>
+                    <label className="label">Тип</label>
                     <select
                       name="storage_type_preference"
                       value={formData.storage_type_preference}
                       onChange={handleInputChange}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
+                      className="input"
                     >
-                      <option value="any" className="bg-gray-900">Любой</option>
-                      <option value="nvme" className="bg-gray-900">NVMe SSD (быстрый)</option>
-                      <option value="sata" className="bg-gray-900">SATA SSD</option>
-                      <option value="hdd" className="bg-gray-900">HDD (дешевый)</option>
+                      <option value="any">Любой</option>
+                      <option value="nvme">NVMe SSD</option>
+                      <option value="sata">SATA SSD</option>
+                      <option value="hdd">HDD</option>
                     </select>
                   </div>
-
                   <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">
-                      Минимум: {formData.min_storage_capacity} GB
-                    </label>
+                    <label className="label">Минимум: {formData.min_storage_capacity} GB</label>
                     <input
                       type="range"
                       name="min_storage_capacity"
@@ -513,957 +674,252 @@ const Configurator: React.FC = () => {
                       min="256"
                       max="4096"
                       step="256"
-                      className="w-full h-2 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
+                      className="w-full accent-primary"
                     />
-                    <div className="flex justify-between text-xs text-white/60 mt-1">
-                      <span>256 GB</span>
-                      <span>1 TB</span>
-                      <span>2 TB</span>
-                      <span>4 TB</span>
-                    </div>
                   </div>
-                </div>
-
-                {/* Охлаждение и корпус */}
-                <div className="space-y-4 p-6 bg-blue-500/5 border border-blue-500/20 rounded-xl">
-                  <h3 className="text-lg font-semibold text-blue-300 flex items-center gap-2">
-                    {React.createElement(FaSnowflake as any, { className: "text-xl" })}
-                    Охлаждение
-                  </h3>
-
-                  <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">Тип охлаждения</label>
-                    <select
-                      name="cooling_preference"
-                      value={formData.cooling_preference}
-                      onChange={handleInputChange}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
-                    >
-                      <option value="any" className="bg-gray-900">Любое</option>
-                      <option value="air" className="bg-gray-900">Воздушное</option>
-                      <option value="aio" className="bg-gray-900">Водяное (AIO)</option>
-                      <option value="custom" className="bg-gray-900">Кастомное СВО</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Корпус */}
-                <div className="space-y-4 p-6 bg-pink-500/5 border border-pink-500/20 rounded-xl">
-                  <h3 className="text-lg font-semibold text-pink-300 flex items-center gap-2">
-                    {React.createElement(FaBoxOpen as any, { className: "text-xl" })}
-                    Корпус
-                  </h3>
-
-                  <div>
-                    <label className="block text-white/90 font-medium mb-2 text-sm">Размер</label>
-                    <select
-                      name="case_size_preference"
-                      value={formData.case_size_preference}
-                      onChange={handleInputChange}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400 transition-all backdrop-blur-sm"
-                    >
-                      <option value="any" className="bg-gray-900">Любой</option>
-                      <option value="mini" className="bg-gray-900">Mini-ITX (компактный)</option>
-                      <option value="mid" className="bg-gray-900">Mid-Tower (стандарт)</option>
-                      <option value="full" className="bg-gray-900">Full-Tower (большой)</option>
-                    </select>
-                  </div>
-
-                  <label className="flex items-center space-x-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      name="rgb_preference"
-                      checked={formData.rgb_preference}
-                      onChange={handleInputChange}
-                      className="w-5 h-5 text-pink-600 rounded border-white/30 bg-white/10 focus:ring-pink-500/50"
-                    />
-                    <span className="text-white/90 group-hover:text-white transition-colors">RGB подсветка</span>
-                  </label>
                 </div>
               </div>
-            </div>
-
-            {/* Navigation Hint */}
-            <div className="text-center text-white/60 text-sm">
-              Переключайтесь между секциями внизу экрана ↓
             </div>
           </div>
         )}
 
         {/* Workspace Section */}
         {activeSection === 'workspace' && (
-          <div className="space-y-6 animate-fadeIn">
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/5 to-emerald-500/5 rounded-2xl border border-emerald-500/20 p-8 hover:border-emerald-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10">
-              <div className="flex items-center gap-3 mb-6">
-                {React.createElement(FaCouch as any, { className: "text-3xl text-emerald-400" })}
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Рабочее место</h2>
-              </div>
+          <div className="space-y-6 animate-fade-in">
+            <div className="card p-6">
+              <h2 className="text-lg font-heading font-semibold text-white mb-4">
+                Настройки рабочего места
+              </h2>
+              
+              <label className="flex items-center gap-3 p-4 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors mb-4">
+                <input
+                  type="checkbox"
+                  name="include_workspace"
+                  checked={formData.include_workspace}
+                  onChange={handleInputChange}
+                  className="w-5 h-5 accent-primary"
+                />
+                <div>
+                  <span className="text-white font-medium">Включить рабочее место</span>
+                  <p className="text-sm text-gray-500">Добавить стол и кресло в конфигурацию</p>
+                </div>
+              </label>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Стол */}
-                <div className="space-y-4 p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border-2 border-emerald-500/30 rounded-xl">
-                  <label className="flex items-center space-x-3 cursor-pointer group">
+              {formData.include_workspace && (
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                  <label className="flex items-center gap-2 p-3 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors">
                     <input
                       type="checkbox"
                       name="need_desk"
                       checked={formData.need_desk}
                       onChange={handleInputChange}
-                      className="w-6 h-6 text-emerald-600 rounded border-white/30 bg-white/10 focus:ring-emerald-500/50"
+                      className="w-4 h-4 accent-primary"
                     />
-                    <span className="text-xl font-bold text-emerald-200 group-hover:text-emerald-100 transition-colors">🪑 Стол</span>
+                    <span className="text-sm text-gray-400">Стол</span>
                   </label>
-
-                  {formData.need_desk && (
-                    <div className="space-y-4 ml-2 mt-4 pt-4 border-t border-emerald-500/20">
-                      <div>
-                        <label className="block text-white/90 font-semibold mb-3">
-                          Минимальная ширина: {formData.desk_min_width} см
-                        </label>
-                        <input
-                          type="range"
-                          name="desk_min_width"
-                          value={formData.desk_min_width}
-                          onChange={handleInputChange}
-                          min="100"
-                          max="200"
-                          step="10"
-                          className="w-full h-3 bg-emerald-500/20 rounded-lg appearance-none cursor-pointer slider-emerald"
-                        />
-                        <div className="flex justify-between text-xs text-white/60 mt-2">
-                          <span>100 см</span>
-                          <span>150 см</span>
-                          <span>200 см</span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-white/90 font-semibold mb-3">
-                          Минимальная глубина: {formData.desk_min_depth} см
-                        </label>
-                        <input
-                          type="range"
-                          name="desk_min_depth"
-                          value={formData.desk_min_depth}
-                          onChange={handleInputChange}
-                          min="50"
-                          max="90"
-                          step="5"
-                          className="w-full h-3 bg-emerald-500/20 rounded-lg appearance-none cursor-pointer slider-emerald"
-                        />
-                        <div className="flex justify-between text-xs text-white/60 mt-2">
-                          <span>50 см</span>
-                          <span>70 см</span>
-                          <span>90 см</span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-white/90 font-semibold mb-2">Материал</label>
-                        <select
-                          name="desk_material_preference"
-                          value={formData.desk_material_preference}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любой</option>
-                          <option value="wood" className="bg-gray-900">Дерево (классика)</option>
-                          <option value="metal" className="bg-gray-900">Металл (прочность)</option>
-                          <option value="glass" className="bg-gray-900">Стекло (стиль)</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-emerald-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="desk_height_adjustable"
-                            checked={formData.desk_height_adjustable}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-emerald-600 rounded border-white/30 bg-white/10 focus:ring-emerald-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Регулируемая высота</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-emerald-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="desk_cable_management"
-                            checked={formData.desk_cable_management}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-emerald-600 rounded border-white/30 bg-white/10 focus:ring-emerald-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Кабель-менеджмент</span>
-                        </label>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Кресло */}
-                <div className="space-y-4 p-6 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 border-2 border-teal-500/30 rounded-xl">
-                  <label className="flex items-center space-x-3 cursor-pointer group">
+                  <label className="flex items-center gap-2 p-3 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors">
                     <input
                       type="checkbox"
                       name="need_chair"
                       checked={formData.need_chair}
                       onChange={handleInputChange}
-                      className="w-6 h-6 text-teal-600 rounded border-white/30 bg-white/10 focus:ring-teal-500/50"
+                      className="w-4 h-4 accent-primary"
                     />
-                    <span className="text-xl font-bold text-teal-200 group-hover:text-teal-100 transition-colors">💺 Кресло</span>
+                    <span className="text-sm text-gray-400">Кресло</span>
                   </label>
-
-                  {formData.need_chair && (
-                    <div className="space-y-4 ml-2 mt-4 pt-4 border-t border-teal-500/20">
-                      <div>
-                        <label className="block text-white/90 font-semibold mb-3">
-                          Максимальная нагрузка: {formData.chair_max_weight} кг
-                        </label>
-                        <input
-                          type="range"
-                          name="chair_max_weight"
-                          value={formData.chair_max_weight}
-                          onChange={handleInputChange}
-                          min="90"
-                          max="200"
-                          step="10"
-                          className="w-full h-3 bg-teal-500/20 rounded-lg appearance-none cursor-pointer slider-emerald"
-                        />
-                        <div className="flex justify-between text-xs text-white/60 mt-2">
-                          <span>90 кг</span>
-                          <span>150 кг</span>
-                          <span>200 кг</span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-white/90 font-semibold mb-2">Материал обивки</label>
-                        <select
-                          name="chair_material_preference"
-                          value={formData.chair_material_preference}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-teal-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-teal-500/50 focus:border-teal-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любой</option>
-                          <option value="leather" className="bg-gray-900">Кожа (премиум)</option>
-                          <option value="fabric" className="bg-gray-900">Ткань (комфорт)</option>
-                          <option value="mesh" className="bg-gray-900">Сетка (вентиляция)</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-teal-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="chair_ergonomic"
-                            checked={formData.chair_ergonomic}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-teal-600 rounded border-white/30 bg-white/10 focus:ring-teal-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Эргономичное</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-teal-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="chair_lumbar_support"
-                            checked={formData.chair_lumbar_support}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-teal-600 rounded border-white/30 bg-white/10 focus:ring-teal-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Поясничная поддержка</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-teal-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="chair_armrests_adjustable"
-                            checked={formData.chair_armrests_adjustable}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-teal-600 rounded border-white/30 bg-white/10 focus:ring-teal-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Регулируемые подлокотники</span>
-                        </label>
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
-
-              {/* Освещение и Аксессуары */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                {/* Освещение */}
-                <div className="p-6 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-500/30 rounded-xl">
-                  <label className="flex items-center space-x-3 cursor-pointer group mb-4">
-                    <input
-                      type="checkbox"
-                      name="workspace_rgb_lighting"
-                      checked={formData.workspace_rgb_lighting}
-                      onChange={handleInputChange}
-                      className="w-6 h-6 text-yellow-600 rounded border-white/30 bg-white/10 focus:ring-yellow-500/50"
-                    />
-                    <div>
-                      <span className="text-xl font-bold text-yellow-200 group-hover:text-yellow-100 transition-colors block">💡 Освещение</span>
-                      <span className="text-white/60 text-sm">Профессиональная подсветка</span>
-                    </div>
-                  </label>
-
-                  {formData.workspace_rgb_lighting && (
-                    <div className="ml-2 mt-4 pt-4 border-t border-yellow-500/20">
-                      <div>
-                        <label className="block text-white/90 font-semibold mb-2">Температура света</label>
-                        <select
-                          name="workspace_lighting_type"
-                          value={formData.workspace_lighting_type}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-yellow-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любая</option>
-                          <option value="warm" className="bg-gray-900">Тёплый (расслабляющий)</option>
-                          <option value="neutral" className="bg-gray-900">Нейтральный (универсальный)</option>
-                          <option value="cold" className="bg-gray-900">Холодный (для концентрации)</option>
-                          <option value="adjustable" className="bg-gray-900">Регулируемый (RGB)</option>
-                        </select>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Аксессуары */}
-                <div className="p-6 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border-2 border-blue-500/30 rounded-xl">
-                  <p className="text-xl font-bold text-blue-200 mb-4">🔧 Аксессуары</p>
-
-                  <div className="space-y-2">
-                    <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-blue-500/5 transition-all">
-                      <input
-                        type="checkbox"
-                        name="monitor_arm"
-                        checked={formData.monitor_arm}
-                        onChange={handleInputChange}
-                        className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                      />
-                      <div>
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors block">Кронштейн для монитора</span>
-                        <span className="text-white/60 text-xs">Эргономичная установка монитора</span>
-                      </div>
-                    </label>
-
-                    <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-blue-500/5 transition-all">
-                      <input
-                        type="checkbox"
-                        name="cable_management_accessories"
-                        checked={formData.cable_management_accessories}
-                        onChange={handleInputChange}
-                        className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                      />
-                      <div>
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors block">Органайзеры для кабелей</span>
-                        <span className="text-white/60 text-xs">Держатели, стяжки, каналы</span>
-                      </div>
-                    </label>
-
-                    <label className="flex items-center space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-blue-500/5 transition-all">
-                      <input
-                        type="checkbox"
-                        name="workspace_sound_dampening"
-                        checked={formData.workspace_sound_dampening}
-                        onChange={handleInputChange}
-                        className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                      />
-                      <div>
-                        <span className="text-white/90 font-medium group-hover:text-white transition-colors block">Звукопоглощение</span>
-                        <span className="text-white/60 text-xs">Панели для улучшения акустики</span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Итоговая информация */}
-              <div className="mt-6 p-6 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-2 border-emerald-500/30 rounded-xl">
-                <p className="text-emerald-200 font-bold text-lg mb-2">
-                  ✓ {formData.need_desk && formData.need_chair ? 'Будет подобран полный комплект для рабочего места' :
-                    formData.need_desk ? 'Будет подобран только стол' :
-                      formData.need_chair ? 'Будет подобрано только кресло' :
-                        'Выберите элементы рабочего места'}
-                </p>
-                <p className="text-white/70 text-sm mt-1">
-                  + Персональные рекомендации по освещению и эргономике
-                </p>
-                {(formData.monitor_arm || formData.cable_management_accessories || formData.workspace_sound_dampening) && (
-                  <p className="text-cyan-300 text-sm mt-2">
-                    + Дополнительные аксессуары: {[
-                      formData.monitor_arm && 'кронштейн',
-                      formData.cable_management_accessories && 'органайзеры',
-                      formData.workspace_sound_dampening && 'звукопоглощение'
-                    ].filter(Boolean).join(', ')}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Navigation Hint */}
-            <div className="text-center text-white/60 text-sm">
-              Переключайтесь между секциями внизу экрана ↓
+              )}
             </div>
           </div>
         )}
 
         {/* Peripherals Section */}
         {activeSection === 'peripherals' && (
-          <div className="space-y-6 animate-fadeIn">
-            {/* Включение периферии */}
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/5 to-cyan-500/5 rounded-2xl border border-cyan-500/20 p-8 hover:border-cyan-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10">
-              <div className="flex items-center gap-3 mb-6">
-                {React.createElement(FaKeyboard as any, { className: "text-3xl text-cyan-400" })}
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Периферия</h2>
-              </div>
-
-              <label className="flex items-start space-x-3 cursor-pointer group p-4 rounded-xl hover:bg-cyan-500/5 transition-all">
+          <div className="space-y-6 animate-fade-in">
+            <div className="card p-6">
+              <h2 className="text-lg font-heading font-semibold text-white mb-4">
+                Периферийные устройства
+              </h2>
+              
+              <div className="mb-4">
+                <label className="label">Бюджет на периферию: {formData.peripheral_budget_percent}%</label>
                 <input
-                  type="checkbox"
-                  name="include_workspace"
-                  checked={formData.include_workspace}
+                  type="range"
+                  name="peripheral_budget_percent"
+                  value={formData.peripheral_budget_percent}
                   onChange={handleInputChange}
-                  className="w-6 h-6 mt-1 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
+                  min="10"
+                  max="50"
+                  step="5"
+                  className="w-full accent-primary"
                 />
-                <div>
-                  <span className="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors block mb-1">
-                    Включить подбор периферии
-                  </span>
-                  <span className="text-white/70 text-sm block">
-                    Настройте параметры периферийных устройств для вашей конфигурации
-                  </span>
-                </div>
-              </label>
-            </div>
-
-            {/* Настройки периферии */}
-            {formData.include_workspace && (
-              <div className="backdrop-blur-xl bg-gradient-to-br from-white/5 to-cyan-500/5 rounded-2xl border border-cyan-500/20 p-8 hover:border-cyan-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10">
-                <div className="flex items-center gap-3 mb-6">
-                  {React.createElement(FaCheckCircle as any, { className: "text-3xl text-cyan-400" })}
-                  <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Детальные настройки</h2>
-                </div>
-
-                <div className="space-y-6">
-                  {/* Бюджет на периферию */}
-                  <div className="p-6 backdrop-blur-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
-                    <label className="block text-cyan-200 font-bold text-lg mb-4">
-                      💰 Бюджет на периферию: {formData.peripheral_budget_percent}%
-                    </label>
-                    <input
-                      type="range"
-                      name="peripheral_budget_percent"
-                      value={formData.peripheral_budget_percent}
-                      onChange={handleInputChange}
-                      min="10"
-                      max="50"
-                      step="5"
-                      className="w-full h-3 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
-                    />
-                    <div className="flex justify-between mt-3">
-                      <span className="text-sm text-white/60">10%</span>
-                      <span className="text-lg font-bold text-cyan-300">
-                        ~₽{Math.round((formData.max_budget * (formData.peripheral_budget_percent || 30)) / 100).toLocaleString()}
-                      </span>
-                      <span className="text-sm text-white/60">50%</span>
-                    </div>
-                  </div>
-
-                  {/* Выбор устройств по категориям */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Базовые устройства */}
-                    <div className="p-6 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
-                      <p className="text-cyan-300 font-bold text-lg mb-4">🖥️ Базовые устройства</p>
-                      <div className="space-y-3">
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="need_monitor"
-                            checked={formData.need_monitor}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Монитор</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="need_keyboard"
-                            checked={formData.need_keyboard}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Клавиатура</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="need_mouse"
-                            checked={formData.need_mouse}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Мышь</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-cyan-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="need_headset"
-                            checked={formData.need_headset}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-cyan-600 rounded border-white/30 bg-white/10 focus:ring-cyan-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Гарнитура</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Дополнительно */}
-                    <div className="p-6 bg-purple-500/5 border border-purple-500/20 rounded-xl">
-                      <p className="text-purple-300 font-bold text-lg mb-4">📹 Дополнительно</p>
-                      <div className="space-y-3">
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="need_webcam"
-                            checked={formData.need_webcam}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Веб-камера</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="need_microphone"
-                            checked={formData.need_microphone}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Микрофон</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Расширенные параметры монитора */}
-                  {formData.need_monitor && (
-                    <div className="p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-2 border-cyan-500/30 rounded-xl">
-                      <p className="text-cyan-200 font-bold text-xl mb-5 flex items-center gap-2">
-                        🖥️ Параметры монитора
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                          <label className="block text-white/90 font-medium mb-2">Частота обновления</label>
-                          <select
-                            name="monitor_min_refresh_rate"
-                            value={formData.monitor_min_refresh_rate}
-                            onChange={handleInputChange}
-                            className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
-                          >
-                            <option value="60" className="bg-gray-900">60 Hz (стандарт)</option>
-                            <option value="75" className="bg-gray-900">75 Hz</option>
-                            <option value="120" className="bg-gray-900">120 Hz</option>
-                            <option value="144" className="bg-gray-900">144 Hz (игровой)</option>
-                            <option value="165" className="bg-gray-900">165 Hz</option>
-                            <option value="240" className="bg-gray-900">240 Hz (pro)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-white/90 font-medium mb-2">Разрешение</label>
-                          <select
-                            name="monitor_min_resolution"
-                            value={formData.monitor_min_resolution}
-                            onChange={handleInputChange}
-                            className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
-                          >
-                            <option value="1920x1080" className="bg-gray-900">Full HD (1920x1080)</option>
-                            <option value="2560x1440" className="bg-gray-900">2K (2560x1440)</option>
-                            <option value="3840x2160" className="bg-gray-900">4K (3840x2160)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-white/90 font-medium mb-2">
-                            Диагональ: {formData.monitor_size_preference}"
-                          </label>
-                          <input
-                            type="range"
-                            name="monitor_size_preference"
-                            value={formData.monitor_size_preference}
-                            onChange={handleInputChange}
-                            min="21"
-                            max="34"
-                            step="1"
-                            className="w-full h-2 bg-cyan-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
-                          />
-                          <div className="flex justify-between text-xs text-white/60 mt-1">
-                            <span>21"</span>
-                            <span>27"</span>
-                            <span>34"</span>
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-white/90 font-medium mb-2">Тип матрицы</label>
-                          <select
-                            name="monitor_panel_type"
-                            value={formData.monitor_panel_type}
-                            onChange={handleInputChange}
-                            className="w-full bg-white/10 border border-cyan-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all backdrop-blur-sm"
-                          >
-                            <option value="any" className="bg-gray-900">Любая</option>
-                            <option value="ips" className="bg-gray-900">IPS (лучшие углы обзора)</option>
-                            <option value="va" className="bg-gray-900">VA (высокая контрастность)</option>
-                            <option value="tn" className="bg-gray-900">TN (быстрый отклик)</option>
-                            <option value="oled" className="bg-gray-900">OLED (премиум)</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Расширенные параметры клавиатуры */}
-                  {formData.need_keyboard && (
-                    <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 rounded-xl">
-                      <p className="text-purple-200 font-bold text-xl mb-5 flex items-center gap-2">
-                        ⌨️ Параметры клавиатуры
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                          <label className="block text-white/90 font-medium mb-2">Тип клавиатуры</label>
-                          <select
-                            name="keyboard_type_preference"
-                            value={formData.keyboard_type_preference}
-                            onChange={handleInputChange}
-                            className="w-full bg-white/10 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
-                          >
-                            <option value="any" className="bg-gray-900">Любая</option>
-                            <option value="mechanical" className="bg-gray-900">Механическая (быстрый отклик)</option>
-                            <option value="membrane" className="bg-gray-900">Мембранная (тихая)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-white/90 font-medium mb-2">Тип переключателей</label>
-                          <select
-                            name="keyboard_switch_type"
-                            value={formData.keyboard_switch_type}
-                            onChange={handleInputChange}
-                            className="w-full bg-white/10 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all backdrop-blur-sm"
-                          >
-                            <option value="any" className="bg-gray-900">Любой</option>
-                            <option value="linear" className="bg-gray-900">Linear (плавные)</option>
-                            <option value="tactile" className="bg-gray-900">Tactile (с откликом)</option>
-                            <option value="clicky" className="bg-gray-900">Clicky (с щелчком)</option>
-                          </select>
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-purple-500/5 transition-all">
-                            <input
-                              type="checkbox"
-                              name="keyboard_rgb"
-                              checked={formData.keyboard_rgb}
-                              onChange={handleInputChange}
-                              className="w-5 h-5 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50"
-                            />
-                            <span className="text-white/90 font-medium group-hover:text-white transition-colors">RGB подсветка</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Расширенные параметры мыши */}
-                  {formData.need_mouse && (
-                    <div className="p-6 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 rounded-xl">
-                      <p className="text-blue-200 font-bold text-xl mb-5 flex items-center gap-2">
-                        🖱️ Параметры мыши
-                      </p>
-                      <div className="space-y-5">
-                        <div>
-                          <label className="block text-white/90 font-medium mb-3">
-                            Минимальный DPI: {formData.mouse_min_dpi}
-                          </label>
-                          <input
-                            type="range"
-                            name="mouse_min_dpi"
-                            value={formData.mouse_min_dpi}
-                            onChange={handleInputChange}
-                            min="800"
-                            max="25600"
-                            step="400"
-                            className="w-full h-3 bg-blue-500/20 rounded-lg appearance-none cursor-pointer slider-cyan"
-                          />
-                          <div className="flex justify-between text-xs text-white/60 mt-2">
-                            <span>800 (офис)</span>
-                            <span>6400 (стандарт)</span>
-                            <span>25600 (pro)</span>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-white/90 font-medium mb-2">Тип сенсора</label>
-                            <select
-                              name="mouse_sensor_type"
-                              value={formData.mouse_sensor_type}
-                              onChange={handleInputChange}
-                              className="w-full bg-white/10 border border-blue-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all backdrop-blur-sm"
-                            >
-                              <option value="any" className="bg-gray-900">Любой</option>
-                              <option value="optical" className="bg-gray-900">Optical (точный)</option>
-                              <option value="laser" className="bg-gray-900">Laser (универсальный)</option>
-                            </select>
-                          </div>
-
-                          <div className="flex items-end">
-                            <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-blue-500/5 transition-all w-full">
-                              <input
-                                type="checkbox"
-                                name="mouse_wireless"
-                                checked={formData.mouse_wireless}
-                                onChange={handleInputChange}
-                                className="w-5 h-5 text-blue-600 rounded border-white/30 bg-white/10 focus:ring-blue-500/50"
-                              />
-                              <span className="text-white/90 font-medium group-hover:text-white transition-colors">Беспроводная</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Параметры гарнитуры */}
-                  {formData.need_headset && (
-                    <div className="p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-2 border-green-500/30 rounded-xl">
-                      <p className="text-green-200 font-bold text-xl mb-5 flex items-center gap-2">
-                        🎧 Параметры гарнитуры
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-green-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="headset_wireless"
-                            checked={formData.headset_wireless}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-green-600 rounded border-white/30 bg-white/10 focus:ring-green-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Беспроводная</span>
-                        </label>
-
-                        <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-lg hover:bg-green-500/5 transition-all">
-                          <input
-                            type="checkbox"
-                            name="headset_noise_cancellation"
-                            checked={formData.headset_noise_cancellation}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-green-600 rounded border-white/30 bg-white/10 focus:ring-green-500/50"
-                          />
-                          <span className="text-white/90 font-medium group-hover:text-white transition-colors">Шумоподавление</span>
-                        </label>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Параметры веб-камеры */}
-                  {formData.need_webcam && (
-                    <div className="p-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500/30 rounded-xl">
-                      <p className="text-orange-200 font-bold text-xl mb-5 flex items-center gap-2">
-                        📹 Параметры веб-камеры
-                      </p>
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Минимальное разрешение</label>
-                        <select
-                          name="webcam_min_resolution"
-                          value={formData.webcam_min_resolution}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-orange-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-orange-500/50 focus:border-orange-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любое</option>
-                          <option value="720p" className="bg-gray-900">720p HD</option>
-                          <option value="1080p" className="bg-gray-900">1080p Full HD</option>
-                          <option value="4k" className="bg-gray-900">4K Ultra HD</option>
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Параметры микрофона */}
-                  {formData.need_microphone && (
-                    <div className="p-6 bg-gradient-to-br from-pink-500/10 to-rose-500/10 border-2 border-pink-500/30 rounded-xl">
-                      <p className="text-pink-200 font-bold text-xl mb-5 flex items-center gap-2">
-                        🎤 Параметры микрофона
-                      </p>
-                      <div>
-                        <label className="block text-white/90 font-medium mb-2">Тип микрофона</label>
-                        <select
-                          name="microphone_type"
-                          value={formData.microphone_type}
-                          onChange={handleInputChange}
-                          className="w-full bg-white/10 border border-pink-500/30 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400 transition-all backdrop-blur-sm"
-                        >
-                          <option value="any" className="bg-gray-900">Любой</option>
-                          <option value="condenser" className="bg-gray-900">Condenser (студийный)</option>
-                          <option value="dynamic" className="bg-gray-900">Dynamic (универсальный)</option>
-                          <option value="usb" className="bg-gray-900">USB (удобный)</option>
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Итоговая информация */}
-                  <div className="p-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-2 border-green-500/30 rounded-xl">
-                    <p className="text-green-200 font-bold text-lg mb-2">
-                      ✓ Будет подобрано: {[
-                        formData.need_monitor && 'монитор',
-                        formData.need_keyboard && 'клавиатура',
-                        formData.need_mouse && 'мышь',
-                        formData.need_headset && 'гарнитура',
-                        formData.need_webcam && 'веб-камера',
-                        formData.need_microphone && 'микрофон',
-                        formData.need_desk && 'стол',
-                        formData.need_chair && 'кресло'
-                      ].filter(Boolean).join(', ')}
-                    </p>
-                    <p className="text-white/70 text-sm mt-1">
-                      + Персональные рекомендации по освещению рабочего места
-                    </p>
-                  </div>
-                </div>
               </div>
-            )}
 
-            {/* Navigation Hint */}
-            <div className="text-center text-white/60 text-sm">
-              Переключайтесь между секциями внизу экрана ↓
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {[
+                  { name: 'need_monitor', label: 'Монитор' },
+                  { name: 'need_keyboard', label: 'Клавиатура' },
+                  { name: 'need_mouse', label: 'Мышь' },
+                  { name: 'need_headset', label: 'Гарнитура' },
+                  { name: 'need_webcam', label: 'Веб-камера' },
+                  { name: 'need_microphone', label: 'Микрофон' },
+                ].map((item) => (
+                  <label
+                    key={item.name}
+                    className="flex items-center gap-2 p-3 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      name={item.name}
+                      checked={(formData as any)[item.name]}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 accent-primary"
+                    />
+                    <span className="text-sm text-gray-400">{item.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        {/* AI Toggle - показывается во всех секциях */}
-        <div className="flex justify-center animate-fadeIn mb-6">
-          <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 rounded-2xl p-6 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
-            <label className="flex items-center space-x-4 cursor-pointer group mb-4">
+        {/* AI Configuration Section */}
+        <div className="card p-6 border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-transparent">
+          <h2 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+            <svg className="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            AI Генерация
+          </h2>
+          
+          <div className="space-y-4">
+            {/* AI Toggle */}
+            <label className="flex items-center gap-3 p-4 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors">
               <input
                 type="checkbox"
                 name="use_ai"
                 checked={formData.use_ai}
                 onChange={handleInputChange}
-                className="w-6 h-6 text-purple-600 rounded border-white/30 bg-white/10 focus:ring-purple-500/50 cursor-pointer"
+                className="w-5 h-5 accent-primary"
               />
-              <div className="flex items-center gap-3">
-                <div className="text-3xl">🤖</div>
-                <div>
-                  <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 group-hover:from-purple-300 group-hover:to-pink-300 transition-all">
-                    Использовать AI для подбора
-                  </span>
-                  <p className="text-white/60 text-sm mt-1">
-                    Нейросеть deepseek-project-model подберет оптимальную конфигурацию
-                  </p>
-                </div>
+              <div>
+                <span className="text-white font-medium">Использовать AI модель</span>
+                <p className="text-sm text-gray-500">DeepSeek модель для генерации совместимых сборок</p>
               </div>
             </label>
 
-            {/* Режим работы AI */}
+            {/* AI Mode Selection */}
             {formData.use_ai && (
-              <div className="mt-4 pt-4 border-t border-purple-500/30 animate-fadeIn">
-                <p className="text-purple-200 font-semibold mb-3 text-sm">🎯 Режим работы AI:</p>
-                <div className="space-y-3">
-                  <label className="flex items-start space-x-3 cursor-pointer group p-3 rounded-xl hover:bg-purple-500/10 transition-all">
+              <div className="animate-fade-in space-y-3">
+                <label className="label">Режим AI генерации</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <label 
+                    className={`flex flex-col p-4 cursor-pointer border-2 transition-all ${
+                      formData.ai_generation_mode === 'database' 
+                        ? 'border-primary bg-primary/10' 
+                        : 'border-border-dark bg-bg-surface hover:border-primary/30'
+                    }`}
+                  >
                     <input
                       type="radio"
                       name="ai_generation_mode"
                       value="database"
                       checked={formData.ai_generation_mode === 'database'}
                       onChange={handleInputChange}
-                      className="w-5 h-5 mt-0.5 text-purple-600 border-white/30 bg-white/10 focus:ring-purple-500/50"
+                      className="sr-only"
                     />
-                    <div>
-                      <span className="text-white font-medium block group-hover:text-purple-200 transition-colors">
-                        📦 Выбор из базы данных
-                      </span>
-                      <span className="text-white/50 text-xs block mt-1">
-                        AI анализирует профиль и подбирает оптимальные компоненты из существующей базы
-                      </span>
-                    </div>
+                    <span className="text-white font-medium mb-1">Из базы данных</span>
+                    <span className="text-xs text-gray-500">AI выбирает из существующих компонентов</span>
                   </label>
                   
-                  <label className="flex items-start space-x-3 cursor-pointer group p-3 rounded-xl hover:bg-pink-500/10 transition-all">
+                  <label 
+                    className={`flex flex-col p-4 cursor-pointer border-2 transition-all ${
+                      formData.ai_generation_mode === 'generative' 
+                        ? 'border-primary bg-primary/10' 
+                        : 'border-border-dark bg-bg-surface hover:border-primary/30'
+                    }`}
+                  >
                     <input
                       type="radio"
                       name="ai_generation_mode"
                       value="generative"
                       checked={formData.ai_generation_mode === 'generative'}
                       onChange={handleInputChange}
-                      className="w-5 h-5 mt-0.5 text-pink-600 border-white/30 bg-white/10 focus:ring-pink-500/50"
+                      className="sr-only"
                     />
-                    <div>
-                      <span className="text-white font-medium block group-hover:text-pink-200 transition-colors">
-                        ✨ Генерация компонентов AI
-                      </span>
-                      <span className="text-white/50 text-xs block mt-1">
-                        AI сама создаёт спецификации реальных компонентов с актуальными ценами (декабрь 2025)
-                      </span>
-                      <span className="text-yellow-400/80 text-xs block mt-1">
-                        ⚡ Экспериментальный режим — AI генерирует компоненты с нуля
-                      </span>
-                    </div>
+                    <span className="text-white font-medium mb-1">Генеративный</span>
+                    <span className="text-xs text-gray-500">AI создаёт компоненты ПК</span>
+                  </label>
+                  
+                  <label 
+                    className={`flex flex-col p-4 cursor-pointer border-2 transition-all relative overflow-hidden ${
+                      formData.ai_generation_mode === 'full_ai' 
+                        ? 'border-primary bg-primary/10' 
+                        : 'border-border-dark bg-bg-surface hover:border-primary/30'
+                    }`}
+                  >
+                    {/* Recommended badge */}
+                    <span className="absolute top-0 right-0 bg-primary text-xs text-white px-2 py-0.5">
+                      NEW
+                    </span>
+                    <input
+                      type="radio"
+                      name="ai_generation_mode"
+                      value="full_ai"
+                      checked={formData.ai_generation_mode === 'full_ai'}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                    />
+                    <span className="text-white font-medium mb-1">Полная AI сборка</span>
+                    <span className="text-xs text-gray-500">ПК + периферия + рабочее место</span>
                   </label>
                 </div>
+
+                {/* Full AI mode info */}
+                {formData.ai_generation_mode === 'full_ai' && (
+                  <div className="p-4 bg-primary/10 border border-primary/30 animate-fade-in">
+                    <p className="text-sm text-gray-300">
+                      <strong className="text-primary">Полная AI генерация</strong> - модель DeepSeek создаст 
+                      полностью совместимую сборку: компьютер, периферию и рабочее место. 
+                      Все компоненты подбираются с учётом совместимости и вашего бюджета.
+                    </p>
+                    <ul className="mt-2 text-xs text-gray-400 space-y-1">
+                      <li>✓ Процессор, видеокарта, материнская плата, RAM, SSD, БП, корпус, охлаждение</li>
+                      <li>✓ Монитор, клавиатура, мышь, гарнитура, коврик</li>
+                      <li>✓ Стол и кресло (если включено рабочее место)</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </div>
         </div>
 
-        {/* Кнопка отправки - показывается во всех секциях */}
-        <div className="flex flex-col items-center animate-fadeIn gap-4">
+        {/* Submit Button */}
+        <div className="pt-6">
           <button
             type="submit"
             disabled={loading}
-            className="group relative px-12 py-4 rounded-2xl text-lg font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="btn-primary w-full py-4 text-base flex items-center justify-center gap-2"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 transition-opacity group-hover:opacity-90"></div>
-            <div className="relative flex items-center gap-3">
-              {loading ? (
-                <>
-                  <LoadingSpinner />
-                  <span>{formData.use_ai && formData.ai_generation_mode === 'generative' 
-                    ? 'AI генерирует сборку...' 
-                    : 'Подбор конфигурации...'}</span>
-                </>
-              ) : (
-                <>
-                  {React.createElement(FaRocket as any, { className: "text-xl" })}
-                  <span>Подобрать конфигурацию</span>
-                </>
-              )}
-            </div>
+            {formData.use_ai && formData.ai_generation_mode === 'full_ai' ? (
+              <>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <span>Сгенерировать с AI</span>
+              </>
+            ) : (
+              <>
+                <span>Сгенерировать конфигурацию</span>
+                {React.createElement(FiArrowRight as any, {})}
+              </>
+            )}
           </button>
-          
-          {/* Информация о времени генерации */}
-          {loading && formData.use_ai && formData.ai_generation_mode === 'generative' && (
-            <div className="text-center animate-pulse">
-              <p className="text-purple-300 text-sm">
-                🤖 AI анализирует требования и создаёт оптимальную сборку...
-              </p>
-              <p className="text-white/50 text-xs mt-1">
-                Это может занять до 1-2 минут
-              </p>
-            </div>
-          )}
         </div>
       </form>
-
-      {/* Dock Navigation */}
-      <Dock items={dockItems} />
     </div>
   );
 };

@@ -258,6 +258,135 @@ export interface Chair {
   updated_at: string;
 }
 
+// Новые типы периферии
+export interface Speakers {
+  id: number;
+  name: string;
+  manufacturer: string;
+  speaker_type: '2.0' | '2.1' | '5.1' | 'soundbar';
+  total_power: number;
+  frequency_response?: string;
+  bluetooth: boolean;
+  rgb: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Mousepad {
+  id: number;
+  name: string;
+  manufacturer: string;
+  size: 'small' | 'medium' | 'large' | 'xl' | 'desk';
+  width: number;
+  height: number;
+  thickness: number;
+  rgb: boolean;
+  material: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MonitorArm {
+  id: number;
+  name: string;
+  manufacturer: string;
+  mount_type: 'single' | 'dual' | 'triple' | 'quad';
+  max_screen_size: number;
+  max_weight: string;
+  vesa_pattern: string;
+  gas_spring: boolean;
+  cable_management: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface USBHub {
+  id: number;
+  name: string;
+  manufacturer: string;
+  usb3_ports: number;
+  usbc_ports: number;
+  usb2_ports: number;
+  card_reader: boolean;
+  hdmi_port: boolean;
+  ethernet_port: boolean;
+  power_delivery?: number;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DeskLighting {
+  id: number;
+  name: string;
+  manufacturer: string;
+  lighting_type: 'led_strip' | 'desk_lamp' | 'monitor_bar' | 'ambient' | 'ring_light';
+  rgb: boolean;
+  dimmable: boolean;
+  color_temperature?: string;
+  smart_control: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StreamDeck {
+  id: number;
+  name: string;
+  manufacturer: string;
+  keys_count: number;
+  lcd_keys: boolean;
+  dials: number;
+  touchscreen: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CaptureCard {
+  id: number;
+  name: string;
+  manufacturer: string;
+  max_resolution: string;
+  max_fps: number;
+  connection: string;
+  passthrough: boolean;
+  internal: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Gamepad {
+  id: number;
+  name: string;
+  manufacturer: string;
+  platform: 'pc' | 'xbox' | 'playstation' | 'universal';
+  wireless: boolean;
+  vibration: boolean;
+  rgb: boolean;
+  extra_buttons: number;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HeadphoneStand {
+  id: number;
+  name: string;
+  manufacturer: string;
+  usb_hub: boolean;
+  usb_ports: number;
+  rgb: boolean;
+  wireless_charging: boolean;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface WorkspaceSetup {
   id: number;
   configuration: number;
@@ -351,7 +480,7 @@ export interface ConfigurationRequest {
   existing_components_description?: string;
   include_workspace?: boolean;
   use_ai?: boolean;
-  ai_generation_mode?: 'database' | 'generative';
+  ai_generation_mode?: 'database' | 'generative' | 'full_ai';
 
   // Расширенные параметры PC
   preferred_cpu_manufacturer?: 'intel' | 'amd' | 'any';

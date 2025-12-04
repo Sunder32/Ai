@@ -6,7 +6,10 @@ from computers.serializers import (
 )
 from peripherals.serializers import (
     MonitorSerializer, KeyboardSerializer, MouseSerializer, HeadsetSerializer,
-    WebcamSerializer, MicrophoneSerializer, DeskSerializer, ChairSerializer
+    WebcamSerializer, MicrophoneSerializer, DeskSerializer, ChairSerializer,
+    SpeakersSerializer, MousepadSerializer, MonitorArmSerializer, USBHubSerializer,
+    DeskLightingSerializer, StreamDeckSerializer, CaptureCardSerializer,
+    GamepadSerializer, HeadphonestandSerializer
 )
 
 
@@ -57,6 +60,17 @@ class WorkspaceSetupSerializer(serializers.ModelSerializer):
     microphone_detail = MicrophoneSerializer(source='microphone', read_only=True)
     desk_detail = DeskSerializer(source='desk', read_only=True)
     chair_detail = ChairSerializer(source='chair', read_only=True)
+    
+    # Дополнительная периферия
+    speakers_detail = SpeakersSerializer(source='speakers', read_only=True)
+    mousepad_detail = MousepadSerializer(source='mousepad', read_only=True)
+    monitor_arm_detail = MonitorArmSerializer(source='monitor_arm', read_only=True)
+    usb_hub_detail = USBHubSerializer(source='usb_hub', read_only=True)
+    lighting_detail = DeskLightingSerializer(source='lighting', read_only=True)
+    stream_deck_detail = StreamDeckSerializer(source='stream_deck', read_only=True)
+    capture_card_detail = CaptureCardSerializer(source='capture_card', read_only=True)
+    gamepad_detail = GamepadSerializer(source='gamepad', read_only=True)
+    headphone_stand_detail = HeadphonestandSerializer(source='headphone_stand', read_only=True)
     
     class Meta:
         model = WorkspaceSetup
@@ -282,3 +296,76 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     workspace_sound_dampening = serializers.BooleanField(default=False, required=False)
     monitor_arm = serializers.BooleanField(default=False, required=False)
     cable_management_accessories = serializers.BooleanField(default=True, required=False)
+
+
+class BuilderConfigurationSerializer(serializers.Serializer):
+    """Сериализатор для сохранения конфигурации из Build Yourself"""
+    name = serializers.CharField(max_length=255)
+    
+    # PC компоненты (ID)
+    cpu = serializers.IntegerField(required=False, allow_null=True)
+    gpu = serializers.IntegerField(required=False, allow_null=True)
+    motherboard = serializers.IntegerField(required=False, allow_null=True)
+    ram = serializers.IntegerField(required=False, allow_null=True)
+    storage_primary = serializers.IntegerField(required=False, allow_null=True)
+    storage_secondary = serializers.IntegerField(required=False, allow_null=True)
+    psu = serializers.IntegerField(required=False, allow_null=True)
+    case = serializers.IntegerField(required=False, allow_null=True)
+    cooling = serializers.IntegerField(required=False, allow_null=True)
+    
+    # Периферия и рабочее место (ID)
+    monitor_primary = serializers.IntegerField(required=False, allow_null=True)
+    monitor_secondary = serializers.IntegerField(required=False, allow_null=True)
+    keyboard = serializers.IntegerField(required=False, allow_null=True)
+    mouse = serializers.IntegerField(required=False, allow_null=True)
+    headset = serializers.IntegerField(required=False, allow_null=True)
+    webcam = serializers.IntegerField(required=False, allow_null=True)
+    microphone = serializers.IntegerField(required=False, allow_null=True)
+    desk = serializers.IntegerField(required=False, allow_null=True)
+    chair = serializers.IntegerField(required=False, allow_null=True)
+    
+    # Дополнительная периферия
+    speakers = serializers.IntegerField(required=False, allow_null=True)
+    mousepad = serializers.IntegerField(required=False, allow_null=True)
+    monitor_arm = serializers.IntegerField(required=False, allow_null=True)
+    usb_hub = serializers.IntegerField(required=False, allow_null=True)
+    lighting = serializers.IntegerField(required=False, allow_null=True)
+    stream_deck = serializers.IntegerField(required=False, allow_null=True)
+    capture_card = serializers.IntegerField(required=False, allow_null=True)
+    gamepad = serializers.IntegerField(required=False, allow_null=True)
+    headphone_stand = serializers.IntegerField(required=False, allow_null=True)
+    
+    # Публичность сборки
+    is_public = serializers.BooleanField(default=False)
+
+
+class PublicConfigurationSerializer(serializers.ModelSerializer):
+    """Сериализатор для публичного просмотра конфигурации"""
+    cpu_detail = CPUSerializer(source='cpu', read_only=True)
+    gpu_detail = GPUSerializer(source='gpu', read_only=True)
+    motherboard_detail = MotherboardSerializer(source='motherboard', read_only=True)
+    ram_detail = RAMSerializer(source='ram', read_only=True)
+    storage_primary_detail = StorageSerializer(source='storage_primary', read_only=True)
+    storage_secondary_detail = StorageSerializer(source='storage_secondary', read_only=True)
+    psu_detail = PSUSerializer(source='psu', read_only=True)
+    case_detail = CaseSerializer(source='case', read_only=True)
+    cooling_detail = CoolingSerializer(source='cooling', read_only=True)
+    workspace = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PCConfiguration
+        fields = [
+            'id', 'name', 'total_price', 'compatibility_check', 'compatibility_notes',
+            'created_at', 'cpu_detail', 'gpu_detail', 'motherboard_detail', 'ram_detail',
+            'storage_primary_detail', 'storage_secondary_detail', 'psu_detail', 
+            'case_detail', 'cooling_detail', 'workspace'
+        ]
+    
+    def get_workspace(self, obj):
+        try:
+            workspace = WorkspaceSetup.objects.filter(configuration=obj).first()
+            if workspace:
+                return WorkspaceSetupSerializer(workspace).data
+        except:
+            pass
+        return None
