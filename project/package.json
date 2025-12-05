@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "django": "^99.99.99",
+    "pillow": "^0.0.9"
+  }
+}

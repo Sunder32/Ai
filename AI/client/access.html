@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как подключиться - DeepSeek AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        .link-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .link-box h2 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .link {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            user-select: all;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .success::before {
+            content: "✅ ";
+            font-size: 1.2em;
+        }
+        
+        .button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        
+        .button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        
+        .network-status {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .status-item {
+            flex: 1;
+            min-width: 200px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 5px;
+            text-align: center;
+        }
+        
+        .status-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .status-value {
+            color: #667eea;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 DeepSeek AI готов!</h1>
+        <p class="subtitle">Инструкция по доступу для других пользователей</p>
+        
+        <div class="success">
+            Сервер работает и готов принимать подключения!
+        </div>
+        
+        <div class="link-box">
+            <h2>📍 Ваша ссылка для доступа:</h2>
+            <div class="link" onclick="copyLink()" id="linkText">
+                http://192.168.1.149:5050
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                (Нажмите чтобы скопировать)
+            </p>
+        </div>
+        
+        <div class="network-status">
+            <div class="status-item">
+                <div class="status-label">IP-адрес</div>
+                <div class="status-value">192.168.1.149</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Порт</div>
+                <div class="status-value">5050</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Статус</div>
+                <div class="status-value" style="color: #28a745;">● Онлайн</div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>
+                <span class="step-number">1</span>
+                Откройте порты (ОДИН РАЗ)
+            </h3>
+            <p>
+                Щелкните правой кнопкой по файлу <code>setup_network.bat</code> 
+                и выберите <strong>"Запуск от имени администратора"</strong>
+            </p>
+            <p style="margin-top: 10px; color: #666;">
+                Это откроет порты 5050 и 11434 в файрволе Windows.
+            </p>
+        </div>
+        
+        <div class="step">
+            <h3>
+                <span class="step-number">2</span>
+                Поделитесь ссылкой
+            </h3>
+            <p>
+                Отправьте ссылку <code>http://192.168.1.149:5050</code> 
+                другим пользователям в вашей сети.
+            </p>
+            <p style="margin-top: 10px; color: #666;">
+                Они смогут открыть её в любом браузере и пользоваться нейросетью!
+            </p>
+        </div>
+        
+        <div class="warning">
+            <strong>Важно:</strong> Пользователи должны быть подключены к той же 
+            Wi-Fi сети или локальной сети (LAN), что и вы.
+        </div>
+        
+        <h2 style="margin-top: 40px; color: #667eea;">🌍 Доступ через интернет</h2>
+        <p style="margin: 10px 0; color: #666;">
+            Если нужен доступ из любой точки мира, используйте Cloudflare Tunnel:
+        </p>
+        
+        <div class="step">
+            <h3>Cloudflare Tunnel (бесплатно)</h3>
+            <p>1. Установите: <code>winget install --id Cloudflare.cloudflared</code></p>
+            <p>2. Запустите: <code>cloudflared tunnel --url http://localhost:5050</code></p>
+            <p>3. Получите публичную ссылку вида: <code>https://xxx.trycloudflare.com</code></p>
+            <p>4. Поделитесь этой ссылкой - она работает везде!</p>
+        </div>
+        
+        <h2 style="margin-top: 40px; color: #667eea;">❓ Решение проблем</h2>
+        
+        <details style="margin: 15px 0; cursor: pointer;">
+            <summary style="font-weight: bold; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                Другие не могут подключиться
+            </summary>
+            <div style="padding: 15px;">
+                <p>✓ Убедитесь, что <code>setup_network.bat</code> был запущен от администратора</p>
+                <p>✓ Проверьте, что <code>start_server.bat</code> открыт и работает</p>
+                <p>✓ Убедитесь, что все в одной Wi-Fi сети</p>
+                <p>✓ Временно отключите антивирус для теста</p>
+            </div>
+        </details>
+        
+        <details style="margin: 15px 0; cursor: pointer;">
+            <summary style="font-weight: bold; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                IP-адрес изменился
+            </summary>
+            <div style="padding: 15px;">
+                <p>Запустите <code>get_my_ip.bat</code> чтобы узнать новый IP-адрес</p>
+            </div>
+        </details>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/" class="button">🏠 Вернуться к чату</a>
+            <a href="https://smoothly-shrewd-trembler.cloudpub.ru/" class="button" target="_blank">
+                📖 Полная документация
+            </a>
+        </div>
+        
+        <p style="text-align: center; margin-top: 30px; color: #999; font-size: 0.9em;">
+            DeepSeek AI Neural Interface<br>
+            Работает на вашем компьютере 🖥️
+        </p>
+    </div>
+    
+    <script>
+        function copyLink() {
+            const linkText = document.getElementById('linkText').textContent;
+            navigator.clipboard.writeText(linkText).then(() => {
+                const originalText = document.getElementById('linkText').textContent;
+                document.getElementById('linkText').textContent = '✓ Скопировано!';
+                document.getElementById('linkText').style.background = '#28a745';
+                document.getElementById('linkText').style.color = 'white';
+                
+                setTimeout(() => {
+                    document.getElementById('linkText').textContent = originalText;
+                    document.getElementById('linkText').style.background = 'white';
+                    document.getElementById('linkText').style.color = '#667eea';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
