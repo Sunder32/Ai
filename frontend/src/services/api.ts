@@ -52,9 +52,14 @@ api.interceptors.request.use(
     
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      // Только для localhost используем абсолютный URL
+      // Для localhost используем локальный бэкенд
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
         baseURL = 'http://localhost:8001/api';
+      }
+      // Для CloudPub фронтенда - используем CloudPub бэкенд
+      else if (hostname.includes('cloudpub.ru')) {
+        // Бэкенд на illicitly-frank-bulbul.cloudpub.ru
+        baseURL = 'https://illicitly-frank-bulbul.cloudpub.ru/api';
       }
     }
     
