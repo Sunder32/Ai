@@ -1,0 +1,145 @@
+Corsair RM1000x (2025)
+Seasonic FOCUS GX-850
+be quiet! System Power 9 500W
+Thermaltake Toughpower GF3 1000W
+DeepCool PK1200D
+Montech Power G750
+Chieftec GPR-1000W
+Corsair HX1200 (2025)
+Seasonic PRIME PX-1300
+be quiet! Dark Power 13 1200W
+Corsair SF750 (SFX)
+EVGA SuperNOVA 1000 G5
+be quiet! Pure Power 11 850W
+Cooler Master MWE 650
+Thermaltake Toughpower 550W
+Thermaltake Smart BM1 500W
+Antec HCG1000 Platinum
+DeepCool PF450
+DeepCool PF500
+Chieftec APR-500W
+Chieftec GX-14
+Montech X3 750W
+be quiet! Pure Power 12M 750W
+be quiet! Dark Power 12 1000W
+Corsair RM850x
+Corsair HX1000
+Corsair AX1600i
+Seasonic PRIME TX-1600
+EVGA SuperNOVA 850 G6
+Cooler Master V1000
+Thermaltake Toughpower GR 1200W
+Antec Sigma 1000W
+Enersys E1000
+FSP Hydro PTM Pro 1000W
+Super Flower Leadex Platinum 1000W
+Seven Swords 1000W
+Cougar GXP 1000W
+Corsair RM750x
+be quiet! Pure Power 11 750W
+Seasonic FOCUS SGX-750
+Thermaltake Toughpower GF1 850W
+DeepCool PK850D
+Chieftec GPS-850W
+Montech X3 850W
+be quiet! Pure Power 12M 850W
+Corsair CX750M
+EVGA SuperNOVA 750 G6
+Cooler Master MWE Gold 850
+Antec High Current Gamer Gold 850
+Thermaltake Smart BM2 650W
+DeepCool PK650D
+Chieftec GPS-650W
+be quiet! System Power 9 600W
+Corsair CX650M
+Seasonic FOCUS SGX-650
+EVGA SuperNOVA 650 G6
+Cooler Master MWE Gold 650
+Thermaltake Smart BM2 550W
+Antec High Current Gamer Gold 550
+be quiet! Pure Power 11 550W
+DeepCool PF550
+Chieftec GPS-550W
+Corsair CX550M
+Seasonic S12III 550
+EVGA BR 550
+Cooler Master MWE 550
+Thermaltake Smart BM2 450W
+be quiet! System Power 9 450W
+Corsair CX450M
+Seasonic S12III 450
+EVGA BR 450
+Cooler Master MWE 450
+Chieftec GPS-450W
+Montech X3 650W
+be quiet! Pure Power 12M 650W
+Seasonic FOCUS GX-1000
+Thermaltake Toughpower GF3 1650W
+DeepCool PK1600D
+Chieftec GPR-1600W
+Corsair HX1600i
+Seasonic PRIME Ultra 1600
+EVGA SuperNOVA 1600 P2
+Cooler Master V1600
+be quiet! Dark Power 13 1600W
+Antec High Current Pro 1600
+DeepCool PK1600D Pro
+Corsair AX1600i
+Seasonic PRIME TX-1300
+Thermaltake Toughpower GF3 1350W
+Cooler Master V1300
+be quiet! Dark Power 13 1300W
+Antec HCG1300
+Corsair HX1600
+EVGA SuperNOVA 1300 G6
+DeepCool PK1300D
+Chieftec GPR-1300W
+Montech Power G1300
+Seasonic PRIME PX-1600
+Thermaltake Toughpower GF3 1600W
+Corsair AX2000i
+Seasonic PRIME Ultra 2000
+EVGA SuperNOVA 2000 P2
+Cooler Master V2000
+be quiet! Dark Power 13 2000W
+Antec High Current Pro 2000
+DeepCool PK2000D
+Chieftec GPR-2000W
+Corsair HX2000i
+Seasonic PRIME TX-2000
+Thermaltake Toughpower GF3 2000W
+Cooler Master MWE V2 850
+Corsair RM850e
+Seasonic Vertex GX-850
+Thermaltake Toughpower GF3 850W
+DeepCool PK850D Pro
+Chieftec GPS-850W Gold
+Montech Power G850
+be quiet! Pure Power 12M 850W
+EVGA SuperNOVA 850 P6
+Cooler Master V850
+Antec High Current Gamer Gold 850
+Corsair HX850
+Seasonic PRIME GX-850
+Thermaltake Toughpower GF1 850W
+DeepCool PK850D Gold
+Chieftec GPR-850W
+Montech X3 850W
+be quiet! Dark Power 12 850W
+Corsair RM1000e
+Seasonic Vertex GX-1000
+Thermaltake Toughpower GF3 1000W
+DeepCool PK1000D
+Chieftec GPS-1000W Gold
+Montech Power G1000
+be quiet! Pure Power 12M 1000W
+EVGA SuperNOVA 1000 P6
+Cooler Master V1000 Gold
+Antec High Current Gamer Gold 1000
+Corsair HX1000 Platinum
+Seasonic PRIME GX-1000
+Thermaltake Toughpower GF1 1000W
+DeepCool PK1000D Pro
+Chieftec GPR-1000W Gold
+Montech X3 1000W
+be quiet! Dark Power 12 1000W

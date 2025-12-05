@@ -1,0 +1,106 @@
+Intel Core i9-14900K
+Intel Core i5-11600KF
+AMD Ryzen 9 3900X
+Intel Xeon E5-2689
+Intel Xeon E3-1270 v5
+AMD EPYC 7302P
+Intel Core i3-12300
+Intel Core i5-12600K
+Intel Core i5-13400F
+Intel Core i7-12700K
+Intel Core i5-13600K
+Intel Core i5-15600K
+Intel Core i7-15700
+Intel Core i5-14400T
+AMD Ryzen 5 8600
+Intel Core Ultra 5 245K
+Intel Core Ultra 7 265K
+AMD Ryzen 9 9900X3D
+Intel Core i3-15300
+AMD Ryzen 7 9700XF
+Intel Celeron G7400T
+AMD Ryzen 7 8700
+Intel Core Ultra 3 125H
+Intel Xeon W5-3423
+AMD Ryzen Threadripper PRO 7965WX
+AMD Ryzen 5 9500F
+AMD Ryzen 5 8600G
+Intel Xeon W5-2455X
+Intel Core i7-15700KF
+AMD Ryzen 7 7700
+AMD Ryzen 7 7800X3D
+AMD Athlon Gold 7220U
+AMD Ryzen 7 7800X
+AMD Ryzen 9 7900X
+AMD Ryzen 9 7950X
+AMD Athlon Gold 3150U
+Intel Pentium Gold G8400
+AMD Ryzen 7 9700G
+Intel Core i3-1705
+AMD Ryzen Threadripper PRO 5995WX
+AMD Ryzen 5 8500G
+AMD Ryzen 5 9500X
+AMD Ryzen 3 3100
+Intel Core i7-12700KF
+AMD Ryzen Threadripper 3970X
+Intel Core i3-12100
+AMD Ryzen 5 7600X
+Intel Core i5-14600K
+AMD Ryzen 5 7500F
+Intel Core i9-14900KF
+AMD Ryzen 7 7700X
+Intel Core i5-13500H
+AMD Ryzen 9 7900X
+Intel Core i7-14700K
+Intel Core i7-13700E
+AMD Ryzen 9 9900X
+AMD Ryzen 9 9950X
+AMD EPYC 7742
+Intel Core i5-12600T
+AMD Ryzen Threadripper 7970X
+Intel Core i5-14500T
+AMD Ryzen 5 8500
+Intel Core i3-15100F
+AMD Athlon 3000G
+Intel Core i7-10700K
+AMD Ryzen 9 7950X3D
+Intel Core i5-14600KF
+AMD Ryzen 3 4100
+Intel Core i3-12100F
+Intel Core i5-15500
+AMD Ryzen 7 9800X3D
+AMD Ryzen 7 9700X
+Intel Core i9-14900KF
+Intel Core i3-12100
+AMD Ryzen 7 5800X3D
+AMD Ryzen 9 7900
+AMD Ryzen 5 7600
+Intel Xeon W7-2475X
+AMD Ryzen Threadripper PRO 7995WX
+Intel Core i7-15700K
+AMD Ryzen 9 7950X
+AMD Ryzen 9 7950X3D
+Intel Core Ultra 9 285K
+Intel Pentium Gold G7400
+AMD Athlon Gold 7220U
+Intel Xeon Gold 6430
+AMD EPYC 9654
+Intel Core i5-14500
+AMD Ryzen 5 9500X
+AMD Ryzen 3 8300G
+Intel Xeon W7-3465X
+AMD Ryzen 9 7900X3D
+Intel Core i3-15100
+AMD Ryzen 7 8700G
+AMD Ryzen 7 7800X3D
+Intel Core i7-14700
+Intel Core i9-13900K
+AMD Ryzen Threadripper PRO 5995WX
+Intel Xeon W9-3495X
+AMD EPYC 9754
+AMD Ryzen 9 9900X
+Intel Pentium Gold G8400
+AMD Athlon Gold 3150U
+Intel Core i5-12400
+AMD Ryzen 7 3700X
+Intel Core i5-10400F

@@ -1,0 +1,20 @@
+Intel Celeron G6900 — 2 ядра 4 потока 3.4GHz 3.200р.
+AMD Athlon 3000G — 2 ядра 4 потока 3.5GHz с графикой Vega 3 3.800р.
+Intel Pentium Gold G7400 — 2 ядра 4 потока 3.7GHz 4.500р.
+AMD Ryzen 3 3200G — 4 ядра 4 потока 3.6GHz с графикой Vega 8 5.200р.
+Intel Core i3-12100 — 4 ядра 8 потоков 3.3GHz 7.800р.
+AMD Ryzen 3 4300G — 4 ядра 8 потоков 3.8GHz с графикой Vega 6 6.500р.
+Intel Celeron N5105 — 4 ядра 4 потока 2.0GHz для мини-ПК 2.800р.
+AMD Athlon Gold 3150U — 2 ядра 4 потока 3.3GHz мобильный 3.500р.
+Intel Pentium Silver N6000 — 4 ядра 4 потока 1.1GHz энергоэффективный 2.500р.
+AMD Ryzen 3 3100 — 4 ядра 8 потоков 3.6GHz без графики 6.200р.
+Intel Core i3-10100 — 4 ядра 8 потоков 3.6GHz 6.800р.
+AMD Ryzen 3 4100 — 4 ядра 4 потока 3.4GHz 5.500р.
+Intel Celeron J6412 — 4 ядра 4 потока 2.0GHz для SBC 2.200р.
+AMD Athlon 300GE — 2 ядра 4 потока 3.4GHz с графикой Vega 3 3.600р.
+Intel Pentium Gold G6405 — 2 ядра 4 потока 4.1GHz 4.200р.
+AMD Ryzen 3 2200G — 4 ядра 4 потока 3.5GHz с графикой Vega 8 4.800р.
+Intel Core i3-12100T — 4 ядра 8 потоков 2.4GHz энергоэффективный 7.200р.
+AMD Ryzen 3 PRO 4350G — 4 ядра 8 потоков 3.8GHz бизнес класс 6.900р.
+Intel Celeron G5905 — 2 ядра 2 потока 3.5GHz 2.900р.
+AMD Athlon II X4 950 — 4 ядра 4 потока 3.5GHz бюджетный 2.600р.
