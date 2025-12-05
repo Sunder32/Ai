@@ -178,6 +178,35 @@ const BuildYourself: React.FC = () => {
     manufacturer: '',
     sortBy: 'popular'
   });
+
+  // Загрузка сборки из localStorage при монтировании
+  useEffect(() => {
+    const savedDraft = localStorage.getItem('buildyourself_draft');
+    if (savedDraft) {
+      try {
+        const data = JSON.parse(savedDraft);
+        if (data.pc) setSelectedPC(data.pc);
+        if (data.peripherals) setSelectedPeripherals(data.peripherals);
+        if (data.workspace) setSelectedWorkspace(data.workspace);
+        if (data.buildName) setBuildName(data.buildName);
+        if (data.isPublic !== undefined) setIsPublic(data.isPublic);
+      } catch (e) {
+        console.error('Ошибка загрузки черновика сборки:', e);
+      }
+    }
+  }, []);
+
+  // Сохранение сборки в localStorage при изменениях
+  useEffect(() => {
+    const draftData = {
+      pc: selectedPC,
+      peripherals: selectedPeripherals,
+      workspace: selectedWorkspace,
+      buildName,
+      isPublic
+    };
+    localStorage.setItem('buildyourself_draft', JSON.stringify(draftData));
+  }, [selectedPC, selectedPeripherals, selectedWorkspace, buildName, isPublic]);
   const [showFilters, setShowFilters] = useState(false);
 
   // Загрузка всех компонентов
@@ -545,6 +574,9 @@ const BuildYourself: React.FC = () => {
 
       const response = await configurationAPI.saveBuild(buildData);
       showNotification('success', 'Сборка успешно сохранена!');
+      
+      // Очищаем черновик после успешного сохранения
+      localStorage.removeItem('buildyourself_draft');
       
       if (response.data.share_url) {
         setShareUrl(window.location.origin + response.data.share_url);
@@ -1234,6 +1266,8 @@ const BuildYourself: React.FC = () => {
                       });
                       setSelectedWorkspace({ desk: null, chair: null });
                       setShareUrl(null);
+                      setBuildName('Моя сборка');
+                      localStorage.removeItem('buildyourself_draft');
                     }}
                     className="w-full py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
                   >

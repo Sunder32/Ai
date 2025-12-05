@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FiUser, FiLock, FiMail, FiArrowRight } from 'react-icons/fi';
 import { authAPI } from '../services/api';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: '',
@@ -14,6 +15,9 @@ const Login: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Получаем путь, откуда пользователь пришёл
+  const from = (location.state as any)?.from || '/';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -38,7 +42,8 @@ const Login: React.FC = () => {
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-          navigate('/');
+          // Перенаправляем туда, откуда пришёл пользователь
+          navigate(from, { replace: true });
         }
       } else {
         if (formData.password !== formData.confirmPassword) {
@@ -57,7 +62,8 @@ const Login: React.FC = () => {
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-          navigate('/');
+          // Перенаправляем туда, откуда пришёл пользователь
+          navigate(from, { replace: true });
         }
       }
     } catch (err: any) {
