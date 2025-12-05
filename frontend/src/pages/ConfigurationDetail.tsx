@@ -4,12 +4,15 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { configurationAPI } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { PCConfiguration } from '../types';
-import { FiCpu, FiMonitor, FiDatabase, FiHardDrive, FiZap, FiBox, FiThermometer, FiCheck, FiAlertTriangle, FiArrowLeft } from 'react-icons/fi';
+import { FiCpu, FiMonitor, FiDatabase, FiHardDrive, FiZap, FiBox, FiThermometer, FiCheck, FiAlertTriangle, FiArrowLeft, FiHeadphones, FiMic, FiGrid } from 'react-icons/fi';
+import { BsKeyboard, BsMouse2, BsDisplay } from 'react-icons/bs';
+import { MdChair, MdDesk, MdSpeaker } from 'react-icons/md';
 
 const ConfigurationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [config, setConfig] = useState<PCConfiguration | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'pc' | 'peripherals' | 'workspace'>('pc');
 
   useEffect(() => {
     if (id) {
@@ -49,6 +52,20 @@ const ConfigurationDetail: React.FC = () => {
   const getPSU = () => typeof config.psu === 'object' ? config.psu : config.psu_detail;
   const getCase = () => typeof config.case === 'object' ? config.case : config.case_detail;
   const getCooling = () => typeof config.cooling === 'object' ? config.cooling : config.cooling_detail;
+
+  // Getters для периферии
+  const getWorkspace = () => config.workspace;
+  const getMonitor = () => getWorkspace()?.monitor_primary_detail;
+  const getMonitorSecondary = () => getWorkspace()?.monitor_secondary_detail;
+  const getKeyboard = () => getWorkspace()?.keyboard_detail;
+  const getMouse = () => getWorkspace()?.mouse_detail;
+  const getHeadset = () => getWorkspace()?.headset_detail;
+  const getWebcam = () => getWorkspace()?.webcam_detail;
+  const getMicrophone = () => getWorkspace()?.microphone_detail;
+
+  // Getters для рабочего места
+  const getDesk = () => getWorkspace()?.desk_detail;
+  const getChair = () => getWorkspace()?.chair_detail;
 
   const chartData = [
     { name: 'CPU', value: parseFloat(String(getCPU()?.price || 0)), color: '#10b981' },
@@ -128,7 +145,7 @@ const ConfigurationDetail: React.FC = () => {
       </div>
 
       {/* Compatibility Status */}
-      <div className={`p-4 mb-8 flex items-center gap-3 ${
+      <div className={`p-4 mb-6 flex items-center gap-3 ${
         config.compatibility_issues 
           ? 'bg-yellow-500/10 border border-yellow-500/30' 
           : 'bg-primary/10 border border-primary/30'
@@ -146,6 +163,45 @@ const ConfigurationDetail: React.FC = () => {
         )}
       </div>
 
+      {/* Tabs Navigation */}
+      <div className="flex gap-2 mb-6 border-b border-border-dark pb-4">
+        <button
+          onClick={() => setActiveTab('pc')}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${
+            activeTab === 'pc'
+              ? 'bg-primary text-black'
+              : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+          }`}
+        >
+          {React.createElement(FiCpu as any, { className: "text-lg" })}
+          ПК Компоненты
+        </button>
+        <button
+          onClick={() => setActiveTab('peripherals')}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${
+            activeTab === 'peripherals'
+              ? 'bg-primary text-black'
+              : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+          }`}
+        >
+          {React.createElement(BsKeyboard as any, { className: "text-lg" })}
+          Периферия
+        </button>
+        <button
+          onClick={() => setActiveTab('workspace')}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${
+            activeTab === 'workspace'
+              ? 'bg-primary text-black'
+              : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+          }`}
+        >
+          {React.createElement(MdDesk as any, { className: "text-lg" })}
+          Рабочее место
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === 'pc' && (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Components */}
         <div className="lg:col-span-2 space-y-4">
@@ -301,6 +357,318 @@ const ConfigurationDetail: React.FC = () => {
           )}
         </div>
       </div>
+      )}
+
+      {/* Peripherals Tab */}
+      {activeTab === 'peripherals' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <ComponentSection
+              title="Монитор (основной)"
+              component={getMonitor()}
+              specs={{
+                'Диагональ': getMonitor() ? `${getMonitor()?.screen_size}"` : '-',
+                'Разрешение': getMonitor()?.resolution,
+                'Частота обновления': getMonitor() ? `${getMonitor()?.refresh_rate} Гц` : '-',
+                'Тип матрицы': getMonitor()?.panel_type,
+                'Время отклика': getMonitor() ? `${getMonitor()?.response_time} мс` : '-',
+                'HDR': getMonitor()?.hdr ? 'Да' : 'Нет',
+                'Изогнутый': getMonitor()?.curved ? 'Да' : 'Нет',
+              }}
+              icon={BsDisplay}
+            />
+
+            {getMonitorSecondary() && (
+              <ComponentSection
+                title="Монитор (дополнительный)"
+                component={getMonitorSecondary()}
+                specs={{
+                  'Диагональ': `${getMonitorSecondary()?.screen_size}"`,
+                  'Разрешение': getMonitorSecondary()?.resolution,
+                  'Частота обновления': `${getMonitorSecondary()?.refresh_rate} Гц`,
+                  'Тип матрицы': getMonitorSecondary()?.panel_type,
+                }}
+                icon={BsDisplay}
+              />
+            )}
+
+            <ComponentSection
+              title="Клавиатура"
+              component={getKeyboard()}
+              specs={{
+                'Тип переключателей': getKeyboard()?.switch_type === 'mechanical' ? 'Механические' : 
+                                       getKeyboard()?.switch_type === 'membrane' ? 'Мембранные' : 
+                                       getKeyboard()?.switch_type === 'optical' ? 'Оптические' : '-',
+                'Модель свитчей': getKeyboard()?.switch_model || '-',
+                'Подсветка RGB': getKeyboard()?.rgb ? 'Да' : 'Нет',
+                'Беспроводная': getKeyboard()?.wireless ? 'Да' : 'Нет',
+                'Форм-фактор': getKeyboard()?.form_factor || '-',
+              }}
+              icon={BsKeyboard}
+            />
+
+            <ComponentSection
+              title="Мышь"
+              component={getMouse()}
+              specs={{
+                'Тип сенсора': getMouse()?.sensor_type === 'optical' ? 'Оптический' : 'Лазерный',
+                'DPI': getMouse()?.dpi,
+                'Кнопок': getMouse()?.buttons,
+                'Беспроводная': getMouse()?.wireless ? 'Да' : 'Нет',
+                'RGB': getMouse()?.rgb ? 'Да' : 'Нет',
+                'Вес': getMouse()?.weight ? `${getMouse()?.weight} г` : '-',
+              }}
+              icon={BsMouse2}
+            />
+
+            <ComponentSection
+              title="Наушники / Гарнитура"
+              component={getHeadset()}
+              specs={{
+                'Подключение': getHeadset()?.connection_type,
+                'Беспроводные': getHeadset()?.wireless ? 'Да' : 'Нет',
+                'Микрофон': getHeadset()?.microphone ? 'Да' : 'Нет',
+                'Объемный звук': getHeadset()?.surround ? 'Да' : 'Нет',
+                'Шумоподавление': getHeadset()?.noise_cancelling ? 'Да' : 'Нет',
+              }}
+              icon={FiHeadphones}
+            />
+
+            {getWebcam() && (
+              <ComponentSection
+                title="Веб-камера"
+                component={getWebcam()}
+                specs={{
+                  'Разрешение': getWebcam()?.resolution,
+                  'FPS': getWebcam()?.fps,
+                  'Автофокус': getWebcam()?.autofocus ? 'Да' : 'Нет',
+                  'Микрофон': getWebcam()?.microphone ? 'Да' : 'Нет',
+                }}
+                icon={FiMonitor}
+              />
+            )}
+
+            {getMicrophone() && (
+              <ComponentSection
+                title="Микрофон"
+                component={getMicrophone()}
+                specs={{
+                  'Тип': getMicrophone()?.mic_type === 'condenser' ? 'Конденсаторный' :
+                         getMicrophone()?.mic_type === 'dynamic' ? 'Динамический' : 'USB',
+                  'Диаграмма направленности': getMicrophone()?.polar_pattern || '-',
+                  'Подключение': getMicrophone()?.connection_type,
+                }}
+                icon={FiMic}
+              />
+            )}
+          </div>
+
+          {/* Sidebar - Peripherals Summary */}
+          <div className="space-y-6">
+            <div className="card p-5">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4">
+                Итого по периферии
+              </h3>
+              <div className="space-y-3">
+                {getMonitor() && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Монитор</span>
+                    <span className="text-white font-medium">{Number(getMonitor()?.price || 0).toLocaleString()} ₽</span>
+                  </div>
+                )}
+                {getKeyboard() && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Клавиатура</span>
+                    <span className="text-white font-medium">{Number(getKeyboard()?.price || 0).toLocaleString()} ₽</span>
+                  </div>
+                )}
+                {getMouse() && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Мышь</span>
+                    <span className="text-white font-medium">{Number(getMouse()?.price || 0).toLocaleString()} ₽</span>
+                  </div>
+                )}
+                {getHeadset() && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Гарнитура</span>
+                    <span className="text-white font-medium">{Number(getHeadset()?.price || 0).toLocaleString()} ₽</span>
+                  </div>
+                )}
+                <div className="border-t border-border-dark pt-3 mt-3">
+                  <div className="flex justify-between">
+                    <span className="text-white font-medium">Всего</span>
+                    <span className="text-primary text-xl font-bold">
+                      {(
+                        Number(getMonitor()?.price || 0) +
+                        Number(getMonitorSecondary()?.price || 0) +
+                        Number(getKeyboard()?.price || 0) +
+                        Number(getMouse()?.price || 0) +
+                        Number(getHeadset()?.price || 0) +
+                        Number(getWebcam()?.price || 0) +
+                        Number(getMicrophone()?.price || 0)
+                      ).toLocaleString()} ₽
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {!getWorkspace() && (
+              <div className="card p-5 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-gray-800 rounded-full">
+                  {React.createElement(BsKeyboard as any, { className: "text-3xl text-gray-500" })}
+                </div>
+                <p className="text-gray-400">
+                  Периферия не добавлена в эту конфигурацию
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Workspace Tab */}
+      {activeTab === 'workspace' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <ComponentSection
+              title="Стол"
+              component={getDesk()}
+              specs={{
+                'Ширина': getDesk() ? `${getDesk()?.width} см` : '-',
+                'Глубина': getDesk() ? `${getDesk()?.depth} см` : '-',
+                'Регулировка высоты': getDesk()?.adjustable_height ? 'Да' : 'Нет',
+                'Материал': getDesk()?.material || '-',
+              }}
+              icon={MdDesk}
+            />
+
+            <ComponentSection
+              title="Кресло"
+              component={getChair()}
+              specs={{
+                'Эргономичное': getChair()?.ergonomic ? 'Да' : 'Нет',
+                'Поясничная поддержка': getChair()?.lumbar_support ? 'Да' : 'Нет',
+                'Регулируемые подлокотники': getChair()?.armrests_adjustable ? 'Да' : 'Нет',
+                'Макс. нагрузка': getChair()?.max_weight ? `${getChair()?.max_weight} кг` : '-',
+                'Материал': getChair()?.material || '-',
+              }}
+              icon={MdChair}
+            />
+
+            {getWorkspace()?.lighting_recommendation && (
+              <div className="card p-5">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 flex items-center justify-center bg-yellow-500/10">
+                    {React.createElement(FiZap as any, { className: "text-xl text-yellow-500" })}
+                  </div>
+                  <h3 className="text-lg font-heading font-semibold text-white">Рекомендации по освещению</h3>
+                </div>
+                <p className="text-gray-400">
+                  {getWorkspace()?.lighting_recommendation}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar - Workspace Summary */}
+          <div className="space-y-6">
+            <div className="card p-5">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4">
+                Итого по рабочему месту
+              </h3>
+              <div className="space-y-3">
+                {getDesk() && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Стол</span>
+                    <span className="text-white font-medium">{Number(getDesk()?.price || 0).toLocaleString()} ₽</span>
+                  </div>
+                )}
+                {getChair() && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Кресло</span>
+                    <span className="text-white font-medium">{Number(getChair()?.price || 0).toLocaleString()} ₽</span>
+                  </div>
+                )}
+                <div className="border-t border-border-dark pt-3 mt-3">
+                  <div className="flex justify-between">
+                    <span className="text-white font-medium">Всего</span>
+                    <span className="text-primary text-xl font-bold">
+                      {(
+                        Number(getDesk()?.price || 0) +
+                        Number(getChair()?.price || 0)
+                      ).toLocaleString()} ₽
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {!getWorkspace() && (
+              <div className="card p-5 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-gray-800 rounded-full">
+                  {React.createElement(MdDesk as any, { className: "text-3xl text-gray-500" })}
+                </div>
+                <p className="text-gray-400">
+                  Рабочее место не добавлено в эту конфигурацию
+                </p>
+              </div>
+            )}
+
+            {/* Total Configuration Price */}
+            <div className="card p-5 bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4">
+                Полная стоимость
+              </h3>
+              <div className="space-y-2 text-sm mb-4">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">ПК комплектующие</span>
+                  <span className="text-white">{Number(config.total_price || 0).toLocaleString()} ₽</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Периферия</span>
+                  <span className="text-white">
+                    {(
+                      Number(getMonitor()?.price || 0) +
+                      Number(getKeyboard()?.price || 0) +
+                      Number(getMouse()?.price || 0) +
+                      Number(getHeadset()?.price || 0)
+                    ).toLocaleString()} ₽
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Рабочее место</span>
+                  <span className="text-white">
+                    {(
+                      Number(getDesk()?.price || 0) +
+                      Number(getChair()?.price || 0)
+                    ).toLocaleString()} ₽
+                  </span>
+                </div>
+              </div>
+              <div className="border-t border-primary/30 pt-3">
+                <div className="flex justify-between items-end">
+                  <span className="text-white font-medium">ИТОГО</span>
+                  <span className="text-primary text-2xl font-bold">
+                    {(
+                      Number(config.total_price || 0) +
+                      Number(getMonitor()?.price || 0) +
+                      Number(getMonitorSecondary()?.price || 0) +
+                      Number(getKeyboard()?.price || 0) +
+                      Number(getMouse()?.price || 0) +
+                      Number(getHeadset()?.price || 0) +
+                      Number(getWebcam()?.price || 0) +
+                      Number(getMicrophone()?.price || 0) +
+                      Number(getDesk()?.price || 0) +
+                      Number(getChair()?.price || 0)
+                    ).toLocaleString()} ₽
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

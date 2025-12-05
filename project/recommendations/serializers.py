@@ -19,6 +19,40 @@ class RecommendationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class WorkspaceSetupDetailSerializer(serializers.ModelSerializer):
+    """Сериализатор для workspace без вложенной конфигурации (для избежания циклической зависимости)"""
+    monitor_primary_detail = MonitorSerializer(source='monitor_primary', read_only=True)
+    monitor_secondary_detail = MonitorSerializer(source='monitor_secondary', read_only=True)
+    keyboard_detail = KeyboardSerializer(source='keyboard', read_only=True)
+    mouse_detail = MouseSerializer(source='mouse', read_only=True)
+    headset_detail = HeadsetSerializer(source='headset', read_only=True)
+    webcam_detail = WebcamSerializer(source='webcam', read_only=True)
+    microphone_detail = MicrophoneSerializer(source='microphone', read_only=True)
+    desk_detail = DeskSerializer(source='desk', read_only=True)
+    chair_detail = ChairSerializer(source='chair', read_only=True)
+    speakers_detail = SpeakersSerializer(source='speakers', read_only=True)
+    mousepad_detail = MousepadSerializer(source='mousepad', read_only=True)
+    
+    class Meta:
+        model = WorkspaceSetup
+        fields = [
+            'id', 'name', 'total_price',
+            'monitor_primary', 'monitor_primary_detail',
+            'monitor_secondary', 'monitor_secondary_detail',
+            'keyboard', 'keyboard_detail',
+            'mouse', 'mouse_detail',
+            'headset', 'headset_detail',
+            'webcam', 'webcam_detail',
+            'microphone', 'microphone_detail',
+            'desk', 'desk_detail',
+            'chair', 'chair_detail',
+            'speakers', 'speakers_detail',
+            'mousepad', 'mousepad_detail',
+            'lighting_recommendation',
+            'created_at', 'updated_at',
+        ]
+
+
 class PCConfigurationSerializer(serializers.ModelSerializer):
     cpu_detail = CPUSerializer(source='cpu', read_only=True)
     gpu_detail = GPUSerializer(source='gpu', read_only=True)
@@ -31,10 +65,20 @@ class PCConfigurationSerializer(serializers.ModelSerializer):
     cooling_detail = CoolingSerializer(source='cooling', read_only=True)
     recommendations = RecommendationSerializer(many=True, read_only=True)
     
+    # Workspace - берём первый (обычно один на конфигурацию)
+    workspace = serializers.SerializerMethodField()
+    
     class Meta:
         model = PCConfiguration
         fields = '__all__'
         read_only_fields = ['total_price', 'created_at', 'updated_at']
+    
+    def get_workspace(self, obj):
+        """Получить workspace setup для этой конфигурации"""
+        workspace = obj.workspace_setups.first()
+        if workspace:
+            return WorkspaceSetupDetailSerializer(workspace).data
+        return None
     
     def create(self, validated_data):
         configuration = super().create(validated_data)
@@ -124,6 +168,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         choices=[
             ('database', 'Выбор из базы данных'),
             ('generative', 'Генерация компонентов AI'),
+            ('full_ai', 'Полная AI генерация'),
         ],
         default='database',
         required=False
@@ -175,12 +220,12 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     
     # Расширенные параметры PC
     preferred_cpu_manufacturer = serializers.ChoiceField(
-        choices=[('any', 'Любой'), ('Intel', 'Intel'), ('AMD', 'AMD')],
+        choices=[('any', 'Любой'), ('Intel', 'Intel'), ('intel', 'Intel'), ('AMD', 'AMD'), ('amd', 'AMD')],
         default='any',
         required=False
     )
     preferred_gpu_manufacturer = serializers.ChoiceField(
-        choices=[('any', 'Любой'), ('NVIDIA', 'NVIDIA'), ('AMD', 'AMD')],
+        choices=[('any', 'Любой'), ('NVIDIA', 'NVIDIA'), ('nvidia', 'NVIDIA'), ('AMD', 'AMD'), ('amd', 'AMD')],
         default='any',
         required=False
     )
@@ -188,13 +233,13 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     min_gpu_vram = serializers.IntegerField(default=4, required=False)
     min_ram_capacity = serializers.IntegerField(default=16, required=False)
     storage_type_preference = serializers.ChoiceField(
-        choices=[('any', 'Любой'), ('ssd_nvme', 'SSD NVMe'), ('ssd_sata', 'SSD SATA'), ('hdd', 'HDD')],
+        choices=[('any', 'Любой'), ('nvme', 'SSD NVMe'), ('ssd_nvme', 'SSD NVMe'), ('sata', 'SSD SATA'), ('ssd_sata', 'SSD SATA'), ('hdd', 'HDD')],
         default='any',
         required=False
     )
     min_storage_capacity = serializers.IntegerField(default=512, required=False)
     cooling_preference = serializers.ChoiceField(
-        choices=[('any', 'Любое'), ('air', 'Воздушное'), ('liquid', 'Жидкостное')],
+        choices=[('any', 'Любое'), ('air', 'Воздушное'), ('liquid', 'Жидкостное'), ('aio', 'AIO'), ('custom', 'Кастомное')],
         default='any',
         required=False
     )
@@ -221,7 +266,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     monitor_min_resolution = serializers.CharField(default='1080p', required=False)
     monitor_size_preference = serializers.IntegerField(default=24, required=False)
     monitor_panel_type = serializers.ChoiceField(
-        choices=[('any', 'Любой'), ('IPS', 'IPS'), ('VA', 'VA'), ('TN', 'TN')],
+        choices=[('any', 'Любой'), ('IPS', 'IPS'), ('ips', 'IPS'), ('VA', 'VA'), ('va', 'VA'), ('TN', 'TN'), ('tn', 'TN'), ('OLED', 'OLED'), ('oled', 'OLED')],
         default='any',
         required=False
     )
@@ -233,7 +278,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         required=False
     )
     keyboard_switch_type = serializers.ChoiceField(
-        choices=[('any', 'Любые'), ('red', 'Red'), ('blue', 'Blue'), ('brown', 'Brown')],
+        choices=[('any', 'Любые'), ('red', 'Red'), ('linear', 'Linear'), ('blue', 'Blue'), ('clicky', 'Clicky'), ('brown', 'Brown'), ('tactile', 'Tactile')],
         default='any',
         required=False
     )
@@ -259,7 +304,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         required=False
     )
     microphone_type = serializers.ChoiceField(
-        choices=[('any', 'Любой'), ('usb', 'USB'), ('xlr', 'XLR')],
+        choices=[('any', 'Любой'), ('usb', 'USB'), ('xlr', 'XLR'), ('condenser', 'Конденсаторный'), ('dynamic', 'Динамический')],
         default='any',
         required=False
     )

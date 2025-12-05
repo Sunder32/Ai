@@ -208,9 +208,9 @@ const Configurator: React.FC = () => {
     gaming: true,
     streaming: false,
     has_existing_components: false,
-    include_workspace: false,
-    use_ai: false,
-    ai_generation_mode: 'database',
+    include_workspace: true,
+    use_ai: true,
+    ai_generation_mode: 'full_ai',
     preferred_cpu_manufacturer: 'any',
     preferred_gpu_manufacturer: 'any',
     min_cpu_cores: 4,
@@ -790,109 +790,38 @@ const Configurator: React.FC = () => {
               <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
               <circle cx="12" cy="12" r="3"/>
             </svg>
-            AI Генерация
+            Сборка с помощью AI
           </h2>
           
           <div className="space-y-4">
-            {/* AI Toggle */}
+            <div className="p-4 bg-primary/10 border border-primary/30">
+              <p className="text-sm text-gray-300">
+                <strong className="text-primary">AI DeepSeek</strong> создаст оптимальную конфигурацию 
+                на основе актуальных данных о комплектующих (декабрь 2025). Модель учитывает совместимость 
+                компонентов, ваш бюджет и требования.
+              </p>
+              <ul className="mt-3 text-xs text-gray-400 space-y-1">
+                <li>✓ Процессор, видеокарта, материнская плата, RAM, SSD, БП, корпус, охлаждение</li>
+                <li>✓ Монитор, клавиатура, мышь, гарнитура</li>
+                <li>✓ Стол и кресло для рабочего места</li>
+                <li>✓ Актуальные цены на декабрь 2025</li>
+              </ul>
+            </div>
+            
+            {/* Include workspace toggle */}
             <label className="flex items-center gap-3 p-4 bg-bg-surface border border-border-dark cursor-pointer hover:border-primary/30 transition-colors">
               <input
                 type="checkbox"
-                name="use_ai"
-                checked={formData.use_ai}
+                name="include_workspace"
+                checked={formData.include_workspace}
                 onChange={handleInputChange}
                 className="w-5 h-5 accent-primary"
               />
               <div>
-                <span className="text-white font-medium">Использовать AI модель</span>
-                <p className="text-sm text-gray-500">DeepSeek модель для генерации совместимых сборок</p>
+                <span className="text-white font-medium">Включить рабочее место</span>
+                <p className="text-sm text-gray-500">Стол и кресло в дополнение к ПК и периферии</p>
               </div>
             </label>
-
-            {/* AI Mode Selection */}
-            {formData.use_ai && (
-              <div className="animate-fade-in space-y-3">
-                <label className="label">Режим AI генерации</label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <label 
-                    className={`flex flex-col p-4 cursor-pointer border-2 transition-all ${
-                      formData.ai_generation_mode === 'database' 
-                        ? 'border-primary bg-primary/10' 
-                        : 'border-border-dark bg-bg-surface hover:border-primary/30'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="ai_generation_mode"
-                      value="database"
-                      checked={formData.ai_generation_mode === 'database'}
-                      onChange={handleInputChange}
-                      className="sr-only"
-                    />
-                    <span className="text-white font-medium mb-1">Из базы данных</span>
-                    <span className="text-xs text-gray-500">AI выбирает из существующих компонентов</span>
-                  </label>
-                  
-                  <label 
-                    className={`flex flex-col p-4 cursor-pointer border-2 transition-all ${
-                      formData.ai_generation_mode === 'generative' 
-                        ? 'border-primary bg-primary/10' 
-                        : 'border-border-dark bg-bg-surface hover:border-primary/30'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="ai_generation_mode"
-                      value="generative"
-                      checked={formData.ai_generation_mode === 'generative'}
-                      onChange={handleInputChange}
-                      className="sr-only"
-                    />
-                    <span className="text-white font-medium mb-1">Генеративный</span>
-                    <span className="text-xs text-gray-500">AI создаёт компоненты ПК</span>
-                  </label>
-                  
-                  <label 
-                    className={`flex flex-col p-4 cursor-pointer border-2 transition-all relative overflow-hidden ${
-                      formData.ai_generation_mode === 'full_ai' 
-                        ? 'border-primary bg-primary/10' 
-                        : 'border-border-dark bg-bg-surface hover:border-primary/30'
-                    }`}
-                  >
-                    {/* Recommended badge */}
-                    <span className="absolute top-0 right-0 bg-primary text-xs text-white px-2 py-0.5">
-                      NEW
-                    </span>
-                    <input
-                      type="radio"
-                      name="ai_generation_mode"
-                      value="full_ai"
-                      checked={formData.ai_generation_mode === 'full_ai'}
-                      onChange={handleInputChange}
-                      className="sr-only"
-                    />
-                    <span className="text-white font-medium mb-1">Полная AI сборка</span>
-                    <span className="text-xs text-gray-500">ПК + периферия + рабочее место</span>
-                  </label>
-                </div>
-
-                {/* Full AI mode info */}
-                {formData.ai_generation_mode === 'full_ai' && (
-                  <div className="p-4 bg-primary/10 border border-primary/30 animate-fade-in">
-                    <p className="text-sm text-gray-300">
-                      <strong className="text-primary">Полная AI генерация</strong> - модель DeepSeek создаст 
-                      полностью совместимую сборку: компьютер, периферию и рабочее место. 
-                      Все компоненты подбираются с учётом совместимости и вашего бюджета.
-                    </p>
-                    <ul className="mt-2 text-xs text-gray-400 space-y-1">
-                      <li>✓ Процессор, видеокарта, материнская плата, RAM, SSD, БП, корпус, охлаждение</li>
-                      <li>✓ Монитор, клавиатура, мышь, гарнитура, коврик</li>
-                      <li>✓ Стол и кресло (если включено рабочее место)</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
@@ -903,20 +832,11 @@ const Configurator: React.FC = () => {
             disabled={loading}
             className="btn-primary w-full py-4 text-base flex items-center justify-center gap-2"
           >
-            {formData.use_ai && formData.ai_generation_mode === 'full_ai' ? (
-              <>
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-                <span>Сгенерировать с AI</span>
-              </>
-            ) : (
-              <>
-                <span>Сгенерировать конфигурацию</span>
-                {React.createElement(FiArrowRight as any, {})}
-              </>
-            )}
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span>Собрать с AI</span>
           </button>
         </div>
       </form>

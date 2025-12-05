@@ -94,136 +94,101 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def generate(self, request):
         """
-        Генерация конфигурации на основе профиля пользователя
+        Генерация конфигурации с помощью AI
         Rate limit: 3 запроса в минуту на пользователя
         
-        Параметры:
-        - include_workspace: bool - включить ли подбор периферии и рабочего места (по умолчанию False)
-        - use_ai: bool - использовать ли AI для подбора (по умолчанию False)
-        - ai_generation_mode: str - режим генерации: 'database', 'generative', 'full_ai'
+        AI создаёт полную конфигурацию: ПК + периферия + рабочее место
+        на основе актуальных данных о комплектующих.
         """
         serializer = ConfigurationRequestSerializer(data=request.data)
         
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        # Получаем дополнительные параметры
-        include_workspace = serializer.validated_data.get('include_workspace', False)
-        use_ai = serializer.validated_data.get('use_ai', False)
-        ai_generation_mode = serializer.validated_data.get('ai_generation_mode', 'database')
-        peripheral_budget_percent = serializer.validated_data.get('peripheral_budget_percent', 30)
+        # Получаем параметры
+        data = serializer.validated_data
+        include_workspace = data.get('include_workspace', True)
         
-        logger.info(f"Configuration generation request: include_workspace={include_workspace}, use_ai={use_ai}, ai_generation_mode={ai_generation_mode}, peripheral_budget={peripheral_budget_percent}%")
+        logger.info(f"AI Configuration generation request: user_type={data.get('user_type')}, budget={data.get('min_budget')}-{data.get('max_budget')}, include_workspace={include_workspace}")
         
         try:
-            # НОВЫЙ РЕЖИМ: Полная AI генерация (ПК + периферия + рабочее место)
-            if use_ai and ai_generation_mode == 'full_ai' and AIFullConfigService:
-                logger.info("Using FULL AI generation mode (PC + Peripherals + Workspace)")
-                
-                # Получаем параметры из запроса
-                data = serializer.validated_data
-                
-                # Создаем сервис полной AI генерации
-                full_ai_service = AIFullConfigService(
-                    user_type=data.get('user_type', 'gaming'),
-                    min_budget=float(data.get('min_budget', 50000)),
-                    max_budget=float(data.get('max_budget', 150000)),
-                    priority=data.get('priority', 'balanced'),
-                    requirements={
-                        'gaming': data.get('gaming', False),
-                        'streaming': data.get('streaming', False),
-                        'video_editing': data.get('video_editing', False),
-                        'multitasking': data.get('multitasking', False),
-                        'work_with_4k': data.get('work_with_4k', False),
-                        'vr_support': data.get('vr_support', False),
-                        'programming': data.get('programming', False),
-                        'office_work': data.get('office_work', False),
-                    },
-                    pc_preferences=data.get('pc_preferences', {}),
-                    peripherals_preferences=data.get('peripherals_preferences', {}),
-                    workspace_preferences=data.get('workspace_preferences', {}),
-                    include_peripherals=include_workspace,
-                    include_workspace=include_workspace,
+            # Всегда используем AI генерацию
+            if not AIFullConfigService:
+                return Response(
+                    {'error': 'AI сервис недоступен'},
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
                 )
-                
-                # Генерируем полную конфигурацию
-                configuration, workspace, ai_info = full_ai_service.generate_full_configuration(request.user)
-                
-                if not configuration:
-                    return Response(
-                        {'error': ai_info.get('error', 'AI не смог сгенерировать конфигурацию')},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                    )
-                
-                # Формируем ответ
-                result_serializer = PCConfigurationSerializer(configuration)
-                response_data = result_serializer.data
-                response_data['ai_info'] = ai_info
-                
-                if workspace:
-                    workspace_serializer = WorkspaceSetupSerializer(workspace)
-                    response_data['workspace'] = workspace_serializer.data
-                    logger.info(f"Full AI workspace included: {workspace.total_price}₽")
-                
-                logger.info(f"Returning FULL AI configuration ID: {response_data.get('id')} with total: {ai_info.get('prices', {}).get('total', 0)}₽")
-                return Response(response_data, status=status.HTTP_201_CREATED)
             
-            # Режим генеративного AI (только ПК)
-            elif use_ai and ai_generation_mode == 'generative' and GenerativeAIService:
-                # Полностью генеративный режим - AI создает компоненты
-                logger.info("Using fully generative AI mode")
-                generative_service = GenerativeAIService(serializer.validated_data)
-                configuration, ai_info = generative_service.generate_configuration(request.user)
-                
-                if not configuration:
-                    return Response(
-                        {'error': ai_info.get('error', 'AI не смог сгенерировать конфигурацию')},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                    )
-                
-                # Проверяем совместимость сгенерированных компонентов
-                compat_service = ConfigurationService({
-                    'user_type': 'student',
-                    'min_budget': 0,
-                    'max_budget': 0
-                })
-                compat_service.check_compatibility(configuration)
-                
-                # Формируем ответ
-                result_serializer = PCConfigurationSerializer(configuration)
-                response_data = result_serializer.data
-                response_data['ai_info'] = ai_info
-                
-                logger.info(f"Returning generative AI configuration ID: {response_data.get('id')} with total: {response_data.get('total_price')}")
-                return Response(response_data, status=status.HTTP_201_CREATED)
+            logger.info("Using AI generation mode (PC + Peripherals + Workspace)")
             
-            else:
-                # Режим выбора из БД (с опциональным AI-анализом)
-                logger.info(f"Using database selection mode (AI analysis: {use_ai})")
-                service = ConfigurationService(serializer.validated_data, use_ai=use_ai)
-                configuration, workspace = service.generate_configuration(
-                    request.user, 
-                    include_workspace=include_workspace
+            # Создаем сервис AI генерации
+            full_ai_service = AIFullConfigService(
+                user_type=data.get('user_type', 'gaming'),
+                min_budget=float(data.get('min_budget', 50000)),
+                max_budget=float(data.get('max_budget', 150000)),
+                priority=data.get('priority', 'balanced'),
+                requirements={
+                    'gaming': data.get('gaming', False),
+                    'streaming': data.get('streaming', False),
+                    'video_editing': data.get('video_editing', False),
+                    'multitasking': data.get('multitasking', False),
+                    'work_with_4k': data.get('work_with_4k', False),
+                    'vr_support': data.get('vr_support', False),
+                    'programming': data.get('programming', False),
+                    'office_work': data.get('office_work', False),
+                },
+                pc_preferences={
+                    'preferred_cpu_manufacturer': data.get('preferred_cpu_manufacturer', 'any'),
+                    'preferred_gpu_manufacturer': data.get('preferred_gpu_manufacturer', 'any'),
+                    'min_cpu_cores': data.get('min_cpu_cores', 4),
+                    'min_gpu_vram': data.get('min_gpu_vram', 4),
+                    'min_ram_capacity': data.get('min_ram_capacity', 16),
+                    'storage_type_preference': data.get('storage_type_preference', 'nvme'),
+                    'min_storage_capacity': data.get('min_storage_capacity', 512),
+                    'cooling_preference': data.get('cooling_preference', 'any'),
+                    'rgb_preference': data.get('rgb_preference', False),
+                    'case_size_preference': data.get('case_size_preference', 'any'),
+                },
+                peripherals_preferences={
+                    'need_monitor': data.get('need_monitor', True),
+                    'need_keyboard': data.get('need_keyboard', True),
+                    'need_mouse': data.get('need_mouse', True),
+                    'need_headset': data.get('need_headset', True),
+                    'monitor_min_refresh_rate': data.get('monitor_min_refresh_rate', 60),
+                    'monitor_min_resolution': data.get('monitor_min_resolution', '1080p'),
+                    'keyboard_type_preference': data.get('keyboard_type_preference', 'any'),
+                    'mouse_wireless': data.get('mouse_wireless', False),
+                },
+                workspace_preferences={
+                    'need_desk': data.get('need_desk', True),
+                    'need_chair': data.get('need_chair', True),
+                    'chair_ergonomic': data.get('chair_ergonomic', True),
+                },
+                include_peripherals=True,  # Всегда включаем периферию
+                include_workspace=include_workspace,
+            )
+            
+            # Генерируем полную конфигурацию
+            configuration, workspace, ai_info = full_ai_service.generate_full_configuration(request.user)
+            
+            if not configuration:
+                return Response(
+                    {'error': ai_info.get('error', 'AI не смог сгенерировать конфигурацию')},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
-                service.check_compatibility(configuration)
-                
-                # Формируем ответ
-                result_serializer = PCConfigurationSerializer(configuration)
-                response_data = result_serializer.data
-                
-                if workspace:
-                    workspace_serializer = WorkspaceSetupSerializer(workspace)
-                    response_data['workspace'] = workspace_serializer.data
-                    logger.info(f"Workspace included in response: ${workspace.total_price}")
-                
-                response_data['ai_info'] = {
-                    "ai_used": use_ai and service.ai_service is not None,
-                    "generation_mode": "database",
-                    "summary": "Конфигурация подобрана с использованием AI" if (use_ai and service.ai_service) else "Конфигурация подобрана алгоритмически"
-                }
-                
-                logger.info(f"Returning configuration ID: {response_data.get('id')} with total: {response_data.get('total_price')}")
-                return Response(response_data, status=status.HTTP_201_CREATED)
+            
+            # Формируем ответ
+            result_serializer = PCConfigurationSerializer(configuration)
+            response_data = result_serializer.data
+            response_data['ai_info'] = ai_info
+            
+            if workspace:
+                workspace_serializer = WorkspaceSetupSerializer(workspace)
+                response_data['workspace'] = workspace_serializer.data
+                logger.info(f"Workspace included: {workspace.total_price} RUB")
+            
+            logger.info(f"AI configuration created ID: {response_data.get('id')}, total: {ai_info.get('prices', {}).get('total', 0)} RUB")
+            return Response(response_data, status=status.HTTP_201_CREATED)
         
         except Exception as e:
             logger.exception(f"Configuration generation error: {str(e)}")

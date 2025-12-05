@@ -198,8 +198,8 @@ export interface Headset {
   connection_type: string;
   wireless: boolean;
   microphone: boolean;
-  surround_sound: boolean;
-  noise_cancellation: boolean;
+  surround: boolean;
+  noise_cancelling: boolean;
   price: string;
   created_at: string;
   updated_at: string;
@@ -237,7 +237,7 @@ export interface Desk {
   manufacturer: string;
   width: number;
   depth: number;
-  height_adjustable: boolean;
+  adjustable_height: boolean;
   material?: string;
   price: string;
   created_at: string;

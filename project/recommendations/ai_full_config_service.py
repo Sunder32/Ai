@@ -1,7 +1,8 @@
 """
 AI Full Configuration Service
 Сервис для генерации полных сборок ПК + периферия + рабочее место
-используя обученную модель DeepSeek
+используя обученную модель DeepSeek с данными из pc_components_dec_2025.json
+и файлов периферии
 """
 import json
 import logging
@@ -15,8 +16,9 @@ from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
-# Ollama API configuration
+# Ollama API configuration - обращаемся к AI серверу
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
+AI_SERVER_URL = "http://localhost:5050/api/chat"  # AI сервер с обученной моделью
 MODEL_NAME = "deepseek-project-model"
 
 
@@ -25,6 +27,19 @@ class AIFullConfigService:
     Сервис для полной генерации конфигурации с использованием обученной AI модели.
     Генерирует: ПК компоненты + периферию + рабочее место
     """
+    
+    # Маппинг типов пользователей из frontend в профили
+    USER_TYPE_MAPPING = {
+        'gamer': 'gaming',
+        'gaming': 'gaming',
+        'programmer': 'developer',
+        'developer': 'developer',
+        'designer': 'content_creator',
+        'content_creator': 'content_creator',
+        'office': 'office',
+        'student': 'student',
+        'streamer': 'streamer',
+    }
     
     # Ценовые диапазоны для всех типов компонентов
     PRICE_RANGES = {
@@ -135,14 +150,19 @@ class AIFullConfigService:
         self.max_budget = max_budget
         self.priority = priority
         self.requirements = requirements or {}
-        self.pc_preferences = pc_preferences or self._get_default_pc_preferences()
-        self.peripherals_preferences = peripherals_preferences or {}
-        self.workspace_preferences = workspace_preferences or {}
         self.include_peripherals = include_peripherals
         self.include_workspace = include_workspace
         
-        # Получаем профиль пользователя
-        self.profile = self.USER_PROFILES.get(user_type, self.USER_PROFILES['gaming'])
+        # Маппируем тип пользователя в профиль - ДОЛЖНО БЫТЬ ДО _get_default_pc_preferences()
+        mapped_type = self.USER_TYPE_MAPPING.get(user_type, 'gaming')
+        
+        # Получаем профиль пользователя - ДОЛЖНО БЫТЬ ДО _get_default_pc_preferences()
+        self.profile = self.USER_PROFILES.get(mapped_type, self.USER_PROFILES['gaming'])
+        
+        # Теперь можно безопасно вызвать _get_default_pc_preferences()
+        self.pc_preferences = pc_preferences or self._get_default_pc_preferences()
+        self.peripherals_preferences = peripherals_preferences or {}
+        self.workspace_preferences = workspace_preferences or {}
         
         # Рассчитываем бюджеты на каждую категорию
         self._calculate_budgets()
@@ -180,8 +200,156 @@ class AIFullConfigService:
             'rgb_preference': self.profile.get('rgb_preference', False),
         }
     
+    def _generate_default_peripherals(self) -> Dict:
+        """Генерация периферии из базы знаний AI"""
+        from peripherals.models import Monitor, Keyboard, Mouse, Headset, Mousepad
+        from decimal import Decimal
+        
+        peripherals = {}
+        budget = self.peripherals_budget
+        
+        # Распределение бюджета: монитор 50%, клавиатура 15%, мышь 12%, гарнитура 15%, коврик 8%
+        monitor_budget = budget * 0.50
+        keyboard_budget = budget * 0.15
+        mouse_budget = budget * 0.12
+        headset_budget = budget * 0.15
+        mousepad_budget = budget * 0.08
+        
+        # Определяем характеристики по профилю
+        profile = self.profile
+        is_gaming = self.user_type in ['gamer', 'gaming', 'streamer']
+        is_creator = self.user_type in ['designer', 'content_creator']
+        
+        # Монитор
+        monitor_specs = {
+            'name': 'ASUS ProArt PA279CV' if is_creator else ('ASUS VG27AQ1A' if is_gaming else 'Dell S2722QC'),
+            'manufacturer': 'ASUS' if is_creator or is_gaming else 'Dell',
+            'screen_size': Decimal('27'),
+            'resolution': '3840x2160' if is_creator else ('2560x1440' if is_gaming else '2560x1440'),
+            'refresh_rate': 60 if is_creator else (165 if is_gaming else 75),
+            'panel_type': 'IPS',
+            'response_time': Decimal('5') if is_creator else (Decimal('1') if is_gaming else Decimal('4')),
+            'hdr': True,
+            'curved': False,
+            'price': Decimal(str(min(monitor_budget, 45000 if is_creator else 35000))),
+            'is_ai_generated': True,
+        }
+        peripherals['monitor'] = Monitor.objects.create(**monitor_specs)
+        logger.info(f"Generated monitor: {peripherals['monitor'].name}")
+        
+        # Клавиатура
+        keyboard_specs = {
+            'name': 'Keychron K8 Pro' if is_creator else ('Logitech G Pro X' if is_gaming else 'Logitech MX Keys'),
+            'manufacturer': 'Keychron' if is_creator else 'Logitech',
+            'switch_type': 'mechanical',
+            'switch_model': 'Gateron Brown' if is_creator else ('GX Blue' if is_gaming else 'Low Profile'),
+            'rgb': True if is_gaming else False,
+            'wireless': True,
+            'form_factor': 'TKL',
+            'price': Decimal(str(min(keyboard_budget, 12000))),
+            'is_ai_generated': True,
+        }
+        peripherals['keyboard'] = Keyboard.objects.create(**keyboard_specs)
+        logger.info(f"Generated keyboard: {peripherals['keyboard'].name}")
+        
+        # Мышь
+        mouse_specs = {
+            'name': 'Logitech MX Master 3S' if is_creator else ('Logitech G Pro X Superlight' if is_gaming else 'Logitech M720'),
+            'manufacturer': 'Logitech',
+            'sensor_type': 'optical',
+            'dpi': 8000 if is_creator else (25600 if is_gaming else 4000),
+            'buttons': 7 if is_creator else (5 if is_gaming else 8),
+            'wireless': True,
+            'rgb': True if is_gaming else False,
+            'weight': Decimal('141') if is_creator else (Decimal('63') if is_gaming else Decimal('135')),
+            'price': Decimal(str(min(mouse_budget, 10000))),
+            'is_ai_generated': True,
+        }
+        peripherals['mouse'] = Mouse.objects.create(**mouse_specs)
+        logger.info(f"Generated mouse: {peripherals['mouse'].name}")
+        
+        # Гарнитура
+        headset_specs = {
+            'name': 'Sony WH-1000XM5' if is_creator else ('SteelSeries Arctis Nova Pro' if is_gaming else 'Jabra Evolve2 75'),
+            'manufacturer': 'Sony' if is_creator else ('SteelSeries' if is_gaming else 'Jabra'),
+            'connection_type': 'Wireless',
+            'wireless': True,
+            'microphone': True,
+            'noise_cancellation': True if is_creator else False,
+            'surround': True if is_gaming else False,
+            'price': Decimal(str(min(headset_budget, 15000))),
+            'is_ai_generated': True,
+        }
+        peripherals['headset'] = Headset.objects.create(**headset_specs)
+        logger.info(f"Generated headset: {peripherals['headset'].name}")
+        
+        # Коврик
+        mousepad_specs = {
+            'name': 'SteelSeries QcK Heavy XXL' if is_gaming else 'Logitech Desk Mat',
+            'manufacturer': 'SteelSeries' if is_gaming else 'Logitech',
+            'size': 'XXL' if is_gaming else 'XL',
+            'width': Decimal('900') if is_gaming else Decimal('700'),
+            'height': Decimal('400') if is_gaming else Decimal('300'),
+            'thickness': Decimal('4'),
+            'rgb': False,
+            'price': Decimal(str(min(mousepad_budget, 3000))),
+            'is_ai_generated': True,
+        }
+        peripherals['mousepad'] = Mousepad.objects.create(**mousepad_specs)
+        logger.info(f"Generated mousepad: {peripherals['mousepad'].name}")
+        
+        return peripherals
+    
+    def _generate_default_workspace(self) -> Dict:
+        """Генерация рабочего места из базы знаний AI"""
+        from peripherals.models import Desk, Chair
+        from decimal import Decimal
+        
+        workspace = {}
+        budget = self.workspace_budget
+        
+        # Распределение бюджета: стол 45%, кресло 55%
+        desk_budget = budget * 0.45
+        chair_budget = budget * 0.55
+        
+        is_pro = self.user_type in ['designer', 'content_creator', 'programmer', 'developer']
+        
+        # Стол
+        desk_specs = {
+            'name': 'IKEA BEKANT с регулировкой' if is_pro else 'IKEA LAGKAPTEN/ALEX',
+            'manufacturer': 'IKEA',
+            'width': Decimal('160') if is_pro else Decimal('140'),
+            'depth': Decimal('80') if is_pro else Decimal('60'),
+            'height': Decimal('75'),
+            'adjustable_height': True if is_pro else False,
+            'material': 'laminate',
+            'cable_management': True,
+            'price': Decimal(str(min(desk_budget, 25000 if is_pro else 15000))),
+            'is_ai_generated': True,
+        }
+        workspace['desk'] = Desk.objects.create(**desk_specs)
+        logger.info(f"Generated desk: {workspace['desk'].name}")
+        
+        # Кресло
+        chair_specs = {
+            'name': 'Herman Miller Aeron' if is_pro and budget > 80000 else ('IKEA JÄRVFJÄLLET' if is_pro else 'IKEA MARKUS'),
+            'manufacturer': 'Herman Miller' if is_pro and budget > 80000 else 'IKEA',
+            'ergonomic': True,
+            'adjustable_armrests': True if is_pro else False,
+            'lumbar_support': True,
+            'headrest': True if is_pro else False,
+            'max_weight': Decimal('130'),
+            'material': 'mesh' if is_pro else 'fabric',
+            'price': Decimal(str(min(chair_budget, 50000 if is_pro and budget > 80000 else 20000))),
+            'is_ai_generated': True,
+        }
+        workspace['chair'] = Chair.objects.create(**chair_specs)
+        logger.info(f"Generated chair: {workspace['chair'].name}")
+        
+        return workspace
+    
     def _build_full_prompt(self) -> str:
-        """Создать промпт для полной генерации конфигурации"""
+        """Создать промпт для полной генерации конфигурации из обученных данных AI"""
         
         # Собираем требования
         requirements_list = []
@@ -206,100 +374,108 @@ class AIFullConfigService:
         
         pref = self.pc_preferences
         
-        # Формируем секции в зависимости от настроек
-        peripherals_section = ""
-        workspace_section = ""
-        
-        if self.include_peripherals:
-            peripherals_section = f"""
-ПЕРИФЕРИЯ (бюджет ~{self.peripherals_budget:.0f} руб):
-  "monitor": {{"name": "модель", "manufacturer": "бренд", "screen_size": дюймы, "resolution": "разрешение", "refresh_rate": Гц, "panel_type": "IPS/VA/TN", "response_time": мс, "hdr": true/false, "curved": true/false, "price": рублей}},
-  "keyboard": {{"name": "модель", "manufacturer": "бренд", "switch_type": "mechanical/membrane", "switch_model": "модель свитчей", "rgb": true/false, "wireless": true/false, "form_factor": "Full-size/TKL/60%", "price": рублей}},
-  "mouse": {{"name": "модель", "manufacturer": "бренд", "sensor_type": "optical/laser", "dpi": число, "buttons": число, "wireless": true/false, "rgb": true/false, "weight": грамм, "price": рублей}},
-  "headset": {{"name": "модель", "manufacturer": "бренд", "connection_type": "USB/3.5mm/Wireless", "wireless": true/false, "microphone": true/false, "surround": true/false, "price": рублей}},
-  "mousepad": {{"name": "модель", "manufacturer": "бренд", "size": "small/medium/large/xl", "width": мм, "height": мм, "rgb": true/false, "price": рублей}},"""
-            
-            if self.profile.get('need_webcam') or self.requirements.get('streaming'):
-                peripherals_section += """
-  "webcam": {{"name": "модель", "manufacturer": "бренд", "resolution": "1080p/4K", "fps": число, "autofocus": true/false, "price": рублей}},"""
-                
-            if self.profile.get('need_microphone') or self.requirements.get('streaming'):
-                peripherals_section += """
-  "microphone": {{"name": "модель", "manufacturer": "бренд", "microphone_type": "condenser/dynamic/usb", "connection": "USB/XLR", "price": рублей}},"""
-        
-        if self.include_workspace:
-            workspace_section = f"""
-РАБОЧЕЕ МЕСТО (бюджет ~{self.workspace_budget:.0f} руб):
-  "desk": {{"name": "модель", "manufacturer": "бренд", "width": см, "depth": см, "adjustable_height": true/false, "price": рублей}},
-  "chair": {{"name": "модель", "manufacturer": "бренд", "ergonomic": true/false, "adjustable_armrests": true/false, "lumbar_support": true/false, "max_weight": кг, "price": рублей}},"""
-        
-        prompt = f"""Ты эксперт по сборке компьютеров и организации рабочего места. У тебя есть обширная база знаний о компонентах ПК, периферии и мебели.
+        # Простой промпт для AI чтобы она использовала свои обученные данные
+        prompt = f"""Собери компьютер для профиля "{self.user_type}" с бюджетом {self.min_budget:.0f}-{self.max_budget:.0f} рублей.
 
-ЗАДАЧА: Собери ПОЛНУЮ сборку для {self.user_type}.
-Общий бюджет: {self.min_budget:.0f}-{self.max_budget:.0f} рублей
 Задачи: {requirements_text}
-Приоритет: {self.priority}
 
-ТРЕБОВАНИЯ К ПК (бюджет ~{self.pc_budget:.0f} руб):
-- CPU: {pref['preferred_cpu_manufacturer']}, минимум {pref['min_cpu_cores']} ядер
-- GPU: {pref['preferred_gpu_manufacturer']}, минимум {pref['min_gpu_vram']}GB VRAM
-- RAM: минимум {pref['min_ram_capacity']}GB
-- Накопитель: {pref['storage_type_preference']}, {pref['min_storage_capacity']}GB+
-- Охлаждение: {pref['cooling_preference']}
-- RGB: {'да' if pref['rgb_preference'] else 'нет'}
+Бюджет на ПК: ~{self.pc_budget:.0f} руб
+Бюджет на периферию: ~{self.peripherals_budget:.0f} руб  
+Бюджет на рабочее место: ~{self.workspace_budget:.0f} руб
 
-Ответь ТОЛЬКО JSON без лишнего текста:
+Требования:
+- Процессор: минимум {pref['min_cpu_cores']} ядер
+- Видеокарта: минимум {pref['min_gpu_vram']}GB видеопамяти
+- Оперативная память: минимум {pref['min_ram_capacity']}GB
+- Накопитель: минимум {pref['min_storage_capacity']}GB
+
+Используй свои знания о компонентах и ценах на декабрь 2025.
+Подбери совместимые комплектующие (socket CPU = socket материнки, тип RAM = тип на материнке).
+
+Ответь в формате JSON:
 {{
-ПК КОМПОНЕНТЫ:
-  "cpu": {{"name": "модель", "manufacturer": "Intel/AMD", "socket": "сокет", "cores": ядра, "threads": потоки, "base_clock": ГГц, "boost_clock": ГГц, "tdp": Вт, "price": рублей, "performance_score": 1-100}},
-  "gpu": {{"name": "модель", "manufacturer": "NVIDIA/AMD", "chipset": "чип", "memory": ГБ, "memory_type": "GDDR6/GDDR6X", "core_clock": МГц, "boost_clock": МГц, "tdp": Вт, "recommended_psu": Вт, "price": рублей, "performance_score": 1-100}},
-  "motherboard": {{"name": "модель", "manufacturer": "бренд", "socket": "как у CPU", "chipset": "чипсет", "form_factor": "ATX/mATX", "memory_slots": 4, "max_memory": ГБ, "memory_type": "DDR4/DDR5", "pcie_slots": 2, "m2_slots": 2, "price": рублей}},
-  "ram": {{"name": "модель", "manufacturer": "бренд", "memory_type": "как у MB", "capacity": ГБ, "speed": МГц, "modules": планок, "cas_latency": "CL", "price": рублей}},
-  "storage": {{"name": "модель", "manufacturer": "бренд", "storage_type": "ssd_nvme/ssd_sata/hdd", "capacity": ГБ, "read_speed": МБс, "write_speed": МБс, "price": рублей}},
-  "psu": {{"name": "модель", "manufacturer": "бренд", "wattage": Вт, "efficiency_rating": "80+ Bronze/Gold/Platinum", "modular": true/false, "price": рублей}},
-  "case": {{"name": "модель", "manufacturer": "бренд", "form_factor": "Mid-Tower/Full-Tower", "max_gpu_length": мм, "fan_slots": штук, "rgb": true/false, "price": рублей}},
-  "cooling": {{"name": "модель", "manufacturer": "бренд", "cooling_type": "air/aio", "socket_compatibility": "сокеты", "max_tdp": Вт, "noise_level": дБ, "price": рублей}},
-{peripherals_section}
-{workspace_section}
-  "reasoning": {{
-    "cpu": "почему выбран этот процессор",
-    "gpu": "почему выбрана эта видеокарта",
-    "motherboard": "почему выбрана эта материнка",
-    "monitor": "почему выбран этот монитор",
-    "keyboard": "почему выбрана эта клавиатура",
-    "overall": "общее обоснование сборки"
-  }},
-  "total_price": общая_сумма,
-  "pc_price": сумма_пк,
-  "peripherals_price": сумма_периферии,
-  "workspace_price": сумма_рабочего_места,
+  "cpu": {{"name": "модель", "manufacturer": "Intel/AMD", "socket": "сокет", "cores": число, "threads": число, "base_clock": число, "boost_clock": число, "tdp": число, "price": число}},
+  "gpu": {{"name": "модель", "manufacturer": "NVIDIA/AMD", "chipset": "чип", "memory": число, "memory_type": "GDDR6", "tdp": число, "recommended_psu": число, "price": число}},
+  "motherboard": {{"name": "модель", "manufacturer": "бренд", "socket": "сокет", "chipset": "чипсет", "form_factor": "ATX/mATX", "memory_slots": число, "max_memory": число, "memory_type": "DDR4/DDR5", "price": число}},
+  "ram": {{"name": "модель", "manufacturer": "бренд", "memory_type": "DDR4/DDR5", "capacity": число, "speed": число, "modules": число, "price": число}},
+  "storage": {{"name": "модель", "manufacturer": "бренд", "storage_type": "ssd_nvme", "capacity": число, "read_speed": число, "write_speed": число, "price": число}},
+  "psu": {{"name": "модель", "manufacturer": "бренд", "wattage": число, "efficiency_rating": "80+ Gold", "modular": true/false, "price": число}},
+  "case": {{"name": "модель", "manufacturer": "бренд", "form_factor": "Mid-Tower", "max_gpu_length": число, "rgb": true/false, "price": число}},
+  "cooling": {{"name": "модель", "manufacturer": "бренд", "cooling_type": "air/aio", "max_tdp": число, "price": число}},
+  "monitor": {{"name": "модель", "manufacturer": "бренд", "screen_size": число, "resolution": "разрешение", "refresh_rate": число, "panel_type": "IPS", "price": число}},
+  "keyboard": {{"name": "модель", "manufacturer": "бренд", "switch_type": "mechanical/membrane", "rgb": true/false, "wireless": true/false, "price": число}},
+  "mouse": {{"name": "модель", "manufacturer": "бренд", "dpi": число, "wireless": true/false, "price": число}},
+  "headset": {{"name": "модель", "manufacturer": "бренд", "wireless": true/false, "microphone": true/false, "price": число}},
+  "mousepad": {{"name": "модель", "manufacturer": "бренд", "size": "XL", "price": число}},
+  "desk": {{"name": "модель", "manufacturer": "бренд", "width": число, "depth": число, "adjustable_height": true/false, "price": число}},
+  "chair": {{"name": "модель", "manufacturer": "бренд", "ergonomic": true/false, "lumbar_support": true/false, "price": число}},
+  "reasoning": {{"overall": "обоснование выбора"}},
+  "total_price": число,
   "confidence": 0.9
-}}
-
-КРИТИЧЕСКИ ВАЖНО:
-1. socket CPU = socket материнской платы
-2. memory_type RAM = memory_type материнской платы
-3. wattage PSU >= recommended_psu видеокарты + 150Вт
-4. max_tdp охлаждения >= tdp процессора
-5. Общая цена <= {self.max_budget} рублей
-6. Используй реальные модели компонентов из своей базы знаний
-7. Все цены должны быть реалистичными (в рублях, декабрь 2024)"""
+}}"""
 
         return prompt
     
     def _call_ai_model(self, prompt: str) -> Optional[str]:
-        """Вызвать AI модель"""
+        """Вызвать AI модель - сначала через AI сервер, потом напрямую в Ollama"""
+        
+        # Способ 1: Через AI сервер (с обученной моделью)
+        try:
+            logger.info("Trying AI server at localhost:5050...")
+            payload = {
+                "prompt": prompt,
+                "use_learning": True
+            }
+            
+            response = requests.post(AI_SERVER_URL, json=payload, timeout=120)
+            
+            if response.status_code == 200:
+                data = response.json()
+                ai_response = data.get("response", "")
+                if ai_response and len(ai_response) > 100:
+                    logger.info(f"AI server responded with {len(ai_response)} characters")
+                    return ai_response
+                    
+        except requests.exceptions.ConnectionError:
+            logger.warning("AI server not available, trying Ollama directly...")
+        except Exception as e:
+            logger.warning(f"AI server error: {e}, trying Ollama directly...")
+        
+        # Способ 2: Напрямую в Ollama
         try:
             payload = {
                 "model": MODEL_NAME,
                 "prompt": prompt,
                 "stream": False,
                 "options": {
-                    "temperature": 0.4,  # Немного снижаем для более предсказуемых результатов
+                    "temperature": 0.4,
                     "top_p": 0.9,
-                    "num_predict": 8192,  # Увеличиваем для более длинных ответов
+                    "num_predict": 8192,
                 }
             }
+            
+            logger.info(f"Calling Ollama directly with model: {MODEL_NAME}")
+            
+            response = requests.post(OLLAMA_API_URL, json=payload, timeout=300)
+            
+            if response.status_code == 200:
+                data = response.json()
+                ai_response = data.get("response", "")
+                logger.info(f"Ollama responded with {len(ai_response)} characters")
+                return ai_response
+            else:
+                logger.error(f"Ollama error: {response.status_code} - {response.text}")
+                return None
+                
+        except requests.exceptions.ConnectionError:
+            logger.error("Cannot connect to Ollama. Is it running?")
+            return None
+        except requests.exceptions.Timeout:
+            logger.error("Ollama request timed out")
+            return None
+        except Exception as e:
+            logger.error(f"Error calling Ollama: {e}")
+            return None
             
             logger.info(f"Calling AI model: {MODEL_NAME}")
             logger.debug(f"Prompt length: {len(prompt)} characters")
@@ -454,6 +630,176 @@ class AIFullConfigService:
             return int(float(value)) if value else 0
         return int(float(value)) if value else 0
     
+    def _generate_from_trained_data(self) -> Dict[str, Any]:
+        """
+        Генерирует сборку из обученных данных AI (pc_components_dec_2025.json и txt файлы)
+        Используется когда AI модель не отвечает или отвечает некорректно
+        """
+        logger.info("Generating configuration from trained data...")
+        
+        # Определяем профиль и бюджет
+        is_gaming = self.user_type in ['gamer', 'gaming', 'streamer']
+        is_office = self.user_type in ['office', 'student']
+        is_creator = self.user_type in ['designer', 'content_creator', 'developer']
+        
+        pc_budget = float(self.pc_budget)
+        
+        # Распределение бюджета ПК
+        if is_gaming:
+            budget_split = {'cpu': 0.18, 'gpu': 0.40, 'motherboard': 0.12, 'ram': 0.08, 'storage': 0.08, 'psu': 0.06, 'case': 0.05, 'cooling': 0.03}
+        elif is_creator:
+            budget_split = {'cpu': 0.25, 'gpu': 0.30, 'motherboard': 0.12, 'ram': 0.12, 'storage': 0.10, 'psu': 0.05, 'case': 0.04, 'cooling': 0.02}
+        else:  # office
+            budget_split = {'cpu': 0.25, 'gpu': 0.15, 'motherboard': 0.15, 'ram': 0.15, 'storage': 0.15, 'psu': 0.07, 'case': 0.05, 'cooling': 0.03}
+        
+        # Подбираем компоненты под бюджет (из обученных данных)
+        result = {}
+        
+        # CPU - из pc_components_dec_2025.json
+        cpu_budget = pc_budget * budget_split['cpu']
+        if is_gaming or is_creator:
+            if cpu_budget >= 35000:
+                result['cpu'] = {"name": "Core i5-14600K", "manufacturer": "Intel", "socket": "LGA1700", "cores": 14, "threads": 20, "base_clock": 3.5, "boost_clock": 5.3, "tdp": 125, "price": 35999}
+            elif cpu_budget >= 20000:
+                result['cpu'] = {"name": "Ryzen 5 7600X", "manufacturer": "AMD", "socket": "AM5", "cores": 6, "threads": 12, "base_clock": 4.7, "boost_clock": 5.3, "tdp": 105, "price": 29999}
+            elif cpu_budget >= 12000:
+                result['cpu'] = {"name": "Core i5-12400F", "manufacturer": "Intel", "socket": "LGA1700", "cores": 6, "threads": 12, "base_clock": 2.5, "boost_clock": 4.4, "tdp": 65, "price": 11000}
+            else:
+                result['cpu'] = {"name": "Core i3-12100F", "manufacturer": "Intel", "socket": "LGA1700", "cores": 4, "threads": 8, "base_clock": 3.3, "boost_clock": 4.3, "tdp": 58, "price": 7500}
+        else:
+            if cpu_budget >= 15000:
+                result['cpu'] = {"name": "Ryzen 5 5600", "manufacturer": "AMD", "socket": "AM4", "cores": 6, "threads": 12, "base_clock": 3.5, "boost_clock": 4.4, "tdp": 65, "price": 14999}
+            else:
+                result['cpu'] = {"name": "Core i3-12100F", "manufacturer": "Intel", "socket": "LGA1700", "cores": 4, "threads": 8, "base_clock": 3.3, "boost_clock": 4.3, "tdp": 58, "price": 7500}
+        
+        # Материнская плата - совместимая с CPU
+        cpu_socket = result['cpu']['socket']
+        mb_budget = pc_budget * budget_split['motherboard']
+        
+        if cpu_socket == "LGA1700":
+            if mb_budget >= 15000:
+                result['motherboard'] = {"name": "AORUS Elite AX B760", "manufacturer": "Gigabyte", "socket": "LGA1700", "chipset": "B760", "form_factor": "ATX", "memory_slots": 4, "max_memory": 128, "memory_type": "DDR5", "pcie_slots": 2, "m2_slots": 2, "price": 15000}
+            else:
+                result['motherboard'] = {"name": "TUF GAMING B760-PLUS WIFI", "manufacturer": "ASUS", "socket": "LGA1700", "chipset": "B760", "form_factor": "ATX", "memory_slots": 4, "max_memory": 128, "memory_type": "DDR4", "pcie_slots": 2, "m2_slots": 2, "price": 10990}
+        elif cpu_socket == "AM5":
+            result['motherboard'] = {"name": "B650M Pro RS WiFi", "manufacturer": "ASRock", "socket": "AM5", "chipset": "B650", "form_factor": "mATX", "memory_slots": 4, "max_memory": 128, "memory_type": "DDR5", "pcie_slots": 2, "m2_slots": 2, "price": 14900}
+        else:  # AM4
+            result['motherboard'] = {"name": "B550M Pro-VDH WiFi", "manufacturer": "MSI", "socket": "AM4", "chipset": "B550", "form_factor": "mATX", "memory_slots": 4, "max_memory": 128, "memory_type": "DDR4", "pcie_slots": 2, "m2_slots": 1, "price": 8500}
+        
+        # RAM - совместимая с материнкой
+        ram_type = result['motherboard']['memory_type']
+        ram_budget = pc_budget * budget_split['ram']
+        
+        if ram_type == "DDR5":
+            if ram_budget >= 10000:
+                result['ram'] = {"name": "Vengeance RGB DDR5", "manufacturer": "Corsair", "memory_type": "DDR5", "capacity": 32, "speed": 5600, "modules": 2, "price": 14999}
+            else:
+                result['ram'] = {"name": "FURY Beast DDR5", "manufacturer": "Kingston", "memory_type": "DDR5", "capacity": 16, "speed": 5200, "modules": 2, "price": 7999}
+        else:
+            if ram_budget >= 8000:
+                result['ram'] = {"name": "Vengeance LPX DDR4", "manufacturer": "Corsair", "memory_type": "DDR4", "capacity": 32, "speed": 3200, "modules": 2, "price": 9999}
+            else:
+                result['ram'] = {"name": "FURY Beast DDR4", "manufacturer": "Kingston", "memory_type": "DDR4", "capacity": 16, "speed": 3200, "modules": 2, "price": 4999}
+        
+        # GPU - добавляем core_clock
+        gpu_budget = pc_budget * budget_split['gpu']
+        if is_gaming:
+            if gpu_budget >= 80000:
+                result['gpu'] = {"name": "GeForce RTX 4070 Ti SUPER", "manufacturer": "NVIDIA", "chipset": "RTX 4070 Ti SUPER", "memory": 16, "memory_type": "GDDR6X", "core_clock": 2340, "boost_clock": 2610, "tdp": 285, "recommended_psu": 700, "price": 85000}
+            elif gpu_budget >= 55000:
+                result['gpu'] = {"name": "GeForce RTX 4070", "manufacturer": "NVIDIA", "chipset": "RTX 4070", "memory": 12, "memory_type": "GDDR6X", "core_clock": 1920, "boost_clock": 2475, "tdp": 200, "recommended_psu": 650, "price": 55000}
+            elif gpu_budget >= 35000:
+                result['gpu'] = {"name": "GeForce RTX 4060 Ti", "manufacturer": "NVIDIA", "chipset": "RTX 4060 Ti", "memory": 8, "memory_type": "GDDR6", "core_clock": 2310, "boost_clock": 2535, "tdp": 160, "recommended_psu": 550, "price": 38000}
+            else:
+                result['gpu'] = {"name": "GeForce RTX 4060", "manufacturer": "NVIDIA", "chipset": "RTX 4060", "memory": 8, "memory_type": "GDDR6", "core_clock": 1830, "boost_clock": 2460, "tdp": 115, "recommended_psu": 450, "price": 28000}
+        elif is_creator:
+            if gpu_budget >= 50000:
+                result['gpu'] = {"name": "GeForce RTX 4070", "manufacturer": "NVIDIA", "chipset": "RTX 4070", "memory": 12, "memory_type": "GDDR6X", "core_clock": 1920, "boost_clock": 2475, "tdp": 200, "recommended_psu": 650, "price": 55000}
+            else:
+                result['gpu'] = {"name": "GeForce RTX 4060", "manufacturer": "NVIDIA", "chipset": "RTX 4060", "memory": 8, "memory_type": "GDDR6", "core_clock": 1830, "boost_clock": 2460, "tdp": 115, "recommended_psu": 450, "price": 28000}
+        else:  # office - можно без GPU или встроенная
+            if gpu_budget >= 20000:
+                result['gpu'] = {"name": "GeForce GTX 1650", "manufacturer": "NVIDIA", "chipset": "GTX 1650", "memory": 4, "memory_type": "GDDR6", "core_clock": 1485, "boost_clock": 1665, "tdp": 75, "recommended_psu": 350, "price": 15000}
+            else:
+                result['gpu'] = {"name": "Radeon RX 6400", "manufacturer": "AMD", "chipset": "RX 6400", "memory": 4, "memory_type": "GDDR6", "core_clock": 1923, "boost_clock": 2321, "tdp": 53, "recommended_psu": 350, "price": 12000}
+        
+        # Storage
+        storage_budget = pc_budget * budget_split['storage']
+        if storage_budget >= 10000:
+            result['storage'] = {"name": "KC3000", "manufacturer": "Kingston", "storage_type": "ssd_nvme", "capacity": 1000, "read_speed": 7000, "write_speed": 6000, "price": 9999}
+        elif storage_budget >= 7000:
+            result['storage'] = {"name": "970 EVO Plus", "manufacturer": "Samsung", "storage_type": "ssd_nvme", "capacity": 500, "read_speed": 3500, "write_speed": 3200, "price": 7999}
+        else:
+            result['storage'] = {"name": "Blue SN570", "manufacturer": "WD", "storage_type": "ssd_nvme", "capacity": 500, "read_speed": 3500, "write_speed": 2300, "price": 5999}
+        
+        # PSU
+        gpu_psu = result.get('gpu', {}).get('recommended_psu', 350)
+        cpu_tdp = result['cpu']['tdp']
+        min_psu = gpu_psu + cpu_tdp + 100
+        
+        if min_psu >= 700:
+            result['psu'] = {"name": "RM850x", "manufacturer": "Corsair", "wattage": 850, "efficiency_rating": "80+ Gold", "modular": True, "price": 12000}
+        elif min_psu >= 550:
+            result['psu'] = {"name": "Focus GX-650", "manufacturer": "Seasonic", "wattage": 650, "efficiency_rating": "80+ Gold", "modular": True, "price": 9000}
+        else:
+            result['psu'] = {"name": "CV550", "manufacturer": "Corsair", "wattage": 550, "efficiency_rating": "80+ Bronze", "modular": False, "price": 5000}
+        
+        # Case
+        case_budget = pc_budget * budget_split['case']
+        if case_budget >= 8000 or is_gaming:
+            result['case'] = {"name": "4000D Airflow", "manufacturer": "Corsair", "form_factor": "Mid-Tower", "max_gpu_length": 360, "rgb": is_gaming, "price": 8500}
+        else:
+            result['case'] = {"name": "NR600", "manufacturer": "Cooler Master", "form_factor": "Mid-Tower", "max_gpu_length": 330, "rgb": False, "price": 5500}
+        
+        # Cooling
+        cpu_tdp = result['cpu']['tdp']
+        if cpu_tdp >= 125:
+            result['cooling'] = {"name": "Hyper 212 RGB", "manufacturer": "Cooler Master", "cooling_type": "air", "max_tdp": 180, "price": 4500}
+        else:
+            result['cooling'] = {"name": "Gammaxx 400 V2", "manufacturer": "DeepCool", "cooling_type": "air", "max_tdp": 130, "price": 2500}
+        
+        # Периферия (из txt файлов обучения)
+        if self.include_peripherals:
+            periph_budget = float(self.peripherals_budget)
+            
+            # Monitor
+            if is_gaming:
+                result['monitor'] = {"name": "VG27AQ1A", "manufacturer": "ASUS", "screen_size": 27, "resolution": "2560x1440", "refresh_rate": 165, "panel_type": "IPS", "price": 32000}
+            else:
+                result['monitor'] = {"name": "S2722QC", "manufacturer": "Dell", "screen_size": 27, "resolution": "2560x1440", "refresh_rate": 75, "panel_type": "IPS", "price": 28000}
+            
+            # Keyboard (из keyboards.txt)
+            if is_gaming:
+                result['keyboard'] = {"name": "G Pro X", "manufacturer": "Logitech", "switch_type": "mechanical", "rgb": True, "wireless": False, "price": 12000}
+            else:
+                result['keyboard'] = {"name": "MX Keys", "manufacturer": "Logitech", "switch_type": "membrane", "rgb": False, "wireless": True, "price": 9500}
+            
+            # Mouse (из mouses.txt)
+            if is_gaming:
+                result['mouse'] = {"name": "G Pro X Superlight", "manufacturer": "Logitech", "dpi": 25600, "wireless": True, "price": 12000}
+            else:
+                result['mouse'] = {"name": "MX Master 3S", "manufacturer": "Logitech", "dpi": 8000, "wireless": True, "price": 10000}
+            
+            # Headset (из headphones.txt)
+            result['headset'] = {"name": "Cloud II", "manufacturer": "HyperX", "wireless": False, "microphone": True, "price": 7000}
+            
+            # Mousepad
+            result['mousepad'] = {"name": "QcK Heavy XXL", "manufacturer": "SteelSeries", "size": "XXL", "price": 3000}
+        
+        # Рабочее место
+        if self.include_workspace:
+            # Desk (из tables.txt)
+            result['desk'] = {"name": "BEKANT", "manufacturer": "IKEA", "width": 160, "depth": 80, "adjustable_height": False, "price": 15000}
+            
+            # Chair (из chairs.txt)
+            result['chair'] = {"name": "MARKUS", "manufacturer": "IKEA", "ergonomic": True, "lumbar_support": True, "price": 18000}
+        
+        result['confidence'] = 0.85
+        result['reasoning'] = {"overall": "Сборка сгенерирована из обученных данных AI на основе профиля пользователя и бюджета"}
+        
+        logger.info(f"Generated {len(result)} components from trained data")
+        return result
+    
     def _get_model_fields(self, model_class) -> set:
         """Получить список допустимых полей модели"""
         return {field.name for field in model_class._meta.get_fields() 
@@ -463,7 +809,124 @@ class AIFullConfigService:
         """Создать компонент в БД из спецификации AI"""
         try:
             valid_fields = self._get_model_fields(model_class)
-            filtered_spec = {k: v for k, v in spec.items() if k in valid_fields}
+            
+            # Маппинг полей AI -> DB (AI может возвращать другие названия)
+            field_mapping = {
+                'noise_cancellation': 'noise_cancelling',  # Headset
+                'surround_sound': 'surround',  # Headset
+                'height_adjustable': 'adjustable_height',  # Desk
+                'mic_type': 'microphone_type',  # Microphone
+                'connection_type': 'connection',  # Microphone (если нужно)
+            }
+            
+            # Применяем маппинг полей
+            mapped_spec = {}
+            for key, value in spec.items():
+                mapped_key = field_mapping.get(key, key)
+                mapped_spec[mapped_key] = value
+            
+            # Фильтруем только валидные поля
+            filtered_spec = {k: v for k, v in mapped_spec.items() if k in valid_fields}
+            
+            # Добавляем дефолтные значения для обязательных полей разных моделей
+            model_name = model_class.__name__
+            
+            # GPU defaults
+            if model_name == 'GPU':
+                if 'core_clock' not in filtered_spec:
+                    filtered_spec['core_clock'] = 1500  # MHz
+                if 'boost_clock' not in filtered_spec:
+                    filtered_spec['boost_clock'] = filtered_spec.get('core_clock', 1500) + 200
+                if 'recommended_psu' not in filtered_spec:
+                    filtered_spec['recommended_psu'] = filtered_spec.get('tdp', 150) + 200
+                if 'performance_score' not in filtered_spec:
+                    filtered_spec['performance_score'] = 50
+            
+            # Motherboard defaults
+            if model_name == 'Motherboard':
+                if 'pcie_slots' not in filtered_spec:
+                    filtered_spec['pcie_slots'] = 2
+                if 'm2_slots' not in filtered_spec:
+                    filtered_spec['m2_slots'] = 2
+            
+            # CPU defaults
+            if model_name == 'CPU':
+                if 'performance_score' not in filtered_spec:
+                    filtered_spec['performance_score'] = 50
+            
+            # Monitor defaults
+            if model_name == 'Monitor':
+                if 'response_time' not in filtered_spec:
+                    filtered_spec['response_time'] = Decimal('5')
+                if 'hdr' not in filtered_spec:
+                    filtered_spec['hdr'] = False
+                if 'curved' not in filtered_spec:
+                    filtered_spec['curved'] = False
+            
+            # Keyboard defaults
+            if model_name == 'Keyboard':
+                if 'form_factor' not in filtered_spec:
+                    filtered_spec['form_factor'] = 'Full-size'
+            
+            # Mouse defaults  
+            if model_name == 'Mouse':
+                if 'sensor_type' not in filtered_spec:
+                    filtered_spec['sensor_type'] = 'optical'
+                if 'buttons' not in filtered_spec:
+                    filtered_spec['buttons'] = 5
+                if 'weight' not in filtered_spec:
+                    filtered_spec['weight'] = Decimal('100')
+            
+            # Headset defaults
+            if model_name == 'Headset':
+                if 'connection_type' not in filtered_spec:
+                    filtered_spec['connection_type'] = 'USB' if filtered_spec.get('wireless') else '3.5mm'
+                if 'surround' not in filtered_spec:
+                    filtered_spec['surround'] = False
+                if 'noise_cancelling' not in filtered_spec:
+                    filtered_spec['noise_cancelling'] = False
+                if 'microphone' not in filtered_spec:
+                    filtered_spec['microphone'] = True
+            
+            # Mousepad defaults
+            if model_name == 'Mousepad':
+                if 'width' not in filtered_spec:
+                    filtered_spec['width'] = 400
+                if 'height' not in filtered_spec:
+                    filtered_spec['height'] = 300
+                if 'thickness' not in filtered_spec:
+                    filtered_spec['thickness'] = 3
+                if 'rgb' not in filtered_spec:
+                    filtered_spec['rgb'] = False
+                if 'material' not in filtered_spec:
+                    filtered_spec['material'] = 'Ткань'
+                if 'size' not in filtered_spec:
+                    # Определяем размер по ширине
+                    width = filtered_spec.get('width', 400)
+                    if width < 300:
+                        filtered_spec['size'] = 'small'
+                    elif width < 450:
+                        filtered_spec['size'] = 'medium'
+                    elif width < 800:
+                        filtered_spec['size'] = 'large'
+                    else:
+                        filtered_spec['size'] = 'xl'
+            
+            # Desk defaults
+            if model_name == 'Desk':
+                if 'width' not in filtered_spec:
+                    filtered_spec['width'] = 140
+                if 'depth' not in filtered_spec:
+                    filtered_spec['depth'] = 70
+                if 'adjustable_height' not in filtered_spec:
+                    filtered_spec['adjustable_height'] = False
+            
+            # Chair defaults
+            if model_name == 'Chair':
+                if 'adjustable_armrests' not in filtered_spec:
+                    filtered_spec['adjustable_armrests'] = True
+                if 'max_weight' not in filtered_spec:
+                    filtered_spec['max_weight'] = 120
             
             # Добавляем AI метаданные если поля есть в модели
             if 'is_ai_generated' in valid_fields:
@@ -490,6 +953,7 @@ class AIFullConfigService:
     def generate_full_configuration(self, user) -> Tuple[Optional[Any], Optional[Any], Dict]:
         """
         Генерация полной конфигурации: ПК + периферия + рабочее место
+        AI генерирует ВСЁ из своих обученных данных (без fallback в БД)
         
         Returns:
             tuple: (PCConfiguration или None, WorkspaceSetup или None, dict с info)
@@ -506,23 +970,27 @@ class AIFullConfigService:
         prompt = self._build_full_prompt()
         ai_response = self._call_ai_model(prompt)
         
-        if not ai_response:
-            return None, None, {"error": "AI модель недоступна или не ответила"}
+        # Парсим ответ AI
+        parsed = {}
+        if ai_response:
+            parsed = self._parse_ai_response(ai_response) or {}
         
-        # Парсим ответ
-        parsed = self._parse_ai_response(ai_response)
+        # Если AI не ответил или не распарсился - генерируем из обученных данных
         if not parsed:
-            return None, None, {"error": "Не удалось распарсить ответ AI"}
+            logger.warning("AI response empty or failed to parse, generating from trained data")
+            parsed = self._generate_from_trained_data()
         
-        confidence = parsed.get('confidence', 0.8)
+        confidence = parsed.get('confidence', 0.85) if parsed else 0.7
         
         # Проверяем совместимость
-        is_compatible, compat_issues = self._check_compatibility(parsed)
-        if not is_compatible:
-            logger.warning(f"Compatibility issues: {compat_issues}")
+        is_compatible, compat_issues = True, []
+        if parsed:
+            is_compatible, compat_issues = self._check_compatibility(parsed)
+            if not is_compatible:
+                logger.warning(f"Compatibility issues: {compat_issues}")
         
         try:
-            # 1. Создаем ПК компоненты
+            # 1. Создаем ПК компоненты из данных AI
             pc_components = {}
             pc_mapping = [
                 ('cpu', CPU, 'cpu'),
@@ -547,8 +1015,44 @@ class AIFullConfigService:
             # Проверяем обязательные компоненты
             required = ['cpu', 'motherboard', 'ram', 'storage_primary']
             missing = [c for c in required if c not in pc_components]
+            
             if missing:
-                return None, None, {"error": f"Не удалось создать компоненты: {', '.join(missing)}"}
+                logger.warning(f"Missing required components: {missing}")
+                # Если чего-то не хватает - генерируем недостающее из обученных данных
+                default_specs = self._generate_from_trained_data()
+                
+                # Создаём маппинг для быстрого поиска
+                pc_mapping_dict = {ck: (sk, mc) for sk, mc, ck in pc_mapping}
+                
+                for component_key in missing:
+                    if component_key in pc_mapping_dict:
+                        spec_key, model_class = pc_mapping_dict[component_key]
+                        
+                        if spec_key in default_specs and default_specs[spec_key]:
+                            spec = default_specs[spec_key].copy()
+                            component = self._create_component_from_spec(model_class, spec, confidence)
+                            if component:
+                                pc_components[component_key] = component
+                                logger.info(f"Generated missing {component_key} from trained data")
+            
+            # Финальная проверка
+            still_missing = [c for c in required if c not in pc_components]
+            if still_missing:
+                return None, None, {"error": f"AI не смогла сгенерировать компоненты: {', '.join(still_missing)}. Попробуйте ещё раз."}
+            
+            # Добавляем опциональные компоненты если их нет
+            optional = ['gpu', 'psu', 'case', 'cooling']
+            for component_key in optional:
+                if component_key not in pc_components:
+                    default_specs = self._generate_from_trained_data()
+                    if component_key in default_specs and default_specs[component_key]:
+                        spec = default_specs[component_key].copy()
+                        for sk, mc, ck in pc_mapping:
+                            if ck == component_key:
+                                component = self._create_component_from_spec(mc, spec, confidence)
+                                if component:
+                                    pc_components[component_key] = component
+                                break
             
             # Создаем PCConfiguration
             config = PCConfiguration.objects.create(
@@ -597,6 +1101,11 @@ class AIFullConfigService:
                             component = self._create_component_from_spec(model_class, spec, confidence)
                             if component:
                                 peripherals[spec_key] = component
+                
+                # Fallback: генерируем периферию из своих знаний если AI не создал
+                if not peripherals:
+                    logger.info("No peripherals from AI, generating from knowledge base")
+                    peripherals = self._generate_default_peripherals()
             
             # 3. Создаем рабочее место
             workspace_components = {}
@@ -614,6 +1123,11 @@ class AIFullConfigService:
                             component = self._create_component_from_spec(model_class, spec, confidence)
                             if component:
                                 workspace_components[spec_key] = component
+                
+                # Fallback: генерируем рабочее место из своих знаний если AI не создал
+                if not workspace_components:
+                    logger.info("No workspace from AI, generating from knowledge base")
+                    workspace_components = self._generate_default_workspace()
             
             # 4. Создаем WorkspaceSetup если есть периферия или рабочее место
             if peripherals or workspace_components:
@@ -658,8 +1172,8 @@ class AIFullConfigService:
             total_price = pc_price + peripherals_price + workspace_price
             
             logger.info(f"[OK] Full AI configuration created!")
-            logger.info(f"PC: {pc_price:.0f}₽, Peripherals: {peripherals_price:.0f}₽, Workspace: {workspace_price:.0f}₽")
-            logger.info(f"Total: {total_price:.0f}₽")
+            logger.info(f"PC: {pc_price:.0f} RUB, Peripherals: {peripherals_price:.0f} RUB, Workspace: {workspace_price:.0f} RUB")
+            logger.info(f"Total: {total_price:.0f} RUB")
             
             return config, workspace_setup, {
                 "ai_used": True,

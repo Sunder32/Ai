@@ -553,31 +553,47 @@ async def chat_with_rag(request: ChatRequest):
 
 @app.post("/api/finetune/prepare")
 async def prepare_finetune_data():
-    """Подготовить данные для fine-tuning из JSON файлов"""
+    """Подготовить данные для fine-tuning из JSON и TXT файлов"""
     try:
         print("\n[FINETUNE] Подготовка данных для fine-tuning...")
         
         prepared_files = []
         
         for filename in os.listdir(UPLOAD_DIR):
-            if not filename.endswith('.json'):
+            file_ext = os.path.splitext(filename)[1].lower()
+            
+            # Поддерживаем JSON и TXT файлы
+            if file_ext not in ['.json', '.txt']:
                 continue
                 
             file_path = os.path.join(UPLOAD_DIR, filename)
             
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                
-                if not isinstance(data, list):
-                    continue
-                
                 # Получаем информацию о датасете
                 info = get_dataset_info(file_path)
                 print(f"[FINETUNE] Датасет {filename}: {info}")
                 
-                # Подготавливаем данные
-                output_path = prepare_chat_format(data, file_path)
+                if "error" in info:
+                    print(f"[FINETUNE] Пропуск {filename}: {info['error']}")
+                    continue
+                
+                # Подготавливаем данные в зависимости от типа файла
+                if file_ext == '.json':
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    
+                    if not isinstance(data, list):
+                        print(f"[FINETUNE] Пропуск {filename}: не является списком")
+                        continue
+                    
+                    output_path = prepare_chat_format(data, file_path)
+                    
+                elif file_ext == '.txt':
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        text = f.read()
+                    
+                    output_path = prepare_chat_format(text, file_path)
+                
                 prepared_files.append({
                     "source": filename,
                     "output": os.path.basename(output_path),
@@ -588,10 +604,12 @@ async def prepare_finetune_data():
                 
             except Exception as e:
                 print(f"[FINETUNE] Ошибка обработки {filename}: {e}")
+                import traceback
+                traceback.print_exc()
                 continue
         
         if not prepared_files:
-            raise HTTPException(status_code=400, detail="Не найдено JSON файлов с данными для fine-tuning")
+            raise HTTPException(status_code=400, detail="Не найдено JSON или TXT файлов с данными для fine-tuning")
         
         return {
             "message": "Данные подготовлены для fine-tuning",
@@ -610,22 +628,28 @@ async def create_finetuned_model():
     try:
         print("\n[FINETUNE] Создание модели с примерами...")
         
-        # Ищем JSON датасет
+        # Ищем JSON или TXT датасет
         dataset_path = None
         for filename in os.listdir(UPLOAD_DIR):
-            if filename.endswith('.json'):
+            file_ext = os.path.splitext(filename)[1].lower()
+            if file_ext in ['.json', '.txt']:
                 dataset_path = os.path.join(UPLOAD_DIR, filename)
                 break
         
         if not dataset_path:
-            raise HTTPException(status_code=400, detail="Не найден JSON датасет")
+            raise HTTPException(status_code=400, detail="Не найден JSON или TXT датасет")
+        
+        print(f"[FINETUNE] Используем датасет: {dataset_path}")
         
         # Создаём Modelfile с примерами
-        modelfile_path = create_ollama_training_modelfile(
+        modelfile_path = os.path.abspath("Modelfile.finetune")
+        result_path = create_ollama_training_modelfile(
             base_model="deepseek-r1:8b",
             dataset_path=dataset_path,
-            output_path=os.path.abspath("Modelfile.finetune")
+            output_path=modelfile_path
         )
+        
+        print(f"[FINETUNE] Создан Modelfile: {result_path}")
         
         # Создаём модель в Ollama
         model_name = "deepseek-finetuned"
@@ -638,7 +662,9 @@ async def create_finetuned_model():
         )
         
         if result.returncode != 0:
-            raise HTTPException(status_code=500, detail=f"Ошибка создания модели: {result.stderr}")
+            error_msg = result.stderr or result.stdout or "Unknown error"
+            print(f"[FINETUNE] ❌ Ошибка Ollama: {error_msg}")
+            raise HTTPException(status_code=500, detail=f"Ошибка создания модели: {error_msg}")
         
         print(f"[FINETUNE] ✅ Модель {model_name} создана!")
         
@@ -651,25 +677,45 @@ async def create_finetuned_model():
     except HTTPException:
         raise
     except Exception as e:
+        import traceback
+        print(f"[FINETUNE] ❌ Ошибка: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/api/finetune/info")
 async def get_finetune_info():
-    """Информация о датасетах для fine-tuning"""
+    """Информация о датасетах для fine-tuning (JSON и TXT)"""
     try:
         datasets = []
         
+        if not os.path.exists(UPLOAD_DIR):
+            return {"datasets": [], "message": "Папка uploads не существует"}
+        
         for filename in os.listdir(UPLOAD_DIR):
-            if filename.endswith('.json'):
-                file_path = os.path.join(UPLOAD_DIR, filename)
+            file_ext = os.path.splitext(filename)[1].lower()
+            
+            # Поддерживаем JSON, TXT и JSONL
+            if file_ext not in ['.json', '.txt', '.jsonl']:
+                continue
+                
+            file_path = os.path.join(UPLOAD_DIR, filename)
+            
+            try:
                 info = get_dataset_info(file_path)
                 info["filename"] = filename
                 datasets.append(info)
+            except Exception as e:
+                print(f"[FINETUNE] Ошибка чтения {filename}: {e}")
+                datasets.append({
+                    "filename": filename,
+                    "error": str(e)
+                })
         
-        return {"datasets": datasets}
+        return {"datasets": datasets, "count": len(datasets)}
         
     except Exception as e:
+        import traceback
+        print(f"[FINETUNE] ❌ Ошибка get_finetune_info: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
