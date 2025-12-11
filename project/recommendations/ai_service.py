@@ -5,15 +5,18 @@ AI-сервис для генерации умных рекомендаций к
 import logging
 import requests
 import json
+import os
 from decimal import Decimal
 from typing import Optional, Tuple
 from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 
 
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
-NOVA_API_URL = "http://localhost:5050/api/chat"  # Альтернативный сервер
-MODEL_NAME = "deepseek-project-model:latest"  # Обученная модель проекта
-USE_NOVA_SERVER = True  # Использовать ваш локальный сервер вместо прямого Ollama
+# Настройки AI-сервера (читаются из переменных окружения)
+OLLAMA_API_URL = os.environ.get("OLLAMA_API_URL", "http://localhost:11434/api/generate")
+AI_SERVER_URL = os.environ.get("AI_SERVER_URL", "http://localhost:5050")
+NOVA_API_URL = f"{AI_SERVER_URL}/api/chat"
+MODEL_NAME = os.environ.get("AI_MODEL_NAME", "deepseek-project-model:latest")
+USE_NOVA_SERVER = os.environ.get("USE_NOVA_SERVER", "true").lower() == "true"
 
 
 logger = logging.getLogger(__name__)

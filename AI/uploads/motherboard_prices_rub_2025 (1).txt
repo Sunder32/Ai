@@ -1,0 +1,42 @@
+# Материнские платы — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+ASUS | X870E | ROG Crosshair X870E Hero | 46 243
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi | 42 383
+ASUS | X870 | TUF Gaming X870-Plus WiFi | 26 943
+ASUS | B850 | TUF Gaming B850-Plus WiFi | 20 767
+ASUS | B650 | TUF Gaming B650-Plus WiFi | 17 679
+ASUS | B650 | Prime B650-Plus | 14 591
+ASUS | A620 | Prime A620M-A | 9 187
+MSI | X870E | MEG X870E GODLIKE | 69 403
+MSI | X870E | MPG X870E Carbon WiFi | 36 979
+MSI | X870 | MAG X870 Tomahawk WiFi | 24 627
+MSI | B850 | PRO B850-P WiFi | 19 995
+MSI | B650 | MAG B650 Tomahawk WiFi | 18 451
+MSI | B650 | PRO B650M-A WiFi | 14 591
+MSI | A620 | PRO A620M-E | 7 643
+Gigabyte | X870E | X870E AORUS Master | 42 383
+Gigabyte | X870 | X870 AORUS Elite | 24 627
+Gigabyte | B850 | B850 AORUS Pro AX | 19 995
+Gigabyte | B650 | B650 AORUS Elite AX | 16 907
+Gigabyte | A620 | A620M Gaming X | 8 415
+ASRock | X870E | X870E Taichi Lite | 33 119
+ASRock | X870 | X870 Steel Legend | 22 311
+ASRock | B850 | B850 Steel Legend WiFi | 18 451
+ASRock | B650 | B650M Pro RS WiFi | 13 819
+ASRock | A620 | A620M-HDV/M.2 | 6 871
+MSI | Z890 | MEG Z890 ACE | 42 383
+ASUS | Z890 | ROG Maximus Z890 Hero | 44 699
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi | 22 311
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 | 19 223
+MSI | Z890 | MAG Z890 Tomahawk WiFi | 20 767
+ASUS | Z890 | ProArt Z890 Creator WiFi | 33 891
+Gigabyte | Z890 | Z890 Gaming X WiFi | 17 679
+MSI | B860 | MAG B860 Tomahawk WiFi | 15 363
+ASUS | B860 | TUF Gaming B860M-Plus WiFi | 14 591
+Gigabyte | B860 | B860M AORUS Elite AX | 13 819
+ASUS | B760 | TUF Gaming B760-Plus WiFi | 13 819
+MSI | B760 | PRO B760-P WiFi | 12 275
+Gigabyte | B760 | B760 AORUS Elite AX | 13 047
+ASRock | B760 | B760M Steel Legend WiFi | 11 503

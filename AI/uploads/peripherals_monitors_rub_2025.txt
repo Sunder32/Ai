@@ -1,0 +1,22 @@
+# Игровые мониторы — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Dell | S Series | S3222DGM 32" QHD 165Hz | 25 476
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz | 69 480
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz | 61 760
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz | 69 480
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz | 123 520
+Samsung | Odyssey | Odyssey G7 32" 240Hz | 46 320
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz | 69 480
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz | 23 160
+Acer | Predator | XB273K 27" 4K 144Hz | 54 040
+Acer | Nitro | XV272U 27" QHD 170Hz | 21 616
+Gigabyte | AORUS | FI27Q-X 27" 240Hz | 46 320
+Gigabyte | Gaming | M27Q 27" QHD 170Hz | 25 476
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz | 30 880
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz | 84 920
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz | 25 476
+BenQ | Zowie | XL2566K 24.5" 360Hz TN | 46 320
+ViewSonic | Elite | XG2431 24" 240Hz | 21 616
+ASUS | ROG Strix | XG259QN 24.5" 380Hz | 46 320

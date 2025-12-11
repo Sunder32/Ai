@@ -1,109 +1,429 @@
 @echo off
-chcp 65001 >nul
+chcp 1251 >nul
 setlocal EnableDelayedExpansion
 
 set "ROOT=%~dp0"
 set "PROJECT_DIR=%ROOT%..\project"
 set "FRONTEND_DIR=%ROOT%..\frontend"
 set "VENV_DIR=%PROJECT_DIR%\venv"
+set "ENV_FILE=%PROJECT_DIR%\.env"
 set "MODEL_NAME=deepseek-project-model"
 
+cls
 echo ==========================================
-echo      AI PC Configurator Launcher
+echo      AI PC Configurator - Ustanovka
 echo ==========================================
-echo.
-echo [?] Как запустить проект?
-echo.
-echo     1 - Без AI (только сайт)
-echo     2 - С AI моделью (%MODEL_NAME%)
-echo.
-set /p AI_CHOICE="Выберите режим (1 или 2): "
-
-if "%AI_CHOICE%"=="2" (
-    set "USE_AI=true"
-    echo [INFO] Режим: С AI моделью
-) else (
-    set "USE_AI=false"
-    echo [INFO] Режим: Без AI
-)
 echo.
 
-echo [INFO] Поиск Python 3.13...
+echo [WAG 1/8] Proverka zavisimostej...
+echo.
+
+echo   Poisk Python 3.10+...
 set "PYTHON_CMD="
+
 py -3.13 --version >nul 2>&1
-if not errorlevel 1 (
-    set "PYTHON_CMD=py -3.13"
-    echo [OK] Python 3.13 найден.
-) else (
-    set "PYTHON_CMD=python"
-)
+if not errorlevel 1 set "PYTHON_CMD=py -3.13"
+if defined PYTHON_CMD goto python_found
 
-echo [INFO] Python: !PYTHON_CMD!
+py -3.12 --version >nul 2>&1
+if not errorlevel 1 set "PYTHON_CMD=py -3.12"
+if defined PYTHON_CMD goto python_found
 
-if exist "%VENV_DIR%" (
-    echo [OK] Виртуальное окружение найдено.
-) else (
-    echo [SETUP] Создание виртуального окружения...
-    cd /d "%PROJECT_DIR%"
-    !PYTHON_CMD! -m venv venv
-)
+py -3.11 --version >nul 2>&1
+if not errorlevel 1 set "PYTHON_CMD=py -3.11"
+if defined PYTHON_CMD goto python_found
 
+py -3.10 --version >nul 2>&1
+if not errorlevel 1 set "PYTHON_CMD=py -3.10"
+if defined PYTHON_CMD goto python_found
+
+python --version >nul 2>&1
+if not errorlevel 1 set "PYTHON_CMD=python"
+if defined PYTHON_CMD goto python_found
+
+echo   [OSHIBKA] Python 3.10+ ne najden!
+echo   Skachajte: https://www.python.org/downloads/
 echo.
-echo [INFO] Настройка Backend...
-cd /d "%PROJECT_DIR%"
-call venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py populate_db
-
-echo.
-echo [INFO] Проверка Frontend...
-if not exist "%FRONTEND_DIR%\node_modules" (
-    cd /d "%FRONTEND_DIR%"
-    call npm install
-) else (
-    echo [OK] node_modules найден.
-)
-
-echo.
-if "%USE_AI%"=="true" (
-    echo [INFO] Проверка Ollama...
-    tasklist /FI "IMAGENAME eq ollama*" 2>NUL | find /I "ollama" >NUL
-    if errorlevel 1 (
-        start "" ollama serve
-        timeout /t 5 /nobreak >nul
-    )
-    echo [OK] Ollama запущена.
-    
-    echo [INFO] Проверка модели %MODEL_NAME%...
-    ollama list 2>nul | find /I "%MODEL_NAME%" >nul
-    if errorlevel 1 (
-        if exist "%ROOT%Modelfile" (
-            cd /d "%ROOT%"
-            ollama create %MODEL_NAME% -f Modelfile
-        )
-    )
-    echo [OK] Модель готова.
-    
-    start "AI" cmd /k "ollama run %MODEL_NAME%"
-    timeout /t 3 /nobreak >nul
-) else (
-    echo [INFO] AI пропущен.
-)
-
-echo.
-echo [LAUNCH] Запуск сервисов...
-start "Backend" cmd /k "cd /d "%PROJECT_DIR%" && call venv\Scripts\activate && python manage.py runserver 8001"
-start "Frontend" cmd /k "cd /d "%FRONTEND_DIR%" && npm start"
-
-echo.
-echo ==========================================
-echo [SUCCESS] Готово!
-echo ==========================================
-echo   Backend:  http://localhost:8001
-echo   Frontend: http://localhost:3000
-if "%USE_AI%"=="true" echo   AI: %MODEL_NAME%
-echo ==========================================
-echo.
-echo Нажмите любую клавишу для выхода.
 pause
+exit /b 1
+
+:python_found
+echo   [OK] Python najden: !PYTHON_CMD!
+echo.
+
+echo   Poisk Node.js...
+where node >nul 2>&1
+if errorlevel 1 goto node_error
+echo   [OK] Node.js najden
+echo.
+goto node_ok
+
+:node_error
+echo   [OSHIBKA] Node.js ne najden!
+echo   Skachajte: https://nodejs.org/
+echo.
+pause
+exit /b 1
+
+:node_ok
+echo   Poisk npm...
+where npm >nul 2>&1
+if errorlevel 1 goto npm_error
+echo   [OK] npm najden
+echo.
+goto npm_ok
+
+:npm_error
+echo   [OSHIBKA] npm ne najden!
+echo.
+pause
+exit /b 1
+
+:npm_ok
+echo [WAG 2/8] Nastrojka konfiguracii...
+echo.
+
+if not exist "%ENV_FILE%" goto configure_env
+
+echo   [OK] Fajl .env uzhe sushhestvuet
+set /p "RECONFIGURE=   Perenastroit? (y/N): "
+if /i not "!RECONFIGURE!"=="y" goto skip_env_config
+
+:configure_env
+echo.
+echo   === Nastrojka bazy dannyh ===
+echo.
+echo   [1] MySQL (rekomenduetsya)
+echo   [2] SQLite (dlya razrabotki)
+echo.
+set /p "DB_CHOICE=   Vyberite tip BD (1 ili 2): "
+
+if "!DB_CHOICE!"=="2" goto use_sqlite
+
+:use_mysql
+set "DB_BACKEND=mysql"
+echo.
+set "DB_NAME=pckonfai"
+set /p "DB_NAME=   Imya bazy dannyh [pckonfai]: "
+if "!DB_NAME!"=="" set "DB_NAME=pckonfai"
+
+set "DB_USER=root"
+set /p "DB_USER=   Polzovatel MySQL [root]: "
+if "!DB_USER!"=="" set "DB_USER=root"
+
+set /p "DB_PASSWORD=   Parol MySQL: "
+
+set "DB_HOST=localhost"
+set /p "DB_HOST=   Host MySQL [localhost]: "
+if "!DB_HOST!"=="" set "DB_HOST=localhost"
+
+set "DB_PORT=3306"
+set /p "DB_PORT=   Port MySQL [3306]: "
+if "!DB_PORT!"=="" set "DB_PORT=3306"
+
+echo   [OK] MySQL nastrojen: !DB_USER!@!DB_HOST!:!DB_PORT!/!DB_NAME!
+goto create_env_file
+
+:use_sqlite
+set "DB_BACKEND=sqlite"
+echo   [OK] Vybrana SQLite
+
+:create_env_file
+echo.
+echo   Generaciya SECRET_KEY...
+for /f "delims=" %%a in ('!PYTHON_CMD! -c "import secrets; print(secrets.token_urlsafe(50))"') do set "SECRET_KEY=%%a"
+echo   [OK] SECRET_KEY sgenerirovann
+
+echo   Sozdanie .env fajla...
+
+echo # Django Settings - Generated by setup script> "%ENV_FILE%"
+echo SECRET_KEY=!SECRET_KEY!>> "%ENV_FILE%"
+echo DEBUG=True>> "%ENV_FILE%"
+echo ALLOWED_HOSTS=localhost,127.0.0.1>> "%ENV_FILE%"
+echo.>> "%ENV_FILE%"
+echo # Database>> "%ENV_FILE%"
+echo DB_BACKEND=!DB_BACKEND!>> "%ENV_FILE%"
+
+if not "!DB_BACKEND!"=="mysql" goto env_write_cors
+echo DB_NAME=!DB_NAME!>> "%ENV_FILE%"
+echo DB_USER=!DB_USER!>> "%ENV_FILE%"
+echo DB_PASSWORD=!DB_PASSWORD!>> "%ENV_FILE%"
+echo DB_HOST=!DB_HOST!>> "%ENV_FILE%"
+echo DB_PORT=!DB_PORT!>> "%ENV_FILE%"
+
+:env_write_cors
+echo.>> "%ENV_FILE%"
+echo # CORS>> "%ENV_FILE%"
+echo CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000>> "%ENV_FILE%"
+echo.>> "%ENV_FILE%"
+echo # AI Settings>> "%ENV_FILE%"
+echo OLLAMA_HOST=http://localhost:11434>> "%ENV_FILE%"
+echo AI_MODEL_NAME=!MODEL_NAME!:latest>> "%ENV_FILE%"
+
+echo   [OK] .env fajl sozdan
+echo.
+
+:skip_env_config
+echo.
+
+for /f "usebackq tokens=1,* delims==" %%a in ("%ENV_FILE%") do (
+    set "varname=%%a"
+    if not "!varname:~0,1!"=="#" (
+        if not "%%a"=="" set "%%a=%%b"
+    )
+)
+
+echo [WAG 3/8] Nastrojka Python okruzheniya...
+echo.
+
+cd /d "%PROJECT_DIR%"
+
+if exist "%VENV_DIR%\Scripts\activate.bat" goto venv_exists
+
+echo   Sozdanie virtualnogo okruzheniya...
+!PYTHON_CMD! -m venv venv
+if errorlevel 1 goto venv_error
+echo   [OK] Virtualnoe okruzhenie sozdano
+goto venv_activate
+
+:venv_error
+echo   [OSHIBKA] Ne udalos sozdat venv!
+pause
+exit /b 1
+
+:venv_exists
+echo   [OK] Virtualnoe okruzhenie najdeno
+
+:venv_activate
+echo   Aktivaciya venv...
+call "%VENV_DIR%\Scripts\activate.bat"
+
+echo.
+echo   Obnovlenie pip...
+python -m pip install --upgrade pip
+
+echo.
+echo   Ustanovka zavisimostej Python (eto mozhet zanyat vremya)...
+echo   -------------------------------------------------------
+pip install -r requirements.txt
+echo   -------------------------------------------------------
+echo   [OK] Python zavisimosti ustanovleny
+echo.
+
+if not "!DB_BACKEND!"=="mysql" goto skip_db_create
+
+echo [WAG 4/8] Sozdanie bazy dannyh MySQL...
+echo.
+
+echo   Sozdanie BD cherez Python/pymysql...
+python -c "import pymysql; conn = pymysql.connect(host='!DB_HOST!', port=!DB_PORT!, user='!DB_USER!', password='!DB_PASSWORD!'); cursor = conn.cursor(); cursor.execute('CREATE DATABASE IF NOT EXISTS !DB_NAME! CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'); conn.close(); print('   [OK] Baza dannyh !DB_NAME! sozdana')"
+if errorlevel 1 goto db_create_error
+goto skip_db_create
+
+:db_create_error
+echo   [VNIMANIE] Ne udalos sozdat BD avtomaticheski
+echo   Proverte chto MySQL Server zapushhen
+echo.
+set /p "CONTINUE_DB=   Prodolzhit? (y/N): "
+if /i not "!CONTINUE_DB!"=="y" (
+    pause
+    exit /b 1
+)
+
+:skip_db_create
+echo.
+echo [WAG 5/8] Migracii bazy dannyh...
+echo.
+
+cd /d "%PROJECT_DIR%"
+call "%VENV_DIR%\Scripts\activate.bat"
+
+echo   Sozdanie migracij dlya vseh prilozhenij...
+python manage.py makemigrations accounts --noinput
+python manage.py makemigrations users --noinput
+python manage.py makemigrations computers --noinput
+python manage.py makemigrations peripherals --noinput
+python manage.py makemigrations recommendations --noinput
+python manage.py makemigrations --noinput
+
+echo.
+echo   Primenenie migracij...
+python manage.py migrate --noinput
+if errorlevel 1 goto migrate_error
+
+echo   Sozdanie tablicy kesha...
+python manage.py createcachetable
+echo   [OK] Migracii primeneny
+echo.
+goto migrate_done
+
+:migrate_error
+echo.
+echo   [OSHIBKA] Oshibka migracij!
+echo   Vozmozhnyje prichiny:
+echo     1. MySQL Server ne zapushhen
+echo     2. Neverno ukazany login/parol v .env
+echo.
+set /p "RETRY=   Povtorit migracii? (y/N): "
+if /i "!RETRY!"=="y" goto migrate_retry
+pause
+exit /b 1
+
+:migrate_retry
+echo.
+echo   Povtornaya popytka migracij...
+python manage.py migrate --noinput
+if errorlevel 1 goto migrate_error
+echo   [OK] Migracii primeneny
+echo.
+
+:migrate_done
+set /p "CREATE_ADMIN=   Sozdat administratora? (Y/n): "
+if /i "!CREATE_ADMIN!"=="n" goto skip_admin
+echo.
+echo   === Sozdanie administratora ===
+python manage.py createsuperuser
+
+:skip_admin
+echo.
+
+echo [WAG 6/8] Zapolnenie bazy dannyh...
+echo.
+
+set /p "POPULATE=   Zapolnit BD testovymi dannymi? (Y/n): "
+if /i "!POPULATE!"=="n" goto skip_populate
+
+echo   Zagruzka testovyh dannyh...
+python manage.py populate_db
+if errorlevel 1 goto populate_warn
+echo   [OK] Testovye dannye zagruzheny
+goto after_populate
+
+:populate_warn
+echo   [VNIMANIE] populate_db ne najden ili oshibka
+
+:after_populate
+:skip_populate
+echo.
+
+echo [WAG 7/8] Nastrojka Frontend...
+echo.
+
+cd /d "%FRONTEND_DIR%"
+
+if exist "node_modules" goto npm_exists
+
+echo   Ustanovka npm zavisimostej (eto mozhet zanyat 2-5 minut)...
+echo   -------------------------------------------------------
+call npm install
+echo   -------------------------------------------------------
+if errorlevel 1 goto npm_install_error
+echo   [OK] npm zavisimosti ustanovleny
+goto npm_done
+
+:npm_install_error
+echo   [OSHIBKA] npm install ne udalsya!
+pause
+exit /b 1
+
+:npm_exists
+echo   [OK] node_modules najden
+
+:npm_done
+echo.
+
+echo [WAG 8/8] Zapusk servisov...
+echo.
+echo   === Vyberite rezhim zapuska ===
+echo.
+echo   [1] Tolko sajt (bez AI)
+echo   [2] S AI modelyu (%MODEL_NAME%)
+echo   [3] Tolko nastrojka (ne zapuskat)
+echo.
+set /p "LAUNCH_MODE=   Vyberite (1/2/3): "
+
+if "!LAUNCH_MODE!"=="3" goto setup_only
+if "!LAUNCH_MODE!"=="2" goto with_ai
+goto launch_services
+
+:setup_only
+echo.
+echo   Nastrojka zavershena!
+echo.
+echo   Dlya zapuska vruchnuyu:
+echo     Backend:  cd project, venv\Scripts\activate, python manage.py runserver 8001
+echo     Frontend: cd frontend, npm start
+echo.
+pause
+exit /b 0
+
+:with_ai
+echo   Proverka Ollama...
+where ollama >nul 2>&1
+if errorlevel 1 goto ollama_not_found
+
+tasklist /FI "IMAGENAME eq ollama*" 2>nul | find /I "ollama" >nul
+if not errorlevel 1 goto ollama_running
+
+echo   Zapusk Ollama...
+start "" ollama serve
+timeout /t 5 /nobreak >nul
+
+:ollama_running
+echo   [OK] Ollama zapushhena
+
+echo   Proverka modeli %MODEL_NAME%...
+ollama list 2>nul | find /I "%MODEL_NAME%" >nul
+if not errorlevel 1 goto model_ready
+
+if not exist "%ROOT%Modelfile" goto model_not_found
+echo   Sozdanie modeli...
+cd /d "%ROOT%"
+ollama create %MODEL_NAME% -f Modelfile
+echo   [OK] Model sozdana
+goto launch_services
+
+:model_not_found
+echo   [VNIMANIE] Modelfile ne najden
+goto launch_services
+
+:model_ready
+echo   [OK] Model %MODEL_NAME% gotova
+goto launch_services
+
+:ollama_not_found
+echo   [VNIMANIE] Ollama ne najden!
+echo   Skachajte: https://ollama.ai/download
+set "LAUNCH_MODE=1"
+
+:launch_services
+echo.
+echo   Zapusk servisov...
+
+cd /d "%PROJECT_DIR%"
+start "Backend" cmd /k "title Backend - Django && call venv\Scripts\activate.bat && echo Zapusk Django servera... && python manage.py runserver 8001"
+
+timeout /t 2 /nobreak >nul
+
+cd /d "%FRONTEND_DIR%"
+start "Frontend" cmd /k "title Frontend - React && echo Zapusk React servera... && npm start"
+
+echo.
+echo ==========================================
+echo      USTANOVKA ZAVERSHENA!
+echo ==========================================
+echo.
+echo   Backend:  http://localhost:8001
+echo   API:      http://localhost:8001/api/
+echo   Admin:    http://localhost:8001/admin/
+echo   Frontend: http://localhost:3000
+echo.
+if "!LAUNCH_MODE!"=="2" echo   AI Model: %MODEL_NAME%
+echo.
+echo   Podozhdite 10-30 sek dlya zapuska serverov
+echo.
+echo ==========================================
+echo.
+echo Nazhmite lyubuyu klavishu dlya vyhoda...
+pause >nul
+exit /b 0

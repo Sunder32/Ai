@@ -1,0 +1,50 @@
+# Процессоры (CPU) — актуальные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+AMD | Ryzen 9000 | Ryzen 9 9950X3D | 61 683
+AMD | Ryzen 9000 | Ryzen 9 9950X | 53 963
+AMD | Ryzen 9000 | Ryzen 9 9900X | 42 383
+AMD | Ryzen 9000 | Ryzen 7 9800X3D | 38 523
+AMD | Ryzen 9000 | Ryzen 7 9700X | 30 803
+AMD | Ryzen 9000 | Ryzen 5 9600X | 23 083
+AMD | Ryzen 9000 | Ryzen 5 9500G | 19 995
+AMD | Ryzen 9000 | Ryzen 5 9300G | 15 363
+AMD | Ryzen 9000 | Ryzen 5 8600G | 17 679
+AMD | Ryzen 7000 | Ryzen 9 7950X3D | 53 963
+AMD | Ryzen 7000 | Ryzen 9 7950X | 46 243
+AMD | Ryzen 7000 | Ryzen 9 7900X | 34 663
+AMD | Ryzen 7000 | Ryzen 9 7900 | 29 259
+AMD | Ryzen 7000 | Ryzen 7 7800X3D | 30 803
+AMD | Ryzen 7000 | Ryzen 7 7700X | 26 943
+AMD | Ryzen 7000 | Ryzen 7 7700 | 24 627
+AMD | Ryzen 7000 | Ryzen 5 7600X | 23 083
+AMD | Ryzen 7000 | Ryzen 5 7600 | 17 679
+AMD | Ryzen 5000 | Ryzen 9 5950X | 38 523
+AMD | Ryzen 5000 | Ryzen 9 5900X | 30 803
+AMD | Ryzen 5000 | Ryzen 7 5800X3D | 26 943
+AMD | Ryzen 5000 | Ryzen 7 5800X | 23 083
+AMD | Ryzen 5000 | Ryzen 7 5700X3D | 23 083
+AMD | Ryzen 5000 | Ryzen 7 5700X | 19 223
+AMD | Ryzen 5000 | Ryzen 5 5600X | 15 363
+AMD | Ryzen 5000 | Ryzen 5 5600 | 11 503
+AMD | Ryzen 5000 | Ryzen 5 5500 | 9 959
+AMD | Ryzen 3000 | Ryzen 5 3600 | 7 643
+Intel | Core 14th Gen | Core i9-14900K | 43 927
+Intel | Core 14th Gen | Core i9-14900KF | 42 383
+Intel | Core 14th Gen | Core i7-14700K | 31 575
+Intel | Core 14th Gen | Core i7-14700KF | 30 803
+Intel | Core 14th Gen | Core i5-14600K | 25 399
+Intel | Core 14th Gen | Core i5-14600KF | 24 627
+Intel | Core 14th Gen | Core i5-14500 | 19 223
+Intel | Core 14th Gen | Core i5-14400F | 16 907
+Intel | Core 13th Gen | Core i7-13700K | 30 031
+Intel | Core 13th Gen | Core i5-13600K | 24 627
+Intel | Core 13th Gen | Core i5-13500 | 19 223
+Intel | Core 13th Gen | Core i5-13400F | 14 591
+Intel | Core 12th Gen | Core i5-12400F | 11 503
+Intel | Core 12th Gen | Core i3-12100F | 7 643
+Intel | Core Ultra 200 | Core Ultra 9 285K | 46 243
+Intel | Core Ultra 200 | Core Ultra 7 265K | 34 663
+Intel | Core Ultra 200 | Core Ultra 5 245K | 25 399
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus | 38 523

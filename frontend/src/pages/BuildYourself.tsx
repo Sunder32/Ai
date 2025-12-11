@@ -111,7 +111,7 @@ const workspaceSections: ComponentSection[] = [
 const BuildYourself: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<ComponentCategory>('pc');
   const [expandedSection, setExpandedSection] = useState<string | null>('cpu');
-  
+
   // Состояния для компонентов ПК
   const [cpus, setCpus] = useState<CPU[]>([]);
   const [gpus, setGpus] = useState<GPU[]>([]);
@@ -121,7 +121,7 @@ const BuildYourself: React.FC = () => {
   const [psus, setPsus] = useState<PSU[]>([]);
   const [cases, setCases] = useState<Case[]>([]);
   const [coolings, setCoolings] = useState<Cooling[]>([]);
-  
+
   // Состояния для периферии
   const [monitors, setMonitors] = useState<Monitor[]>([]);
   const [keyboards, setKeyboards] = useState<Keyboard[]>([]);
@@ -138,28 +138,28 @@ const BuildYourself: React.FC = () => {
   const [captureCards, setCaptureCards] = useState<CaptureCard[]>([]);
   const [gamepads, setGamepads] = useState<Gamepad[]>([]);
   const [headphoneStands, setHeadphoneStands] = useState<HeadphoneStand[]>([]);
-  
+
   // Состояния для рабочего места
   const [desks, setDesks] = useState<Desk[]>([]);
   const [chairs, setChairs] = useState<Chair[]>([]);
-  
+
   // Выбранные компоненты
   const [selectedPC, setSelectedPC] = useState<SelectedComponents>({
     cpu: null, gpu: null, motherboard: null, ram: null,
     storage: null, storage2: null, psu: null, case: null, cooling: null
   });
-  
+
   const [selectedPeripherals, setSelectedPeripherals] = useState<SelectedPeripherals>({
     monitor: null, monitor2: null, keyboard: null, mouse: null,
     headset: null, webcam: null, microphone: null, speakers: null,
     mousepad: null, monitorArm: null, usbHub: null, lighting: null,
     streamDeck: null, captureCard: null, gamepad: null, headphoneStand: null
   });
-  
+
   const [selectedWorkspace, setSelectedWorkspace] = useState<SelectedWorkspace>({
     desk: null, chair: null
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [buildName, setBuildName] = useState('Моя сборка');
   const [saving, setSaving] = useState(false);
@@ -225,22 +225,21 @@ const BuildYourself: React.FC = () => {
           computerAPI.getCases(),
           computerAPI.getCooling(),
         ]);
-        
-        setCpus(cpuRes.data.results || []);
-        setGpus(gpuRes.data.results || []);
-        setMotherboards(mbRes.data.results || []);
-        setRams(ramRes.data.results || []);
-        setStorages(storageRes.data.results || []);
-        setPsus(psuRes.data.results || []);
-        setCases(caseRes.data.results || []);
-        setCoolings(coolingRes.data.results || []);
-        
+
+        // Хелпер для извлечения данных (поддержка с пагинацией и без)
+        const extractData = (res: any) => Array.isArray(res.data) ? res.data : (res.data.results || []);
+
+        setCpus(extractData(cpuRes));
+        setGpus(extractData(gpuRes));
+        setMotherboards(extractData(mbRes));
+        setRams(extractData(ramRes));
+        setStorages(extractData(storageRes));
+        setPsus(extractData(psuRes));
+        setCases(extractData(caseRes));
+        setCoolings(extractData(coolingRes));
+
         // Загружаем периферию
-        const [
-          monitorRes, keyboardRes, mouseRes, headsetRes, webcamRes, micRes,
-          speakersRes, mousepadRes, armRes, hubRes, lightRes, deckRes,
-          captureRes, gamepadRes, standRes, deskRes, chairRes
-        ] = await Promise.all([
+        const peripheralPromises = [
           peripheralAPI.getMonitors(),
           peripheralAPI.getKeyboards(),
           peripheralAPI.getMice(),
@@ -258,33 +257,41 @@ const BuildYourself: React.FC = () => {
           peripheralAPI.getHeadphoneStands(),
           peripheralAPI.getDesks(),
           peripheralAPI.getChairs(),
-        ]);
-        
-        setMonitors(monitorRes.data.results || []);
-        setKeyboards(keyboardRes.data.results || []);
-        setMice(mouseRes.data.results || []);
-        setHeadsets(headsetRes.data.results || []);
-        setWebcams(webcamRes.data.results || []);
-        setMicrophones(micRes.data.results || []);
-        setSpeakers(speakersRes.data.results || []);
-        setMousepads(mousepadRes.data.results || []);
-        setMonitorArms(armRes.data.results || []);
-        setUsbHubs(hubRes.data.results || []);
-        setLighting(lightRes.data.results || []);
-        setStreamDecks(deckRes.data.results || []);
-        setCaptureCards(captureRes.data.results || []);
-        setGamepads(gamepadRes.data.results || []);
-        setHeadphoneStands(standRes.data.results || []);
-        setDesks(deskRes.data.results || []);
-        setChairs(chairRes.data.results || []);
-        
+        ];
+
+        const results = await Promise.all(peripheralPromises);
+
+        const [
+          monitorRes, keyboardRes, mouseRes, headsetRes, webcamRes, micRes,
+          speakersRes, mousepadRes, armRes, hubRes, lightRes, deckRes,
+          captureRes, gamepadRes, standRes, deskRes, chairRes
+        ] = results as any[];
+
+        setMonitors(extractData(monitorRes));
+        setKeyboards(extractData(keyboardRes));
+        setMice(extractData(mouseRes));
+        setHeadsets(extractData(headsetRes));
+        setWebcams(extractData(webcamRes));
+        setMicrophones(extractData(micRes));
+        setSpeakers(extractData(speakersRes));
+        setMousepads(extractData(mousepadRes));
+        setMonitorArms(extractData(armRes));
+        setUsbHubs(extractData(hubRes));
+        setLighting(extractData(lightRes));
+        setStreamDecks(extractData(deckRes));
+        setCaptureCards(extractData(captureRes));
+        setGamepads(extractData(gamepadRes));
+        setHeadphoneStands(extractData(standRes));
+        setDesks(extractData(deskRes));
+        setChairs(extractData(chairRes));
+
       } catch (error) {
         console.error('Ошибка загрузки компонентов:', error);
       } finally {
         setLoading(false);
       }
     };
-    
+
     loadComponents();
   }, []);
 
@@ -356,7 +363,7 @@ const BuildYourself: React.FC = () => {
           // Mini-ITX корпус только для Mini-ITX
           const caseFF = c.form_factor?.toLowerCase() || '';
           const mbFF = mbFormFactor?.toLowerCase() || '';
-          
+
           if (caseFF.includes('full') || caseFF.includes('atx')) {
             return true; // Full/ATX корпус подходит всем
           }
@@ -393,31 +400,31 @@ const BuildYourself: React.FC = () => {
   // Применение фильтров и сортировки к компонентам
   const getFilteredComponents = useCallback((key: string): any[] => {
     let components = getCompatibleComponents(key);
-    
+
     // Поиск по названию
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
-      components = components.filter((c: any) => 
+      components = components.filter((c: any) =>
         c.name?.toLowerCase().includes(searchLower) ||
         c.manufacturer?.toLowerCase().includes(searchLower)
       );
     }
-    
+
     // Фильтр по производителю
     if (filters.manufacturer) {
       components = components.filter((c: any) => c.manufacturer === filters.manufacturer);
     }
-    
+
     // Фильтр по минимальной цене
     if (filters.minPrice !== '') {
-      components = components.filter((c: any) => parseFloat(String(c.price)) >= filters.minPrice);
+      components = components.filter((c: any) => parseFloat(String(c.price)) >= Number(filters.minPrice));
     }
-    
+
     // Фильтр по максимальной цене
     if (filters.maxPrice !== '') {
-      components = components.filter((c: any) => parseFloat(String(c.price)) <= filters.maxPrice);
+      components = components.filter((c: any) => parseFloat(String(c.price)) <= Number(filters.maxPrice));
     }
-    
+
     // Сортировка
     components.sort((a: any, b: any) => {
       switch (filters.sortBy) {
@@ -435,7 +442,7 @@ const BuildYourself: React.FC = () => {
           return (b.rating || 0) - (a.rating || 0) || a.id - b.id;
       }
     });
-    
+
     return components;
   }, [getCompatibleComponents, filters]);
 
@@ -477,35 +484,35 @@ const BuildYourself: React.FC = () => {
   // Расчет общей стоимости
   const totalPrice = useMemo(() => {
     let total = 0;
-    
+
     // PC компоненты
     Object.values(selectedPC).forEach(component => {
       if (component?.price) {
         total += parseFloat(String(component.price));
       }
     });
-    
+
     // Периферия
     Object.values(selectedPeripherals).forEach(component => {
       if (component?.price) {
         total += parseFloat(String(component.price));
       }
     });
-    
+
     // Рабочее место
     Object.values(selectedWorkspace).forEach(component => {
       if (component?.price) {
         total += parseFloat(String(component.price));
       }
     });
-    
+
     return total;
   }, [selectedPC, selectedPeripherals, selectedWorkspace]);
 
   // Информация о текущих фильтрах совместимости
   const compatibilityInfo = useMemo(() => {
     const info: string[] = [];
-    
+
     if (selectedPC.cpu) {
       info.push(`Сокет: ${selectedPC.cpu.socket}`);
     }
@@ -515,7 +522,7 @@ const BuildYourself: React.FC = () => {
     if (selectedPC.gpu && selectedPC.gpu.recommended_psu) {
       info.push(`Мин. БП: ${selectedPC.gpu.recommended_psu}W`);
     }
-    
+
     return info;
   }, [selectedPC]);
 
@@ -537,7 +544,7 @@ const BuildYourself: React.FC = () => {
   // Сохранение сборки
   const saveBuild = async () => {
     if (selectedCount === 0) return;
-    
+
     setSaving(true);
     try {
       const buildData: BuildRequest = {
@@ -574,14 +581,14 @@ const BuildYourself: React.FC = () => {
 
       const response = await configurationAPI.saveBuild(buildData);
       showNotification('success', 'Сборка успешно сохранена!');
-      
+
       // Очищаем черновик после успешного сохранения
       localStorage.removeItem('buildyourself_draft');
-      
+
       if (response.data.share_url) {
         setShareUrl(window.location.origin + response.data.share_url);
       }
-      
+
       // Обновляем список сохраненных сборок
       loadSavedBuilds();
     } catch (error: any) {
@@ -605,7 +612,7 @@ const BuildYourself: React.FC = () => {
   // Загрузка сборки из сохраненных
   const loadBuild = (build: any) => {
     setBuildName(build.name);
-    
+
     // Загружаем PC компоненты
     setSelectedPC({
       cpu: build.cpu_detail || null,
@@ -618,7 +625,7 @@ const BuildYourself: React.FC = () => {
       case: build.case_detail || null,
       cooling: build.cooling_detail || null,
     });
-    
+
     // Загружаем периферию если есть workspace
     if (build.workspace) {
       const ws = build.workspace;
@@ -645,7 +652,7 @@ const BuildYourself: React.FC = () => {
         chair: ws.chair_detail || null,
       });
     }
-    
+
     setShowBuildsModal(false);
     showNotification('success', 'Сборка загружена');
   };
@@ -667,7 +674,7 @@ const BuildYourself: React.FC = () => {
     const pcComponents: Component[] = [];
     const peripherals: Component[] = [];
     const workspace: Component[] = [];
-    
+
     let pcTotal = 0;
     let peripheralsTotal = 0;
     let workspaceTotal = 0;
@@ -781,11 +788,10 @@ const BuildYourself: React.FC = () => {
       <div
         key={component.id}
         onClick={onSelect}
-        className={`p-4 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
-          isSelected
-            ? 'border-emerald-500 bg-emerald-500/10'
-            : 'border-gray-700 bg-gray-800/50 hover:border-gray-600 hover:bg-gray-800'
-        }`}
+        className={`p-4 rounded-lg cursor-pointer transition-all duration-200 border-2 ${isSelected
+          ? 'border-emerald-500 bg-emerald-500/10'
+          : 'border-gray-700 bg-gray-800/50 hover:border-gray-600 hover:bg-gray-800'
+          }`}
       >
         <div className="flex justify-between items-start mb-2">
           <div className="flex-1">
@@ -845,13 +851,13 @@ const BuildYourself: React.FC = () => {
             ) : (
               <span className="text-sm text-gray-500">Не выбрано</span>
             )}
-            {isExpanded 
+            {isExpanded
               ? React.createElement(FiChevronUp as any, { className: "w-5 h-5 text-gray-400" })
               : React.createElement(FiChevronDown as any, { className: "w-5 h-5 text-gray-400" })
             }
           </div>
         </button>
-        
+
         {isExpanded && (
           <div className="p-4 bg-gray-900/50">
             {/* Панель поиска и фильтров */}
@@ -869,19 +875,18 @@ const BuildYourself: React.FC = () => {
                   className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none"
                 />
               </div>
-              
+
               {/* Кнопка показа фильтров и сортировка */}
               <div className="flex flex-wrap gap-2 items-center">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                    showFilters ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-800 text-gray-400 hover:text-white'
-                  }`}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${showFilters ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-800 text-gray-400 hover:text-white'
+                    }`}
                 >
                   {React.createElement(FiFilter as any, { className: "w-4 h-4" })}
                   Фильтры
                 </button>
-                
+
                 {/* Сортировка */}
                 <select
                   value={filters.sortBy}
@@ -894,13 +899,13 @@ const BuildYourself: React.FC = () => {
                   <option value="name-asc">По названию (А-Я)</option>
                   <option value="name-desc">По названию (Я-А)</option>
                 </select>
-                
+
                 {/* Счетчик результатов */}
                 <span className="text-xs text-gray-500 ml-auto">
                   Показано: {filteredComponents.length} из {compatibleCount}
                 </span>
               </div>
-              
+
               {/* Расширенные фильтры */}
               {showFilters && (
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-3 space-y-3">
@@ -919,7 +924,7 @@ const BuildYourself: React.FC = () => {
                         ))}
                       </select>
                     </div>
-                    
+
                     {/* Мин. цена */}
                     <div>
                       <label className="block text-xs text-gray-400 mb-1">Мин. цена (₽)</label>
@@ -931,7 +936,7 @@ const BuildYourself: React.FC = () => {
                         className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:border-emerald-500 focus:outline-none"
                       />
                     </div>
-                    
+
                     {/* Макс. цена */}
                     <div>
                       <label className="block text-xs text-gray-400 mb-1">Макс. цена (₽)</label>
@@ -944,7 +949,7 @@ const BuildYourself: React.FC = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <button
                     onClick={resetFilters}
                     className="text-xs text-gray-400 hover:text-white transition-colors"
@@ -954,14 +959,14 @@ const BuildYourself: React.FC = () => {
                 </div>
               )}
             </div>
-            
+
             {filteredComponents.length === 0 ? (
               <p className="text-gray-500 text-center py-4">
                 {compatibleCount === 0 ? 'Нет совместимых компонентов' : 'Ничего не найдено по вашим фильтрам'}
               </p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto">
-                {filteredComponents.map((component: any) => 
+                {filteredComponents.map((component: any) =>
                   renderComponentCard(
                     component,
                     selected?.id === component.id,
@@ -983,26 +988,26 @@ const BuildYourself: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumbs Skeleton */}
           <div className="h-4 w-48 bg-gray-800 rounded animate-pulse mb-6"></div>
-          
+
           {/* Header Skeleton */}
           <div className="mb-8">
             <div className="h-9 w-64 bg-gray-800 rounded animate-pulse mb-2"></div>
             <div className="h-5 w-96 bg-gray-800/50 rounded animate-pulse"></div>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Main Content Skeleton */}
             <div className="lg:col-span-3">
               {/* Input Skeleton */}
               <div className="h-12 bg-gray-800 rounded-lg animate-pulse mb-6"></div>
-              
+
               {/* Tabs Skeleton */}
               <div className="flex gap-2 mb-6">
                 {[1, 2, 3].map(i => (
                   <div key={i} className="h-10 w-32 bg-gray-800 rounded-lg animate-pulse"></div>
                 ))}
               </div>
-              
+
               {/* Sections Skeleton */}
               {[1, 2, 3, 4, 5].map(i => (
                 <div key={i} className="border border-gray-700 rounded-lg overflow-hidden mb-3">
@@ -1019,7 +1024,7 @@ const BuildYourself: React.FC = () => {
                 </div>
               ))}
             </div>
-            
+
             {/* Sidebar Skeleton */}
             <div className="lg:col-span-1">
               <div className="sticky top-4 bg-gray-800/50 border border-gray-700 rounded-lg p-4">
@@ -1054,7 +1059,7 @@ const BuildYourself: React.FC = () => {
           {React.createElement(FiChevronRight as any, { className: "w-4 h-4 text-gray-600" })}
           <span className="text-emerald-400">Собери сам</span>
         </nav>
-        
+
         {/* Заголовок */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">
@@ -1093,11 +1098,10 @@ const BuildYourself: React.FC = () => {
                     setActiveCategory(cat.key as ComponentCategory);
                     setExpandedSection(null);
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                    activeCategory === cat.key
-                      ? 'bg-emerald-500 text-white'
-                      : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${activeCategory === cat.key
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                    }`}
                 >
                   {React.createElement(cat.icon as any, { className: "w-4 h-4" })}
                   {cat.label}
@@ -1145,7 +1149,7 @@ const BuildYourself: React.FC = () => {
                     <span className="text-emerald-400 ml-2">{parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽</span>
                   </div>
                 ))}
-                
+
                 {/* Периферия */}
                 {Object.entries(selectedPeripherals).map(([key, component]) => component && (
                   <div key={key} className="flex justify-between items-center text-sm p-2 bg-gray-900/50 rounded">
@@ -1153,7 +1157,7 @@ const BuildYourself: React.FC = () => {
                     <span className="text-emerald-400 ml-2">{parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽</span>
                   </div>
                 ))}
-                
+
                 {/* Рабочее место */}
                 {Object.entries(selectedWorkspace).map(([key, component]) => component && (
                   <div key={key} className="flex justify-between items-center text-sm p-2 bg-gray-900/50 rounded">
@@ -1161,7 +1165,7 @@ const BuildYourself: React.FC = () => {
                     <span className="text-emerald-400 ml-2">{parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽</span>
                   </div>
                 ))}
-                
+
                 {selectedCount === 0 && (
                   <p className="text-gray-500 text-sm text-center py-4">
                     Выберите компоненты для сборки
@@ -1194,7 +1198,7 @@ const BuildYourself: React.FC = () => {
                     />
                     Публичная сборка (можно делиться)
                   </label>
-                  
+
                   <button
                     onClick={saveBuild}
                     disabled={selectedCount === 0 || saving}
@@ -1212,7 +1216,7 @@ const BuildYourself: React.FC = () => {
                       </>
                     )}
                   </button>
-                  
+
                   {/* Кнопки экспорта */}
                   <div className="flex gap-2">
                     <button
@@ -1232,7 +1236,7 @@ const BuildYourself: React.FC = () => {
                       Печать
                     </button>
                   </div>
-                  
+
                   {/* Кнопка сохранения в PDF */}
                   <button
                     onClick={saveToPDF}
@@ -1242,7 +1246,7 @@ const BuildYourself: React.FC = () => {
                     {React.createElement(FiDownload as any, { className: "w-4 h-4" })}
                     Сохранить PDF
                   </button>
-                  
+
                   {/* Кнопка загрузки сохраненных */}
                   <button
                     onClick={() => setShowBuildsModal(true)}
@@ -1251,7 +1255,7 @@ const BuildYourself: React.FC = () => {
                     {React.createElement(FiList as any, { className: "w-4 h-4" })}
                     Мои сборки ({savedBuilds.length})
                   </button>
-                  
+
                   <button
                     onClick={() => {
                       setSelectedPC({
@@ -1279,7 +1283,7 @@ const BuildYourself: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Модальное окно шаринга */}
         {showShareModal && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -1296,11 +1300,11 @@ const BuildYourself: React.FC = () => {
                   {React.createElement(FiX as any, { className: "w-5 h-5 text-gray-400" })}
                 </button>
               </div>
-              
+
               <p className="text-gray-400 text-sm mb-4">
                 Скопируйте ссылку и отправьте друзьям или коллегам
               </p>
-              
+
               <div className="flex gap-2 mb-4">
                 <input
                   type="text"
@@ -1316,7 +1320,7 @@ const BuildYourself: React.FC = () => {
                   Копировать
                 </button>
               </div>
-              
+
               <div className="flex gap-2">
                 <button
                   onClick={() => {
@@ -1331,7 +1335,7 @@ const BuildYourself: React.FC = () => {
             </div>
           </div>
         )}
-        
+
         {/* Модальное окно со списком сборок */}
         {showBuildsModal && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -1348,7 +1352,7 @@ const BuildYourself: React.FC = () => {
                   {React.createElement(FiX as any, { className: "w-5 h-5 text-gray-400" })}
                 </button>
               </div>
-              
+
               <div className="flex-1 overflow-y-auto space-y-3">
                 {savedBuilds.length === 0 ? (
                   <p className="text-gray-500 text-center py-8">
@@ -1398,15 +1402,14 @@ const BuildYourself: React.FC = () => {
             </div>
           </div>
         )}
-        
+
         {/* Уведомления */}
         {notification && (
-          <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 ${
-            notification.type === 'success' 
-              ? 'bg-emerald-500 text-white' 
-              : 'bg-red-500 text-white'
-          }`}>
-            {notification.type === 'success' 
+          <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 ${notification.type === 'success'
+            ? 'bg-emerald-500 text-white'
+            : 'bg-red-500 text-white'
+            }`}>
+            {notification.type === 'success'
               ? React.createElement(FiCheck as any, { className: "w-5 h-5" })
               : React.createElement(FiX as any, { className: "w-5 h-5" })
             }

@@ -1,0 +1,2620 @@
+f[
+{
+  "model": "authtoken.token",
+  "pk": "07f55103450ae91c0fd8374550f539a3366e2119",
+  "fields": {
+    "user": 3,
+    "created": "2025-12-05T12:48:41.092Z"
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$rvdxFsexWLhOtZRZuS6wLt$+W2enZPN/bAaRaLHc4QSCMJxMbPEeURxKFL9kHBThT0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "testuser",
+    "first_name": "����",
+    "last_name": "������������",
+    "email": "test@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-03T14:32:13.861Z",
+    "user_type": null,
+    "phone": null,
+    "created_at": "2025-12-03T14:32:13.861Z",
+    "updated_at": "2025-12-03T14:32:14.061Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$AudlR1nK6S3nneboDd6LH7$98Mn20DTgIsxoU6+9M7lQaCjzSJp9fvekz4ir7fQqZU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "ttoppatida@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "email": "toppatida@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-05T10:58:14.993Z",
+    "user_type": null,
+    "phone": null,
+    "created_at": "2025-12-05T10:58:15.195Z",
+    "updated_at": "2025-12-05T10:58:15.195Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$RZu0U3Bof74A58mU8r789q$l2XrPc/vkSjMQaXT67V8slcleRpfpmqx+6RPPKS+zdM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "testusertestuser",
+    "first_name": "",
+    "last_name": "",
+    "email": "testusertestuser@testuser.testuser",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-05T12:48:40.766Z",
+    "user_type": null,
+    "phone": null,
+    "created_at": "2025-12-05T12:48:41.085Z",
+    "updated_at": "2025-12-05T12:48:41.086Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "min_budget": "0.00",
+    "max_budget": "0.00",
+    "priority": "performance",
+    "multitasking": false,
+    "work_with_4k": false,
+    "vr_support": false,
+    "video_editing": false,
+    "gaming": false,
+    "streaming": false,
+    "has_existing_components": false,
+    "existing_components_description": null,
+    "created_at": "2025-12-05T10:58:02.731Z",
+    "updated_at": "2025-12-05T10:58:02.731Z"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "min_budget": "0.00",
+    "max_budget": "0.00",
+    "priority": "performance",
+    "multitasking": false,
+    "work_with_4k": false,
+    "vr_support": false,
+    "video_editing": false,
+    "gaming": false,
+    "streaming": false,
+    "has_existing_components": false,
+    "existing_components_description": null,
+    "created_at": "2025-12-05T10:58:15.197Z",
+    "updated_at": "2025-12-05T10:58:15.197Z"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "min_budget": "0.00",
+    "max_budget": "0.00",
+    "priority": "performance",
+    "multitasking": false,
+    "work_with_4k": false,
+    "vr_support": false,
+    "video_editing": false,
+    "gaming": false,
+    "streaming": false,
+    "has_existing_components": false,
+    "existing_components_description": null,
+    "created_at": "2025-12-05T12:48:41.089Z",
+    "updated_at": "2025-12-05T12:48:41.089Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 240,
+  "fields": {
+    "name": "Intel Core i9-14900K",
+    "manufacturer": "Intel",
+    "socket": "LGA1700",
+    "cores": 24,
+    "threads": 32,
+    "base_clock": 3.0,
+    "boost_clock": 6.0,
+    "tdp": 125,
+    "price": "64999.00",
+    "performance_score": 98,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.314Z",
+    "updated_at": "2025-12-05T13:31:16.314Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 241,
+  "fields": {
+    "name": "Intel Core i7-14700K",
+    "manufacturer": "Intel",
+    "socket": "LGA1700",
+    "cores": 20,
+    "threads": 28,
+    "base_clock": 3.4,
+    "boost_clock": 5.6,
+    "tdp": 125,
+    "price": "49999.00",
+    "performance_score": 92,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.317Z",
+    "updated_at": "2025-12-05T13:31:16.317Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 242,
+  "fields": {
+    "name": "Intel Core i5-14600K",
+    "manufacturer": "Intel",
+    "socket": "LGA1700",
+    "cores": 14,
+    "threads": 20,
+    "base_clock": 3.5,
+    "boost_clock": 5.3,
+    "tdp": 125,
+    "price": "35999.00",
+    "performance_score": 85,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.319Z",
+    "updated_at": "2025-12-05T13:31:16.319Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 243,
+  "fields": {
+    "name": "Intel Core i5-13400F",
+    "manufacturer": "Intel",
+    "socket": "LGA1700",
+    "cores": 10,
+    "threads": 16,
+    "base_clock": 2.5,
+    "boost_clock": 4.6,
+    "tdp": 65,
+    "price": "19999.00",
+    "performance_score": 75,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.321Z",
+    "updated_at": "2025-12-05T13:31:16.321Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 244,
+  "fields": {
+    "name": "AMD Ryzen 9 7950X",
+    "manufacturer": "AMD",
+    "socket": "AM5",
+    "cores": 16,
+    "threads": 32,
+    "base_clock": 4.5,
+    "boost_clock": 5.7,
+    "tdp": 170,
+    "price": "59999.00",
+    "performance_score": 96,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.323Z",
+    "updated_at": "2025-12-05T13:31:16.323Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 245,
+  "fields": {
+    "name": "AMD Ryzen 7 7800X3D",
+    "manufacturer": "AMD",
+    "socket": "AM5",
+    "cores": 8,
+    "threads": 16,
+    "base_clock": 4.2,
+    "boost_clock": 5.0,
+    "tdp": 120,
+    "price": "44999.00",
+    "performance_score": 94,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.326Z",
+    "updated_at": "2025-12-05T13:31:16.326Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 246,
+  "fields": {
+    "name": "AMD Ryzen 5 7600X",
+    "manufacturer": "AMD",
+    "socket": "AM5",
+    "cores": 6,
+    "threads": 12,
+    "base_clock": 4.7,
+    "boost_clock": 5.3,
+    "tdp": 105,
+    "price": "29999.00",
+    "performance_score": 82,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.328Z",
+    "updated_at": "2025-12-05T13:31:16.328Z"
+  }
+},
+{
+  "model": "computers.cpu",
+  "pk": 247,
+  "fields": {
+    "name": "AMD Ryzen 5 5600",
+    "manufacturer": "AMD",
+    "socket": "AM4",
+    "cores": 6,
+    "threads": 12,
+    "base_clock": 3.5,
+    "boost_clock": 4.4,
+    "tdp": 65,
+    "price": "14999.00",
+    "performance_score": 70,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.330Z",
+    "updated_at": "2025-12-05T13:31:16.330Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 239,
+  "fields": {
+    "name": "NVIDIA GeForce RTX 4090",
+    "manufacturer": "NVIDIA",
+    "chipset": "AD102",
+    "memory": 24,
+    "memory_type": "GDDR6X",
+    "core_clock": 2520,
+    "boost_clock": null,
+    "tdp": 450,
+    "recommended_psu": 850,
+    "price": "179999.00",
+    "performance_score": 100,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.333Z",
+    "updated_at": "2025-12-05T13:31:16.333Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 240,
+  "fields": {
+    "name": "NVIDIA GeForce RTX 4080",
+    "manufacturer": "NVIDIA",
+    "chipset": "AD103",
+    "memory": 16,
+    "memory_type": "GDDR6X",
+    "core_clock": 2505,
+    "boost_clock": null,
+    "tdp": 320,
+    "recommended_psu": 750,
+    "price": "129999.00",
+    "performance_score": 92,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.335Z",
+    "updated_at": "2025-12-05T13:31:16.335Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 241,
+  "fields": {
+    "name": "NVIDIA GeForce RTX 4070 Ti",
+    "manufacturer": "NVIDIA",
+    "chipset": "AD104",
+    "memory": 12,
+    "memory_type": "GDDR6X",
+    "core_clock": 2610,
+    "boost_clock": null,
+    "tdp": 285,
+    "recommended_psu": 700,
+    "price": "94999.00",
+    "performance_score": 85,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.337Z",
+    "updated_at": "2025-12-05T13:31:16.337Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 242,
+  "fields": {
+    "name": "NVIDIA GeForce RTX 4060 Ti",
+    "manufacturer": "NVIDIA",
+    "chipset": "AD106",
+    "memory": 8,
+    "memory_type": "GDDR6",
+    "core_clock": 2535,
+    "boost_clock": null,
+    "tdp": 160,
+    "recommended_psu": 550,
+    "price": "49999.00",
+    "performance_score": 75,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.340Z",
+    "updated_at": "2025-12-05T13:31:16.340Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 243,
+  "fields": {
+    "name": "NVIDIA GeForce RTX 3060",
+    "manufacturer": "NVIDIA",
+    "chipset": "GA106",
+    "memory": 12,
+    "memory_type": "GDDR6",
+    "core_clock": 1777,
+    "boost_clock": null,
+    "tdp": 170,
+    "recommended_psu": 550,
+    "price": "34999.00",
+    "performance_score": 65,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.342Z",
+    "updated_at": "2025-12-05T13:31:16.342Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 244,
+  "fields": {
+    "name": "AMD Radeon RX 7900 XTX",
+    "manufacturer": "AMD",
+    "chipset": "Navi 31",
+    "memory": 24,
+    "memory_type": "GDDR6",
+    "core_clock": 2500,
+    "boost_clock": null,
+    "tdp": 355,
+    "recommended_psu": 800,
+    "price": "109999.00",
+    "performance_score": 90,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.344Z",
+    "updated_at": "2025-12-05T13:31:16.344Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 245,
+  "fields": {
+    "name": "AMD Radeon RX 7800 XT",
+    "manufacturer": "AMD",
+    "chipset": "Navi 32",
+    "memory": 16,
+    "memory_type": "GDDR6",
+    "core_clock": 2430,
+    "boost_clock": null,
+    "tdp": 263,
+    "recommended_psu": 700,
+    "price": "64999.00",
+    "performance_score": 80,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.347Z",
+    "updated_at": "2025-12-05T13:31:16.347Z"
+  }
+},
+{
+  "model": "computers.gpu",
+  "pk": 246,
+  "fields": {
+    "name": "AMD Radeon RX 6700 XT",
+    "manufacturer": "AMD",
+    "chipset": "Navi 22",
+    "memory": 12,
+    "memory_type": "GDDR6",
+    "core_clock": 2581,
+    "boost_clock": null,
+    "tdp": 230,
+    "recommended_psu": 650,
+    "price": "44999.00",
+    "performance_score": 72,
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.349Z",
+    "updated_at": "2025-12-05T13:31:16.349Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 1,
+  "fields": {
+    "name": "X670E MAX WIFI",
+    "manufacturer": "ASUS",
+    "socket": "LGA1700",
+    "chipset": "X670E",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 256,
+    "memory_type": "DDR5",
+    "pcie_slots": 5,
+    "m2_slots": 4,
+    "price": "22000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:26:49.410Z",
+    "ai_confidence": 0.92,
+    "created_at": "2025-12-03T15:26:49.410Z",
+    "updated_at": "2025-12-03T15:26:49.410Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 2,
+  "fields": {
+    "name": "Gigabyte AORUS Elite AX B760",
+    "manufacturer": "Gigabyte",
+    "socket": "LGA1700",
+    "chipset": "B760",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 5,
+    "m2_slots": 3,
+    "price": "15000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:32:55.921Z",
+    "ai_confidence": 0.95,
+    "created_at": "2025-12-03T15:32:55.921Z",
+    "updated_at": "2025-12-03T15:32:55.921Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 3,
+  "fields": {
+    "name": "ASRock B650M Pro RS WiFi",
+    "manufacturer": "ASRock",
+    "socket": "AM5",
+    "chipset": "B650",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 5,
+    "m2_slots": 3,
+    "price": "10000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:51:58.126Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:51:58.127Z",
+    "updated_at": "2025-12-03T15:51:58.127Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 4,
+  "fields": {
+    "name": "ASRock B650M Pro RS WiFi",
+    "manufacturer": "ASRock",
+    "socket": "LGA 1700",
+    "chipset": "Intel B650",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 5,
+    "m2_slots": 3,
+    "price": "5000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:53:38.741Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:53:38.741Z",
+    "updated_at": "2025-12-03T15:53:38.741Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 5,
+  "fields": {
+    "name": "ASRock B650M Pro RS WiFi",
+    "manufacturer": "ASRock",
+    "socket": "AM5",
+    "chipset": "AMD B650",
+    "form_factor": "Micro-ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 5,
+    "m2_slots": 3,
+    "price": "14900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:07:03.156Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:07:03.156Z",
+    "updated_at": "2025-12-03T16:07:03.156Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 6,
+  "fields": {
+    "name": "ASUS ROG STRIX B760-G GAMING",
+    "manufacturer": "ASUS",
+    "socket": "LGA1700",
+    "chipset": "Intel B760",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 4,
+    "m2_slots": 3,
+    "price": "18000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:27.912Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:27.913Z",
+    "updated_at": "2025-12-03T16:38:27.913Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 7,
+  "fields": {
+    "name": "ASUS TUF GAMING B760-PLUS WIFI",
+    "manufacturer": "ASUS",
+    "socket": "LGA1700",
+    "chipset": "Intel B760",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR4",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "10990.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:52.907Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:52.907Z",
+    "updated_at": "2025-12-03T16:38:52.907Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 8,
+  "fields": {
+    "name": "H610M GAMING",
+    "manufacturer": "ASUS",
+    "socket": "LGA1700",
+    "chipset": "Intel H610",
+    "form_factor": "mATX",
+    "memory_slots": 2,
+    "max_memory": 128,
+    "memory_type": "DDR4",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "4500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:53:55.215Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:53:55.215Z",
+    "updated_at": "2025-12-05T11:53:55.215Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 9,
+  "fields": {
+    "name": "ASRock B650M Pro RS",
+    "manufacturer": "ASRock",
+    "socket": "AMD",
+    "chipset": "B650",
+    "form_factor": "mATX",
+    "memory_slots": 2,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "15000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:55:16.078Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:55:16.078Z",
+    "updated_at": "2025-12-05T11:55:16.078Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 10,
+  "fields": {
+    "name": "ASUS ROG STRIX Z790-F GAMING WIFI",
+    "manufacturer": "ASUS",
+    "socket": "LGA1700",
+    "chipset": "Intel Z790",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "28900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:06:55.473Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:06:55.473Z",
+    "updated_at": "2025-12-05T12:06:55.473Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 11,
+  "fields": {
+    "name": "MSI PRO B560M-A WIFI",
+    "manufacturer": "MSI",
+    "socket": "LGA1700",
+    "chipset": "Intel B560",
+    "form_factor": "mATX",
+    "memory_slots": 2,
+    "max_memory": 128,
+    "memory_type": "DDR4",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "7900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:13:31.794Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:13:31.794Z",
+    "updated_at": "2025-12-05T12:13:31.794Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 12,
+  "fields": {
+    "name": "ASUS ROG STRIX Z790-G GAMING",
+    "manufacturer": "ASUS",
+    "socket": "LGA1700",
+    "chipset": "Intel Z790",
+    "form_factor": "ATX",
+    "memory_slots": 4,
+    "max_memory": 256,
+    "memory_type": "DDR5",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "24900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:15:36.565Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:15:36.565Z",
+    "updated_at": "2025-12-05T12:15:36.565Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 13,
+  "fields": {
+    "name": "ASRock B660M Pro RS",
+    "manufacturer": "ASRock",
+    "socket": "LGA1700",
+    "chipset": "Intel B660",
+    "form_factor": "mATX",
+    "memory_slots": 2,
+    "max_memory": 128,
+    "memory_type": "DDR4",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "5000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:26:18.625Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:26:18.626Z",
+    "updated_at": "2025-12-05T12:26:18.626Z"
+  }
+},
+{
+  "model": "computers.motherboard",
+  "pk": 14,
+  "fields": {
+    "name": "ASRock B650M Pro RS",
+    "manufacturer": "ASRock",
+    "socket": "AM5",
+    "chipset": "B650",
+    "form_factor": "mATX",
+    "memory_slots": 4,
+    "max_memory": 128,
+    "memory_type": "DDR5",
+    "pcie_slots": 2,
+    "m2_slots": 2,
+    "price": "12000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:55:11.359Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:55:11.359Z",
+    "updated_at": "2025-12-05T12:55:11.359Z"
+  }
+},
+{
+  "model": "computers.ram",
+  "pk": 184,
+  "fields": {
+    "name": "Corsair Vengeance RGB DDR5",
+    "manufacturer": "Corsair",
+    "memory_type": "DDR5",
+    "capacity": 32,
+    "speed": 6000,
+    "modules": 2,
+    "cas_latency": "30",
+    "price": "14999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.352Z",
+    "updated_at": "2025-12-05T13:31:16.352Z"
+  }
+},
+{
+  "model": "computers.ram",
+  "pk": 185,
+  "fields": {
+    "name": "G.Skill Trident Z5 RGB DDR5",
+    "manufacturer": "G.Skill",
+    "memory_type": "DDR5",
+    "capacity": 32,
+    "speed": 6400,
+    "modules": 2,
+    "cas_latency": "32",
+    "price": "16999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.354Z",
+    "updated_at": "2025-12-05T13:31:16.354Z"
+  }
+},
+{
+  "model": "computers.ram",
+  "pk": 186,
+  "fields": {
+    "name": "Kingston FURY Beast DDR5",
+    "manufacturer": "Kingston",
+    "memory_type": "DDR5",
+    "capacity": 16,
+    "speed": 5200,
+    "modules": 2,
+    "cas_latency": "40",
+    "price": "7999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.356Z",
+    "updated_at": "2025-12-05T13:31:16.356Z"
+  }
+},
+{
+  "model": "computers.ram",
+  "pk": 187,
+  "fields": {
+    "name": "Corsair Vengeance LPX DDR4",
+    "manufacturer": "Corsair",
+    "memory_type": "DDR4",
+    "capacity": 32,
+    "speed": 3200,
+    "modules": 2,
+    "cas_latency": "16",
+    "price": "9999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.359Z",
+    "updated_at": "2025-12-05T13:31:16.359Z"
+  }
+},
+{
+  "model": "computers.ram",
+  "pk": 188,
+  "fields": {
+    "name": "G.Skill Ripjaws V DDR4",
+    "manufacturer": "G.Skill",
+    "memory_type": "DDR4",
+    "capacity": 16,
+    "speed": 3600,
+    "modules": 2,
+    "cas_latency": "16",
+    "price": "5999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.361Z",
+    "updated_at": "2025-12-05T13:31:16.361Z"
+  }
+},
+{
+  "model": "computers.ram",
+  "pk": 189,
+  "fields": {
+    "name": "Kingston FURY Beast DDR4",
+    "manufacturer": "Kingston",
+    "memory_type": "DDR4",
+    "capacity": 16,
+    "speed": 3200,
+    "modules": 2,
+    "cas_latency": "16",
+    "price": "4999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.363Z",
+    "updated_at": "2025-12-05T13:31:16.363Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 240,
+  "fields": {
+    "name": "Samsung 990 Pro",
+    "manufacturer": "Samsung",
+    "storage_type": "nvme",
+    "capacity": 2000,
+    "read_speed": 7450,
+    "write_speed": 6900,
+    "price": "19999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.366Z",
+    "updated_at": "2025-12-05T13:31:16.366Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 241,
+  "fields": {
+    "name": "WD Black SN850X",
+    "manufacturer": "Western Digital",
+    "storage_type": "nvme",
+    "capacity": 2000,
+    "read_speed": 7300,
+    "write_speed": 6600,
+    "price": "17999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.368Z",
+    "updated_at": "2025-12-05T13:31:16.368Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 242,
+  "fields": {
+    "name": "Samsung 980 Pro",
+    "manufacturer": "Samsung",
+    "storage_type": "nvme",
+    "capacity": 1000,
+    "read_speed": 7000,
+    "write_speed": 5100,
+    "price": "11999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.370Z",
+    "updated_at": "2025-12-05T13:31:16.370Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 243,
+  "fields": {
+    "name": "Kingston KC3000",
+    "manufacturer": "Kingston",
+    "storage_type": "nvme",
+    "capacity": 1000,
+    "read_speed": 7000,
+    "write_speed": 6000,
+    "price": "9999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.372Z",
+    "updated_at": "2025-12-05T13:31:16.372Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 244,
+  "fields": {
+    "name": "Samsung 870 EVO",
+    "manufacturer": "Samsung",
+    "storage_type": "ssd",
+    "capacity": 1000,
+    "read_speed": 560,
+    "write_speed": 530,
+    "price": "7999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.374Z",
+    "updated_at": "2025-12-05T13:31:16.374Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 245,
+  "fields": {
+    "name": "Crucial MX500",
+    "manufacturer": "Crucial",
+    "storage_type": "ssd",
+    "capacity": 1000,
+    "read_speed": 560,
+    "write_speed": 510,
+    "price": "6999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.376Z",
+    "updated_at": "2025-12-05T13:31:16.376Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 246,
+  "fields": {
+    "name": "Seagate BarraCuda",
+    "manufacturer": "Seagate",
+    "storage_type": "hdd",
+    "capacity": 4000,
+    "read_speed": null,
+    "write_speed": null,
+    "price": "8999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.378Z",
+    "updated_at": "2025-12-05T13:31:16.378Z"
+  }
+},
+{
+  "model": "computers.storage",
+  "pk": 247,
+  "fields": {
+    "name": "WD Blue",
+    "manufacturer": "Western Digital",
+    "storage_type": "hdd",
+    "capacity": 2000,
+    "read_speed": null,
+    "write_speed": null,
+    "price": "5999.00",
+    "is_ai_generated": false,
+    "ai_generation_date": null,
+    "ai_confidence": null,
+    "created_at": "2025-12-05T13:31:16.380Z",
+    "updated_at": "2025-12-05T13:31:16.380Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 1,
+  "fields": {
+    "name": "Corsair RM1000e",
+    "manufacturer": "Corsair",
+    "wattage": 1000,
+    "efficiency_rating": "80 PLUS Platinum",
+    "modular": true,
+    "price": "12000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:26:49.424Z",
+    "ai_confidence": 0.92,
+    "created_at": "2025-12-03T15:26:49.425Z",
+    "updated_at": "2025-12-03T15:26:49.425Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 2,
+  "fields": {
+    "name": "Corsair RM750e",
+    "manufacturer": "Corsair",
+    "wattage": 750,
+    "efficiency_rating": "80 PLUS Gold",
+    "modular": true,
+    "price": "9000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:32:55.934Z",
+    "ai_confidence": 0.95,
+    "created_at": "2025-12-03T15:32:55.934Z",
+    "updated_at": "2025-12-03T15:32:55.934Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 3,
+  "fields": {
+    "name": "Corsair CX550M",
+    "manufacturer": "Corsair",
+    "wattage": 550,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "6000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:51:58.142Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:51:58.142Z",
+    "updated_at": "2025-12-03T15:51:58.142Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 4,
+  "fields": {
+    "name": "Corsair CX750M 750W 80+ Gold Modular ATX Power Supply",
+    "manufacturer": "Corsair",
+    "wattage": 750,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "4000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:53:38.756Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:53:38.756Z",
+    "updated_at": "2025-12-03T15:53:38.757Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 5,
+  "fields": {
+    "name": "Corsair CX650M 750W 80+ Gold Modular ATX Power Supply",
+    "manufacturer": "Corsair",
+    "wattage": 750,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "5900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:07:03.171Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:07:03.172Z",
+    "updated_at": "2025-12-03T16:07:03.172Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 6,
+  "fields": {
+    "name": "Corsair RM850e",
+    "manufacturer": "Corsair",
+    "wattage": 850,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "5000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:27.927Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:27.927Z",
+    "updated_at": "2025-12-03T16:38:27.927Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 7,
+  "fields": {
+    "name": "Corsair CX650M 650W 80+ Bronze Modular",
+    "manufacturer": "Corsair",
+    "wattage": 650,
+    "efficiency_rating": "80+ Bronze",
+    "modular": true,
+    "price": "3490.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:52.921Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:52.922Z",
+    "updated_at": "2025-12-03T16:38:52.922Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 8,
+  "fields": {
+    "name": "EVGA BQ 500 W3, 80+ Bronze",
+    "manufacturer": "EVGA",
+    "wattage": 500,
+    "efficiency_rating": "80+ Bronze",
+    "modular": true,
+    "price": "1100.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:48:57.346Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:48:57.346Z",
+    "updated_at": "2025-12-05T11:48:57.346Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 9,
+  "fields": {
+    "name": "EVGA BQ 500W",
+    "manufacturer": "EVGA",
+    "wattage": 500,
+    "efficiency_rating": "80+ Bronze",
+    "modular": true,
+    "price": "800.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:53:55.223Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:53:55.223Z",
+    "updated_at": "2025-12-05T11:53:55.223Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 10,
+  "fields": {
+    "name": "Thermaltake Toughpower GF650 650W 80+ Gold Modular",
+    "manufacturer": "Thermaltake",
+    "wattage": 650,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "8000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:55:16.084Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:55:16.085Z",
+    "updated_at": "2025-12-05T11:55:16.085Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 11,
+  "fields": {
+    "name": "Corsair RM8500X",
+    "manufacturer": "Corsair",
+    "wattage": 850,
+    "efficiency_rating": "80+ Platinum",
+    "modular": true,
+    "price": "8900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:06:55.481Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:06:55.481Z",
+    "updated_at": "2025-12-05T12:06:55.481Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 12,
+  "fields": {
+    "name": "Corsair CX450",
+    "manufacturer": "Corsair",
+    "wattage": 450,
+    "efficiency_rating": "80+ Bronze",
+    "modular": true,
+    "price": "3200.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:13:31.802Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:13:31.802Z",
+    "updated_at": "2025-12-05T12:13:31.802Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 13,
+  "fields": {
+    "name": "Corsair RM850e",
+    "manufacturer": "Corsair",
+    "wattage": 850,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "4500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:15:36.576Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:15:36.576Z",
+    "updated_at": "2025-12-05T12:15:36.576Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 14,
+  "fields": {
+    "name": "Corsair CX450",
+    "manufacturer": "Corsair",
+    "wattage": 500,
+    "efficiency_rating": "80+ Bronze",
+    "modular": true,
+    "price": "2000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:26:18.633Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:26:18.633Z",
+    "updated_at": "2025-12-05T12:26:18.633Z"
+  }
+},
+{
+  "model": "computers.psu",
+  "pk": 15,
+  "fields": {
+    "name": "Corsair CX750",
+    "manufacturer": "Corsair",
+    "wattage": 750,
+    "efficiency_rating": "80+ Gold",
+    "modular": true,
+    "price": "5000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:55:11.375Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:55:11.376Z",
+    "updated_at": "2025-12-05T12:55:11.376Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 1,
+  "fields": {
+    "name": "Fractal Meshify 2 Compact",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Compact",
+    "max_gpu_length": 315,
+    "fan_slots": 2,
+    "rgb": true,
+    "price": "8500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:26:49.429Z",
+    "ai_confidence": 0.92,
+    "created_at": "2025-12-03T15:26:49.429Z",
+    "updated_at": "2025-12-03T15:26:49.429Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 2,
+  "fields": {
+    "name": "Fractal Design Meshify 2 Compact",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 310,
+    "fan_slots": 2,
+    "rgb": false,
+    "price": "4000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:51:58.145Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:51:58.145Z",
+    "updated_at": "2025-12-03T15:51:58.145Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 3,
+  "fields": {
+    "name": "Fractal Design Meshify Compact ARGB Mid-Tower Case",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 310,
+    "fan_slots": 2,
+    "rgb": false,
+    "price": "3000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:53:38.762Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:53:38.763Z",
+    "updated_at": "2025-12-03T15:53:38.763Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 4,
+  "fields": {
+    "name": "Fractal Design Compact Meshify 2 Mid-Tower Case",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 310,
+    "fan_slots": 2,
+    "rgb": false,
+    "price": "4200.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:07:03.176Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:07:03.176Z",
+    "updated_at": "2025-12-03T16:07:03.176Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 5,
+  "fields": {
+    "name": "Fractal Design Meshify 2 Compact",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 310,
+    "fan_slots": 2,
+    "rgb": false,
+    "price": "3500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:27.930Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:27.930Z",
+    "updated_at": "2025-12-03T16:38:27.930Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 6,
+  "fields": {
+    "name": "Fractal Design Meshify 2 Compact Mesh",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 310,
+    "fan_slots": 2,
+    "rgb": false,
+    "price": "3490.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:52.924Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:52.925Z",
+    "updated_at": "2025-12-03T16:38:52.925Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 7,
+  "fields": {
+    "name": "Fractal Design Compact Meshify 2",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 140,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "800.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:48:57.348Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:48:57.348Z",
+    "updated_at": "2025-12-05T11:48:57.348Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 8,
+  "fields": {
+    "name": "Fractal Design Compact",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 150,
+    "fan_slots": 0,
+    "rgb": false,
+    "price": "1800.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:53:55.227Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:53:55.228Z",
+    "updated_at": "2025-12-05T11:53:55.228Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 9,
+  "fields": {
+    "name": "Lian Li Lancool 216",
+    "manufacturer": "Lian Li",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 310,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "10000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:55:16.087Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:55:16.087Z",
+    "updated_at": "2025-12-05T11:55:16.087Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 10,
+  "fields": {
+    "name": "Fractal Design Phantom X",
+    "manufacturer": "Fractal Design",
+    "form_factor": "ATX Mid-Tower",
+    "max_gpu_length": 400,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "8990.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:06:55.483Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:06:55.483Z",
+    "updated_at": "2025-12-05T12:06:55.483Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 11,
+  "fields": {
+    "name": "Fractal Design Compact Meshify 2",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 315,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "2800.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:13:31.804Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:13:31.804Z",
+    "updated_at": "2025-12-05T12:13:31.804Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 12,
+  "fields": {
+    "name": "Fractal Design Phantom X",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 400,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "12900.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:15:36.579Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:15:36.579Z",
+    "updated_at": "2025-12-05T12:15:36.579Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 13,
+  "fields": {
+    "name": "Corsair 4000D Air",
+    "manufacturer": "Corsair",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 140,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "3000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:26:18.635Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:26:18.635Z",
+    "updated_at": "2025-12-05T12:26:18.635Z"
+  }
+},
+{
+  "model": "computers.case",
+  "pk": 14,
+  "fields": {
+    "name": "Fractal Design Meshify Compact",
+    "manufacturer": "Fractal Design",
+    "form_factor": "Mid-Tower",
+    "max_gpu_length": 315,
+    "fan_slots": 0,
+    "rgb": true,
+    "price": "4000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:55:11.380Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:55:11.381Z",
+    "updated_at": "2025-12-05T12:55:11.381Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 1,
+  "fields": {
+    "name": "Noctua NH-U16S PWM",
+    "manufacturer": "Noctua",
+    "cooling_type": "air",
+    "socket_compatibility": "LGA1700, AM5",
+    "max_tdp": 300,
+    "noise_level": 32,
+    "price": "4500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:26:49.433Z",
+    "ai_confidence": 0.92,
+    "created_at": "2025-12-03T15:26:49.433Z",
+    "updated_at": "2025-12-03T15:26:49.433Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 2,
+  "fields": {
+    "name": "Noctua NH-D15",
+    "manufacturer": "Noctua",
+    "cooling_type": "air",
+    "socket_compatibility": "LGA1700, AM5",
+    "max_tdp": 250,
+    "noise_level": 24,
+    "price": "10500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:32:55.938Z",
+    "ai_confidence": 0.95,
+    "created_at": "2025-12-03T15:32:55.938Z",
+    "updated_at": "2025-12-03T15:32:55.938Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 3,
+  "fields": {
+    "name": "Thermalright Phantom Spirit 120 AR",
+    "manufacturer": "Thermalright",
+    "cooling_type": "air",
+    "socket_compatibility": "AM4/AM5",
+    "max_tdp": 250,
+    "noise_level": 32,
+    "price": "3500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:51:58.150Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:51:58.150Z",
+    "updated_at": "2025-12-03T15:51:58.150Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 4,
+  "fields": {
+    "name": "Thermalright Phantom Spirit 140 SE ARGB CPU Cooler",
+    "manufacturer": "Thermalright",
+    "cooling_type": "air",
+    "socket_compatibility": "Intel AM4/AMD AM5",
+    "max_tdp": 250,
+    "noise_level": 32,
+    "price": "2500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T15:53:38.766Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T15:53:38.767Z",
+    "updated_at": "2025-12-03T15:53:38.767Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 5,
+  "fields": {
+    "name": "Cooler Master Hyper 212 SE ARGB CPU Cooler",
+    "manufacturer": "Cooler Master",
+    "cooling_type": "air",
+    "socket_compatibility": "AM4/AM5",
+    "max_tdp": 250,
+    "noise_level": 35,
+    "price": "3400.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:07:03.179Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:07:03.179Z",
+    "updated_at": "2025-12-03T16:07:03.179Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 6,
+  "fields": {
+    "name": "Noctua NH-D15",
+    "manufacturer": "Noctua",
+    "cooling_type": "air",
+    "socket_compatibility": "LGA1700",
+    "max_tdp": 300,
+    "noise_level": 30,
+    "price": "4500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:27.932Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:27.932Z",
+    "updated_at": "2025-12-03T16:38:27.932Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 7,
+  "fields": {
+    "name": "Noctua NH-D15",
+    "manufacturer": "Noctua",
+    "cooling_type": "air",
+    "socket_compatibility": "LGA1700",
+    "max_tdp": 300,
+    "noise_level": 30,
+    "price": "3990.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-03T16:38:52.927Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-03T16:38:52.927Z",
+    "updated_at": "2025-12-03T16:38:52.927Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 8,
+  "fields": {
+    "name": "Cooler Master Hyper 212 EVO",
+    "manufacturer": "Cooler Master",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 210,
+    "noise_level": null,
+    "price": "1200.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:48:57.351Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:48:57.351Z",
+    "updated_at": "2025-12-05T11:48:57.351Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 9,
+  "fields": {
+    "name": "Stock Cooler",
+    "manufacturer": "Intel",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 125,
+    "noise_level": null,
+    "price": "0.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:53:55.230Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:53:55.230Z",
+    "updated_at": "2025-12-05T11:53:55.230Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 10,
+  "fields": {
+    "name": "Corsair LL120 RGB 120mm Fan",
+    "manufacturer": "Corsair",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 200,
+    "noise_level": null,
+    "price": "3000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T11:55:16.089Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T11:55:16.089Z",
+    "updated_at": "2025-12-05T11:55:16.089Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 11,
+  "fields": {
+    "name": "Noctua NH-D15",
+    "manufacturer": "Noctua",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 300,
+    "noise_level": null,
+    "price": "5990.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:06:55.485Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:06:55.485Z",
+    "updated_at": "2025-12-05T12:06:55.485Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 12,
+  "fields": {
+    "name": "Cooler Master Hyper 212 S",
+    "manufacturer": "Cooler Master",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 212,
+    "noise_level": null,
+    "price": "2200.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:13:31.807Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:13:31.807Z",
+    "updated_at": "2025-12-05T12:13:31.807Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 13,
+  "fields": {
+    "name": "Noctua NH-D15",
+    "manufacturer": "Noctua",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 300,
+    "noise_level": null,
+    "price": "4500.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:15:36.581Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:15:36.582Z",
+    "updated_at": "2025-12-05T12:15:36.582Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 14,
+  "fields": {
+    "name": "Cooler Master Hyper 212 S",
+    "manufacturer": "Cooler Master",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 160,
+    "noise_level": null,
+    "price": "2000.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:26:18.637Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:26:18.638Z",
+    "updated_at": "2025-12-05T12:26:18.638Z"
+  }
+},
+{
+  "model": "computers.cooling",
+  "pk": 15,
+  "fields": {
+    "name": "Stock Cooler (Ryzen 7800X3D)",
+    "manufacturer": "AMD",
+    "cooling_type": "air",
+    "socket_compatibility": "",
+    "max_tdp": 160,
+    "noise_level": null,
+    "price": "0.00",
+    "is_ai_generated": true,
+    "ai_generation_date": "2025-12-05T12:55:11.384Z",
+    "ai_confidence": 0.9,
+    "created_at": "2025-12-05T12:55:11.385Z",
+    "updated_at": "2025-12-05T12:55:11.385Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 1,
+  "fields": {
+    "name": "LG 24MP430-B",
+    "manufacturer": "LG",
+    "screen_size": 23.8,
+    "resolution": "1920x1080",
+    "refresh_rate": 60,
+    "panel_type": "IPS",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "7500.00",
+    "created_at": "2025-12-05T11:53:55.237Z",
+    "updated_at": "2025-12-05T11:53:55.237Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 2,
+  "fields": {
+    "name": "Dell S2422D",
+    "manufacturer": "Dell",
+    "screen_size": 24.0,
+    "resolution": "2560x1440",
+    "refresh_rate": 60,
+    "panel_type": "IPS",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "25000.00",
+    "created_at": "2025-12-05T11:55:16.095Z",
+    "updated_at": "2025-12-05T11:55:16.095Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 3,
+  "fields": {
+    "name": "Samsung Odyssey G9",
+    "manufacturer": "Samsung",
+    "screen_size": 49.0,
+    "resolution": "4K",
+    "refresh_rate": 240,
+    "panel_type": "VA",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "249900.00",
+    "created_at": "2025-12-05T12:06:55.494Z",
+    "updated_at": "2025-12-05T12:06:55.494Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 4,
+  "fields": {
+    "name": "Samsung Odyssey G7 27\"",
+    "manufacturer": "Samsung",
+    "screen_size": 27.0,
+    "resolution": "2560x1440",
+    "refresh_rate": 144,
+    "panel_type": "VA",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "19900.00",
+    "created_at": "2025-12-05T12:13:31.815Z",
+    "updated_at": "2025-12-05T12:13:31.815Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 5,
+  "fields": {
+    "name": "Samsung Odyssey G7 49\"",
+    "manufacturer": "Samsung",
+    "screen_size": 49.0,
+    "resolution": "QLED",
+    "refresh_rate": 240,
+    "panel_type": "IPS",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "89000.00",
+    "created_at": "2025-12-05T12:15:36.589Z",
+    "updated_at": "2025-12-05T12:15:36.589Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 6,
+  "fields": {
+    "name": "Samsung Odyssey G7",
+    "manufacturer": "Samsung",
+    "screen_size": 27.0,
+    "resolution": "2560x1440",
+    "refresh_rate": 144,
+    "panel_type": "VA",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "15000.00",
+    "created_at": "2025-12-05T12:26:18.645Z",
+    "updated_at": "2025-12-05T12:26:18.645Z"
+  }
+},
+{
+  "model": "peripherals.monitor",
+  "pk": 7,
+  "fields": {
+    "name": "Dell S2721D",
+    "manufacturer": "Dell",
+    "screen_size": 27.0,
+    "resolution": "QHD",
+    "refresh_rate": 144,
+    "panel_type": "IPS",
+    "response_time": 5,
+    "hdr": false,
+    "curved": false,
+    "price": "15000.00",
+    "created_at": "2025-12-05T12:55:11.392Z",
+    "updated_at": "2025-12-05T12:55:11.392Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 1,
+  "fields": {
+    "name": "Logitech MK250",
+    "manufacturer": "Logitech",
+    "switch_type": "membrane",
+    "switch_model": "",
+    "rgb": false,
+    "wireless": true,
+    "form_factor": "Full-size",
+    "price": "1200.00",
+    "created_at": "2025-12-05T11:53:55.239Z",
+    "updated_at": "2025-12-05T11:53:55.239Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 2,
+  "fields": {
+    "name": "Logitech G613 Wireless Gaming Keyboard",
+    "manufacturer": "Logitech",
+    "switch_type": "mechanical",
+    "switch_model": "",
+    "rgb": true,
+    "wireless": true,
+    "form_factor": "Full-size",
+    "price": "8000.00",
+    "created_at": "2025-12-05T11:55:16.097Z",
+    "updated_at": "2025-12-05T11:55:16.097Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 3,
+  "fields": {
+    "name": "Logitech G Pro X",
+    "manufacturer": "Logitech",
+    "switch_type": "mechanical",
+    "switch_model": "",
+    "rgb": true,
+    "wireless": true,
+    "form_factor": "Full-size",
+    "price": "12990.00",
+    "created_at": "2025-12-05T12:06:55.496Z",
+    "updated_at": "2025-12-05T12:06:55.496Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 4,
+  "fields": {
+    "name": "Logitech G213 Prodigy",
+    "manufacturer": "Logitech",
+    "switch_type": "membrane",
+    "switch_model": "",
+    "rgb": true,
+    "wireless": false,
+    "form_factor": "Full-size",
+    "price": "3900.00",
+    "created_at": "2025-12-05T12:13:31.817Z",
+    "updated_at": "2025-12-05T12:13:31.817Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 5,
+  "fields": {
+    "name": "Logitech G Pro X",
+    "manufacturer": "Logitech",
+    "switch_type": "membrane",
+    "switch_model": "",
+    "rgb": true,
+    "wireless": true,
+    "form_factor": "Full-size",
+    "price": "12900.00",
+    "created_at": "2025-12-05T12:15:36.592Z",
+    "updated_at": "2025-12-05T12:15:36.592Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 6,
+  "fields": {
+    "name": "Razer BlackWidow V3 Mini HyperSpeed",
+    "manufacturer": "Razer",
+    "switch_type": "mechanical",
+    "switch_model": "",
+    "rgb": true,
+    "wireless": false,
+    "form_factor": "Full-size",
+    "price": "4000.00",
+    "created_at": "2025-12-05T12:26:18.649Z",
+    "updated_at": "2025-12-05T12:26:18.649Z"
+  }
+},
+{
+  "model": "peripherals.keyboard",
+  "pk": 7,
+  "fields": {
+    "name": "Logitech G Pro Wireless",
+    "manufacturer": "Logitech",
+    "switch_type": "membrane",
+    "switch_model": "",
+    "rgb": false,
+    "wireless": true,
+    "form_factor": "Full-size",
+    "price": "12000.00",
+    "created_at": "2025-12-05T12:55:11.396Z",
+    "updated_at": "2025-12-05T12:55:11.396Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 1,
+  "fields": {
+    "name": "Logitech M100",
+    "manufacturer": "Logitech",
+    "sensor_type": "optical",
+    "dpi": 1000,
+    "buttons": 5,
+    "wireless": true,
+    "rgb": false,
+    "weight": 100,
+    "price": "800.00",
+    "created_at": "2025-12-05T11:53:55.241Z",
+    "updated_at": "2025-12-05T11:53:55.241Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 2,
+  "fields": {
+    "name": "Razer DeathAdder Essential",
+    "manufacturer": "Razer",
+    "sensor_type": "optical",
+    "dpi": 20000,
+    "buttons": 5,
+    "wireless": false,
+    "rgb": false,
+    "weight": 100,
+    "price": "5000.00",
+    "created_at": "2025-12-05T11:55:16.100Z",
+    "updated_at": "2025-12-05T11:55:16.100Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 3,
+  "fields": {
+    "name": "Logitech G503",
+    "manufacturer": "Logitech",
+    "sensor_type": "optical",
+    "dpi": 25000,
+    "buttons": 5,
+    "wireless": true,
+    "rgb": false,
+    "weight": 100,
+    "price": "5990.00",
+    "created_at": "2025-12-05T12:06:55.499Z",
+    "updated_at": "2025-12-05T12:06:55.499Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 4,
+  "fields": {
+    "name": "Logitech G502 HERO",
+    "manufacturer": "Logitech",
+    "sensor_type": "optical",
+    "dpi": 25600,
+    "buttons": 5,
+    "wireless": false,
+    "rgb": false,
+    "weight": 100,
+    "price": "4900.00",
+    "created_at": "2025-12-05T12:13:31.820Z",
+    "updated_at": "2025-12-05T12:13:31.820Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 5,
+  "fields": {
+    "name": "Logitech G503",
+    "manufacturer": "Logitech",
+    "sensor_type": "optical",
+    "dpi": 25600,
+    "buttons": 5,
+    "wireless": true,
+    "rgb": false,
+    "weight": 100,
+    "price": "6900.00",
+    "created_at": "2025-12-05T12:15:36.594Z",
+    "updated_at": "2025-12-05T12:15:36.594Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 6,
+  "fields": {
+    "name": "Logitech G502 Hero",
+    "manufacturer": "Logitech",
+    "sensor_type": "optical",
+    "dpi": 25600,
+    "buttons": 5,
+    "wireless": false,
+    "rgb": false,
+    "weight": 100,
+    "price": "1000.00",
+    "created_at": "2025-12-05T12:26:18.653Z",
+    "updated_at": "2025-12-05T12:26:18.653Z"
+  }
+},
+{
+  "model": "peripherals.mouse",
+  "pk": 7,
+  "fields": {
+    "name": "Logitech G502 Hero",
+    "manufacturer": "Logitech",
+    "sensor_type": "optical",
+    "dpi": 25600,
+    "buttons": 5,
+    "wireless": false,
+    "rgb": false,
+    "weight": 100,
+    "price": "5000.00",
+    "created_at": "2025-12-05T12:55:11.399Z",
+    "updated_at": "2025-12-05T12:55:11.399Z"
+  }
+},
+{
+  "model": "peripherals.headset",
+  "pk": 2,
+  "fields": {
+    "name": "Logitech G430",
+    "manufacturer": "Logitech",
+    "connection_type": "3.5mm",
+    "wireless": false,
+    "microphone": true,
+    "surround": false,
+    "noise_cancelling": false,
+    "price": "4500.00",
+    "created_at": "2025-12-05T12:13:31.823Z",
+    "updated_at": "2025-12-05T12:13:31.823Z"
+  }
+},
+{
+  "model": "peripherals.headset",
+  "pk": 3,
+  "fields": {
+    "name": "Sennheiser HD 700",
+    "manufacturer": "Sennheiser",
+    "connection_type": "3.5mm",
+    "wireless": false,
+    "microphone": true,
+    "surround": false,
+    "noise_cancelling": false,
+    "price": "12900.00",
+    "created_at": "2025-12-05T12:15:36.597Z",
+    "updated_at": "2025-12-05T12:15:36.597Z"
+  }
+},
+{
+  "model": "peripherals.headset",
+  "pk": 4,
+  "fields": {
+    "name": "HyperX Cloud II",
+    "manufacturer": "HyperX",
+    "connection_type": "3.5mm",
+    "wireless": false,
+    "microphone": true,
+    "surround": false,
+    "noise_cancelling": false,
+    "price": "2000.00",
+    "created_at": "2025-12-05T12:26:18.656Z",
+    "updated_at": "2025-12-05T12:26:18.656Z"
+  }
+},
+{
+  "model": "peripherals.headset",
+  "pk": 5,
+  "fields": {
+    "name": "HyperX Cloud II",
+    "manufacturer": "HyperX",
+    "connection_type": "3.5mm",
+    "wireless": false,
+    "microphone": true,
+    "surround": false,
+    "noise_cancelling": false,
+    "price": "4000.00",
+    "created_at": "2025-12-05T12:55:11.402Z",
+    "updated_at": "2025-12-05T12:55:11.402Z"
+  }
+},
+{
+  "model": "peripherals.desk",
+  "pk": 2,
+  "fields": {
+    "name": "Gaming Desks L-shape XL",
+    "manufacturer": "Gaming Desks",
+    "width": 120,
+    "depth": 50,
+    "adjustable_height": true,
+    "price": "8900.00",
+    "created_at": "2025-12-05T12:13:31.827Z",
+    "updated_at": "2025-12-05T12:13:31.827Z"
+  }
+},
+{
+  "model": "peripherals.desk",
+  "pk": 3,
+  "fields": {
+    "name": "Gaming Desks Midway",
+    "manufacturer": "Gaming Desks",
+    "width": 120,
+    "depth": 60,
+    "adjustable_height": true,
+    "price": "15900.00",
+    "created_at": "2025-12-05T12:15:36.601Z",
+    "updated_at": "2025-12-05T12:15:36.601Z"
+  }
+},
+{
+  "model": "peripherals.desk",
+  "pk": 4,
+  "fields": {
+    "name": "Gaming Desking XL",
+    "manufacturer": "Gaming Desking",
+    "width": 120,
+    "depth": 60,
+    "adjustable_height": true,
+    "price": "3000.00",
+    "created_at": "2025-12-05T12:26:18.661Z",
+    "updated_at": "2025-12-05T12:26:18.661Z"
+  }
+},
+{
+  "model": "peripherals.chair",
+  "pk": 1,
+  "fields": {
+    "name": "Herman Miller",
+    "manufacturer": "Herman Miller",
+    "ergonomic": true,
+    "adjustable_armrests": true,
+    "lumbar_support": true,
+    "max_weight": 120,
+    "price": "25000.00",
+    "created_at": "2025-12-05T11:53:55.248Z",
+    "updated_at": "2025-12-05T11:53:55.248Z"
+  }
+},
+{
+  "model": "peripherals.chair",
+  "pk": 2,
+  "fields": {
+    "name": "Cougar Armor S RGB Gaming Chair",
+    "manufacturer": "Cougar",
+    "ergonomic": true,
+    "adjustable_armrests": true,
+    "lumbar_support": true,
+    "max_weight": 120,
+    "price": "12500.00",
+    "created_at": "2025-12-05T11:55:16.105Z",
+    "updated_at": "2025-12-05T11:55:16.105Z"
+  }
+},
+{
+  "model": "peripherals.chair",
+  "pk": 3,
+  "fields": {
+    "name": "Secretlab Titan",
+    "manufacturer": "Secretlab",
+    "ergonomic": true,
+    "adjustable_armrests": true,
+    "lumbar_support": true,
+    "max_weight": 120,
+    "price": "39990.00",
+    "created_at": "2025-12-05T12:06:55.522Z",
+    "updated_at": "2025-12-05T12:06:55.522Z"
+  }
+},
+{
+  "model": "peripherals.chair",
+  "pk": 4,
+  "fields": {
+    "name": "Razer Isometric Gaming Chair",
+    "manufacturer": "Razer",
+    "ergonomic": true,
+    "adjustable_armrests": true,
+    "lumbar_support": true,
+    "max_weight": 120,
+    "price": "14900.00",
+    "created_at": "2025-12-05T12:13:31.830Z",
+    "updated_at": "2025-12-05T12:13:31.830Z"
+  }
+},
+{
+  "model": "peripherals.chair",
+  "pk": 5,
+  "fields": {
+    "name": "Herman Miller ERGO",
+    "manufacturer": "Herman Miller",
+    "ergonomic": true,
+    "adjustable_armrests": true,
+    "lumbar_support": true,
+    "max_weight": 120,
+    "price": "29900.00",
+    "created_at": "2025-12-05T12:15:36.603Z",
+    "updated_at": "2025-12-05T12:15:36.603Z"
+  }
+},
+{
+  "model": "peripherals.chair",
+  "pk": 6,
+  "fields": {
+    "name": "Herman Miller ERGO",
+    "manufacturer": "Herman Miller",
+    "ergonomic": true,
+    "adjustable_armrests": true,
+    "lumbar_support": true,
+    "max_weight": 120,
+    "price": "15000.00",
+    "created_at": "2025-12-05T12:26:18.663Z",
+    "updated_at": "2025-12-05T12:26:18.663Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 1,
+  "fields": {
+    "name": "Razer Pro",
+    "manufacturer": "Razer",
+    "size": "XL",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "2500.00",
+    "created_at": "2025-12-05T11:53:55.245Z",
+    "updated_at": "2025-12-05T11:53:55.245Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 2,
+  "fields": {
+    "name": "Logitech G440 Gaming Mouse Pad",
+    "manufacturer": "Logitech",
+    "size": "XL",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "3000.00",
+    "created_at": "2025-12-05T11:55:16.103Z",
+    "updated_at": "2025-12-05T11:55:16.103Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 3,
+  "fields": {
+    "name": "Razer Isometric",
+    "manufacturer": "Razer",
+    "size": "XL",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "5990.00",
+    "created_at": "2025-12-05T12:06:55.516Z",
+    "updated_at": "2025-12-05T12:06:55.517Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 4,
+  "fields": {
+    "name": "Razer Pro Mousepad",
+    "manufacturer": "Razer",
+    "size": "XL",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "2900.00",
+    "created_at": "2025-12-05T12:13:31.825Z",
+    "updated_at": "2025-12-05T12:13:31.825Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 5,
+  "fields": {
+    "name": "Razer Isu",
+    "manufacturer": "Razer",
+    "size": "XL",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "5900.00",
+    "created_at": "2025-12-05T12:15:36.599Z",
+    "updated_at": "2025-12-05T12:15:36.599Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 6,
+  "fields": {
+    "name": "Razer Raptor Mini",
+    "manufacturer": "Razer",
+    "size": "Small",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "1000.00",
+    "created_at": "2025-12-05T12:26:18.658Z",
+    "updated_at": "2025-12-05T12:26:18.658Z"
+  }
+},
+{
+  "model": "peripherals.mousepad",
+  "pk": 7,
+  "fields": {
+    "name": "Razer Pro Clicker XL",
+    "manufacturer": "Razer",
+    "size": "XL",
+    "width": 400,
+    "height": 300,
+    "thickness": 3,
+    "rgb": false,
+    "material": "�����",
+    "price": "3000.00",
+    "created_at": "2025-12-05T12:55:11.404Z",
+    "updated_at": "2025-12-05T12:55:11.404Z"
+  }
+},
+{
+  "model": "recommendations.pcconfiguration",
+  "pk": 161,
+  "fields": {
+    "user": 1,
+    "name": "������� ������� 4K",
+    "cpu": 240,
+    "gpu": 239,
+    "motherboard": null,
+    "ram": 184,
+    "storage_primary": 240,
+    "storage_secondary": null,
+    "psu": null,
+    "case": null,
+    "cooling": null,
+    "total_price": "279996.00",
+    "compatibility_check": true,
+    "compatibility_notes": "",
+    "is_saved": true,
+    "is_public": false,
+    "share_code": null,
+    "created_at": "2025-12-05T13:31:16.382Z",
+    "updated_at": "2025-12-05T13:31:16.385Z"
+  }
+},
+{
+  "model": "recommendations.pcconfiguration",
+  "pk": 162,
+  "fields": {
+    "user": 1,
+    "name": "���������������� ������� �������",
+    "cpu": 244,
+    "gpu": 244,
+    "motherboard": null,
+    "ram": 185,
+    "storage_primary": 241,
+    "storage_secondary": null,
+    "psu": null,
+    "case": null,
+    "cooling": null,
+    "total_price": "204996.00",
+    "compatibility_check": true,
+    "compatibility_notes": "",
+    "is_saved": true,
+    "is_public": false,
+    "share_code": null,
+    "created_at": "2025-12-05T13:31:16.388Z",
+    "updated_at": "2025-12-05T13:31:16.390Z"
+  }
+},
+{
+  "model": "recommendations.pcconfiguration",
+  "pk": 163,
+  "fields": {
+    "user": 1,
+    "name": "���������������� �� ��� ������",
+    "cpu": 242,
+    "gpu": 245,
+    "motherboard": null,
+    "ram": 187,
+    "storage_primary": 242,
+    "storage_secondary": null,
+    "psu": null,
+    "case": null,
+    "cooling": null,
+    "total_price": "122996.00",
+    "compatibility_check": true,
+    "compatibility_notes": "",
+    "is_saved": true,
+    "is_public": false,
+    "share_code": null,
+    "created_at": "2025-12-05T13:31:16.393Z",
+    "updated_at": "2025-12-05T13:31:16.395Z"
+  }
+},
+{
+  "model": "recommendations.pcconfiguration",
+  "pk": 164,
+  "fields": {
+    "user": 1,
+    "name": "��������� ������� ��",
+    "cpu": 247,
+    "gpu": 243,
+    "motherboard": null,
+    "ram": 189,
+    "storage_primary": 245,
+    "storage_secondary": null,
+    "psu": null,
+    "case": null,
+    "cooling": null,
+    "total_price": "61996.00",
+    "compatibility_check": true,
+    "compatibility_notes": "",
+    "is_saved": true,
+    "is_public": false,
+    "share_code": null,
+    "created_at": "2025-12-05T13:31:16.398Z",
+    "updated_at": "2025-12-05T13:31:16.401Z"
+  }
+},
+{
+  "model": "recommendations.pcconfiguration",
+  "pk": 165,
+  "fields": {
+    "user": 1,
+    "name": "������� ��",
+    "cpu": 243,
+    "gpu": null,
+    "motherboard": null,
+    "ram": 188,
+    "storage_primary": 244,
+    "storage_secondary": null,
+    "psu": null,
+    "case": null,
+    "cooling": null,
+    "total_price": "33997.00",
+    "compatibility_check": true,
+    "compatibility_notes": "",
+    "is_saved": true,
+    "is_public": false,
+    "share_code": null,
+    "created_at": "2025-12-05T13:31:16.404Z",
+    "updated_at": "2025-12-05T13:31:16.406Z"
+  }
+}
+]

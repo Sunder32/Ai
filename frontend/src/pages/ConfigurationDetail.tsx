@@ -3,16 +3,22 @@ import { useParams, Link } from 'react-router-dom';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { configurationAPI } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { StoreIntegrationPanel } from '../components/StoreIntegration';
+import PerformanceAnalysisPanel from '../components/PerformanceAnalysis';
+import AIChat from '../components/AIChat';
 import type { PCConfiguration } from '../types';
-import { FiCpu, FiMonitor, FiDatabase, FiHardDrive, FiZap, FiBox, FiThermometer, FiCheck, FiAlertTriangle, FiArrowLeft, FiHeadphones, FiMic, FiGrid } from 'react-icons/fi';
+import { FiCpu, FiMonitor, FiDatabase, FiHardDrive, FiZap, FiBox, FiThermometer, FiCheck, FiAlertTriangle, FiArrowLeft, FiHeadphones, FiMic, FiGrid, FiShoppingCart, FiActivity, FiEye, FiMessageSquare } from 'react-icons/fi';
 import { BsKeyboard, BsMouse2, BsDisplay } from 'react-icons/bs';
 import { MdChair, MdDesk, MdSpeaker } from 'react-icons/md';
+
+
 
 const ConfigurationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [config, setConfig] = useState<PCConfiguration | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'pc' | 'peripherals' | 'workspace'>('pc');
+  const [activeTab, setActiveTab] = useState<'pc' | 'peripherals' | 'workspace' | 'performance' | 'store' | 'chat'>('pc');
+
 
   useEffect(() => {
     if (id) {
@@ -32,7 +38,7 @@ const ConfigurationDetail: React.FC = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-  
+
   if (!config) return (
     <div className="card p-12 text-center">
       {React.createElement(FiAlertTriangle as any, { className: "text-4xl text-red-400 mx-auto mb-4" })}
@@ -125,7 +131,7 @@ const ConfigurationDetail: React.FC = () => {
           {React.createElement(FiArrowLeft as any, {})}
           <span>Назад к списку</span>
         </Link>
-        
+
         <div className="flex flex-wrap justify-between items-start gap-4">
           <div>
             <h1 className="text-heading text-3xl md:text-4xl text-white mb-2">
@@ -142,14 +148,16 @@ const ConfigurationDetail: React.FC = () => {
             </p>
           </div>
         </div>
+
       </div>
 
+
+
       {/* Compatibility Status */}
-      <div className={`p-4 mb-6 flex items-center gap-3 ${
-        config.compatibility_issues 
-          ? 'bg-yellow-500/10 border border-yellow-500/30' 
-          : 'bg-primary/10 border border-primary/30'
-      }`}>
+      <div className={`p-4 mb-6 flex items-center gap-3 ${config.compatibility_issues
+        ? 'bg-yellow-500/10 border border-yellow-500/30'
+        : 'bg-primary/10 border border-primary/30'
+        }`}>
         {config.compatibility_issues ? (
           <>
             {React.createElement(FiAlertTriangle as any, { className: "text-xl text-yellow-500" })}
@@ -167,196 +175,223 @@ const ConfigurationDetail: React.FC = () => {
       <div className="flex gap-2 mb-6 border-b border-border-dark pb-4">
         <button
           onClick={() => setActiveTab('pc')}
-          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${
-            activeTab === 'pc'
-              ? 'bg-primary text-black'
-              : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
-          }`}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${activeTab === 'pc'
+            ? 'bg-primary text-black'
+            : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+            }`}
         >
           {React.createElement(FiCpu as any, { className: "text-lg" })}
           ПК Компоненты
         </button>
         <button
           onClick={() => setActiveTab('peripherals')}
-          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${
-            activeTab === 'peripherals'
-              ? 'bg-primary text-black'
-              : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
-          }`}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${activeTab === 'peripherals'
+            ? 'bg-primary text-black'
+            : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+            }`}
         >
           {React.createElement(BsKeyboard as any, { className: "text-lg" })}
           Периферия
         </button>
         <button
           onClick={() => setActiveTab('workspace')}
-          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${
-            activeTab === 'workspace'
-              ? 'bg-primary text-black'
-              : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
-          }`}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${activeTab === 'workspace'
+            ? 'bg-primary text-black'
+            : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+            }`}
         >
           {React.createElement(MdDesk as any, { className: "text-lg" })}
           Рабочее место
+        </button>
+        <button
+          onClick={() => setActiveTab('performance')}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${activeTab === 'performance'
+            ? 'bg-primary text-black'
+            : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+            }`}
+        >
+          {React.createElement(FiActivity as any, { className: "text-lg" })}
+          Производительность
+        </button>
+        <button
+          onClick={() => setActiveTab('store')}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${activeTab === 'store'
+            ? 'bg-primary text-black'
+            : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+            }`}
+        >
+          {React.createElement(FiShoppingCart as any, { className: "text-lg" })}
+          Магазины
+        </button>
+        <button
+          onClick={() => setActiveTab('chat')}
+          className={`px-6 py-3 font-medium transition-all flex items-center gap-2 ${activeTab === 'chat'
+            ? 'bg-primary text-black'
+            : 'bg-bg-card text-gray-400 hover:text-white hover:bg-bg-card-hover'
+            }`}
+        >
+          {React.createElement(FiMessageSquare as any, { className: "text-lg" })}
+          AI Консультант
         </button>
       </div>
 
       {/* Tab Content */}
       {activeTab === 'pc' && (
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Components */}
-        <div className="lg:col-span-2 space-y-4">
-          <ComponentSection
-            title="Процессор"
-            component={getCPU()}
-            specs={{
-              'Сокет': getCPU()?.socket,
-              'Ядра': getCPU()?.cores,
-              'Потоки': getCPU()?.threads,
-              'Базовая частота': `${getCPU()?.base_clock} ГГц`,
-              'TDP': `${getCPU()?.tdp} Вт`,
-            }}
-            icon={FiCpu}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Components */}
+          <div className="lg:col-span-2 space-y-4">
+            <ComponentSection
+              title="Процессор"
+              component={getCPU()}
+              specs={{
+                'Сокет': getCPU()?.socket,
+                'Ядра': getCPU()?.cores,
+                'Потоки': getCPU()?.threads,
+                'Базовая частота': `${getCPU()?.base_clock} ГГц`,
+                'TDP': `${getCPU()?.tdp} Вт`,
+              }}
+              icon={FiCpu}
+            />
 
-          <ComponentSection
-            title="Видеокарта"
-            component={getGPU()}
-            specs={{
-              'Память': `${getGPU()?.memory} GB ${getGPU()?.memory_type}`,
-              'Частота': `${getGPU()?.core_clock} MHz`,
-              'TDP': `${getGPU()?.tdp} Вт`,
-            }}
-            icon={FiMonitor}
-          />
+            <ComponentSection
+              title="Видеокарта"
+              component={getGPU()}
+              specs={{
+                'Память': `${getGPU()?.memory} GB ${getGPU()?.memory_type}`,
+                'Частота': `${getGPU()?.core_clock} MHz`,
+                'TDP': `${getGPU()?.tdp} Вт`,
+              }}
+              icon={FiMonitor}
+            />
 
-          <ComponentSection
-            title="Материнская плата"
-            component={getMB()}
-            specs={{
-              'Сокет': getMB()?.socket,
-              'Чипсет': getMB()?.chipset,
-              'Форм-фактор': getMB()?.form_factor,
-              'Слотов RAM': getMB()?.memory_slots,
-            }}
-            icon={FiBox}
-          />
+            <ComponentSection
+              title="Материнская плата"
+              component={getMB()}
+              specs={{
+                'Сокет': getMB()?.socket,
+                'Чипсет': getMB()?.chipset,
+                'Форм-фактор': getMB()?.form_factor,
+                'Слотов RAM': getMB()?.memory_slots,
+              }}
+              icon={FiBox}
+            />
 
-          <ComponentSection
-            title="Оперативная память"
-            component={getRAM()}
-            specs={{
-              'Тип': getRAM()?.memory_type,
-              'Объем': `${getRAM()?.capacity} GB`,
-              'Частота': `${getRAM()?.speed} MHz`,
-              'Модулей': getRAM()?.modules,
-            }}
-            icon={FiDatabase}
-          />
+            <ComponentSection
+              title="Оперативная память"
+              component={getRAM()}
+              specs={{
+                'Тип': getRAM()?.memory_type,
+                'Объем': `${getRAM()?.capacity} GB`,
+                'Частота': `${getRAM()?.speed} MHz`,
+                'Модулей': getRAM()?.modules,
+              }}
+              icon={FiDatabase}
+            />
 
-          <ComponentSection
-            title="Накопитель"
-            component={getStorage()}
-            specs={{
-              'Тип': getStorage()?.storage_type?.toUpperCase(),
-              'Объем': `${getStorage()?.capacity} GB`,
-              'Чтение': getStorage()?.read_speed ? `${getStorage()?.read_speed} MB/s` : '-',
-              'Запись': getStorage()?.write_speed ? `${getStorage()?.write_speed} MB/s` : '-',
-            }}
-            icon={FiHardDrive}
-          />
+            <ComponentSection
+              title="Накопитель"
+              component={getStorage()}
+              specs={{
+                'Тип': getStorage()?.storage_type?.toUpperCase(),
+                'Объем': `${getStorage()?.capacity} GB`,
+                'Чтение': getStorage()?.read_speed ? `${getStorage()?.read_speed} MB/s` : '-',
+                'Запись': getStorage()?.write_speed ? `${getStorage()?.write_speed} MB/s` : '-',
+              }}
+              icon={FiHardDrive}
+            />
 
-          <ComponentSection
-            title="Блок питания"
-            component={getPSU()}
-            specs={{
-              'Мощность': `${getPSU()?.wattage} Вт`,
-              'Сертификат': getPSU()?.efficiency_rating,
-              'Модульный': getPSU()?.modular ? 'Да' : 'Нет',
-            }}
-            icon={FiZap}
-          />
+            <ComponentSection
+              title="Блок питания"
+              component={getPSU()}
+              specs={{
+                'Мощность': `${getPSU()?.wattage} Вт`,
+                'Сертификат': getPSU()?.efficiency_rating,
+                'Модульный': getPSU()?.modular ? 'Да' : 'Нет',
+              }}
+              icon={FiZap}
+            />
 
-          <ComponentSection
-            title="Корпус"
-            component={getCase()}
-            specs={{
-              'Форм-фактор': getCase()?.form_factor,
-            }}
-            icon={FiBox}
-          />
+            <ComponentSection
+              title="Корпус"
+              component={getCase()}
+              specs={{
+                'Форм-фактор': getCase()?.form_factor,
+              }}
+              icon={FiBox}
+            />
 
-          <ComponentSection
-            title="Охлаждение"
-            component={getCooling()}
-            specs={{
-              'Тип': getCooling()?.cooling_type,
-              'TDP': getCooling()?.max_tdp ? `${getCooling()?.max_tdp} Вт` : '-',
-            }}
-            icon={FiThermometer}
-          />
-        </div>
-
-        {/* Sidebar - Chart */}
-        <div className="space-y-6">
-          <div className="card p-5">
-            <h3 className="text-lg font-heading font-semibold text-white mb-4">
-              Распределение бюджета
-            </h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value: number) => [`${value.toLocaleString()} ₽`, '']}
-                    contentStyle={{
-                      backgroundColor: '#111111',
-                      border: '1px solid #1f1f1f',
-                      borderRadius: 0,
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="space-y-2 mt-4">
-              {chartData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3" style={{ backgroundColor: item.color }} />
-                    <span className="text-gray-400">{item.name}</span>
-                  </div>
-                  <span className="text-white font-medium">
-                    {item.value.toLocaleString()} ₽
-                  </span>
-                </div>
-              ))}
-            </div>
+            <ComponentSection
+              title="Охлаждение"
+              component={getCooling()}
+              specs={{
+                'Тип': getCooling()?.cooling_type,
+                'TDP': getCooling()?.max_tdp ? `${getCooling()?.max_tdp} Вт` : '-',
+              }}
+              icon={FiThermometer}
+            />
           </div>
 
-          {/* AI Notes */}
-          {(config as any).ai_notes && (
+          {/* Sidebar - Chart */}
+          <div className="space-y-6">
             <div className="card p-5">
               <h3 className="text-lg font-heading font-semibold text-white mb-4">
-                Рекомендации AI
+                Распределение бюджета
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                {(config as any).ai_notes}
-              </p>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value: number) => [`${value.toLocaleString()} ₽`, '']}
+                      contentStyle={{
+                        backgroundColor: '#111111',
+                        border: '1px solid #1f1f1f',
+                        borderRadius: 0,
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="space-y-2 mt-4">
+                {chartData.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3" style={{ backgroundColor: item.color }} />
+                      <span className="text-gray-400">{item.name}</span>
+                    </div>
+                    <span className="text-white font-medium">
+                      {item.value.toLocaleString()} ₽
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
+
+            {/* AI Notes */}
+            {(config as any).ai_notes && (
+              <div className="card p-5">
+                <h3 className="text-lg font-heading font-semibold text-white mb-4">
+                  Рекомендации AI
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {(config as any).ai_notes}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
       )}
 
       {/* Peripherals Tab */}
@@ -396,9 +431,9 @@ const ConfigurationDetail: React.FC = () => {
               title="Клавиатура"
               component={getKeyboard()}
               specs={{
-                'Тип переключателей': getKeyboard()?.switch_type === 'mechanical' ? 'Механические' : 
-                                       getKeyboard()?.switch_type === 'membrane' ? 'Мембранные' : 
-                                       getKeyboard()?.switch_type === 'optical' ? 'Оптические' : '-',
+                'Тип переключателей': getKeyboard()?.switch_type === 'mechanical' ? 'Механические' :
+                  getKeyboard()?.switch_type === 'membrane' ? 'Мембранные' :
+                    getKeyboard()?.switch_type === 'optical' ? 'Оптические' : '-',
                 'Модель свитчей': getKeyboard()?.switch_model || '-',
                 'Подсветка RGB': getKeyboard()?.rgb ? 'Да' : 'Нет',
                 'Беспроводная': getKeyboard()?.wireless ? 'Да' : 'Нет',
@@ -454,7 +489,7 @@ const ConfigurationDetail: React.FC = () => {
                 component={getMicrophone()}
                 specs={{
                   'Тип': getMicrophone()?.mic_type === 'condenser' ? 'Конденсаторный' :
-                         getMicrophone()?.mic_type === 'dynamic' ? 'Динамический' : 'USB',
+                    getMicrophone()?.mic_type === 'dynamic' ? 'Динамический' : 'USB',
                   'Диаграмма направленности': getMicrophone()?.polar_pattern || '-',
                   'Подключение': getMicrophone()?.connection_type,
                 }}
@@ -669,6 +704,28 @@ const ConfigurationDetail: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Performance Analysis Tab */}
+      {activeTab === 'performance' && (
+        <div className="space-y-6">
+          <PerformanceAnalysisPanel configurationId={config.id} />
+        </div>
+      )}
+
+      {/* Store Integration Tab */}
+      {activeTab === 'store' && (
+        <div className="space-y-6">
+          <StoreIntegrationPanel configurationId={config.id} />
+        </div>
+      )}
+
+      {/* AI Chat Tab */}
+      {activeTab === 'chat' && (
+        <div className="max-w-3xl">
+          <AIChat configurationId={config.id} configName={config.name} />
+        </div>
+      )}
+
     </div>
   );
 };

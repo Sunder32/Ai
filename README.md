@@ -12,8 +12,15 @@
 
 > ### Backend
 ![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
-![Django](https://img.shields.io/badge/Django-5.2.8-green.svg)
-![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
+![Django](https://img.shields.io/badge/Django-5.0.1-green.svg)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+
+---
+
+> ### AI/ML
+![Ollama](https://img.shields.io/badge/Ollama-000000?logo=ollama&logoColor=white)
+![DeepSeek](https://img.shields.io/badge/DeepSeek-FF6600?logoColor=white)
 
 ---
 
@@ -36,10 +43,19 @@
 cd project
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-pip install django djangorestframework django-cors-headers drf-spectacular django-filter python-decouple
+pip install -r requirements.txt
+# Настройте MySQL в файле .env (см. ниже)
 python manage.py migrate
 python manage.py populate_db
 python manage.py runserver
+```
+
+### AI Server
+```powershell
+# Убедитесь, что Ollama запущен: ollama serve
+cd AI/server
+pip install -r ../requirements.txt
+python main.py
 ```
 
 ### Frontend
@@ -49,12 +65,34 @@ npm install
 npm start
 ```
 
+### Конфигурация .env
+```env
+# Создайте файл project/.env
+DEBUG=True
+SECRET_KEY=your-secret-key
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# MySQL Database
+DB_BACKEND=mysql
+DB_NAME=pckonfai
+DB_USER=root
+DB_PASSWORD=your-password
+DB_HOST=localhost
+DB_PORT=3306
+
+# AI Server
+AI_SERVER_URL=http://localhost:5050
+```
+
 ## 🔗 Ссылки
 
 - **Frontend:** http://localhost:3000
 - **Backend API:** http://localhost:8000/api
+- **AI Server:** http://localhost:5050
 - **API Documentation:** http://localhost:8000/api/docs
+- **Health Check:** http://localhost:8000/api/health/
 - **Admin Panel:** http://localhost:8000/admin
+- **Public URL:** https://legally-matchless-bulldog.cloudpub.ru
 
 ## 📋 Статус задач
 
@@ -82,12 +120,19 @@ npm start
 - **React Icons** - иконки
 
 ### Backend
-- **Django 5.2.8** - основной фреймворк
+- **Django 5.0.1** - основной фреймворк
 - **Django REST Framework** - API
-- **SQLite** - база данных
+- **MySQL** - основная база данных (SQLite для разработки)
+- **PyMySQL + cryptography** - MySQL драйвер
 - **drf-spectacular** - документация API
 - **django-filter** - фильтрация
 - **django-cors-headers** - CORS
+
+### AI
+- **FastAPI** - AI-сервер на порту 5050
+- **Ollama** - локальный LLM
+- **DeepSeek** - модель для генерации рекомендаций
+- **RAG Engine** - поиск по базе знаний
 
 ### Дизайн
 - **Glassmorphism** - стеклянный эффект с backdrop-blur

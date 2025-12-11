@@ -1,0 +1,27 @@
+# Оперативная память (RAM) — популярные комплекты и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 | 9 959
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 | 16 907
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 | 18 451
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 | 14 591
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO | 12 275
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 | 9 187
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 | 22 311
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 | 9 187
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 | 13 047
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 | 17 679
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 | 9 959
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 | 19 223
+Crucial | DDR5 | Pro 32GB (2x16) 6000 | 8 415
+Crucial | DDR5 | Pro 64GB (2x32) 5600 | 15 363
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 | 11 503
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 | 3 011
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 | 5 327
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 | 2 702
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 | 6 099
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 | 2 702
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 | 5 790
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 | 3 011
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 | 6 099

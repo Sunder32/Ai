@@ -1,0 +1,16 @@
+# Коврики для мыши — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+SteelSeries | QcK | QcK Large | 1 544
+SteelSeries | QcK | QcK Heavy Large | 2 316
+SteelSeries | QcK | QcK XXL | 2 702
+Razer | Goliathus | Goliathus Extended Chroma | 5 404
+Razer | Strider | Strider Chroma | 6 176
+Corsair | MM | MM700 RGB Extended | 6 176
+Corsair | MM | MM350 PRO XL | 3 088
+Logitech | G Series | G840 XL | 3 860
+Glorious | Helios | Helios XL | 2 702
+Glorious | Element | Element Ice | 2 702
+Artisan | Hayate Otsu | Hayate Otsu L Soft | 4 632
+X-raypad | Aqua Control | Aqua Control 2 XL | 3 088

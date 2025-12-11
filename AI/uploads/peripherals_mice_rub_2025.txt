@@ -1,0 +1,24 @@
+# Игровые мыши — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Razer | DeathAdder | DeathAdder V4 Pro | 12 352
+Razer | Viper | Viper V3 Pro | 12 352
+Razer | Basilisk | Basilisk V3 Pro | 13 124
+Logitech | G Series | G Pro X Superlight 2 | 12 352
+Logitech | G Series | G305 Lightspeed | 3 860
+Logitech | G Series | G502 X Plus | 10 808
+Logitech | G Series | G203 Lightsync | 2 316
+Corsair | M Series | M75 Wireless | 10 036
+Corsair | Scimitar | Scimitar Elite Wireless | 10 036
+SteelSeries | Rival | Rival 600 | 6 176
+SteelSeries | Aerox | Aerox 9 Wireless | 10 036
+Glorious | Model O | Model O 2 Wireless | 7 720
+Glorious | Model D | Model D 2 Wireless | 7 720
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless | 6 948
+Zowie | EC Series | EC2-CW Wireless | 11 580
+Cooler Master | MM Series | MM731 Wireless | 6 176
+Keychron | M Series | M7 8K | 6 176
+MSI | Clutch | Clutch GM31 Wireless | 6 176
+Razer | Naga | Naga V2 Pro | 13 896
+Logitech | G Series | G Pro Wireless (2nd Gen) | 10 036

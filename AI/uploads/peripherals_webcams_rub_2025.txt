@@ -1,0 +1,15 @@
+# Веб‑камеры для стриминга и работы — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Insta360 | Link | Link 2C 4K | 23 160
+Logitech | Brio | Brio 4K Ultra HD | 13 124
+Logitech | C Series | C920 HD Pro | 5 404
+Logitech | StreamCam | StreamCam | 10 036
+Razer | Kiyo | Kiyo Pro Ultra | 23 160
+Razer | Kiyo | Kiyo X | 5 404
+Elgato | Facecam | Facecam Pro 4K | 23 160
+Elgato | Facecam | Facecam | 13 124
+Anker | PowerConf | PowerConf C300 | 10 036
+OBSbot | Tiny | Tiny 2 4K PTZ | 20 844
+AverMedia | PW Series | PW513 4K | 13 896

@@ -1,0 +1,22 @@
+# Блоки питания (PSU) — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) | 7 643
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) | 9 187
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) | 11 503
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) | 18 451
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) | 9 187
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) | 11 503
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) | 23 083
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) | 9 959
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) | 15 363
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) | 23 855
+MSI | ATX PSU | MAG A550BN (550W, Bronze) | 5 327
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) | 9 187
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) | 14 591
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) | 25 399
+Cooler Master | ATX PSU | MWE Gold 750 V2 | 7 643
+Cooler Master | ATX PSU | V850 Gold V2 | 10 731
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) | 9 959
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) | 12 275

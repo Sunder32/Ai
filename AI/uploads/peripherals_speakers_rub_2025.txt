@@ -1,0 +1,19 @@
+# Колонки и акустика для ПК — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Razer | Nommo | Nommo V2 | 11 580
+Razer | Nommo | Nommo V2 Pro 2.1 | 23 160
+SteelSeries | Arena | Arena 9 5.1 | 42 460
+SteelSeries | Arena | Arena 7 2.1 | 23 160
+Creative | T-Series | T100 2.0 | 6 948
+Creative | Pebble | Pebble Pro | 5 404
+Logitech | Z Series | Z407 2.1 Bluetooth | 9 264
+Logitech | G Series | G560 LIGHTSYNC 2.1 | 15 440
+Edifier | R-Series | R1280DB | 11 580
+Edifier | S-Series | S350DB 2.1 | 23 160
+Klipsch | ProMedia | ProMedia 2.1 THX | 14 668
+Audioengine | A-Series | A2+ Wireless | 20 844
+Audioengine | A-Series | A5+ Wireless | 38 600
+Mackie | CR Series | CR3-X | 8 492
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) | 29 336

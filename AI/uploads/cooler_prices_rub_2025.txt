@@ -1,0 +1,22 @@
+# Охлаждение (кулеры и СЖО) — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Noctua | Air Cooler | NH-D15 | 8 415
+Noctua | Air Cooler | NH-U12A | 7 643
+DeepCool | Air Cooler | AK620 | 5 327
+DeepCool | Air Cooler | AK500 | 4 555
+be quiet! | Air Cooler | Dark Rock Pro 5 | 7 643
+be quiet! | Air Cooler | Pure Rock 2 | 3 011
+Scythe | Air Cooler | Fuma 3 | 5 327
+Scythe | Air Cooler | Mugen 5 Rev.C | 4 555
+Cooler Master | Air Cooler | Hyper 212 Black Edition | 3 011
+Cooler Master | Air Cooler | MA612 Stealth | 4 555
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) | 11 503
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) | 14 591
+NZXT | AIO Cooler | Kraken 240 RGB | 10 731
+NZXT | AIO Cooler | Kraken 360 RGB | 13 819
+Arctic | AIO Cooler | Liquid Freezer III 240 | 9 187
+Arctic | AIO Cooler | Liquid Freezer III 360 | 10 731
+DeepCool | AIO Cooler | LS520 (240mm) | 9 187
+DeepCool | AIO Cooler | LS720 (360mm) | 11 503

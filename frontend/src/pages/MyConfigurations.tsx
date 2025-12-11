@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { configurationAPI } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ConfigurationCompare from '../components/ConfigurationCompare';
 import type { PCConfiguration } from '../types';
-import { FiPlus, FiCpu, FiMonitor, FiDatabase, FiEye, FiTrash2, FiAlertCircle } from 'react-icons/fi';
+import { FiPlus, FiCpu, FiMonitor, FiDatabase, FiEye, FiTrash2, FiAlertCircle, FiUpload, FiBarChart2, FiCheckSquare, FiSquare } from 'react-icons/fi';
 
 const MyConfigurations: React.FC = () => {
+  const navigate = useNavigate();
   const [configurations, setConfigurations] = useState<PCConfiguration[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCompare, setShowCompare] = useState(false);
+  const [compareMode, setCompareMode] = useState(false);
+  const [selectedForCompare, setSelectedForCompare] = useState<number[]>([]);
 
   useEffect(() => {
     loadConfigurations();
@@ -40,6 +45,21 @@ const MyConfigurations: React.FC = () => {
     return numPrice.toLocaleString();
   };
 
+  const toggleCompareSelection = (id: number) => {
+    if (selectedForCompare.includes(id)) {
+      setSelectedForCompare(selectedForCompare.filter(i => i !== id));
+    } else if (selectedForCompare.length < 5) {
+      setSelectedForCompare([...selectedForCompare, id]);
+    }
+  };
+
+  const startComparison = () => {
+    if (selectedForCompare.length >= 2) {
+      setShowCompare(true);
+      setCompareMode(false);
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
 
   return (
@@ -54,15 +74,77 @@ const MyConfigurations: React.FC = () => {
             {configurations.length} сохраненных сборок
           </p>
         </div>
-        
-        <Link
-          to="/configurator"
-          className="btn-primary flex items-center gap-2 px-5 py-3"
-        >
-          {React.createElement(FiPlus as any, { className: "text-lg" })}
-          <span>Создать новую</span>
-        </Link>
+
+        <div className="flex gap-3">
+          {compareMode ? (
+            <>
+              <button
+                onClick={() => {
+                  setCompareMode(false);
+                  setSelectedForCompare([]);
+                }}
+                className="btn-secondary flex items-center gap-2 px-5 py-3"
+              >
+                Отмена
+              </button>
+              <button
+                onClick={startComparison}
+                disabled={selectedForCompare.length < 2}
+                className={`btn-primary flex items-center gap-2 px-5 py-3 ${selectedForCompare.length < 2 ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+              >
+                {React.createElement(FiBarChart2 as any, { className: "text-lg" })}
+                <span>Сравнить ({selectedForCompare.length})</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setCompareMode(true)}
+                className="btn-secondary flex items-center gap-2 px-5 py-3"
+                disabled={configurations.length < 2}
+              >
+                {React.createElement(FiBarChart2 as any, { className: "text-lg" })}
+                <span>Сравнить</span>
+              </button>
+              <Link
+                to="/configurator"
+                className="btn-primary flex items-center gap-2 px-5 py-3"
+              >
+                {React.createElement(FiPlus as any, { className: "text-lg" })}
+                <span>Создать новую</span>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
+
+      {/* Compare Mode Hint */}
+      {compareMode && (
+        <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+          <p className="text-blue-400">
+            Выберите от 2 до 5 конфигураций для сравнения, затем нажмите "Сравнить"
+          </p>
+        </div>
+      )}
+
+      {/* Comparison View */}
+      {showCompare && (
+        <div className="mb-8">
+          <ConfigurationCompare
+            initialIds={selectedForCompare}
+            onClose={() => {
+              setShowCompare(false);
+              setSelectedForCompare([]);
+            }}
+            availableConfigs={configurations.map(c => ({
+              id: c.id,
+              name: c.name || `Сборка #${c.id}`,
+              total_price: typeof c.total_price === 'string' ? parseFloat(c.total_price) : c.total_price
+            }))}
+          />
+        </div>
+      )}
 
       {configurations.length === 0 ? (
         <div className="card p-12 text-center">
@@ -86,7 +168,23 @@ const MyConfigurations: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {configurations.map((config) => (
-            <div key={config.id} className="card-accent p-5 group">
+            <div
+              key={config.id}
+              className={`card-accent p-5 group transition-all ${compareMode ? 'cursor-pointer hover:border-blue-500/50' : ''
+                } ${selectedForCompare.includes(config.id) ? 'border-blue-500 ring-2 ring-blue-500/30' : ''
+                }`}
+              onClick={() => compareMode && toggleCompareSelection(config.id)}
+            >
+              {/* Compare Selection Indicator */}
+              {compareMode && (
+                <div className="absolute top-3 right-3">
+                  {selectedForCompare.includes(config.id)
+                    ? React.createElement(FiCheckSquare as any, { className: "text-2xl text-blue-500" })
+                    : React.createElement(FiSquare as any, { className: "text-2xl text-gray-500" })
+                  }
+                </div>
+              )}
+
               {/* Header */}
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -135,21 +233,23 @@ const MyConfigurations: React.FC = () => {
               )}
 
               {/* Actions */}
-              <div className="flex gap-2 pt-4 border-t border-border-dark">
-                <Link
-                  to={`/configuration/${config.id}`}
-                  className="btn-primary flex-1 flex items-center justify-center gap-2 py-2 text-sm"
-                >
-                  {React.createElement(FiEye as any, {})}
-                  <span>Открыть</span>
-                </Link>
-                <button
-                  onClick={() => handleDelete(config.id)}
-                  className="btn-secondary px-4 py-2 text-red-400 hover:text-red-300 hover:border-red-500/50"
-                >
-                  {React.createElement(FiTrash2 as any, {})}
-                </button>
-              </div>
+              {!compareMode && (
+                <div className="flex gap-2 pt-4 border-t border-border-dark">
+                  <Link
+                    to={`/configuration/${config.id}`}
+                    className="btn-primary flex-1 flex items-center justify-center gap-2 py-2 text-sm"
+                  >
+                    {React.createElement(FiEye as any, {})}
+                    <span>Открыть</span>
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(config.id)}
+                    className="btn-secondary px-4 py-2 text-red-400 hover:text-red-300 hover:border-red-500/50"
+                  >
+                    {React.createElement(FiTrash2 as any, {})}
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

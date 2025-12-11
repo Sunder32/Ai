@@ -49,7 +49,7 @@ api.interceptors.request.use(
   (config) => {
     // Динамически определяем baseURL при каждом запросе
     let baseURL = '/api'; // по умолчанию относительный путь
-    
+
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       // Для localhost используем локальный бэкенд
@@ -58,19 +58,19 @@ api.interceptors.request.use(
       }
       // Для CloudPub фронтенда - используем CloudPub бэкенд
       else if (hostname.includes('cloudpub.ru')) {
-        // Бэкенд на illicitly-frank-bulbul.cloudpub.ru
-        baseURL = 'https://illicitly-frank-bulbul.cloudpub.ru/api';
+        // Бэкенд на legally-matchless-bulldog.cloudpub.ru
+        baseURL = 'https://legally-matchless-bulldog.cloudpub.ru/api';
       }
     }
-    
+
     config.baseURL = baseURL;
-    
+
     // Добавляем токен авторизации
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Token ${token}`;
     }
-    
+
     return config;
   },
   (error) => {
@@ -96,25 +96,25 @@ api.interceptors.response.use(
 export const computerAPI = {
   getCPUs: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<CPU>>('/computers/cpu/', { params }),
-  
+
   getGPUs: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<GPU>>('/computers/gpu/', { params }),
-  
+
   getMotherboards: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Motherboard>>('/computers/motherboard/', { params }),
-  
+
   getRAM: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<RAM>>('/computers/ram/', { params }),
-  
+
   getStorage: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Storage>>('/computers/storage/', { params }),
-  
+
   getPSU: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<PSU>>('/computers/psu/', { params }),
-  
+
   getCases: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Case>>('/computers/case/', { params }),
-  
+
   getCooling: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Cooling>>('/computers/cooling/', { params }),
 };
@@ -123,52 +123,52 @@ export const computerAPI = {
 export const peripheralAPI = {
   getMonitors: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Monitor>>('/peripherals/monitors/', { params }),
-  
+
   getKeyboards: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Keyboard>>('/peripherals/keyboards/', { params }),
-  
+
   getMice: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Mouse>>('/peripherals/mice/', { params }),
-  
+
   getHeadsets: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Headset>>('/peripherals/headsets/', { params }),
-  
+
   getWebcams: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Webcam>>('/peripherals/webcams/', { params }),
-  
+
   getMicrophones: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Microphone>>('/peripherals/microphones/', { params }),
-  
+
   getDesks: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Desk>>('/peripherals/desks/', { params }),
-  
+
   getChairs: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Chair>>('/peripherals/chairs/', { params }),
-  
+
   getSpeakers: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Speakers>>('/peripherals/speakers/', { params }),
-  
+
   getMousepads: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Mousepad>>('/peripherals/mousepads/', { params }),
-  
+
   getMonitorArms: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<MonitorArm>>('/peripherals/monitor-arms/', { params }),
-  
+
   getUSBHubs: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<USBHub>>('/peripherals/usb-hubs/', { params }),
-  
+
   getLighting: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<DeskLighting>>('/peripherals/lighting/', { params }),
-  
+
   getStreamDecks: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<StreamDeck>>('/peripherals/stream-decks/', { params }),
-  
+
   getCaptureCards: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<CaptureCard>>('/peripherals/capture-cards/', { params }),
-  
+
   getGamepads: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Gamepad>>('/peripherals/gamepads/', { params }),
-  
+
   getHeadphoneStands: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<HeadphoneStand>>('/peripherals/headphone-stands/', { params }),
 };
@@ -177,42 +177,42 @@ export const peripheralAPI = {
 export const configurationAPI = {
   getConfigurations: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<PCConfiguration>>('/recommendations/configurations/', { params }),
-  
+
   getConfiguration: (id: number) =>
     api.get<PCConfiguration>(`/recommendations/configurations/${id}/`),
-  
+
   generateConfiguration: (data: ConfigurationRequest) =>
     api.post<PCConfiguration & { ai_info?: { ai_used: boolean; summary: string; reasoning?: Record<string, string> } }>(
       '/recommendations/configurations/generate/',
       data
     ),
-  
+
   checkCompatibility: (id: number) =>
     api.post<{ is_compatible: boolean; issues: string[]; notes: string }>(
       `/recommendations/configurations/${id}/check_compatibility/`
     ),
-  
+
   getAIStatus: () =>
     api.get<{ ai_available: boolean; model: string | null }>('/recommendations/configurations/ai_status/'),
-  
+
   saveConfiguration: (id: number, data: Partial<PCConfiguration>) =>
     api.patch<PCConfiguration>(`/recommendations/configurations/${id}/`, data),
-  
+
   deleteConfiguration: (id: number) =>
     api.delete(`/recommendations/configurations/${id}/`),
-  
+
   // Новые методы для Build Yourself
   saveBuild: (data: BuildRequest) =>
     api.post<PCConfiguration & { share_url?: string }>('/recommendations/configurations/save_build/', data),
-  
+
   getPublicBuild: (shareCode: string) =>
     api.get<PCConfiguration>(`/recommendations/configurations/public/${shareCode}/`),
-  
+
   getMyBuilds: () =>
     api.get<PCConfiguration[]>('/recommendations/configurations/my_builds/'),
-  
+
   compareBuilds: (ids: number[]) =>
-    api.get<PCConfiguration[]>('/recommendations/configurations/compare/', { 
+    api.get<PCConfiguration[]>('/recommendations/configurations/compare/', {
       params: { ids: ids.join(',') },
       paramsSerializer: () => ids.map(id => `ids=${id}`).join('&')
     }),
@@ -262,13 +262,13 @@ export const userAPI = {
     password2: string;
     user_type: string;
   }) => api.post<User>('/accounts/users/', data),
-  
+
   getCurrentUser: () =>
     api.get<User>('/accounts/users/me/'),
-  
+
   getMyProfile: () =>
     api.get<UserProfile>('/accounts/profiles/my_profile/'),
-  
+
   updateMyProfile: (data: Partial<UserProfile>) =>
     api.patch<UserProfile>('/accounts/profiles/my_profile/', data),
 };
@@ -277,11 +277,33 @@ export const userAPI = {
 export const authAPI = {
   login: (data: { username: string; password: string }) =>
     api.post<{ token: string; user: User }>('/accounts/login/', data),
-  
+
   register: (data: { username: string; email: string; password: string; password2: string }) =>
     api.post<{ token: string; user: User }>('/accounts/register/', data),
-  
+
   logout: () => api.post('/accounts/logout/'),
+};
+
+// API методы для AI чата
+export const chatAPI = {
+  sendMessage: (data: { message: string; session_id?: string; configuration_id?: number }) =>
+    api.post<{
+      response: string;
+      session_id: string;
+      tokens_used?: number;
+    }>('/recommendations/chat/send/', data),
+
+  getHistory: (sessionId: string) =>
+    api.get<{
+      history: Array<{
+        role: 'user' | 'assistant';
+        content: string;
+        created_at: string;
+      }>;
+    }>('/recommendations/chat/history/', { params: { session_id: sessionId } }),
+
+  explainComponent: (data: { component_type: string; component_id: number; configuration_id?: number }) =>
+    api.post<{ explanation: string }>('/recommendations/chat/explain/', data),
 };
 
 export default api;

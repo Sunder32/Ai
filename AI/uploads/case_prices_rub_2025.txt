@@ -1,0 +1,22 @@
+# Корпуса — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+NZXT | ATX Case | H5 Flow | 7 643
+NZXT | ATX Case | H7 Flow | 10 731
+NZXT | ATX Case | H9 Flow | 13 819
+Fractal Design | ATX Case | Meshify 2 | 11 503
+Fractal Design | ATX Case | Torrent | 13 819
+Fractal Design | ATX Case | Pop Air | 6 871
+Lian Li | ATX Case | Lancool 216 | 8 415
+Lian Li | ATX Case | Lancool III RGB | 11 503
+Lian Li | ATX Case | O11 Dynamic EVO | 13 819
+Phanteks | ATX Case | Eclipse G360A | 8 415
+Phanteks | ATX Case | Enthoo Pro 2 | 10 731
+be quiet! | ATX Case | Pure Base 500DX | 9 187
+be quiet! | ATX Case | Silent Base 802 | 12 275
+Cooler Master | ATX Case | MasterBox TD500 Mesh | 7 643
+Cooler Master | ATX Case | HAF 700 | 19 223
+Corsair | ATX Case | 4000D Airflow | 8 415
+Corsair | ATX Case | 5000D Airflow | 11 503
+Corsair | ATX Case | 7000D Airflow | 19 995

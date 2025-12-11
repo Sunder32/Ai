@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from decouple import config
 
+# PyMySQL as MySQL driver (only import if using MySQL)
+DB_BACKEND = config('DB_BACKEND', default='sqlite')
+if DB_BACKEND == 'mysql':
+    import pymysql
+    pymysql.install_as_MySQLdb()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,6 +51,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
     'django_filters',
+    
+    # Celery apps
+    'django_celery_beat',
+    'django_celery_results',
+    
+    # SSE for real-time updates
+    'django_eventstream',
     
     # Local apps
     'accounts',
@@ -89,12 +102,30 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DB_BACKEND == 'mysql':
+    # MySQL Configuration
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('DB_NAME', default='pckonfai'),
+            'USER': config('DB_USER', default='root'),
+            'PASSWORD': config('DB_PASSWORD', default=''),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='3306'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
     }
-}
+else:
+    # SQLite (default for development)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -161,7 +192,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
+    'PAGE_SIZE': 1000,  # Показывать все компоненты (было 20)
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -175,7 +206,7 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True  # Временно разрешаем все для CloudPub
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:3000,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:8080,https://legally-matchless-bulldog.cloudpub.ru,https://illicitly-frank-bulbul.cloudpub.ru'
+    default='http://localhost:3000,http://localhost:8000,http://localhost:8001,http://127.0.0.1:3000,http://127.0.0.1:8000,https://legally-matchless-bulldog.cloudpub.ru'
 ).split(',') if not DEBUG else []
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
@@ -188,6 +219,17 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
+]
+
+# CSRF settings for CloudPub
+CSRF_TRUSTED_ORIGINS = [
+    'https://legally-matchless-bulldog.cloudpub.ru',
+    'https://*.cloudpub.ru',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
 ]
 
 # Security settings
@@ -278,3 +320,82 @@ LOGGING = {
 RATELIMIT_ENABLE = True
 RATELIMIT_USE_CACHE = 'default'  # Использовать default cache (локальная память)
 RATELIMIT_VIEW = 'config.middleware.RateLimitMiddleware'  # Custom middleware для обработки
+
+# Cache Configuration
+# Для production рекомендуется использовать Redis
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache_table',
+        'TIMEOUT': 300,  # 5 минут по умолчанию
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        }
+    },
+    # Кэш для компонентов (более длительный)
+    'components': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'components_cache_table',
+        'TIMEOUT': 3600,  # 1 час для компонентов
+        'OPTIONS': {
+            'MAX_ENTRIES': 500,
+        }
+    },
+    # Кэш для AI ответов
+    'ai_responses': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'ai_cache_table',
+        'TIMEOUT': 1800,  # 30 минут для AI ответов
+        'OPTIONS': {
+            'MAX_ENTRIES': 200,
+        }
+    }
+}
+
+# Cache key prefixes
+CACHE_KEY_PREFIX = 'pckonfai'
+
+# ============================================================================
+# CELERY CONFIGURATION
+# ============================================================================
+
+# Redis broker URL (for local development, use localhost)
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = 'django-db'  # Store results in Django database
+
+# Task result settings
+CELERY_RESULT_EXTENDED = True
+CELERY_TASK_TRACK_STARTED = True
+
+# Serialization
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+
+# Timezone
+CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_ENABLE_UTC = True
+
+# Worker settings
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_ACKS_LATE = True
+
+# Task time limits
+CELERY_TASK_TIME_LIMIT = 300  # 5 minutes max
+CELERY_TASK_SOFT_TIME_LIMIT = 240  # 4 minutes soft limit
+
+# Beat scheduler (uses django-celery-beat database)
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# ============================================================================
+# EMAIL CONFIGURATION (for notifications)
+# ============================================================================
+
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='PC Configurator <noreply@pckonfai.ru>')
+

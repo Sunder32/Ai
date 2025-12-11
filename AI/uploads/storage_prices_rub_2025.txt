@@ -1,0 +1,31 @@
+# Накопители (SSD / HDD) — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Samsung | NVMe | 990 Pro 1TB | 9 959
+Samsung | NVMe | 990 Pro 2TB | 13 819
+Samsung | NVMe | 980 Pro 1TB | 7 643
+WD | NVMe | Black SN850X 1TB | 8 415
+WD | NVMe | Black SN850X 2TB | 12 275
+WD | NVMe | Black SN770 1TB | 6 099
+Crucial | NVMe | T700 2TB PCIe 5.0 | 19 995
+Crucial | NVMe | P5 Plus 1TB | 6 871
+Crucial | NVMe | P3 Plus 2TB | 9 959
+Kingston | NVMe | KC3000 1TB | 7 643
+Kingston | NVMe | Fury Renegade 2TB | 11 503
+Sabrent | NVMe | Rocket 4 Plus 2TB | 12 275
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 | 21 539
+Lexar | NVMe | NQ780 4TB | 15 363
+Samsung | SATA SSD | 870 EVO 500GB | 5 327
+Samsung | SATA SSD | 870 EVO 1TB | 6 871
+Samsung | SATA SSD | 870 EVO 2TB | 11 503
+Crucial | SATA SSD | MX500 500GB | 4 555
+Crucial | SATA SSD | MX500 1TB | 6 099
+Crucial | SATA SSD | MX500 2TB | 10 731
+WD | SATA SSD | Blue SA510 1TB | 6 099
+Seagate | HDD | Barracuda 2TB 7200rpm | 4 555
+Seagate | HDD | Barracuda 4TB 5400rpm | 6 871
+Seagate | HDD | IronWolf 4TB NAS | 9 187
+WD | HDD | Blue 2TB 5400rpm | 4 555
+WD | HDD | Red Plus 4TB NAS | 9 187
+WD | HDD | Black 4TB Performance | 11 503

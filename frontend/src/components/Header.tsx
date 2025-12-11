@@ -22,7 +22,7 @@ const Header: React.FC = () => {
         }
       }
     };
-    
+
     checkAuth();
     // Проверяем при изменении маршрута
     window.addEventListener('storage', checkAuth);
@@ -33,7 +33,6 @@ const Header: React.FC = () => {
     { label: 'Главная', href: '/', icon: FiHome },
     { label: 'AI Конфигуратор', href: '/configurator', icon: FiSettings },
     { label: 'Собери сам', href: '/build-yourself', icon: FiTool },
-    { label: 'Компоненты', href: '/components', icon: FiCpu },
     { label: 'Мои сборки', href: '/my-configurations', icon: FiList },
   ];
 
@@ -63,9 +62,8 @@ const Header: React.FC = () => {
                 <Link
                   key={item.href}
                   to={item.href}
-                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    active ? 'text-primary' : 'text-gray-400 hover:text-primary'
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${active ? 'text-primary' : 'text-gray-400 hover:text-primary'
+                    }`}
                 >
                   {React.createElement(item.icon as any, { className: "text-lg" })}
                   <span>{item.label}</span>
@@ -79,9 +77,8 @@ const Header: React.FC = () => {
             {isAuthenticated ? (
               <Link
                 to="/profile"
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                  isActive('/profile') ? 'text-primary' : 'text-gray-400 hover:text-primary'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${isActive('/profile') ? 'text-primary' : 'text-gray-400 hover:text-primary'
+                  }`}
               >
                 <div className="w-8 h-8 flex items-center justify-center bg-primary/20 text-primary">
                   {React.createElement(FiUser as any, { className: "text-sm" })}
@@ -104,8 +101,8 @@ const Header: React.FC = () => {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden w-10 h-10 flex items-center justify-center text-gray-400 hover:text-primary transition-colors duration-200"
           >
-            {isMobileMenuOpen 
-              ? React.createElement(FiX as any, { className: "text-xl" }) 
+            {isMobileMenuOpen
+              ? React.createElement(FiX as any, { className: "text-xl" })
               : React.createElement(FiMenu as any, { className: "text-xl" })
             }
           </button>
@@ -123,11 +120,10 @@ const Header: React.FC = () => {
                       <Link
                         to={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                          active 
-                            ? 'text-primary bg-primary/5' 
-                            : 'text-gray-400 hover:text-primary hover:bg-primary/5'
-                        }`}
+                        className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 ${active
+                          ? 'text-primary bg-primary/5'
+                          : 'text-gray-400 hover:text-primary hover:bg-primary/5'
+                          }`}
                       >
                         {React.createElement(item.icon as any, { className: "text-lg" })}
                         <span>{item.label}</span>
@@ -135,7 +131,7 @@ const Header: React.FC = () => {
                     </li>
                   );
                 })}
-                
+
                 {/* Mobile Login/Profile Button */}
                 <li className="pt-3 mt-3 border-t border-border-dark">
                   {isAuthenticated ? (

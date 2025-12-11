@@ -7,3 +7,4 @@ pypdf
 langchain
 langchain-community
 python-docx
+cryptography

@@ -23,7 +23,13 @@ class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
         return request.user and request.user.is_staff
 
 
-class MonitorViewSet(viewsets.ModelViewSet):
+class PeripheralViewSet(viewsets.ModelViewSet):
+    """Базовый ViewSet для периферийных устройств без пагинации"""
+    # Отключаем пагинацию - нужно показывать все компоненты сразу
+    pagination_class = None
+
+
+class MonitorViewSet(PeripheralViewSet):
     """ViewSet для мониторов. Чтение - авторизованным, изменение - только админам"""
     queryset = Monitor.objects.all()
     serializer_class = MonitorSerializer
@@ -34,7 +40,7 @@ class MonitorViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'screen_size', 'refresh_rate']
 
 
-class KeyboardViewSet(viewsets.ModelViewSet):
+class KeyboardViewSet(PeripheralViewSet):
     """ViewSet для клавиатур. Чтение - авторизованным, изменение - только админам"""
     queryset = Keyboard.objects.all()
     serializer_class = KeyboardSerializer
@@ -45,7 +51,7 @@ class KeyboardViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class MouseViewSet(viewsets.ModelViewSet):
+class MouseViewSet(PeripheralViewSet):
     """ViewSet для мышей. Чтение - авторизованным, изменение - только админам"""
     queryset = Mouse.objects.all()
     serializer_class = MouseSerializer
@@ -56,7 +62,7 @@ class MouseViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'dpi']
 
 
-class HeadsetViewSet(viewsets.ModelViewSet):
+class HeadsetViewSet(PeripheralViewSet):
     """ViewSet для гарнитур. Чтение - авторизованным, изменение - только админам"""
     queryset = Headset.objects.all()
     serializer_class = HeadsetSerializer
@@ -67,7 +73,7 @@ class HeadsetViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class WebcamViewSet(viewsets.ModelViewSet):
+class WebcamViewSet(PeripheralViewSet):
     """ViewSet для веб-камер. Чтение - авторизованным, изменение - только админам"""
     queryset = Webcam.objects.all()
     serializer_class = WebcamSerializer
@@ -78,7 +84,7 @@ class WebcamViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class MicrophoneViewSet(viewsets.ModelViewSet):
+class MicrophoneViewSet(PeripheralViewSet):
     """ViewSet для микрофонов. Чтение - авторизованным, изменение - только админам"""
     queryset = Microphone.objects.all()
     serializer_class = MicrophoneSerializer
@@ -89,7 +95,7 @@ class MicrophoneViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class DeskViewSet(viewsets.ModelViewSet):
+class DeskViewSet(PeripheralViewSet):
     """ViewSet для столов. Чтение - авторизованным, изменение - только админам"""
     queryset = Desk.objects.all()
     serializer_class = DeskSerializer
@@ -100,7 +106,7 @@ class DeskViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'width', 'depth']
 
 
-class ChairViewSet(viewsets.ModelViewSet):
+class ChairViewSet(PeripheralViewSet):
     """ViewSet для кресел. Чтение - авторизованным, изменение - только админам"""
     queryset = Chair.objects.all()
     serializer_class = ChairSerializer
@@ -111,7 +117,7 @@ class ChairViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class SpeakersViewSet(viewsets.ModelViewSet):
+class SpeakersViewSet(PeripheralViewSet):
     """ViewSet для колонок. Чтение - авторизованным, изменение - только админам"""
     queryset = Speakers.objects.all()
     serializer_class = SpeakersSerializer
@@ -122,7 +128,7 @@ class SpeakersViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'total_power']
 
 
-class MousepadViewSet(viewsets.ModelViewSet):
+class MousepadViewSet(PeripheralViewSet):
     """ViewSet для ковриков. Чтение - авторизованным, изменение - только админам"""
     queryset = Mousepad.objects.all()
     serializer_class = MousepadSerializer
@@ -133,7 +139,7 @@ class MousepadViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'width', 'height']
 
 
-class MonitorArmViewSet(viewsets.ModelViewSet):
+class MonitorArmViewSet(PeripheralViewSet):
     """ViewSet для кронштейнов. Чтение - авторизованным, изменение - только админам"""
     queryset = MonitorArm.objects.all()
     serializer_class = MonitorArmSerializer
@@ -144,7 +150,7 @@ class MonitorArmViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'max_screen_size']
 
 
-class USBHubViewSet(viewsets.ModelViewSet):
+class USBHubViewSet(PeripheralViewSet):
     """ViewSet для USB-хабов. Чтение - авторизованным, изменение - только админам"""
     queryset = USBHub.objects.all()
     serializer_class = USBHubSerializer
@@ -155,7 +161,7 @@ class USBHubViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class DeskLightingViewSet(viewsets.ModelViewSet):
+class DeskLightingViewSet(PeripheralViewSet):
     """ViewSet для освещения. Чтение - авторизованным, изменение - только админам"""
     queryset = DeskLighting.objects.all()
     serializer_class = DeskLightingSerializer
@@ -166,7 +172,7 @@ class DeskLightingViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class StreamDeckViewSet(viewsets.ModelViewSet):
+class StreamDeckViewSet(PeripheralViewSet):
     """ViewSet для стрим-пультов. Чтение - авторизованным, изменение - только админам"""
     queryset = StreamDeck.objects.all()
     serializer_class = StreamDeckSerializer
@@ -177,7 +183,7 @@ class StreamDeckViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'keys_count']
 
 
-class CaptureCardViewSet(viewsets.ModelViewSet):
+class CaptureCardViewSet(PeripheralViewSet):
     """ViewSet для карт захвата. Чтение - авторизованным, изменение - только админам"""
     queryset = CaptureCard.objects.all()
     serializer_class = CaptureCardSerializer
@@ -188,7 +194,7 @@ class CaptureCardViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'max_fps']
 
 
-class GamepadViewSet(viewsets.ModelViewSet):
+class GamepadViewSet(PeripheralViewSet):
     """ViewSet для геймпадов. Чтение - авторизованным, изменение - только админам"""
     queryset = Gamepad.objects.all()
     serializer_class = GamepadSerializer
@@ -199,7 +205,7 @@ class GamepadViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class HeadphonestandViewSet(viewsets.ModelViewSet):
+class HeadphonestandViewSet(PeripheralViewSet):
     """ViewSet для подставок для наушников. Чтение - авторизованным, изменение - только админам"""
     queryset = Headphonestand.objects.all()
     serializer_class = HeadphonestandSerializer

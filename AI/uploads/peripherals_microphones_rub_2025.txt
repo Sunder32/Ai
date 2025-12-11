@@ -1,0 +1,19 @@
+# Микрофоны для игр и стриминга — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+Shure | Motiv | MV7+ | 21 616
+Shure | Motiv | MV7 (USB/XLR) | 19 300
+Rode | NT-USB | NT-USB+ | 13 124
+Rode | X Series | XCM-50 | 11 580
+HyperX | QuadCast | QuadCast S | 12 352
+HyperX | SoloCast | SoloCast | 4 632
+Elgato | Wave | Wave:3 | 12 352
+Elgato | Wave | Wave:1 | 10 036
+Blue | Yeti | Yeti X | 13 124
+Blue | Yeti | Yeti Nano | 6 948
+Razer | Seiren | Seiren V2 Pro | 11 580
+Razer | Seiren | Seiren Mini | 3 860
+NZXT | Capsule | Capsule Mini | 5 404
+Audio-Technica | AT | AT2020USB+ | 11 580
+Beyerdynamic | Fox | FOX USB | 10 036

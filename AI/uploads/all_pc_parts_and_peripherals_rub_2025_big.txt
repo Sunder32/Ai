@@ -1,0 +1,2518 @@
+# Полный список комплектующих и периферии ПК — ориентировочные цены в рублях на 2025 год
+# Все позиции собраны из отдельных txt-файлов (видеокарты, CPU, матплаты, RAM, накопители, PSU, корпуса, охлаждение, периферия).
+# Для расширения списка в 2–3 раза добавлены условные варианты моделей: RGB / White / Plus / OEM / Special Edition с пропорционально изменённой ценой.
+# Курс для пересчёта: 1 USD = 77.2 RUB.
+# Формат строк: Бренд | Серия | Модель | Цена, RUB
+
+
+## Видеокарты
+NVIDIA | RTX 50 | GeForce RTX 5090 | 185 203
+NVIDIA | RTX 50 | GeForce RTX 5090 V2 | 192 611
+NVIDIA | RTX 50 | GeForce RTX 5090 RGB | 200 019
+NVIDIA | RTX 50 | GeForce RTX 5090 RGB V2 | 208 020
+NVIDIA | RTX 50 | GeForce RTX 5090 White | 194 463
+NVIDIA | RTX 50 | GeForce RTX 5090 White V2 | 202 242
+NVIDIA | RTX 50 | GeForce RTX 5080 | 77 123
+NVIDIA | RTX 50 | GeForce RTX 5080 V2 | 80 208
+NVIDIA | RTX 50 | GeForce RTX 5080 RGB | 83 293
+NVIDIA | RTX 50 | GeForce RTX 5080 RGB V2 | 86 625
+NVIDIA | RTX 50 | GeForce RTX 5080 White | 80 979
+NVIDIA | RTX 50 | GeForce RTX 5080 White V2 | 84 218
+NVIDIA | RTX 50 | GeForce RTX 5070 Ti | 57 823
+NVIDIA | RTX 50 | GeForce RTX 5070 Ti V2 | 60 136
+NVIDIA | RTX 50 | GeForce RTX 5070 Ti RGB | 62 449
+NVIDIA | RTX 50 | GeForce RTX 5070 Ti RGB V2 | 64 947
+NVIDIA | RTX 50 | GeForce RTX 5070 Ti White | 60 714
+NVIDIA | RTX 50 | GeForce RTX 5070 Ti White V2 | 63 143
+NVIDIA | RTX 50 | GeForce RTX 5070 | 41 611
+NVIDIA | RTX 50 | GeForce RTX 5070 V2 | 43 275
+NVIDIA | RTX 50 | GeForce RTX 5070 RGB | 44 940
+NVIDIA | RTX 50 | GeForce RTX 5070 RGB V2 | 46 738
+NVIDIA | RTX 50 | GeForce RTX 5070 White | 43 692
+NVIDIA | RTX 50 | GeForce RTX 5070 White V2 | 45 440
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 16GB | 33 119
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 16GB V2 | 34 444
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 16GB RGB | 35 769
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 16GB RGB V2 | 37 200
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 16GB White | 34 775
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 16GB White V2 | 36 166
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 8GB | 26 943
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 8GB V2 | 28 021
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 8GB RGB | 29 098
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 8GB RGB V2 | 30 262
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 8GB White | 28 290
+NVIDIA | RTX 50 | GeForce RTX 5060 Ti 8GB White V2 | 29 422
+NVIDIA | RTX 50 | GeForce RTX 5060 | 23 006
+NVIDIA | RTX 50 | GeForce RTX 5060 V2 | 23 926
+NVIDIA | RTX 50 | GeForce RTX 5060 RGB | 24 846
+NVIDIA | RTX 50 | GeForce RTX 5060 RGB V2 | 25 840
+NVIDIA | RTX 50 | GeForce RTX 5060 White | 24 156
+NVIDIA | RTX 50 | GeForce RTX 5060 White V2 | 25 122
+NVIDIA | RTX 50 | GeForce RTX 5050 | 18 837
+NVIDIA | RTX 50 | GeForce RTX 5050 V2 | 19 590
+NVIDIA | RTX 50 | GeForce RTX 5050 RGB | 20 344
+NVIDIA | RTX 50 | GeForce RTX 5050 RGB V2 | 21 158
+NVIDIA | RTX 50 | GeForce RTX 5050 White | 19 779
+NVIDIA | RTX 50 | GeForce RTX 5050 White V2 | 20 570
+NVIDIA | RTX 40 | GeForce RTX 4090 | 185 203
+NVIDIA | RTX 40 | GeForce RTX 4090 V2 | 192 611
+NVIDIA | RTX 40 | GeForce RTX 4090 RGB | 200 019
+NVIDIA | RTX 40 | GeForce RTX 4090 RGB V2 | 208 020
+NVIDIA | RTX 40 | GeForce RTX 4090 White | 194 463
+NVIDIA | RTX 40 | GeForce RTX 4090 White V2 | 202 242
+NVIDIA | RTX 40 | GeForce RTX 4080 Super | 102 599
+NVIDIA | RTX 40 | GeForce RTX 4080 Super V2 | 106 703
+NVIDIA | RTX 40 | GeForce RTX 4080 Super RGB | 110 807
+NVIDIA | RTX 40 | GeForce RTX 4080 Super RGB V2 | 115 239
+NVIDIA | RTX 40 | GeForce RTX 4080 Super White | 107 729
+NVIDIA | RTX 40 | GeForce RTX 4080 Super White V2 | 112 038
+NVIDIA | RTX 40 | GeForce RTX 4080 | 129 619
+NVIDIA | RTX 40 | GeForce RTX 4080 V2 | 134 804
+NVIDIA | RTX 40 | GeForce RTX 4080 RGB | 139 989
+NVIDIA | RTX 40 | GeForce RTX 4080 RGB V2 | 145 589
+NVIDIA | RTX 40 | GeForce RTX 4080 White | 136 100
+NVIDIA | RTX 40 | GeForce RTX 4080 White V2 | 141 544
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti Super | 96 423
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti Super V2 | 100 280
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti Super RGB | 104 137
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti Super RGB V2 | 108 302
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti Super White | 101 244
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti Super White V2 | 105 294
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti | 71 410
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti V2 | 74 266
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti RGB | 77 123
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti RGB V2 | 80 208
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti White | 74 980
+NVIDIA | RTX 40 | GeForce RTX 4070 Ti White V2 | 77 979
+NVIDIA | RTX 40 | GeForce RTX 4070 Super | 47 015
+NVIDIA | RTX 40 | GeForce RTX 4070 Super V2 | 48 896
+NVIDIA | RTX 40 | GeForce RTX 4070 Super RGB | 50 776
+NVIDIA | RTX 40 | GeForce RTX 4070 Super RGB V2 | 52 807
+NVIDIA | RTX 40 | GeForce RTX 4070 Super White | 49 366
+NVIDIA | RTX 40 | GeForce RTX 4070 Super White V2 | 51 341
+NVIDIA | RTX 40 | GeForce RTX 4070 | 61 606
+NVIDIA | RTX 40 | GeForce RTX 4070 V2 | 64 070
+NVIDIA | RTX 40 | GeForce RTX 4070 RGB | 66 534
+NVIDIA | RTX 40 | GeForce RTX 4070 RGB V2 | 69 195
+NVIDIA | RTX 40 | GeForce RTX 4070 White | 64 686
+NVIDIA | RTX 40 | GeForce RTX 4070 White V2 | 67 273
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti 16GB | 38 523
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti 16GB V2 | 40 064
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti 16GB RGB | 41 605
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti 16GB RGB V2 | 43 269
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti 16GB White | 40 449
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti 16GB White V2 | 42 067
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti | 30 031
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti V2 | 31 232
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti RGB | 32 433
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti RGB V2 | 33 730
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti White | 31 533
+NVIDIA | RTX 40 | GeForce RTX 4060 Ti White V2 | 32 794
+NVIDIA | RTX 40 | GeForce RTX 4060 | 26 171
+NVIDIA | RTX 40 | GeForce RTX 4060 V2 | 27 218
+NVIDIA | RTX 40 | GeForce RTX 4060 RGB | 28 265
+NVIDIA | RTX 40 | GeForce RTX 4060 RGB V2 | 29 396
+NVIDIA | RTX 40 | GeForce RTX 4060 White | 27 480
+NVIDIA | RTX 40 | GeForce RTX 4060 White V2 | 28 579
+AMD | RX 9000 | Radeon RX 9070 XT | 50 875
+AMD | RX 9000 | Radeon RX 9070 XT V2 | 52 910
+AMD | RX 9000 | Radeon RX 9070 XT RGB | 54 945
+AMD | RX 9000 | Radeon RX 9070 XT RGB V2 | 57 143
+AMD | RX 9000 | Radeon RX 9070 XT White | 53 419
+AMD | RX 9000 | Radeon RX 9070 XT White V2 | 55 556
+AMD | RX 9000 | Radeon RX 9070 | 42 383
+AMD | RX 9000 | Radeon RX 9070 V2 | 44 078
+AMD | RX 9000 | Radeon RX 9070 RGB | 45 774
+AMD | RX 9000 | Radeon RX 9070 RGB V2 | 47 605
+AMD | RX 9000 | Radeon RX 9070 White | 44 502
+AMD | RX 9000 | Radeon RX 9070 White V2 | 46 282
+AMD | RX 9000 | Radeon RX 9060 XT 16GB | 28 487
+AMD | RX 9000 | Radeon RX 9060 XT 16GB V2 | 29 626
+AMD | RX 9000 | Radeon RX 9060 XT 16GB RGB | 30 766
+AMD | RX 9000 | Radeon RX 9060 XT 16GB RGB V2 | 31 997
+AMD | RX 9000 | Radeon RX 9060 XT 16GB White | 29 911
+AMD | RX 9000 | Radeon RX 9060 XT 16GB White V2 | 31 107
+AMD | RX 9000 | Radeon RX 9060 XT 8GB | 23 855
+AMD | RX 9000 | Radeon RX 9060 XT 8GB V2 | 24 809
+AMD | RX 9000 | Radeon RX 9060 XT 8GB RGB | 25 763
+AMD | RX 9000 | Radeon RX 9060 XT 8GB RGB V2 | 26 794
+AMD | RX 9000 | Radeon RX 9060 XT 8GB White | 25 048
+AMD | RX 9000 | Radeon RX 9060 XT 8GB White V2 | 26 050
+AMD | RX 7000 | Radeon RX 7900 XTX | 57 823
+AMD | RX 7000 | Radeon RX 7900 XTX V2 | 60 136
+AMD | RX 7000 | Radeon RX 7900 XTX RGB | 62 449
+AMD | RX 7000 | Radeon RX 7900 XTX RGB V2 | 64 947
+AMD | RX 7000 | Radeon RX 7900 XTX White | 60 714
+AMD | RX 7000 | Radeon RX 7900 XTX White V2 | 63 143
+AMD | RX 7000 | Radeon RX 7900 XT | 48 559
+AMD | RX 7000 | Radeon RX 7900 XT V2 | 50 501
+AMD | RX 7000 | Radeon RX 7900 XT RGB | 52 444
+AMD | RX 7000 | Radeon RX 7900 XT RGB V2 | 54 542
+AMD | RX 7000 | Radeon RX 7900 XT White | 50 987
+AMD | RX 7000 | Radeon RX 7900 XT White V2 | 53 026
+AMD | RX 7000 | Radeon RX 7900 GRE | 42 383
+AMD | RX 7000 | Radeon RX 7900 GRE V2 | 44 078
+AMD | RX 7000 | Radeon RX 7900 GRE RGB | 45 774
+AMD | RX 7000 | Radeon RX 7900 GRE RGB V2 | 47 605
+AMD | RX 7000 | Radeon RX 7900 GRE White | 44 502
+AMD | RX 7000 | Radeon RX 7900 GRE White V2 | 46 282
+AMD | RX 7000 | Radeon RX 7800 XT | 38 523
+AMD | RX 7000 | Radeon RX 7800 XT V2 | 40 064
+AMD | RX 7000 | Radeon RX 7800 XT RGB | 41 605
+AMD | RX 7000 | Radeon RX 7800 XT RGB V2 | 43 269
+AMD | RX 7000 | Radeon RX 7800 XT White | 40 449
+AMD | RX 7000 | Radeon RX 7800 XT White V2 | 42 067
+AMD | RX 7000 | Radeon RX 7700 XT | 32 347
+AMD | RX 7000 | Radeon RX 7700 XT V2 | 33 641
+AMD | RX 7000 | Radeon RX 7700 XT RGB | 34 935
+AMD | RX 7000 | Radeon RX 7700 XT RGB V2 | 36 332
+AMD | RX 7000 | Radeon RX 7700 XT White | 33 964
+AMD | RX 7000 | Radeon RX 7700 XT White V2 | 35 323
+AMD | RX 7000 | Radeon RX 7600 XT | 25 399
+AMD | RX 7000 | Radeon RX 7600 XT V2 | 26 415
+AMD | RX 7000 | Radeon RX 7600 XT RGB | 27 431
+AMD | RX 7000 | Radeon RX 7600 XT RGB V2 | 28 528
+AMD | RX 7000 | Radeon RX 7600 XT White | 26 669
+AMD | RX 7000 | Radeon RX 7600 XT White V2 | 27 736
+AMD | RX 7000 | Radeon RX 7600 | 20 767
+AMD | RX 7000 | Radeon RX 7600 V2 | 21 598
+AMD | RX 7000 | Radeon RX 7600 RGB | 22 428
+AMD | RX 7000 | Radeon RX 7600 RGB V2 | 23 325
+AMD | RX 7000 | Radeon RX 7600 White | 21 805
+AMD | RX 7000 | Radeon RX 7600 White V2 | 22 677
+Intel | Arc | Intel Arc B580 | 19 223
+Intel | Arc | Intel Arc B580 V2 | 19 992
+Intel | Arc | Intel Arc B580 RGB | 20 761
+Intel | Arc | Intel Arc B580 RGB V2 | 21 591
+Intel | Arc | Intel Arc B580 White | 20 184
+Intel | Arc | Intel Arc B580 White V2 | 20 991
+Intel | Arc | Intel Arc B570 | 17 679
+Intel | Arc | Intel Arc B570 V2 | 18 386
+Intel | Arc | Intel Arc B570 RGB | 19 093
+Intel | Arc | Intel Arc B570 RGB V2 | 19 857
+Intel | Arc | Intel Arc B570 White | 18 563
+Intel | Arc | Intel Arc B570 White V2 | 19 306
+Intel | Arc | Intel Arc A770 16GB | 26 943
+Intel | Arc | Intel Arc A770 16GB V2 | 28 021
+Intel | Arc | Intel Arc A770 16GB RGB | 29 098
+Intel | Arc | Intel Arc A770 16GB RGB V2 | 30 262
+Intel | Arc | Intel Arc A770 16GB White | 28 290
+Intel | Arc | Intel Arc A770 16GB White V2 | 29 422
+Intel | Arc | Intel Arc A770 8GB | 25 399
+Intel | Arc | Intel Arc A770 8GB V2 | 26 415
+Intel | Arc | Intel Arc A770 8GB RGB | 27 431
+Intel | Arc | Intel Arc A770 8GB RGB V2 | 28 528
+Intel | Arc | Intel Arc A770 8GB White | 26 669
+Intel | Arc | Intel Arc A770 8GB White V2 | 27 736
+Intel | Arc | Intel Arc A750 | 22 311
+Intel | Arc | Intel Arc A750 V2 | 23 203
+Intel | Arc | Intel Arc A750 RGB | 24 096
+Intel | Arc | Intel Arc A750 RGB V2 | 25 060
+Intel | Arc | Intel Arc A750 White | 23 427
+Intel | Arc | Intel Arc A750 White V2 | 24 364
+Intel | Arc | Intel Arc A580 | 13 819
+Intel | Arc | Intel Arc A580 V2 | 14 372
+Intel | Arc | Intel Arc A580 RGB | 14 925
+Intel | Arc | Intel Arc A580 RGB V2 | 15 522
+Intel | Arc | Intel Arc A580 White | 14 510
+Intel | Arc | Intel Arc A580 White V2 | 15 090
+Intel | Arc | Intel Arc A380 | 11 503
+Intel | Arc | Intel Arc A380 V2 | 11 963
+Intel | Arc | Intel Arc A380 RGB | 12 423
+Intel | Arc | Intel Arc A380 RGB V2 | 12 920
+Intel | Arc | Intel Arc A380 White | 12 078
+Intel | Arc | Intel Arc A380 White V2 | 12 561
+NVIDIA | RTX 30 | GeForce RTX 3090 Ti | 154 323
+NVIDIA | RTX 30 | GeForce RTX 3090 Ti V2 | 160 496
+NVIDIA | RTX 30 | GeForce RTX 3090 Ti RGB | 166 669
+NVIDIA | RTX 30 | GeForce RTX 3090 Ti RGB V2 | 173 336
+NVIDIA | RTX 30 | GeForce RTX 3090 Ti White | 162 039
+NVIDIA | RTX 30 | GeForce RTX 3090 Ti White V2 | 168 521
+NVIDIA | RTX 30 | GeForce RTX 3090 | 115 723
+NVIDIA | RTX 30 | GeForce RTX 3090 V2 | 120 352
+NVIDIA | RTX 30 | GeForce RTX 3090 RGB | 124 981
+NVIDIA | RTX 30 | GeForce RTX 3090 RGB V2 | 129 980
+NVIDIA | RTX 30 | GeForce RTX 3090 White | 121 509
+NVIDIA | RTX 30 | GeForce RTX 3090 White V2 | 126 369
+NVIDIA | RTX 30 | GeForce RTX 3080 Ti | 92 563
+NVIDIA | RTX 30 | GeForce RTX 3080 Ti V2 | 96 266
+NVIDIA | RTX 30 | GeForce RTX 3080 Ti RGB | 99 968
+NVIDIA | RTX 30 | GeForce RTX 3080 Ti RGB V2 | 103 967
+NVIDIA | RTX 30 | GeForce RTX 3080 Ti White | 97 191
+NVIDIA | RTX 30 | GeForce RTX 3080 Ti White V2 | 101 079
+NVIDIA | RTX 30 | GeForce RTX 3080 12GB | 61 683
+NVIDIA | RTX 30 | GeForce RTX 3080 12GB V2 | 64 150
+NVIDIA | RTX 30 | GeForce RTX 3080 12GB RGB | 66 618
+NVIDIA | RTX 30 | GeForce RTX 3080 12GB RGB V2 | 69 283
+NVIDIA | RTX 30 | GeForce RTX 3080 12GB White | 64 767
+NVIDIA | RTX 30 | GeForce RTX 3080 12GB White V2 | 67 358
+NVIDIA | RTX 30 | GeForce RTX 3080 | 53 963
+NVIDIA | RTX 30 | GeForce RTX 3080 V2 | 56 122
+NVIDIA | RTX 30 | GeForce RTX 3080 RGB | 58 280
+NVIDIA | RTX 30 | GeForce RTX 3080 RGB V2 | 60 611
+NVIDIA | RTX 30 | GeForce RTX 3080 White | 56 661
+NVIDIA | RTX 30 | GeForce RTX 3080 White V2 | 58 927
+NVIDIA | RTX 30 | GeForce RTX 3070 Ti | 46 243
+NVIDIA | RTX 30 | GeForce RTX 3070 Ti V2 | 48 093
+NVIDIA | RTX 30 | GeForce RTX 3070 Ti RGB | 49 942
+NVIDIA | RTX 30 | GeForce RTX 3070 Ti RGB V2 | 51 940
+NVIDIA | RTX 30 | GeForce RTX 3070 Ti White | 48 555
+NVIDIA | RTX 30 | GeForce RTX 3070 Ti White V2 | 50 497
+NVIDIA | RTX 30 | GeForce RTX 3070 | 38 523
+NVIDIA | RTX 30 | GeForce RTX 3070 V2 | 40 064
+NVIDIA | RTX 30 | GeForce RTX 3070 RGB | 41 605
+NVIDIA | RTX 30 | GeForce RTX 3070 RGB V2 | 43 269
+NVIDIA | RTX 30 | GeForce RTX 3070 White | 40 449
+NVIDIA | RTX 30 | GeForce RTX 3070 White V2 | 42 067
+NVIDIA | RTX 30 | GeForce RTX 3060 Ti | 30 803
+NVIDIA | RTX 30 | GeForce RTX 3060 Ti V2 | 32 035
+NVIDIA | RTX 30 | GeForce RTX 3060 Ti RGB | 33 267
+NVIDIA | RTX 30 | GeForce RTX 3060 Ti RGB V2 | 34 598
+NVIDIA | RTX 30 | GeForce RTX 3060 Ti White | 32 343
+NVIDIA | RTX 30 | GeForce RTX 3060 Ti White V2 | 33 637
+NVIDIA | RTX 30 | GeForce RTX 3060 | 25 399
+NVIDIA | RTX 30 | GeForce RTX 3060 V2 | 26 415
+NVIDIA | RTX 30 | GeForce RTX 3060 RGB | 27 431
+NVIDIA | RTX 30 | GeForce RTX 3060 RGB V2 | 28 528
+NVIDIA | RTX 30 | GeForce RTX 3060 White | 26 669
+NVIDIA | RTX 30 | GeForce RTX 3060 White V2 | 27 736
+NVIDIA | RTX 30 | GeForce RTX 3050 8GB | 19 223
+NVIDIA | RTX 30 | GeForce RTX 3050 8GB V2 | 19 992
+NVIDIA | RTX 30 | GeForce RTX 3050 8GB RGB | 20 761
+NVIDIA | RTX 30 | GeForce RTX 3050 8GB RGB V2 | 21 591
+NVIDIA | RTX 30 | GeForce RTX 3050 8GB White | 20 184
+NVIDIA | RTX 30 | GeForce RTX 3050 8GB White V2 | 20 991
+NVIDIA | RTX 30 | GeForce RTX 3050 6GB | 13 819
+NVIDIA | RTX 30 | GeForce RTX 3050 6GB V2 | 14 372
+NVIDIA | RTX 30 | GeForce RTX 3050 6GB RGB | 14 925
+NVIDIA | RTX 30 | GeForce RTX 3050 6GB RGB V2 | 15 522
+NVIDIA | RTX 30 | GeForce RTX 3050 6GB White | 14 510
+NVIDIA | RTX 30 | GeForce RTX 3050 6GB White V2 | 15 090
+NVIDIA | RTX 30 | GeForce RTX 3050 4GB | 15 363
+NVIDIA | RTX 30 | GeForce RTX 3050 4GB V2 | 15 978
+NVIDIA | RTX 30 | GeForce RTX 3050 4GB RGB | 16 592
+NVIDIA | RTX 30 | GeForce RTX 3050 4GB RGB V2 | 17 256
+NVIDIA | RTX 30 | GeForce RTX 3050 4GB White | 16 131
+NVIDIA | RTX 30 | GeForce RTX 3050 4GB White V2 | 16 776
+NVIDIA | RTX 20 | GeForce RTX 2080 Ti | 77 123
+NVIDIA | RTX 20 | GeForce RTX 2080 Ti V2 | 80 208
+NVIDIA | RTX 20 | GeForce RTX 2080 Ti RGB | 83 293
+NVIDIA | RTX 20 | GeForce RTX 2080 Ti RGB V2 | 86 625
+NVIDIA | RTX 20 | GeForce RTX 2080 Ti White | 80 979
+NVIDIA | RTX 20 | GeForce RTX 2080 Ti White V2 | 84 218
+NVIDIA | RTX 20 | GeForce RTX 2080 Super | 53 963
+NVIDIA | RTX 20 | GeForce RTX 2080 Super V2 | 56 122
+NVIDIA | RTX 20 | GeForce RTX 2080 Super RGB | 58 280
+NVIDIA | RTX 20 | GeForce RTX 2080 Super RGB V2 | 60 611
+NVIDIA | RTX 20 | GeForce RTX 2080 Super White | 56 661
+NVIDIA | RTX 20 | GeForce RTX 2080 Super White V2 | 58 927
+NVIDIA | RTX 20 | GeForce RTX 2080 | 53 963
+NVIDIA | RTX 20 | GeForce RTX 2080 V2 | 56 122
+NVIDIA | RTX 20 | GeForce RTX 2080 RGB | 58 280
+NVIDIA | RTX 20 | GeForce RTX 2080 RGB V2 | 60 611
+NVIDIA | RTX 20 | GeForce RTX 2080 White | 56 661
+NVIDIA | RTX 20 | GeForce RTX 2080 White V2 | 58 927
+NVIDIA | RTX 20 | GeForce RTX 2070 Super | 38 523
+NVIDIA | RTX 20 | GeForce RTX 2070 Super V2 | 40 064
+NVIDIA | RTX 20 | GeForce RTX 2070 Super RGB | 41 605
+NVIDIA | RTX 20 | GeForce RTX 2070 Super RGB V2 | 43 269
+NVIDIA | RTX 20 | GeForce RTX 2070 Super White | 40 449
+NVIDIA | RTX 20 | GeForce RTX 2070 Super White V2 | 42 067
+NVIDIA | RTX 20 | GeForce RTX 2070 | 38 523
+NVIDIA | RTX 20 | GeForce RTX 2070 V2 | 40 064
+NVIDIA | RTX 20 | GeForce RTX 2070 RGB | 41 605
+NVIDIA | RTX 20 | GeForce RTX 2070 RGB V2 | 43 269
+NVIDIA | RTX 20 | GeForce RTX 2070 White | 40 449
+NVIDIA | RTX 20 | GeForce RTX 2070 White V2 | 42 067
+NVIDIA | RTX 20 | GeForce RTX 2060 Super | 30 803
+NVIDIA | RTX 20 | GeForce RTX 2060 Super V2 | 32 035
+NVIDIA | RTX 20 | GeForce RTX 2060 Super RGB | 33 267
+NVIDIA | RTX 20 | GeForce RTX 2060 Super RGB V2 | 34 598
+NVIDIA | RTX 20 | GeForce RTX 2060 Super White | 32 343
+NVIDIA | RTX 20 | GeForce RTX 2060 Super White V2 | 33 637
+NVIDIA | RTX 20 | GeForce RTX 2060 | 26 943
+NVIDIA | RTX 20 | GeForce RTX 2060 V2 | 28 021
+NVIDIA | RTX 20 | GeForce RTX 2060 RGB | 29 098
+NVIDIA | RTX 20 | GeForce RTX 2060 RGB V2 | 30 262
+NVIDIA | RTX 20 | GeForce RTX 2060 White | 28 290
+NVIDIA | RTX 20 | GeForce RTX 2060 White V2 | 29 422
+NVIDIA | GTX 16 | GeForce GTX 1660 Super | 17 679
+NVIDIA | GTX 16 | GeForce GTX 1660 Super V2 | 18 386
+NVIDIA | GTX 16 | GeForce GTX 1660 Super RGB | 19 093
+NVIDIA | GTX 16 | GeForce GTX 1660 Super RGB V2 | 19 857
+NVIDIA | GTX 16 | GeForce GTX 1660 Super White | 18 563
+NVIDIA | GTX 16 | GeForce GTX 1660 Super White V2 | 19 306
+NVIDIA | GTX 16 | GeForce GTX 1660 Ti | 21 539
+NVIDIA | GTX 16 | GeForce GTX 1660 Ti V2 | 22 401
+NVIDIA | GTX 16 | GeForce GTX 1660 Ti RGB | 23 262
+NVIDIA | GTX 16 | GeForce GTX 1660 Ti RGB V2 | 24 192
+NVIDIA | GTX 16 | GeForce GTX 1660 Ti White | 22 616
+NVIDIA | GTX 16 | GeForce GTX 1660 Ti White V2 | 23 521
+NVIDIA | GTX 16 | GeForce GTX 1660 | 16 907
+NVIDIA | GTX 16 | GeForce GTX 1660 V2 | 17 583
+NVIDIA | GTX 16 | GeForce GTX 1660 RGB | 18 260
+NVIDIA | GTX 16 | GeForce GTX 1660 RGB V2 | 18 990
+NVIDIA | GTX 16 | GeForce GTX 1660 White | 17 752
+NVIDIA | GTX 16 | GeForce GTX 1660 White V2 | 18 462
+NVIDIA | GTX 16 | GeForce GTX 1650 | 11 503
+NVIDIA | GTX 16 | GeForce GTX 1650 V2 | 11 963
+NVIDIA | GTX 16 | GeForce GTX 1650 RGB | 12 423
+NVIDIA | GTX 16 | GeForce GTX 1650 RGB V2 | 12 920
+NVIDIA | GTX 16 | GeForce GTX 1650 White | 12 078
+NVIDIA | GTX 16 | GeForce GTX 1650 White V2 | 12 561
+NVIDIA | GTX 10 | GeForce GTX 1080 Ti | 53 963
+NVIDIA | GTX 10 | GeForce GTX 1080 Ti V2 | 56 122
+NVIDIA | GTX 10 | GeForce GTX 1080 Ti RGB | 58 280
+NVIDIA | GTX 10 | GeForce GTX 1080 Ti RGB V2 | 60 611
+NVIDIA | GTX 10 | GeForce GTX 1080 Ti White | 56 661
+NVIDIA | GTX 10 | GeForce GTX 1080 Ti White V2 | 58 927
+NVIDIA | GTX 10 | GeForce GTX 1080 | 46 243
+NVIDIA | GTX 10 | GeForce GTX 1080 V2 | 48 093
+NVIDIA | GTX 10 | GeForce GTX 1080 RGB | 49 942
+NVIDIA | GTX 10 | GeForce GTX 1080 RGB V2 | 51 940
+NVIDIA | GTX 10 | GeForce GTX 1080 White | 48 555
+NVIDIA | GTX 10 | GeForce GTX 1080 White V2 | 50 497
+NVIDIA | GTX 10 | GeForce GTX 1070 Ti | 30 803
+NVIDIA | GTX 10 | GeForce GTX 1070 Ti V2 | 32 035
+NVIDIA | GTX 10 | GeForce GTX 1070 Ti RGB | 33 267
+NVIDIA | GTX 10 | GeForce GTX 1070 Ti RGB V2 | 34 598
+NVIDIA | GTX 10 | GeForce GTX 1070 Ti White | 32 343
+NVIDIA | GTX 10 | GeForce GTX 1070 Ti White V2 | 33 637
+NVIDIA | GTX 10 | GeForce GTX 1070 | 29 259
+NVIDIA | GTX 10 | GeForce GTX 1070 V2 | 30 429
+NVIDIA | GTX 10 | GeForce GTX 1070 RGB | 31 600
+NVIDIA | GTX 10 | GeForce GTX 1070 RGB V2 | 32 864
+NVIDIA | GTX 10 | GeForce GTX 1070 White | 30 722
+NVIDIA | GTX 10 | GeForce GTX 1070 White V2 | 31 951
+NVIDIA | GTX 10 | GeForce GTX 1060 6GB | 23 083
+NVIDIA | GTX 10 | GeForce GTX 1060 6GB V2 | 24 006
+NVIDIA | GTX 10 | GeForce GTX 1060 6GB RGB | 24 930
+NVIDIA | GTX 10 | GeForce GTX 1060 6GB RGB V2 | 25 927
+NVIDIA | GTX 10 | GeForce GTX 1060 6GB White | 24 237
+NVIDIA | GTX 10 | GeForce GTX 1060 6GB White V2 | 25 206
+NVIDIA | GTX 10 | GeForce GTX 1060 3GB | 15 363
+NVIDIA | GTX 10 | GeForce GTX 1060 3GB V2 | 15 978
+NVIDIA | GTX 10 | GeForce GTX 1060 3GB RGB | 16 592
+NVIDIA | GTX 10 | GeForce GTX 1060 3GB RGB V2 | 17 256
+NVIDIA | GTX 10 | GeForce GTX 1060 3GB White | 16 131
+NVIDIA | GTX 10 | GeForce GTX 1060 3GB White V2 | 16 776
+NVIDIA | GTX 10 | GeForce GTX 1050 Ti | 10 731
+NVIDIA | GTX 10 | GeForce GTX 1050 Ti V2 | 11 160
+NVIDIA | GTX 10 | GeForce GTX 1050 Ti RGB | 11 589
+NVIDIA | GTX 10 | GeForce GTX 1050 Ti RGB V2 | 12 053
+NVIDIA | GTX 10 | GeForce GTX 1050 Ti White | 11 268
+NVIDIA | GTX 10 | GeForce GTX 1050 Ti White V2 | 11 719
+NVIDIA | GTX 10 | GeForce GTX 1050 | 8 415
+NVIDIA | GTX 10 | GeForce GTX 1050 V2 | 8 752
+NVIDIA | GTX 10 | GeForce GTX 1050 RGB | 9 088
+NVIDIA | GTX 10 | GeForce GTX 1050 RGB V2 | 9 452
+NVIDIA | GTX 10 | GeForce GTX 1050 White | 8 836
+NVIDIA | GTX 10 | GeForce GTX 1050 White V2 | 9 189
+AMD | RX 7000 | Radeon RX 7900 XT | 69 403
+AMD | RX 7000 | Radeon RX 7900 XT V2 | 72 179
+AMD | RX 7000 | Radeon RX 7900 XT RGB | 74 955
+AMD | RX 7000 | Radeon RX 7900 XT RGB V2 | 77 953
+AMD | RX 7000 | Radeon RX 7900 XT White | 72 873
+AMD | RX 7000 | Radeon RX 7900 XT White V2 | 75 788
+AMD | RX 7000 | Radeon RX 7900 XTX | 77 123
+AMD | RX 7000 | Radeon RX 7900 XTX V2 | 80 208
+AMD | RX 7000 | Radeon RX 7900 XTX RGB | 83 293
+AMD | RX 7000 | Radeon RX 7900 XTX RGB V2 | 86 625
+AMD | RX 7000 | Radeon RX 7900 XTX White | 80 979
+AMD | RX 7000 | Radeon RX 7900 XTX White V2 | 84 218
+AMD | RX 6000 | Radeon RX 6950 XT | 84 843
+AMD | RX 6000 | Radeon RX 6950 XT V2 | 88 237
+AMD | RX 6000 | Radeon RX 6950 XT RGB | 91 630
+AMD | RX 6000 | Radeon RX 6950 XT RGB V2 | 95 295
+AMD | RX 6000 | Radeon RX 6950 XT White | 89 085
+AMD | RX 6000 | Radeon RX 6950 XT White V2 | 92 648
+AMD | RX 6000 | Radeon RX 6900 XT | 77 123
+AMD | RX 6000 | Radeon RX 6900 XT V2 | 80 208
+AMD | RX 6000 | Radeon RX 6900 XT RGB | 83 293
+AMD | RX 6000 | Radeon RX 6900 XT RGB V2 | 86 625
+AMD | RX 6000 | Radeon RX 6900 XT White | 80 979
+AMD | RX 6000 | Radeon RX 6900 XT White V2 | 84 218
+AMD | RX 6000 | Radeon RX 6800 XT | 50 103
+AMD | RX 6000 | Radeon RX 6800 XT V2 | 52 107
+AMD | RX 6000 | Radeon RX 6800 XT RGB | 54 111
+AMD | RX 6000 | Radeon RX 6800 XT RGB V2 | 56 275
+AMD | RX 6000 | Radeon RX 6800 XT White | 52 608
+AMD | RX 6000 | Radeon RX 6800 XT White V2 | 54 712
+AMD | RX 6000 | Radeon RX 6800 | 44 699
+AMD | RX 6000 | Radeon RX 6800 V2 | 46 487
+AMD | RX 6000 | Radeon RX 6800 RGB | 48 275
+AMD | RX 6000 | Radeon RX 6800 RGB V2 | 50 206
+AMD | RX 6000 | Radeon RX 6800 White | 46 934
+AMD | RX 6000 | Radeon RX 6800 White V2 | 48 811
+AMD | RX 6000 | Radeon RX 6750 XT | 42 383
+AMD | RX 6000 | Radeon RX 6750 XT V2 | 44 078
+AMD | RX 6000 | Radeon RX 6750 XT RGB | 45 774
+AMD | RX 6000 | Radeon RX 6750 XT RGB V2 | 47 605
+AMD | RX 6000 | Radeon RX 6750 XT White | 44 502
+AMD | RX 6000 | Radeon RX 6750 XT White V2 | 46 282
+AMD | RX 6000 | Radeon RX 6700 XT | 36 979
+AMD | RX 6000 | Radeon RX 6700 XT V2 | 38 458
+AMD | RX 6000 | Radeon RX 6700 XT RGB | 39 937
+AMD | RX 6000 | Radeon RX 6700 XT RGB V2 | 41 534
+AMD | RX 6000 | Radeon RX 6700 XT White | 38 828
+AMD | RX 6000 | Radeon RX 6700 XT White V2 | 40 381
+AMD | RX 6000 | Radeon RX 6650 XT | 30 803
+AMD | RX 6000 | Radeon RX 6650 XT V2 | 32 035
+AMD | RX 6000 | Radeon RX 6650 XT RGB | 33 267
+AMD | RX 6000 | Radeon RX 6650 XT RGB V2 | 34 598
+AMD | RX 6000 | Radeon RX 6650 XT White | 32 343
+AMD | RX 6000 | Radeon RX 6650 XT White V2 | 33 637
+AMD | RX 6000 | Radeon RX 6600 XT | 29 259
+AMD | RX 6000 | Radeon RX 6600 XT V2 | 30 429
+AMD | RX 6000 | Radeon RX 6600 XT RGB | 31 600
+AMD | RX 6000 | Radeon RX 6600 XT RGB V2 | 32 864
+AMD | RX 6000 | Radeon RX 6600 XT White | 30 722
+AMD | RX 6000 | Radeon RX 6600 XT White V2 | 31 951
+AMD | RX 6000 | Radeon RX 6600 | 25 399
+AMD | RX 6000 | Radeon RX 6600 V2 | 26 415
+AMD | RX 6000 | Radeon RX 6600 RGB | 27 431
+AMD | RX 6000 | Radeon RX 6600 RGB V2 | 28 528
+AMD | RX 6000 | Radeon RX 6600 White | 26 669
+AMD | RX 6000 | Radeon RX 6600 White V2 | 27 736
+AMD | RX 6000 | Radeon RX 6500 XT | 15 363
+AMD | RX 6000 | Radeon RX 6500 XT V2 | 15 978
+AMD | RX 6000 | Radeon RX 6500 XT RGB | 16 592
+AMD | RX 6000 | Radeon RX 6500 XT RGB V2 | 17 256
+AMD | RX 6000 | Radeon RX 6500 XT White | 16 131
+AMD | RX 6000 | Radeon RX 6500 XT White V2 | 16 776
+AMD | RX 5000 | Radeon RX 5700 XT | 30 803
+AMD | RX 5000 | Radeon RX 5700 XT V2 | 32 035
+AMD | RX 5000 | Radeon RX 5700 XT RGB | 33 267
+AMD | RX 5000 | Radeon RX 5700 XT RGB V2 | 34 598
+AMD | RX 5000 | Radeon RX 5700 XT White | 32 343
+AMD | RX 5000 | Radeon RX 5700 XT White V2 | 33 637
+AMD | RX 5000 | Radeon RX 5700 | 26 943
+AMD | RX 5000 | Radeon RX 5700 V2 | 28 021
+AMD | RX 5000 | Radeon RX 5700 RGB | 29 098
+AMD | RX 5000 | Radeon RX 5700 RGB V2 | 30 262
+AMD | RX 5000 | Radeon RX 5700 White | 28 290
+AMD | RX 5000 | Radeon RX 5700 White V2 | 29 422
+AMD | RX 5000 | Radeon RX 5600 XT | 21 539
+AMD | RX 5000 | Radeon RX 5600 XT V2 | 22 401
+AMD | RX 5000 | Radeon RX 5600 XT RGB | 23 262
+AMD | RX 5000 | Radeon RX 5600 XT RGB V2 | 24 192
+AMD | RX 5000 | Radeon RX 5600 XT White | 22 616
+AMD | RX 5000 | Radeon RX 5600 XT White V2 | 23 521
+AMD | RX 500 | Radeon RX 590 | 21 539
+AMD | RX 500 | Radeon RX 590 V2 | 22 401
+AMD | RX 500 | Radeon RX 590 RGB | 23 262
+AMD | RX 500 | Radeon RX 590 RGB V2 | 24 192
+AMD | RX 500 | Radeon RX 590 White | 22 616
+AMD | RX 500 | Radeon RX 590 White V2 | 23 521
+AMD | RX 500 | Radeon RX 580 | 17 679
+AMD | RX 500 | Radeon RX 580 V2 | 18 386
+AMD | RX 500 | Radeon RX 580 RGB | 19 093
+AMD | RX 500 | Radeon RX 580 RGB V2 | 19 857
+AMD | RX 500 | Radeon RX 580 White | 18 563
+AMD | RX 500 | Radeon RX 580 White V2 | 19 306
+AMD | RX 500 | Radeon RX 570 | 13 047
+AMD | RX 500 | Radeon RX 570 V2 | 13 569
+AMD | RX 500 | Radeon RX 570 RGB | 14 091
+AMD | RX 500 | Radeon RX 570 RGB V2 | 14 655
+AMD | RX 500 | Radeon RX 570 White | 13 699
+AMD | RX 500 | Radeon RX 570 White V2 | 14 247
+
+## Процессоры
+AMD | Ryzen 9000 | Ryzen 9 9950X3D | 61 683
+AMD | Ryzen 9000 | Ryzen 9 9950X3D V2 | 64 150
+AMD | Ryzen 9000 | Ryzen 9 9950X3D Plus | 66 001
+AMD | Ryzen 9000 | Ryzen 9 9950X3D Plus V2 | 68 641
+AMD | Ryzen 9000 | Ryzen 9 9950X3D OEM | 58 599
+AMD | Ryzen 9000 | Ryzen 9 9950X3D OEM V2 | 60 943
+AMD | Ryzen 9000 | Ryzen 9 9950X | 53 963
+AMD | Ryzen 9000 | Ryzen 9 9950X V2 | 56 122
+AMD | Ryzen 9000 | Ryzen 9 9950X Plus | 57 740
+AMD | Ryzen 9000 | Ryzen 9 9950X Plus V2 | 60 050
+AMD | Ryzen 9000 | Ryzen 9 9950X OEM | 51 265
+AMD | Ryzen 9000 | Ryzen 9 9950X OEM V2 | 53 316
+AMD | Ryzen 9000 | Ryzen 9 9900X | 42 383
+AMD | Ryzen 9000 | Ryzen 9 9900X V2 | 44 078
+AMD | Ryzen 9000 | Ryzen 9 9900X Plus | 45 350
+AMD | Ryzen 9000 | Ryzen 9 9900X Plus V2 | 47 164
+AMD | Ryzen 9000 | Ryzen 9 9900X OEM | 40 264
+AMD | Ryzen 9000 | Ryzen 9 9900X OEM V2 | 41 875
+AMD | Ryzen 9000 | Ryzen 7 9800X3D | 38 523
+AMD | Ryzen 9000 | Ryzen 7 9800X3D V2 | 40 064
+AMD | Ryzen 9000 | Ryzen 7 9800X3D Plus | 41 220
+AMD | Ryzen 9000 | Ryzen 7 9800X3D Plus V2 | 42 869
+AMD | Ryzen 9000 | Ryzen 7 9800X3D OEM | 36 597
+AMD | Ryzen 9000 | Ryzen 7 9800X3D OEM V2 | 38 061
+AMD | Ryzen 9000 | Ryzen 7 9700X | 30 803
+AMD | Ryzen 9000 | Ryzen 7 9700X V2 | 32 035
+AMD | Ryzen 9000 | Ryzen 7 9700X Plus | 32 959
+AMD | Ryzen 9000 | Ryzen 7 9700X Plus V2 | 34 277
+AMD | Ryzen 9000 | Ryzen 7 9700X OEM | 29 263
+AMD | Ryzen 9000 | Ryzen 7 9700X OEM V2 | 30 434
+AMD | Ryzen 9000 | Ryzen 5 9600X | 23 083
+AMD | Ryzen 9000 | Ryzen 5 9600X V2 | 24 006
+AMD | Ryzen 9000 | Ryzen 5 9600X Plus | 24 699
+AMD | Ryzen 9000 | Ryzen 5 9600X Plus V2 | 25 687
+AMD | Ryzen 9000 | Ryzen 5 9600X OEM | 21 929
+AMD | Ryzen 9000 | Ryzen 5 9600X OEM V2 | 22 806
+AMD | Ryzen 9000 | Ryzen 5 9500G | 19 995
+AMD | Ryzen 9000 | Ryzen 5 9500G V2 | 20 795
+AMD | Ryzen 9000 | Ryzen 5 9500G Plus | 21 395
+AMD | Ryzen 9000 | Ryzen 5 9500G Plus V2 | 22 251
+AMD | Ryzen 9000 | Ryzen 5 9500G OEM | 18 995
+AMD | Ryzen 9000 | Ryzen 5 9500G OEM V2 | 19 755
+AMD | Ryzen 9000 | Ryzen 5 9300G | 15 363
+AMD | Ryzen 9000 | Ryzen 5 9300G V2 | 15 978
+AMD | Ryzen 9000 | Ryzen 5 9300G Plus | 16 438
+AMD | Ryzen 9000 | Ryzen 5 9300G Plus V2 | 17 096
+AMD | Ryzen 9000 | Ryzen 5 9300G OEM | 14 595
+AMD | Ryzen 9000 | Ryzen 5 9300G OEM V2 | 15 179
+AMD | Ryzen 9000 | Ryzen 5 8600G | 17 679
+AMD | Ryzen 9000 | Ryzen 5 8600G V2 | 18 386
+AMD | Ryzen 9000 | Ryzen 5 8600G Plus | 18 917
+AMD | Ryzen 9000 | Ryzen 5 8600G Plus V2 | 19 674
+AMD | Ryzen 9000 | Ryzen 5 8600G OEM | 16 795
+AMD | Ryzen 9000 | Ryzen 5 8600G OEM V2 | 17 467
+AMD | Ryzen 7000 | Ryzen 9 7950X3D | 53 963
+AMD | Ryzen 7000 | Ryzen 9 7950X3D V2 | 56 122
+AMD | Ryzen 7000 | Ryzen 9 7950X3D Plus | 57 740
+AMD | Ryzen 7000 | Ryzen 9 7950X3D Plus V2 | 60 050
+AMD | Ryzen 7000 | Ryzen 9 7950X3D OEM | 51 265
+AMD | Ryzen 7000 | Ryzen 9 7950X3D OEM V2 | 53 316
+AMD | Ryzen 7000 | Ryzen 9 7950X | 46 243
+AMD | Ryzen 7000 | Ryzen 9 7950X V2 | 48 093
+AMD | Ryzen 7000 | Ryzen 9 7950X Plus | 49 480
+AMD | Ryzen 7000 | Ryzen 9 7950X Plus V2 | 51 459
+AMD | Ryzen 7000 | Ryzen 9 7950X OEM | 43 931
+AMD | Ryzen 7000 | Ryzen 9 7950X OEM V2 | 45 688
+AMD | Ryzen 7000 | Ryzen 9 7900X | 34 663
+AMD | Ryzen 7000 | Ryzen 9 7900X V2 | 36 050
+AMD | Ryzen 7000 | Ryzen 9 7900X Plus | 37 089
+AMD | Ryzen 7000 | Ryzen 9 7900X Plus V2 | 38 573
+AMD | Ryzen 7000 | Ryzen 9 7900X OEM | 32 930
+AMD | Ryzen 7000 | Ryzen 9 7900X OEM V2 | 34 247
+AMD | Ryzen 7000 | Ryzen 9 7900 | 29 259
+AMD | Ryzen 7000 | Ryzen 9 7900 V2 | 30 429
+AMD | Ryzen 7000 | Ryzen 9 7900 Plus | 31 307
+AMD | Ryzen 7000 | Ryzen 9 7900 Plus V2 | 32 559
+AMD | Ryzen 7000 | Ryzen 9 7900 OEM | 27 796
+AMD | Ryzen 7000 | Ryzen 9 7900 OEM V2 | 28 908
+AMD | Ryzen 7000 | Ryzen 7 7800X3D | 30 803
+AMD | Ryzen 7000 | Ryzen 7 7800X3D V2 | 32 035
+AMD | Ryzen 7000 | Ryzen 7 7800X3D Plus | 32 959
+AMD | Ryzen 7000 | Ryzen 7 7800X3D Plus V2 | 34 277
+AMD | Ryzen 7000 | Ryzen 7 7800X3D OEM | 29 263
+AMD | Ryzen 7000 | Ryzen 7 7800X3D OEM V2 | 30 434
+AMD | Ryzen 7000 | Ryzen 7 7700X | 26 943
+AMD | Ryzen 7000 | Ryzen 7 7700X V2 | 28 021
+AMD | Ryzen 7000 | Ryzen 7 7700X Plus | 28 829
+AMD | Ryzen 7000 | Ryzen 7 7700X Plus V2 | 29 982
+AMD | Ryzen 7000 | Ryzen 7 7700X OEM | 25 596
+AMD | Ryzen 7000 | Ryzen 7 7700X OEM V2 | 26 620
+AMD | Ryzen 7000 | Ryzen 7 7700 | 24 627
+AMD | Ryzen 7000 | Ryzen 7 7700 V2 | 25 612
+AMD | Ryzen 7000 | Ryzen 7 7700 Plus | 26 351
+AMD | Ryzen 7000 | Ryzen 7 7700 Plus V2 | 27 405
+AMD | Ryzen 7000 | Ryzen 7 7700 OEM | 23 396
+AMD | Ryzen 7000 | Ryzen 7 7700 OEM V2 | 24 332
+AMD | Ryzen 7000 | Ryzen 5 7600X | 23 083
+AMD | Ryzen 7000 | Ryzen 5 7600X V2 | 24 006
+AMD | Ryzen 7000 | Ryzen 5 7600X Plus | 24 699
+AMD | Ryzen 7000 | Ryzen 5 7600X Plus V2 | 25 687
+AMD | Ryzen 7000 | Ryzen 5 7600X OEM | 21 929
+AMD | Ryzen 7000 | Ryzen 5 7600X OEM V2 | 22 806
+AMD | Ryzen 7000 | Ryzen 5 7600 | 17 679
+AMD | Ryzen 7000 | Ryzen 5 7600 V2 | 18 386
+AMD | Ryzen 7000 | Ryzen 5 7600 Plus | 18 917
+AMD | Ryzen 7000 | Ryzen 5 7600 Plus V2 | 19 674
+AMD | Ryzen 7000 | Ryzen 5 7600 OEM | 16 795
+AMD | Ryzen 7000 | Ryzen 5 7600 OEM V2 | 17 467
+AMD | Ryzen 5000 | Ryzen 9 5950X | 38 523
+AMD | Ryzen 5000 | Ryzen 9 5950X V2 | 40 064
+AMD | Ryzen 5000 | Ryzen 9 5950X Plus | 41 220
+AMD | Ryzen 5000 | Ryzen 9 5950X Plus V2 | 42 869
+AMD | Ryzen 5000 | Ryzen 9 5950X OEM | 36 597
+AMD | Ryzen 5000 | Ryzen 9 5950X OEM V2 | 38 061
+AMD | Ryzen 5000 | Ryzen 9 5900X | 30 803
+AMD | Ryzen 5000 | Ryzen 9 5900X V2 | 32 035
+AMD | Ryzen 5000 | Ryzen 9 5900X Plus | 32 959
+AMD | Ryzen 5000 | Ryzen 9 5900X Plus V2 | 34 277
+AMD | Ryzen 5000 | Ryzen 9 5900X OEM | 29 263
+AMD | Ryzen 5000 | Ryzen 9 5900X OEM V2 | 30 434
+AMD | Ryzen 5000 | Ryzen 7 5800X3D | 26 943
+AMD | Ryzen 5000 | Ryzen 7 5800X3D V2 | 28 021
+AMD | Ryzen 5000 | Ryzen 7 5800X3D Plus | 28 829
+AMD | Ryzen 5000 | Ryzen 7 5800X3D Plus V2 | 29 982
+AMD | Ryzen 5000 | Ryzen 7 5800X3D OEM | 25 596
+AMD | Ryzen 5000 | Ryzen 7 5800X3D OEM V2 | 26 620
+AMD | Ryzen 5000 | Ryzen 7 5800X | 23 083
+AMD | Ryzen 5000 | Ryzen 7 5800X V2 | 24 006
+AMD | Ryzen 5000 | Ryzen 7 5800X Plus | 24 699
+AMD | Ryzen 5000 | Ryzen 7 5800X Plus V2 | 25 687
+AMD | Ryzen 5000 | Ryzen 7 5800X OEM | 21 929
+AMD | Ryzen 5000 | Ryzen 7 5800X OEM V2 | 22 806
+AMD | Ryzen 5000 | Ryzen 7 5700X3D | 23 083
+AMD | Ryzen 5000 | Ryzen 7 5700X3D V2 | 24 006
+AMD | Ryzen 5000 | Ryzen 7 5700X3D Plus | 24 699
+AMD | Ryzen 5000 | Ryzen 7 5700X3D Plus V2 | 25 687
+AMD | Ryzen 5000 | Ryzen 7 5700X3D OEM | 21 929
+AMD | Ryzen 5000 | Ryzen 7 5700X3D OEM V2 | 22 806
+AMD | Ryzen 5000 | Ryzen 7 5700X | 19 223
+AMD | Ryzen 5000 | Ryzen 7 5700X V2 | 19 992
+AMD | Ryzen 5000 | Ryzen 7 5700X Plus | 20 569
+AMD | Ryzen 5000 | Ryzen 7 5700X Plus V2 | 21 392
+AMD | Ryzen 5000 | Ryzen 7 5700X OEM | 18 262
+AMD | Ryzen 5000 | Ryzen 7 5700X OEM V2 | 18 992
+AMD | Ryzen 5000 | Ryzen 5 5600X | 15 363
+AMD | Ryzen 5000 | Ryzen 5 5600X V2 | 15 978
+AMD | Ryzen 5000 | Ryzen 5 5600X Plus | 16 438
+AMD | Ryzen 5000 | Ryzen 5 5600X Plus V2 | 17 096
+AMD | Ryzen 5000 | Ryzen 5 5600X OEM | 14 595
+AMD | Ryzen 5000 | Ryzen 5 5600X OEM V2 | 15 179
+AMD | Ryzen 5000 | Ryzen 5 5600 | 11 503
+AMD | Ryzen 5000 | Ryzen 5 5600 V2 | 11 963
+AMD | Ryzen 5000 | Ryzen 5 5600 Plus | 12 308
+AMD | Ryzen 5000 | Ryzen 5 5600 Plus V2 | 12 800
+AMD | Ryzen 5000 | Ryzen 5 5600 OEM | 10 928
+AMD | Ryzen 5000 | Ryzen 5 5600 OEM V2 | 11 365
+AMD | Ryzen 5000 | Ryzen 5 5500 | 9 959
+AMD | Ryzen 5000 | Ryzen 5 5500 V2 | 10 357
+AMD | Ryzen 5000 | Ryzen 5 5500 Plus | 10 656
+AMD | Ryzen 5000 | Ryzen 5 5500 Plus V2 | 11 082
+AMD | Ryzen 5000 | Ryzen 5 5500 OEM | 9 461
+AMD | Ryzen 5000 | Ryzen 5 5500 OEM V2 | 9 839
+AMD | Ryzen 3000 | Ryzen 5 3600 | 7 643
+AMD | Ryzen 3000 | Ryzen 5 3600 V2 | 7 949
+AMD | Ryzen 3000 | Ryzen 5 3600 Plus | 8 178
+AMD | Ryzen 3000 | Ryzen 5 3600 Plus V2 | 8 505
+AMD | Ryzen 3000 | Ryzen 5 3600 OEM | 7 261
+AMD | Ryzen 3000 | Ryzen 5 3600 OEM V2 | 7 551
+Intel | Core 14th Gen | Core i9-14900K | 43 927
+Intel | Core 14th Gen | Core i9-14900K V2 | 45 684
+Intel | Core 14th Gen | Core i9-14900K Plus | 47 002
+Intel | Core 14th Gen | Core i9-14900K Plus V2 | 48 882
+Intel | Core 14th Gen | Core i9-14900K OEM | 41 731
+Intel | Core 14th Gen | Core i9-14900K OEM V2 | 43 400
+Intel | Core 14th Gen | Core i9-14900KF | 42 383
+Intel | Core 14th Gen | Core i9-14900KF V2 | 44 078
+Intel | Core 14th Gen | Core i9-14900KF Plus | 45 350
+Intel | Core 14th Gen | Core i9-14900KF Plus V2 | 47 164
+Intel | Core 14th Gen | Core i9-14900KF OEM | 40 264
+Intel | Core 14th Gen | Core i9-14900KF OEM V2 | 41 875
+Intel | Core 14th Gen | Core i7-14700K | 31 575
+Intel | Core 14th Gen | Core i7-14700K V2 | 32 838
+Intel | Core 14th Gen | Core i7-14700K Plus | 33 785
+Intel | Core 14th Gen | Core i7-14700K Plus V2 | 35 136
+Intel | Core 14th Gen | Core i7-14700K OEM | 29 996
+Intel | Core 14th Gen | Core i7-14700K OEM V2 | 31 196
+Intel | Core 14th Gen | Core i7-14700KF | 30 803
+Intel | Core 14th Gen | Core i7-14700KF V2 | 32 035
+Intel | Core 14th Gen | Core i7-14700KF Plus | 32 959
+Intel | Core 14th Gen | Core i7-14700KF Plus V2 | 34 277
+Intel | Core 14th Gen | Core i7-14700KF OEM | 29 263
+Intel | Core 14th Gen | Core i7-14700KF OEM V2 | 30 434
+Intel | Core 14th Gen | Core i5-14600K | 25 399
+Intel | Core 14th Gen | Core i5-14600K V2 | 26 415
+Intel | Core 14th Gen | Core i5-14600K Plus | 27 177
+Intel | Core 14th Gen | Core i5-14600K Plus V2 | 28 264
+Intel | Core 14th Gen | Core i5-14600K OEM | 24 129
+Intel | Core 14th Gen | Core i5-14600K OEM V2 | 25 094
+Intel | Core 14th Gen | Core i5-14600KF | 24 627
+Intel | Core 14th Gen | Core i5-14600KF V2 | 25 612
+Intel | Core 14th Gen | Core i5-14600KF Plus | 26 351
+Intel | Core 14th Gen | Core i5-14600KF Plus V2 | 27 405
+Intel | Core 14th Gen | Core i5-14600KF OEM | 23 396
+Intel | Core 14th Gen | Core i5-14600KF OEM V2 | 24 332
+Intel | Core 14th Gen | Core i5-14500 | 19 223
+Intel | Core 14th Gen | Core i5-14500 V2 | 19 992
+Intel | Core 14th Gen | Core i5-14500 Plus | 20 569
+Intel | Core 14th Gen | Core i5-14500 Plus V2 | 21 392
+Intel | Core 14th Gen | Core i5-14500 OEM | 18 262
+Intel | Core 14th Gen | Core i5-14500 OEM V2 | 18 992
+Intel | Core 14th Gen | Core i5-14400F | 16 907
+Intel | Core 14th Gen | Core i5-14400F V2 | 17 583
+Intel | Core 14th Gen | Core i5-14400F Plus | 18 090
+Intel | Core 14th Gen | Core i5-14400F Plus V2 | 18 814
+Intel | Core 14th Gen | Core i5-14400F OEM | 16 062
+Intel | Core 14th Gen | Core i5-14400F OEM V2 | 16 704
+Intel | Core 13th Gen | Core i7-13700K | 30 031
+Intel | Core 13th Gen | Core i7-13700K V2 | 31 232
+Intel | Core 13th Gen | Core i7-13700K Plus | 32 133
+Intel | Core 13th Gen | Core i7-13700K Plus V2 | 33 418
+Intel | Core 13th Gen | Core i7-13700K OEM | 28 529
+Intel | Core 13th Gen | Core i7-13700K OEM V2 | 29 670
+Intel | Core 13th Gen | Core i5-13600K | 24 627
+Intel | Core 13th Gen | Core i5-13600K V2 | 25 612
+Intel | Core 13th Gen | Core i5-13600K Plus | 26 351
+Intel | Core 13th Gen | Core i5-13600K Plus V2 | 27 405
+Intel | Core 13th Gen | Core i5-13600K OEM | 23 396
+Intel | Core 13th Gen | Core i5-13600K OEM V2 | 24 332
+Intel | Core 13th Gen | Core i5-13500 | 19 223
+Intel | Core 13th Gen | Core i5-13500 V2 | 19 992
+Intel | Core 13th Gen | Core i5-13500 Plus | 20 569
+Intel | Core 13th Gen | Core i5-13500 Plus V2 | 21 392
+Intel | Core 13th Gen | Core i5-13500 OEM | 18 262
+Intel | Core 13th Gen | Core i5-13500 OEM V2 | 18 992
+Intel | Core 13th Gen | Core i5-13400F | 14 591
+Intel | Core 13th Gen | Core i5-13400F V2 | 15 175
+Intel | Core 13th Gen | Core i5-13400F Plus | 15 612
+Intel | Core 13th Gen | Core i5-13400F Plus V2 | 16 236
+Intel | Core 13th Gen | Core i5-13400F OEM | 13 861
+Intel | Core 13th Gen | Core i5-13400F OEM V2 | 14 415
+Intel | Core 12th Gen | Core i5-12400F | 11 503
+Intel | Core 12th Gen | Core i5-12400F V2 | 11 963
+Intel | Core 12th Gen | Core i5-12400F Plus | 12 308
+Intel | Core 12th Gen | Core i5-12400F Plus V2 | 12 800
+Intel | Core 12th Gen | Core i5-12400F OEM | 10 928
+Intel | Core 12th Gen | Core i5-12400F OEM V2 | 11 365
+Intel | Core 12th Gen | Core i3-12100F | 7 643
+Intel | Core 12th Gen | Core i3-12100F V2 | 7 949
+Intel | Core 12th Gen | Core i3-12100F Plus | 8 178
+Intel | Core 12th Gen | Core i3-12100F Plus V2 | 8 505
+Intel | Core 12th Gen | Core i3-12100F OEM | 7 261
+Intel | Core 12th Gen | Core i3-12100F OEM V2 | 7 551
+Intel | Core Ultra 200 | Core Ultra 9 285K | 46 243
+Intel | Core Ultra 200 | Core Ultra 9 285K V2 | 48 093
+Intel | Core Ultra 200 | Core Ultra 9 285K Plus | 49 480
+Intel | Core Ultra 200 | Core Ultra 9 285K Plus V2 | 51 459
+Intel | Core Ultra 200 | Core Ultra 9 285K OEM | 43 931
+Intel | Core Ultra 200 | Core Ultra 9 285K OEM V2 | 45 688
+Intel | Core Ultra 200 | Core Ultra 7 265K | 34 663
+Intel | Core Ultra 200 | Core Ultra 7 265K V2 | 36 050
+Intel | Core Ultra 200 | Core Ultra 7 265K Plus | 37 089
+Intel | Core Ultra 200 | Core Ultra 7 265K Plus V2 | 38 573
+Intel | Core Ultra 200 | Core Ultra 7 265K OEM | 32 930
+Intel | Core Ultra 200 | Core Ultra 7 265K OEM V2 | 34 247
+Intel | Core Ultra 200 | Core Ultra 5 245K | 25 399
+Intel | Core Ultra 200 | Core Ultra 5 245K V2 | 26 415
+Intel | Core Ultra 200 | Core Ultra 5 245K Plus | 27 177
+Intel | Core Ultra 200 | Core Ultra 5 245K Plus V2 | 28 264
+Intel | Core Ultra 200 | Core Ultra 5 245K OEM | 24 129
+Intel | Core Ultra 200 | Core Ultra 5 245K OEM V2 | 25 094
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus | 38 523
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus V2 | 40 064
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus Plus | 41 220
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus Plus V2 | 42 869
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus OEM | 36 597
+Intel | Core Ultra 200 | Core Ultra 7 270K Plus OEM V2 | 38 061
+
+## Материнские платы
+ASUS | X870E | ROG Crosshair X870E Hero | 46 243
+ASUS | X870E | ROG Crosshair X870E Hero V2 | 48 093
+ASUS | X870E | ROG Crosshair X870E Hero RGB | 49 942
+ASUS | X870E | ROG Crosshair X870E Hero RGB V2 | 51 940
+ASUS | X870E | ROG Crosshair X870E Hero White | 48 555
+ASUS | X870E | ROG Crosshair X870E Hero White V2 | 50 497
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi | 42 383
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi V2 | 44 078
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi RGB | 45 774
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi RGB V2 | 47 605
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi White | 44 502
+ASUS | X870E | ROG Strix X870E-E Gaming WiFi White V2 | 46 282
+ASUS | X870 | TUF Gaming X870-Plus WiFi | 26 943
+ASUS | X870 | TUF Gaming X870-Plus WiFi V2 | 28 021
+ASUS | X870 | TUF Gaming X870-Plus WiFi RGB | 29 098
+ASUS | X870 | TUF Gaming X870-Plus WiFi RGB V2 | 30 262
+ASUS | X870 | TUF Gaming X870-Plus WiFi White | 28 290
+ASUS | X870 | TUF Gaming X870-Plus WiFi White V2 | 29 422
+ASUS | B850 | TUF Gaming B850-Plus WiFi | 20 767
+ASUS | B850 | TUF Gaming B850-Plus WiFi V2 | 21 598
+ASUS | B850 | TUF Gaming B850-Plus WiFi RGB | 22 428
+ASUS | B850 | TUF Gaming B850-Plus WiFi RGB V2 | 23 325
+ASUS | B850 | TUF Gaming B850-Plus WiFi White | 21 805
+ASUS | B850 | TUF Gaming B850-Plus WiFi White V2 | 22 677
+ASUS | B650 | TUF Gaming B650-Plus WiFi | 17 679
+ASUS | B650 | TUF Gaming B650-Plus WiFi V2 | 18 386
+ASUS | B650 | TUF Gaming B650-Plus WiFi RGB | 19 093
+ASUS | B650 | TUF Gaming B650-Plus WiFi RGB V2 | 19 857
+ASUS | B650 | TUF Gaming B650-Plus WiFi White | 18 563
+ASUS | B650 | TUF Gaming B650-Plus WiFi White V2 | 19 306
+ASUS | B650 | Prime B650-Plus | 14 591
+ASUS | B650 | Prime B650-Plus V2 | 15 175
+ASUS | B650 | Prime B650-Plus RGB | 15 758
+ASUS | B650 | Prime B650-Plus RGB V2 | 16 388
+ASUS | B650 | Prime B650-Plus White | 15 321
+ASUS | B650 | Prime B650-Plus White V2 | 15 934
+ASUS | A620 | Prime A620M-A | 9 187
+ASUS | A620 | Prime A620M-A V2 | 9 554
+ASUS | A620 | Prime A620M-A RGB | 9 922
+ASUS | A620 | Prime A620M-A RGB V2 | 10 319
+ASUS | A620 | Prime A620M-A White | 9 646
+ASUS | A620 | Prime A620M-A White V2 | 10 032
+MSI | X870E | MEG X870E GODLIKE | 69 403
+MSI | X870E | MEG X870E GODLIKE V2 | 72 179
+MSI | X870E | MEG X870E GODLIKE RGB | 74 955
+MSI | X870E | MEG X870E GODLIKE RGB V2 | 77 953
+MSI | X870E | MEG X870E GODLIKE White | 72 873
+MSI | X870E | MEG X870E GODLIKE White V2 | 75 788
+MSI | X870E | MPG X870E Carbon WiFi | 36 979
+MSI | X870E | MPG X870E Carbon WiFi V2 | 38 458
+MSI | X870E | MPG X870E Carbon WiFi RGB | 39 937
+MSI | X870E | MPG X870E Carbon WiFi RGB V2 | 41 534
+MSI | X870E | MPG X870E Carbon WiFi White | 38 828
+MSI | X870E | MPG X870E Carbon WiFi White V2 | 40 381
+MSI | X870 | MAG X870 Tomahawk WiFi | 24 627
+MSI | X870 | MAG X870 Tomahawk WiFi V2 | 25 612
+MSI | X870 | MAG X870 Tomahawk WiFi RGB | 26 597
+MSI | X870 | MAG X870 Tomahawk WiFi RGB V2 | 27 661
+MSI | X870 | MAG X870 Tomahawk WiFi White | 25 858
+MSI | X870 | MAG X870 Tomahawk WiFi White V2 | 26 892
+MSI | B850 | PRO B850-P WiFi | 19 995
+MSI | B850 | PRO B850-P WiFi V2 | 20 795
+MSI | B850 | PRO B850-P WiFi RGB | 21 595
+MSI | B850 | PRO B850-P WiFi RGB V2 | 22 459
+MSI | B850 | PRO B850-P WiFi White | 20 995
+MSI | B850 | PRO B850-P WiFi White V2 | 21 835
+MSI | B650 | MAG B650 Tomahawk WiFi | 18 451
+MSI | B650 | MAG B650 Tomahawk WiFi V2 | 19 189
+MSI | B650 | MAG B650 Tomahawk WiFi RGB | 19 927
+MSI | B650 | MAG B650 Tomahawk WiFi RGB V2 | 20 724
+MSI | B650 | MAG B650 Tomahawk WiFi White | 19 374
+MSI | B650 | MAG B650 Tomahawk WiFi White V2 | 20 149
+MSI | B650 | PRO B650M-A WiFi | 14 591
+MSI | B650 | PRO B650M-A WiFi V2 | 15 175
+MSI | B650 | PRO B650M-A WiFi RGB | 15 758
+MSI | B650 | PRO B650M-A WiFi RGB V2 | 16 388
+MSI | B650 | PRO B650M-A WiFi White | 15 321
+MSI | B650 | PRO B650M-A WiFi White V2 | 15 934
+MSI | A620 | PRO A620M-E | 7 643
+MSI | A620 | PRO A620M-E V2 | 7 949
+MSI | A620 | PRO A620M-E RGB | 8 254
+MSI | A620 | PRO A620M-E RGB V2 | 8 584
+MSI | A620 | PRO A620M-E White | 8 025
+MSI | A620 | PRO A620M-E White V2 | 8 346
+Gigabyte | X870E | X870E AORUS Master | 42 383
+Gigabyte | X870E | X870E AORUS Master V2 | 44 078
+Gigabyte | X870E | X870E AORUS Master RGB | 45 774
+Gigabyte | X870E | X870E AORUS Master RGB V2 | 47 605
+Gigabyte | X870E | X870E AORUS Master White | 44 502
+Gigabyte | X870E | X870E AORUS Master White V2 | 46 282
+Gigabyte | X870 | X870 AORUS Elite | 24 627
+Gigabyte | X870 | X870 AORUS Elite V2 | 25 612
+Gigabyte | X870 | X870 AORUS Elite RGB | 26 597
+Gigabyte | X870 | X870 AORUS Elite RGB V2 | 27 661
+Gigabyte | X870 | X870 AORUS Elite White | 25 858
+Gigabyte | X870 | X870 AORUS Elite White V2 | 26 892
+Gigabyte | B850 | B850 AORUS Pro AX | 19 995
+Gigabyte | B850 | B850 AORUS Pro AX V2 | 20 795
+Gigabyte | B850 | B850 AORUS Pro AX RGB | 21 595
+Gigabyte | B850 | B850 AORUS Pro AX RGB V2 | 22 459
+Gigabyte | B850 | B850 AORUS Pro AX White | 20 995
+Gigabyte | B850 | B850 AORUS Pro AX White V2 | 21 835
+Gigabyte | B650 | B650 AORUS Elite AX | 16 907
+Gigabyte | B650 | B650 AORUS Elite AX V2 | 17 583
+Gigabyte | B650 | B650 AORUS Elite AX RGB | 18 260
+Gigabyte | B650 | B650 AORUS Elite AX RGB V2 | 18 990
+Gigabyte | B650 | B650 AORUS Elite AX White | 17 752
+Gigabyte | B650 | B650 AORUS Elite AX White V2 | 18 462
+Gigabyte | A620 | A620M Gaming X | 8 415
+Gigabyte | A620 | A620M Gaming X V2 | 8 752
+Gigabyte | A620 | A620M Gaming X RGB | 9 088
+Gigabyte | A620 | A620M Gaming X RGB V2 | 9 452
+Gigabyte | A620 | A620M Gaming X White | 8 836
+Gigabyte | A620 | A620M Gaming X White V2 | 9 189
+ASRock | X870E | X870E Taichi Lite | 33 119
+ASRock | X870E | X870E Taichi Lite V2 | 34 444
+ASRock | X870E | X870E Taichi Lite RGB | 35 769
+ASRock | X870E | X870E Taichi Lite RGB V2 | 37 200
+ASRock | X870E | X870E Taichi Lite White | 34 775
+ASRock | X870E | X870E Taichi Lite White V2 | 36 166
+ASRock | X870 | X870 Steel Legend | 22 311
+ASRock | X870 | X870 Steel Legend V2 | 23 203
+ASRock | X870 | X870 Steel Legend RGB | 24 096
+ASRock | X870 | X870 Steel Legend RGB V2 | 25 060
+ASRock | X870 | X870 Steel Legend White | 23 427
+ASRock | X870 | X870 Steel Legend White V2 | 24 364
+ASRock | B850 | B850 Steel Legend WiFi | 18 451
+ASRock | B850 | B850 Steel Legend WiFi V2 | 19 189
+ASRock | B850 | B850 Steel Legend WiFi RGB | 19 927
+ASRock | B850 | B850 Steel Legend WiFi RGB V2 | 20 724
+ASRock | B850 | B850 Steel Legend WiFi White | 19 374
+ASRock | B850 | B850 Steel Legend WiFi White V2 | 20 149
+ASRock | B650 | B650M Pro RS WiFi | 13 819
+ASRock | B650 | B650M Pro RS WiFi V2 | 14 372
+ASRock | B650 | B650M Pro RS WiFi RGB | 14 925
+ASRock | B650 | B650M Pro RS WiFi RGB V2 | 15 522
+ASRock | B650 | B650M Pro RS WiFi White | 14 510
+ASRock | B650 | B650M Pro RS WiFi White V2 | 15 090
+ASRock | A620 | A620M-HDV/M.2 | 6 871
+ASRock | A620 | A620M-HDV/M.2 V2 | 7 146
+ASRock | A620 | A620M-HDV/M.2 RGB | 7 421
+ASRock | A620 | A620M-HDV/M.2 RGB V2 | 7 718
+ASRock | A620 | A620M-HDV/M.2 White | 7 215
+ASRock | A620 | A620M-HDV/M.2 White V2 | 7 504
+MSI | Z890 | MEG Z890 ACE | 42 383
+MSI | Z890 | MEG Z890 ACE V2 | 44 078
+MSI | Z890 | MEG Z890 ACE RGB | 45 774
+MSI | Z890 | MEG Z890 ACE RGB V2 | 47 605
+MSI | Z890 | MEG Z890 ACE White | 44 502
+MSI | Z890 | MEG Z890 ACE White V2 | 46 282
+ASUS | Z890 | ROG Maximus Z890 Hero | 44 699
+ASUS | Z890 | ROG Maximus Z890 Hero V2 | 46 487
+ASUS | Z890 | ROG Maximus Z890 Hero RGB | 48 275
+ASUS | Z890 | ROG Maximus Z890 Hero RGB V2 | 50 206
+ASUS | Z890 | ROG Maximus Z890 Hero White | 46 934
+ASUS | Z890 | ROG Maximus Z890 Hero White V2 | 48 811
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi | 22 311
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi V2 | 23 203
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi RGB | 24 096
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi RGB V2 | 25 060
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi White | 23 427
+ASUS | Z890 | TUF Gaming Z890-Plus WiFi White V2 | 24 364
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 | 19 223
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 V2 | 19 992
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 RGB | 20 761
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 RGB V2 | 21 591
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 White | 20 184
+Gigabyte | Z890 | Z890 AORUS Elite WiFi7 White V2 | 20 991
+MSI | Z890 | MAG Z890 Tomahawk WiFi | 20 767
+MSI | Z890 | MAG Z890 Tomahawk WiFi V2 | 21 598
+MSI | Z890 | MAG Z890 Tomahawk WiFi RGB | 22 428
+MSI | Z890 | MAG Z890 Tomahawk WiFi RGB V2 | 23 325
+MSI | Z890 | MAG Z890 Tomahawk WiFi White | 21 805
+MSI | Z890 | MAG Z890 Tomahawk WiFi White V2 | 22 677
+ASUS | Z890 | ProArt Z890 Creator WiFi | 33 891
+ASUS | Z890 | ProArt Z890 Creator WiFi V2 | 35 247
+ASUS | Z890 | ProArt Z890 Creator WiFi RGB | 36 602
+ASUS | Z890 | ProArt Z890 Creator WiFi RGB V2 | 38 066
+ASUS | Z890 | ProArt Z890 Creator WiFi White | 35 586
+ASUS | Z890 | ProArt Z890 Creator WiFi White V2 | 37 009
+Gigabyte | Z890 | Z890 Gaming X WiFi | 17 679
+Gigabyte | Z890 | Z890 Gaming X WiFi V2 | 18 386
+Gigabyte | Z890 | Z890 Gaming X WiFi RGB | 19 093
+Gigabyte | Z890 | Z890 Gaming X WiFi RGB V2 | 19 857
+Gigabyte | Z890 | Z890 Gaming X WiFi White | 18 563
+Gigabyte | Z890 | Z890 Gaming X WiFi White V2 | 19 306
+MSI | B860 | MAG B860 Tomahawk WiFi | 15 363
+MSI | B860 | MAG B860 Tomahawk WiFi V2 | 15 978
+MSI | B860 | MAG B860 Tomahawk WiFi RGB | 16 592
+MSI | B860 | MAG B860 Tomahawk WiFi RGB V2 | 17 256
+MSI | B860 | MAG B860 Tomahawk WiFi White | 16 131
+MSI | B860 | MAG B860 Tomahawk WiFi White V2 | 16 776
+ASUS | B860 | TUF Gaming B860M-Plus WiFi | 14 591
+ASUS | B860 | TUF Gaming B860M-Plus WiFi V2 | 15 175
+ASUS | B860 | TUF Gaming B860M-Plus WiFi RGB | 15 758
+ASUS | B860 | TUF Gaming B860M-Plus WiFi RGB V2 | 16 388
+ASUS | B860 | TUF Gaming B860M-Plus WiFi White | 15 321
+ASUS | B860 | TUF Gaming B860M-Plus WiFi White V2 | 15 934
+Gigabyte | B860 | B860M AORUS Elite AX | 13 819
+Gigabyte | B860 | B860M AORUS Elite AX V2 | 14 372
+Gigabyte | B860 | B860M AORUS Elite AX RGB | 14 925
+Gigabyte | B860 | B860M AORUS Elite AX RGB V2 | 15 522
+Gigabyte | B860 | B860M AORUS Elite AX White | 14 510
+Gigabyte | B860 | B860M AORUS Elite AX White V2 | 15 090
+ASUS | B760 | TUF Gaming B760-Plus WiFi | 13 819
+ASUS | B760 | TUF Gaming B760-Plus WiFi V2 | 14 372
+ASUS | B760 | TUF Gaming B760-Plus WiFi RGB | 14 925
+ASUS | B760 | TUF Gaming B760-Plus WiFi RGB V2 | 15 522
+ASUS | B760 | TUF Gaming B760-Plus WiFi White | 14 510
+ASUS | B760 | TUF Gaming B760-Plus WiFi White V2 | 15 090
+MSI | B760 | PRO B760-P WiFi | 12 275
+MSI | B760 | PRO B760-P WiFi V2 | 12 766
+MSI | B760 | PRO B760-P WiFi RGB | 13 257
+MSI | B760 | PRO B760-P WiFi RGB V2 | 13 787
+MSI | B760 | PRO B760-P WiFi White | 12 889
+MSI | B760 | PRO B760-P WiFi White V2 | 13 405
+Gigabyte | B760 | B760 AORUS Elite AX | 13 047
+Gigabyte | B760 | B760 AORUS Elite AX V2 | 13 569
+Gigabyte | B760 | B760 AORUS Elite AX RGB | 14 091
+Gigabyte | B760 | B760 AORUS Elite AX RGB V2 | 14 655
+Gigabyte | B760 | B760 AORUS Elite AX White | 13 699
+Gigabyte | B760 | B760 AORUS Elite AX White V2 | 14 247
+ASRock | B760 | B760M Steel Legend WiFi | 11 503
+ASRock | B760 | B760M Steel Legend WiFi V2 | 11 963
+ASRock | B760 | B760M Steel Legend WiFi RGB | 12 423
+ASRock | B760 | B760M Steel Legend WiFi RGB V2 | 12 920
+ASRock | B760 | B760M Steel Legend WiFi White | 12 078
+ASRock | B760 | B760M Steel Legend WiFi White V2 | 12 561
+
+## Оперативная память
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 | 9 959
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 V2 | 10 357
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 RGB | 10 756
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 RGB V2 | 11 186
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 White | 10 457
+Corsair | DDR5 | Vengeance DDR5 32GB (2x16) 6000 CL36 White V2 | 10 875
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 | 16 907
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 V2 | 17 583
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 RGB | 18 260
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 RGB V2 | 18 990
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 White | 17 752
+Corsair | DDR5 | Dominator Platinum RGB 32GB (2x16) 7200 White V2 | 18 462
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 | 18 451
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 V2 | 19 189
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 RGB | 19 927
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 RGB V2 | 20 724
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 White | 19 374
+Corsair | DDR5 | Vengeance DDR5 64GB (2x32) 6000 White V2 | 20 149
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 | 14 591
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 V2 | 15 175
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 RGB | 15 758
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 RGB V2 | 16 388
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 White | 15 321
+G.Skill | DDR5 | Trident Z5 RGB 32GB (2x16) 6400 White V2 | 15 934
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO | 12 275
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO V2 | 12 766
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO RGB | 13 257
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO RGB V2 | 13 787
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO White | 12 889
+G.Skill | DDR5 | Trident Z5 Neo 32GB (2x16) 6000 EXPO White V2 | 13 405
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 | 9 187
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 V2 | 9 554
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 RGB | 9 922
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 RGB V2 | 10 319
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 White | 9 646
+G.Skill | DDR5 | Ripjaws S5 32GB (2x16) 5600 White V2 | 10 032
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 | 22 311
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 V2 | 23 203
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 RGB | 24 096
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 RGB V2 | 25 060
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 White | 23 427
+G.Skill | DDR5 | Trident Z5 RGB 64GB (2x32) 6400 White V2 | 24 364
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 | 9 187
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 V2 | 9 554
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 RGB | 9 922
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 RGB V2 | 10 319
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 White | 9 646
+Kingston | DDR5 | Fury Beast 32GB (2x16) 6000 White V2 | 10 032
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 | 13 047
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 V2 | 13 569
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 RGB | 14 091
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 RGB V2 | 14 655
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 White | 13 699
+Kingston | DDR5 | Fury Renegade RGB 32GB (2x16) 6400 White V2 | 14 247
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 | 17 679
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 V2 | 18 386
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 RGB | 19 093
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 RGB V2 | 19 857
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 White | 18 563
+Kingston | DDR5 | Fury Beast 64GB (2x32) 5600 White V2 | 19 306
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 | 9 959
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 V2 | 10 357
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 RGB | 10 756
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 RGB V2 | 11 186
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 White | 10 457
+TeamGroup | DDR5 | T-Force Delta RGB 32GB (2x16) 6000 White V2 | 10 875
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 | 19 223
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 V2 | 19 992
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 RGB | 20 761
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 RGB V2 | 21 591
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 White | 20 184
+TeamGroup | DDR5 | T-Force Delta RGB 64GB (2x32) 6400 White V2 | 20 991
+Crucial | DDR5 | Pro 32GB (2x16) 6000 | 8 415
+Crucial | DDR5 | Pro 32GB (2x16) 6000 V2 | 8 752
+Crucial | DDR5 | Pro 32GB (2x16) 6000 RGB | 9 088
+Crucial | DDR5 | Pro 32GB (2x16) 6000 RGB V2 | 9 452
+Crucial | DDR5 | Pro 32GB (2x16) 6000 White | 8 836
+Crucial | DDR5 | Pro 32GB (2x16) 6000 White V2 | 9 189
+Crucial | DDR5 | Pro 64GB (2x32) 5600 | 15 363
+Crucial | DDR5 | Pro 64GB (2x32) 5600 V2 | 15 978
+Crucial | DDR5 | Pro 64GB (2x32) 5600 RGB | 16 592
+Crucial | DDR5 | Pro 64GB (2x32) 5600 RGB V2 | 17 256
+Crucial | DDR5 | Pro 64GB (2x32) 5600 White | 16 131
+Crucial | DDR5 | Pro 64GB (2x32) 5600 White V2 | 16 776
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 | 11 503
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 V2 | 11 963
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 RGB | 12 423
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 RGB V2 | 12 920
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 White | 12 078
+Patriot | DDR5 | Viper Venom RGB 32GB (2x16) 6200 White V2 | 12 561
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 | 3 011
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 V2 | 3 131
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 RGB | 3 252
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 RGB V2 | 3 382
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 White | 3 162
+Corsair | DDR4 | Vengeance LPX 16GB (2x8) 3200 White V2 | 3 288
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 | 5 327
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 V2 | 5 540
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 RGB | 5 753
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 RGB V2 | 5 983
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 White | 5 593
+Corsair | DDR4 | Vengeance LPX 32GB (2x16) 3200 White V2 | 5 817
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 | 2 702
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 V2 | 2 810
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 RGB | 2 918
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 RGB V2 | 3 035
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 White | 2 837
+G.Skill | DDR4 | Ripjaws V 16GB (2x8) 3200 White V2 | 2 950
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 | 6 099
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 V2 | 6 343
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 RGB | 6 587
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 RGB V2 | 6 850
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 White | 6 404
+G.Skill | DDR4 | Trident Z RGB 32GB (2x16) 3600 White V2 | 6 660
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 | 2 702
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 V2 | 2 810
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 RGB | 2 918
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 RGB V2 | 3 035
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 White | 2 837
+Kingston | DDR4 | Fury Beast 16GB (2x8) 3200 White V2 | 2 950
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 | 5 790
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 V2 | 6 022
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 RGB | 6 253
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 RGB V2 | 6 503
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 White | 6 080
+Kingston | DDR4 | Fury Beast 32GB (2x16) 3600 White V2 | 6 323
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 | 3 011
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 V2 | 3 131
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 RGB | 3 252
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 RGB V2 | 3 382
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 White | 3 162
+Crucial | DDR4 | Ballistix 16GB (2x8) 3200 White V2 | 3 288
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 | 6 099
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 V2 | 6 343
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 RGB | 6 587
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 RGB V2 | 6 850
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 White | 6 404
+Crucial | DDR4 | Ballistix 32GB (2x16) 3600 White V2 | 6 660
+
+## Накопители
+Samsung | NVMe | 990 Pro 1TB | 9 959
+Samsung | NVMe | 990 Pro 1TB V2 | 10 357
+Samsung | NVMe | 990 Pro 1TB Plus | 10 656
+Samsung | NVMe | 990 Pro 1TB Plus V2 | 11 082
+Samsung | NVMe | 990 Pro 1TB OEM | 9 461
+Samsung | NVMe | 990 Pro 1TB OEM V2 | 9 839
+Samsung | NVMe | 990 Pro 2TB | 13 819
+Samsung | NVMe | 990 Pro 2TB V2 | 14 372
+Samsung | NVMe | 990 Pro 2TB Plus | 14 786
+Samsung | NVMe | 990 Pro 2TB Plus V2 | 15 377
+Samsung | NVMe | 990 Pro 2TB OEM | 13 128
+Samsung | NVMe | 990 Pro 2TB OEM V2 | 13 653
+Samsung | NVMe | 980 Pro 1TB | 7 643
+Samsung | NVMe | 980 Pro 1TB V2 | 7 949
+Samsung | NVMe | 980 Pro 1TB Plus | 8 178
+Samsung | NVMe | 980 Pro 1TB Plus V2 | 8 505
+Samsung | NVMe | 980 Pro 1TB OEM | 7 261
+Samsung | NVMe | 980 Pro 1TB OEM V2 | 7 551
+WD | NVMe | Black SN850X 1TB | 8 415
+WD | NVMe | Black SN850X 1TB V2 | 8 752
+WD | NVMe | Black SN850X 1TB Plus | 9 004
+WD | NVMe | Black SN850X 1TB Plus V2 | 9 364
+WD | NVMe | Black SN850X 1TB OEM | 7 994
+WD | NVMe | Black SN850X 1TB OEM V2 | 8 314
+WD | NVMe | Black SN850X 2TB | 12 275
+WD | NVMe | Black SN850X 2TB V2 | 12 766
+WD | NVMe | Black SN850X 2TB Plus | 13 134
+WD | NVMe | Black SN850X 2TB Plus V2 | 13 659
+WD | NVMe | Black SN850X 2TB OEM | 11 661
+WD | NVMe | Black SN850X 2TB OEM V2 | 12 127
+WD | NVMe | Black SN770 1TB | 6 099
+WD | NVMe | Black SN770 1TB V2 | 6 343
+WD | NVMe | Black SN770 1TB Plus | 6 526
+WD | NVMe | Black SN770 1TB Plus V2 | 6 787
+WD | NVMe | Black SN770 1TB OEM | 5 794
+WD | NVMe | Black SN770 1TB OEM V2 | 6 026
+Crucial | NVMe | T700 2TB PCIe 5.0 | 19 995
+Crucial | NVMe | T700 2TB PCIe 5.0 V2 | 20 795
+Crucial | NVMe | T700 2TB PCIe 5.0 Plus | 21 395
+Crucial | NVMe | T700 2TB PCIe 5.0 Plus V2 | 22 251
+Crucial | NVMe | T700 2TB PCIe 5.0 OEM | 18 995
+Crucial | NVMe | T700 2TB PCIe 5.0 OEM V2 | 19 755
+Crucial | NVMe | P5 Plus 1TB | 6 871
+Crucial | NVMe | P5 Plus 1TB V2 | 7 146
+Crucial | NVMe | P5 Plus 1TB Plus | 7 352
+Crucial | NVMe | P5 Plus 1TB Plus V2 | 7 646
+Crucial | NVMe | P5 Plus 1TB OEM | 6 527
+Crucial | NVMe | P5 Plus 1TB OEM V2 | 6 788
+Crucial | NVMe | P3 Plus 2TB | 9 959
+Crucial | NVMe | P3 Plus 2TB V2 | 10 357
+Crucial | NVMe | P3 Plus 2TB Plus | 10 656
+Crucial | NVMe | P3 Plus 2TB Plus V2 | 11 082
+Crucial | NVMe | P3 Plus 2TB OEM | 9 461
+Crucial | NVMe | P3 Plus 2TB OEM V2 | 9 839
+Kingston | NVMe | KC3000 1TB | 7 643
+Kingston | NVMe | KC3000 1TB V2 | 7 949
+Kingston | NVMe | KC3000 1TB Plus | 8 178
+Kingston | NVMe | KC3000 1TB Plus V2 | 8 505
+Kingston | NVMe | KC3000 1TB OEM | 7 261
+Kingston | NVMe | KC3000 1TB OEM V2 | 7 551
+Kingston | NVMe | Fury Renegade 2TB | 11 503
+Kingston | NVMe | Fury Renegade 2TB V2 | 11 963
+Kingston | NVMe | Fury Renegade 2TB Plus | 12 308
+Kingston | NVMe | Fury Renegade 2TB Plus V2 | 12 800
+Kingston | NVMe | Fury Renegade 2TB OEM | 10 928
+Kingston | NVMe | Fury Renegade 2TB OEM V2 | 11 365
+Sabrent | NVMe | Rocket 4 Plus 2TB | 12 275
+Sabrent | NVMe | Rocket 4 Plus 2TB V2 | 12 766
+Sabrent | NVMe | Rocket 4 Plus 2TB Plus | 13 134
+Sabrent | NVMe | Rocket 4 Plus 2TB Plus V2 | 13 659
+Sabrent | NVMe | Rocket 4 Plus 2TB OEM | 11 661
+Sabrent | NVMe | Rocket 4 Plus 2TB OEM V2 | 12 127
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 | 21 539
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 V2 | 22 401
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 Plus | 23 047
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 Plus V2 | 23 969
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 OEM | 20 462
+Sabrent | NVMe | Rocket 5 2TB PCIe 5.0 OEM V2 | 21 280
+Lexar | NVMe | NQ780 4TB | 15 363
+Lexar | NVMe | NQ780 4TB V2 | 15 978
+Lexar | NVMe | NQ780 4TB Plus | 16 438
+Lexar | NVMe | NQ780 4TB Plus V2 | 17 096
+Lexar | NVMe | NQ780 4TB OEM | 14 595
+Lexar | NVMe | NQ780 4TB OEM V2 | 15 179
+Samsung | SATA SSD | 870 EVO 500GB | 5 327
+Samsung | SATA SSD | 870 EVO 500GB V2 | 5 540
+Samsung | SATA SSD | 870 EVO 500GB Plus | 5 700
+Samsung | SATA SSD | 870 EVO 500GB Plus V2 | 5 928
+Samsung | SATA SSD | 870 EVO 500GB OEM | 5 061
+Samsung | SATA SSD | 870 EVO 500GB OEM V2 | 5 263
+Samsung | SATA SSD | 870 EVO 1TB | 6 871
+Samsung | SATA SSD | 870 EVO 1TB V2 | 7 146
+Samsung | SATA SSD | 870 EVO 1TB Plus | 7 352
+Samsung | SATA SSD | 870 EVO 1TB Plus V2 | 7 646
+Samsung | SATA SSD | 870 EVO 1TB OEM | 6 527
+Samsung | SATA SSD | 870 EVO 1TB OEM V2 | 6 788
+Samsung | SATA SSD | 870 EVO 2TB | 11 503
+Samsung | SATA SSD | 870 EVO 2TB V2 | 11 963
+Samsung | SATA SSD | 870 EVO 2TB Plus | 12 308
+Samsung | SATA SSD | 870 EVO 2TB Plus V2 | 12 800
+Samsung | SATA SSD | 870 EVO 2TB OEM | 10 928
+Samsung | SATA SSD | 870 EVO 2TB OEM V2 | 11 365
+Crucial | SATA SSD | MX500 500GB | 4 555
+Crucial | SATA SSD | MX500 500GB V2 | 4 737
+Crucial | SATA SSD | MX500 500GB Plus | 4 874
+Crucial | SATA SSD | MX500 500GB Plus V2 | 5 069
+Crucial | SATA SSD | MX500 500GB OEM | 4 327
+Crucial | SATA SSD | MX500 500GB OEM V2 | 4 500
+Crucial | SATA SSD | MX500 1TB | 6 099
+Crucial | SATA SSD | MX500 1TB V2 | 6 343
+Crucial | SATA SSD | MX500 1TB Plus | 6 526
+Crucial | SATA SSD | MX500 1TB Plus V2 | 6 787
+Crucial | SATA SSD | MX500 1TB OEM | 5 794
+Crucial | SATA SSD | MX500 1TB OEM V2 | 6 026
+Crucial | SATA SSD | MX500 2TB | 10 731
+Crucial | SATA SSD | MX500 2TB V2 | 11 160
+Crucial | SATA SSD | MX500 2TB Plus | 11 482
+Crucial | SATA SSD | MX500 2TB Plus V2 | 11 941
+Crucial | SATA SSD | MX500 2TB OEM | 10 194
+Crucial | SATA SSD | MX500 2TB OEM V2 | 10 602
+WD | SATA SSD | Blue SA510 1TB | 6 099
+WD | SATA SSD | Blue SA510 1TB V2 | 6 343
+WD | SATA SSD | Blue SA510 1TB Plus | 6 526
+WD | SATA SSD | Blue SA510 1TB Plus V2 | 6 787
+WD | SATA SSD | Blue SA510 1TB OEM | 5 794
+WD | SATA SSD | Blue SA510 1TB OEM V2 | 6 026
+Seagate | HDD | Barracuda 2TB 7200rpm | 4 555
+Seagate | HDD | Barracuda 2TB 7200rpm V2 | 4 737
+Seagate | HDD | Barracuda 2TB 7200rpm Plus | 4 874
+Seagate | HDD | Barracuda 2TB 7200rpm Plus V2 | 5 069
+Seagate | HDD | Barracuda 2TB 7200rpm OEM | 4 327
+Seagate | HDD | Barracuda 2TB 7200rpm OEM V2 | 4 500
+Seagate | HDD | Barracuda 4TB 5400rpm | 6 871
+Seagate | HDD | Barracuda 4TB 5400rpm V2 | 7 146
+Seagate | HDD | Barracuda 4TB 5400rpm Plus | 7 352
+Seagate | HDD | Barracuda 4TB 5400rpm Plus V2 | 7 646
+Seagate | HDD | Barracuda 4TB 5400rpm OEM | 6 527
+Seagate | HDD | Barracuda 4TB 5400rpm OEM V2 | 6 788
+Seagate | HDD | IronWolf 4TB NAS | 9 187
+Seagate | HDD | IronWolf 4TB NAS V2 | 9 554
+Seagate | HDD | IronWolf 4TB NAS Plus | 9 830
+Seagate | HDD | IronWolf 4TB NAS Plus V2 | 10 223
+Seagate | HDD | IronWolf 4TB NAS OEM | 8 728
+Seagate | HDD | IronWolf 4TB NAS OEM V2 | 9 077
+WD | HDD | Blue 2TB 5400rpm | 4 555
+WD | HDD | Blue 2TB 5400rpm V2 | 4 737
+WD | HDD | Blue 2TB 5400rpm Plus | 4 874
+WD | HDD | Blue 2TB 5400rpm Plus V2 | 5 069
+WD | HDD | Blue 2TB 5400rpm OEM | 4 327
+WD | HDD | Blue 2TB 5400rpm OEM V2 | 4 500
+WD | HDD | Red Plus 4TB NAS | 9 187
+WD | HDD | Red Plus 4TB NAS V2 | 9 554
+WD | HDD | Red Plus 4TB NAS Plus | 9 830
+WD | HDD | Red Plus 4TB NAS Plus V2 | 10 223
+WD | HDD | Red Plus 4TB NAS OEM | 8 728
+WD | HDD | Red Plus 4TB NAS OEM V2 | 9 077
+WD | HDD | Black 4TB Performance | 11 503
+WD | HDD | Black 4TB Performance V2 | 11 963
+WD | HDD | Black 4TB Performance Plus | 12 308
+WD | HDD | Black 4TB Performance Plus V2 | 12 800
+WD | HDD | Black 4TB Performance OEM | 10 928
+WD | HDD | Black 4TB Performance OEM V2 | 11 365
+
+## Блоки питания
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) | 7 643
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) V2 | 7 949
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) Plus | 8 178
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) Plus V2 | 8 505
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) OEM | 7 261
+Corsair | ATX PSU | RM550x (550W, 80+ Gold) OEM V2 | 7 551
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) | 9 187
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) V2 | 9 554
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) Plus | 9 830
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) Plus V2 | 10 223
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) OEM | 8 728
+Corsair | ATX PSU | RM750e (750W, 80+ Gold) OEM V2 | 9 077
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) | 11 503
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) V2 | 11 963
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) Plus | 12 308
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) Plus V2 | 12 800
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) OEM | 10 928
+Corsair | ATX PSU | RM850x Shift (850W, 80+ Gold) OEM V2 | 11 365
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) | 18 451
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) V2 | 19 189
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) Plus | 19 743
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) Plus V2 | 20 533
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) OEM | 17 528
+Corsair | ATX PSU | HX1000i (1000W, 80+ Platinum) OEM V2 | 18 229
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) | 9 187
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) V2 | 9 554
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) Plus | 9 830
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) Plus V2 | 10 223
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) OEM | 8 728
+Seasonic | ATX PSU | FOCUS GX-650 (650W, Gold) OEM V2 | 9 077
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) | 11 503
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) V2 | 11 963
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) Plus | 12 308
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) Plus V2 | 12 800
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) OEM | 10 928
+Seasonic | ATX PSU | FOCUS GX-850 (850W, Gold) OEM V2 | 11 365
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) | 23 083
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) V2 | 24 006
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) Plus | 24 699
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) Plus V2 | 25 687
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) OEM | 21 929
+Seasonic | ATX PSU | PRIME TX-1000 (1000W, Titanium) OEM V2 | 22 806
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) | 9 959
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) V2 | 10 357
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) Plus | 10 656
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) Plus V2 | 11 082
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) OEM | 9 461
+be quiet! | ATX PSU | Pure Power 12 M 750W (Gold) OEM V2 | 9 839
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) | 15 363
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) V2 | 15 978
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) Plus | 16 438
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) Plus V2 | 17 096
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) OEM | 14 595
+be quiet! | ATX PSU | Straight Power 12 850W (Platinum) OEM V2 | 15 179
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) | 23 855
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) V2 | 24 809
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) Plus | 25 525
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) Plus V2 | 26 546
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) OEM | 22 662
+be quiet! | ATX PSU | Dark Power 13 1000W (Titanium) OEM V2 | 23 568
+MSI | ATX PSU | MAG A550BN (550W, Bronze) | 5 327
+MSI | ATX PSU | MAG A550BN (550W, Bronze) V2 | 5 540
+MSI | ATX PSU | MAG A550BN (550W, Bronze) Plus | 5 700
+MSI | ATX PSU | MAG A550BN (550W, Bronze) Plus V2 | 5 928
+MSI | ATX PSU | MAG A550BN (550W, Bronze) OEM | 5 061
+MSI | ATX PSU | MAG A550BN (550W, Bronze) OEM V2 | 5 263
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) | 9 187
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) V2 | 9 554
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) Plus | 9 830
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) Plus V2 | 10 223
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) OEM | 8 728
+MSI | ATX PSU | MAG A750GL PCIE5 (750W, Gold) OEM V2 | 9 077
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) | 14 591
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) V2 | 15 175
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) Plus | 15 612
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) Plus V2 | 16 236
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) OEM | 13 861
+ASUS | ATX PSU | ROG Strix 850G Aura (850W, Gold) OEM V2 | 14 415
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) | 25 399
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) V2 | 26 415
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) Plus | 27 177
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) Plus V2 | 28 264
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) OEM | 24 129
+ASUS | ATX PSU | ROG Thor 1200P2 (1200W, Platinum) OEM V2 | 25 094
+Cooler Master | ATX PSU | MWE Gold 750 V2 | 7 643
+Cooler Master | ATX PSU | MWE Gold 750 V2 V2 | 7 949
+Cooler Master | ATX PSU | MWE Gold 750 V2 Plus | 8 178
+Cooler Master | ATX PSU | MWE Gold 750 V2 Plus V2 | 8 505
+Cooler Master | ATX PSU | MWE Gold 750 V2 OEM | 7 261
+Cooler Master | ATX PSU | MWE Gold 750 V2 OEM V2 | 7 551
+Cooler Master | ATX PSU | V850 Gold V2 | 10 731
+Cooler Master | ATX PSU | V850 Gold V2 V2 | 11 160
+Cooler Master | ATX PSU | V850 Gold V2 Plus | 11 482
+Cooler Master | ATX PSU | V850 Gold V2 Plus V2 | 11 941
+Cooler Master | ATX PSU | V850 Gold V2 OEM | 10 194
+Cooler Master | ATX PSU | V850 Gold V2 OEM V2 | 10 602
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) | 9 959
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) V2 | 10 357
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) Plus | 10 656
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) Plus V2 | 11 082
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) OEM | 9 461
+Gigabyte | ATX PSU | UD850GM PG5 (850W, Gold) OEM V2 | 9 839
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) | 12 275
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) V2 | 12 766
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) Plus | 13 134
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) Plus V2 | 13 659
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) OEM | 11 661
+Gigabyte | ATX PSU | P1000GM (1000W, Gold) OEM V2 | 12 127
+
+## Корпуса
+NZXT | ATX Case | H5 Flow | 7 643
+NZXT | ATX Case | H5 Flow V2 | 7 949
+NZXT | ATX Case | H5 Flow RGB | 8 254
+NZXT | ATX Case | H5 Flow RGB V2 | 8 584
+NZXT | ATX Case | H5 Flow White | 8 025
+NZXT | ATX Case | H5 Flow White V2 | 8 346
+NZXT | ATX Case | H7 Flow | 10 731
+NZXT | ATX Case | H7 Flow V2 | 11 160
+NZXT | ATX Case | H7 Flow RGB | 11 589
+NZXT | ATX Case | H7 Flow RGB V2 | 12 053
+NZXT | ATX Case | H7 Flow White | 11 268
+NZXT | ATX Case | H7 Flow White V2 | 11 719
+NZXT | ATX Case | H9 Flow | 13 819
+NZXT | ATX Case | H9 Flow V2 | 14 372
+NZXT | ATX Case | H9 Flow RGB | 14 925
+NZXT | ATX Case | H9 Flow RGB V2 | 15 522
+NZXT | ATX Case | H9 Flow White | 14 510
+NZXT | ATX Case | H9 Flow White V2 | 15 090
+Fractal Design | ATX Case | Meshify 2 | 11 503
+Fractal Design | ATX Case | Meshify 2 V2 | 11 963
+Fractal Design | ATX Case | Meshify 2 RGB | 12 423
+Fractal Design | ATX Case | Meshify 2 RGB V2 | 12 920
+Fractal Design | ATX Case | Meshify 2 White | 12 078
+Fractal Design | ATX Case | Meshify 2 White V2 | 12 561
+Fractal Design | ATX Case | Torrent | 13 819
+Fractal Design | ATX Case | Torrent V2 | 14 372
+Fractal Design | ATX Case | Torrent RGB | 14 925
+Fractal Design | ATX Case | Torrent RGB V2 | 15 522
+Fractal Design | ATX Case | Torrent White | 14 510
+Fractal Design | ATX Case | Torrent White V2 | 15 090
+Fractal Design | ATX Case | Pop Air | 6 871
+Fractal Design | ATX Case | Pop Air V2 | 7 146
+Fractal Design | ATX Case | Pop Air RGB | 7 421
+Fractal Design | ATX Case | Pop Air RGB V2 | 7 718
+Fractal Design | ATX Case | Pop Air White | 7 215
+Fractal Design | ATX Case | Pop Air White V2 | 7 504
+Lian Li | ATX Case | Lancool 216 | 8 415
+Lian Li | ATX Case | Lancool 216 V2 | 8 752
+Lian Li | ATX Case | Lancool 216 RGB | 9 088
+Lian Li | ATX Case | Lancool 216 RGB V2 | 9 452
+Lian Li | ATX Case | Lancool 216 White | 8 836
+Lian Li | ATX Case | Lancool 216 White V2 | 9 189
+Lian Li | ATX Case | Lancool III RGB | 11 503
+Lian Li | ATX Case | Lancool III RGB V2 | 11 963
+Lian Li | ATX Case | Lancool III RGB RGB | 12 423
+Lian Li | ATX Case | Lancool III RGB RGB V2 | 12 920
+Lian Li | ATX Case | Lancool III RGB White | 12 078
+Lian Li | ATX Case | Lancool III RGB White V2 | 12 561
+Lian Li | ATX Case | O11 Dynamic EVO | 13 819
+Lian Li | ATX Case | O11 Dynamic EVO V2 | 14 372
+Lian Li | ATX Case | O11 Dynamic EVO RGB | 14 925
+Lian Li | ATX Case | O11 Dynamic EVO RGB V2 | 15 522
+Lian Li | ATX Case | O11 Dynamic EVO White | 14 510
+Lian Li | ATX Case | O11 Dynamic EVO White V2 | 15 090
+Phanteks | ATX Case | Eclipse G360A | 8 415
+Phanteks | ATX Case | Eclipse G360A V2 | 8 752
+Phanteks | ATX Case | Eclipse G360A RGB | 9 088
+Phanteks | ATX Case | Eclipse G360A RGB V2 | 9 452
+Phanteks | ATX Case | Eclipse G360A White | 8 836
+Phanteks | ATX Case | Eclipse G360A White V2 | 9 189
+Phanteks | ATX Case | Enthoo Pro 2 | 10 731
+Phanteks | ATX Case | Enthoo Pro 2 V2 | 11 160
+Phanteks | ATX Case | Enthoo Pro 2 RGB | 11 589
+Phanteks | ATX Case | Enthoo Pro 2 RGB V2 | 12 053
+Phanteks | ATX Case | Enthoo Pro 2 White | 11 268
+Phanteks | ATX Case | Enthoo Pro 2 White V2 | 11 719
+be quiet! | ATX Case | Pure Base 500DX | 9 187
+be quiet! | ATX Case | Pure Base 500DX V2 | 9 554
+be quiet! | ATX Case | Pure Base 500DX RGB | 9 922
+be quiet! | ATX Case | Pure Base 500DX RGB V2 | 10 319
+be quiet! | ATX Case | Pure Base 500DX White | 9 646
+be quiet! | ATX Case | Pure Base 500DX White V2 | 10 032
+be quiet! | ATX Case | Silent Base 802 | 12 275
+be quiet! | ATX Case | Silent Base 802 V2 | 12 766
+be quiet! | ATX Case | Silent Base 802 RGB | 13 257
+be quiet! | ATX Case | Silent Base 802 RGB V2 | 13 787
+be quiet! | ATX Case | Silent Base 802 White | 12 889
+be quiet! | ATX Case | Silent Base 802 White V2 | 13 405
+Cooler Master | ATX Case | MasterBox TD500 Mesh | 7 643
+Cooler Master | ATX Case | MasterBox TD500 Mesh V2 | 7 949
+Cooler Master | ATX Case | MasterBox TD500 Mesh RGB | 8 254
+Cooler Master | ATX Case | MasterBox TD500 Mesh RGB V2 | 8 584
+Cooler Master | ATX Case | MasterBox TD500 Mesh White | 8 025
+Cooler Master | ATX Case | MasterBox TD500 Mesh White V2 | 8 346
+Cooler Master | ATX Case | HAF 700 | 19 223
+Cooler Master | ATX Case | HAF 700 V2 | 19 992
+Cooler Master | ATX Case | HAF 700 RGB | 20 761
+Cooler Master | ATX Case | HAF 700 RGB V2 | 21 591
+Cooler Master | ATX Case | HAF 700 White | 20 184
+Cooler Master | ATX Case | HAF 700 White V2 | 20 991
+Corsair | ATX Case | 4000D Airflow | 8 415
+Corsair | ATX Case | 4000D Airflow V2 | 8 752
+Corsair | ATX Case | 4000D Airflow RGB | 9 088
+Corsair | ATX Case | 4000D Airflow RGB V2 | 9 452
+Corsair | ATX Case | 4000D Airflow White | 8 836
+Corsair | ATX Case | 4000D Airflow White V2 | 9 189
+Corsair | ATX Case | 5000D Airflow | 11 503
+Corsair | ATX Case | 5000D Airflow V2 | 11 963
+Corsair | ATX Case | 5000D Airflow RGB | 12 423
+Corsair | ATX Case | 5000D Airflow RGB V2 | 12 920
+Corsair | ATX Case | 5000D Airflow White | 12 078
+Corsair | ATX Case | 5000D Airflow White V2 | 12 561
+Corsair | ATX Case | 7000D Airflow | 19 995
+Corsair | ATX Case | 7000D Airflow V2 | 20 795
+Corsair | ATX Case | 7000D Airflow RGB | 21 595
+Corsair | ATX Case | 7000D Airflow RGB V2 | 22 459
+Corsair | ATX Case | 7000D Airflow White | 20 995
+Corsair | ATX Case | 7000D Airflow White V2 | 21 835
+
+## Охлаждение
+Noctua | Air Cooler | NH-D15 | 8 415
+Noctua | Air Cooler | NH-D15 V2 | 8 752
+Noctua | Air Cooler | NH-D15 RGB | 9 088
+Noctua | Air Cooler | NH-D15 RGB V2 | 9 452
+Noctua | Air Cooler | NH-D15 White | 8 836
+Noctua | Air Cooler | NH-D15 White V2 | 9 189
+Noctua | Air Cooler | NH-U12A | 7 643
+Noctua | Air Cooler | NH-U12A V2 | 7 949
+Noctua | Air Cooler | NH-U12A RGB | 8 254
+Noctua | Air Cooler | NH-U12A RGB V2 | 8 584
+Noctua | Air Cooler | NH-U12A White | 8 025
+Noctua | Air Cooler | NH-U12A White V2 | 8 346
+DeepCool | Air Cooler | AK620 | 5 327
+DeepCool | Air Cooler | AK620 V2 | 5 540
+DeepCool | Air Cooler | AK620 RGB | 5 753
+DeepCool | Air Cooler | AK620 RGB V2 | 5 983
+DeepCool | Air Cooler | AK620 White | 5 593
+DeepCool | Air Cooler | AK620 White V2 | 5 817
+DeepCool | Air Cooler | AK500 | 4 555
+DeepCool | Air Cooler | AK500 V2 | 4 737
+DeepCool | Air Cooler | AK500 RGB | 4 919
+DeepCool | Air Cooler | AK500 RGB V2 | 5 116
+DeepCool | Air Cooler | AK500 White | 4 783
+DeepCool | Air Cooler | AK500 White V2 | 4 974
+be quiet! | Air Cooler | Dark Rock Pro 5 | 7 643
+be quiet! | Air Cooler | Dark Rock Pro 5 V2 | 7 949
+be quiet! | Air Cooler | Dark Rock Pro 5 RGB | 8 254
+be quiet! | Air Cooler | Dark Rock Pro 5 RGB V2 | 8 584
+be quiet! | Air Cooler | Dark Rock Pro 5 White | 8 025
+be quiet! | Air Cooler | Dark Rock Pro 5 White V2 | 8 346
+be quiet! | Air Cooler | Pure Rock 2 | 3 011
+be quiet! | Air Cooler | Pure Rock 2 V2 | 3 131
+be quiet! | Air Cooler | Pure Rock 2 RGB | 3 252
+be quiet! | Air Cooler | Pure Rock 2 RGB V2 | 3 382
+be quiet! | Air Cooler | Pure Rock 2 White | 3 162
+be quiet! | Air Cooler | Pure Rock 2 White V2 | 3 288
+Scythe | Air Cooler | Fuma 3 | 5 327
+Scythe | Air Cooler | Fuma 3 V2 | 5 540
+Scythe | Air Cooler | Fuma 3 RGB | 5 753
+Scythe | Air Cooler | Fuma 3 RGB V2 | 5 983
+Scythe | Air Cooler | Fuma 3 White | 5 593
+Scythe | Air Cooler | Fuma 3 White V2 | 5 817
+Scythe | Air Cooler | Mugen 5 Rev.C | 4 555
+Scythe | Air Cooler | Mugen 5 Rev.C V2 | 4 737
+Scythe | Air Cooler | Mugen 5 Rev.C RGB | 4 919
+Scythe | Air Cooler | Mugen 5 Rev.C RGB V2 | 5 116
+Scythe | Air Cooler | Mugen 5 Rev.C White | 4 783
+Scythe | Air Cooler | Mugen 5 Rev.C White V2 | 4 974
+Cooler Master | Air Cooler | Hyper 212 Black Edition | 3 011
+Cooler Master | Air Cooler | Hyper 212 Black Edition V2 | 3 131
+Cooler Master | Air Cooler | Hyper 212 Black Edition RGB | 3 252
+Cooler Master | Air Cooler | Hyper 212 Black Edition RGB V2 | 3 382
+Cooler Master | Air Cooler | Hyper 212 Black Edition White | 3 162
+Cooler Master | Air Cooler | Hyper 212 Black Edition White V2 | 3 288
+Cooler Master | Air Cooler | MA612 Stealth | 4 555
+Cooler Master | Air Cooler | MA612 Stealth V2 | 4 737
+Cooler Master | Air Cooler | MA612 Stealth RGB | 4 919
+Cooler Master | Air Cooler | MA612 Stealth RGB V2 | 5 116
+Cooler Master | Air Cooler | MA612 Stealth White | 4 783
+Cooler Master | Air Cooler | MA612 Stealth White V2 | 4 974
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) | 11 503
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) V2 | 11 963
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) RGB | 12 423
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) RGB V2 | 12 920
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) White | 12 078
+Corsair | AIO Cooler | iCUE H100i Elite Capellix XT (240mm) White V2 | 12 561
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) | 14 591
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) V2 | 15 175
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) RGB | 15 758
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) RGB V2 | 16 388
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) White | 15 321
+Corsair | AIO Cooler | iCUE H150i Elite Capellix XT (360mm) White V2 | 15 934
+NZXT | AIO Cooler | Kraken 240 RGB | 10 731
+NZXT | AIO Cooler | Kraken 240 RGB V2 | 11 160
+NZXT | AIO Cooler | Kraken 240 RGB RGB | 11 589
+NZXT | AIO Cooler | Kraken 240 RGB RGB V2 | 12 053
+NZXT | AIO Cooler | Kraken 240 RGB White | 11 268
+NZXT | AIO Cooler | Kraken 240 RGB White V2 | 11 719
+NZXT | AIO Cooler | Kraken 360 RGB | 13 819
+NZXT | AIO Cooler | Kraken 360 RGB V2 | 14 372
+NZXT | AIO Cooler | Kraken 360 RGB RGB | 14 925
+NZXT | AIO Cooler | Kraken 360 RGB RGB V2 | 15 522
+NZXT | AIO Cooler | Kraken 360 RGB White | 14 510
+NZXT | AIO Cooler | Kraken 360 RGB White V2 | 15 090
+Arctic | AIO Cooler | Liquid Freezer III 240 | 9 187
+Arctic | AIO Cooler | Liquid Freezer III 240 V2 | 9 554
+Arctic | AIO Cooler | Liquid Freezer III 240 RGB | 9 922
+Arctic | AIO Cooler | Liquid Freezer III 240 RGB V2 | 10 319
+Arctic | AIO Cooler | Liquid Freezer III 240 White | 9 646
+Arctic | AIO Cooler | Liquid Freezer III 240 White V2 | 10 032
+Arctic | AIO Cooler | Liquid Freezer III 360 | 10 731
+Arctic | AIO Cooler | Liquid Freezer III 360 V2 | 11 160
+Arctic | AIO Cooler | Liquid Freezer III 360 RGB | 11 589
+Arctic | AIO Cooler | Liquid Freezer III 360 RGB V2 | 12 053
+Arctic | AIO Cooler | Liquid Freezer III 360 White | 11 268
+Arctic | AIO Cooler | Liquid Freezer III 360 White V2 | 11 719
+DeepCool | AIO Cooler | LS520 (240mm) | 9 187
+DeepCool | AIO Cooler | LS520 (240mm) V2 | 9 554
+DeepCool | AIO Cooler | LS520 (240mm) RGB | 9 922
+DeepCool | AIO Cooler | LS520 (240mm) RGB V2 | 10 319
+DeepCool | AIO Cooler | LS520 (240mm) White | 9 646
+DeepCool | AIO Cooler | LS520 (240mm) White V2 | 10 032
+DeepCool | AIO Cooler | LS720 (360mm) | 11 503
+DeepCool | AIO Cooler | LS720 (360mm) V2 | 11 963
+DeepCool | AIO Cooler | LS720 (360mm) RGB | 12 423
+DeepCool | AIO Cooler | LS720 (360mm) RGB V2 | 12 920
+DeepCool | AIO Cooler | LS720 (360mm) White | 12 078
+DeepCool | AIO Cooler | LS720 (360mm) White V2 | 12 561
+
+## Клавиатуры
+ASUS | ROG | ROG Strix Scope II 96 Wireless | 13 896
+ASUS | ROG | ROG Strix Scope II 96 Wireless V2 | 14 452
+ASUS | ROG | ROG Strix Scope II 96 Wireless RGB | 15 008
+ASUS | ROG | ROG Strix Scope II 96 Wireless RGB V2 | 15 608
+ASUS | ROG | ROG Strix Scope II 96 Wireless White | 14 591
+ASUS | ROG | ROG Strix Scope II 96 Wireless White V2 | 15 175
+Wooting | 60HE | Wooting 60HE v2 | 15 440
+Wooting | 60HE | Wooting 60HE v2 V2 | 16 058
+Wooting | 60HE | Wooting 60HE v2 RGB | 16 675
+Wooting | 60HE | Wooting 60HE v2 RGB V2 | 17 342
+Wooting | 60HE | Wooting 60HE v2 White | 16 212
+Wooting | 60HE | Wooting 60HE v2 White V2 | 16 860
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) | 17 756
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) V2 | 18 466
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) RGB | 19 176
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) RGB V2 | 19 943
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) White | 18 644
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) White V2 | 19 390
+SteelSeries | Apex | Apex 9 TKL | 10 808
+SteelSeries | Apex | Apex 9 TKL V2 | 11 240
+SteelSeries | Apex | Apex 9 TKL RGB | 11 673
+SteelSeries | Apex | Apex 9 TKL RGB V2 | 12 140
+SteelSeries | Apex | Apex 9 TKL White | 11 348
+SteelSeries | Apex | Apex 9 TKL White V2 | 11 802
+Corsair | K70 | K70 RGB Pro | 13 124
+Corsair | K70 | K70 RGB Pro V2 | 13 649
+Corsair | K70 | K70 RGB Pro RGB | 14 174
+Corsair | K70 | K70 RGB Pro RGB V2 | 14 741
+Corsair | K70 | K70 RGB Pro White | 13 780
+Corsair | K70 | K70 RGB Pro White V2 | 14 331
+Corsair | K65 | K65 Plus Wireless | 11 580
+Corsair | K65 | K65 Plus Wireless V2 | 12 043
+Corsair | K65 | K65 Plus Wireless RGB | 12 506
+Corsair | K65 | K65 Plus Wireless RGB V2 | 13 006
+Corsair | K65 | K65 Plus Wireless White | 12 159
+Corsair | K65 | K65 Plus Wireless White V2 | 12 645
+Logitech | G Series | G915 TKL Lightspeed | 16 984
+Logitech | G Series | G915 TKL Lightspeed V2 | 17 663
+Logitech | G Series | G915 TKL Lightspeed RGB | 18 343
+Logitech | G Series | G915 TKL Lightspeed RGB V2 | 19 077
+Logitech | G Series | G915 TKL Lightspeed White | 17 833
+Logitech | G Series | G915 TKL Lightspeed White V2 | 18 546
+Logitech | G Series | G Pro X TKL | 15 440
+Logitech | G Series | G Pro X TKL V2 | 16 058
+Logitech | G Series | G Pro X TKL RGB | 16 675
+Logitech | G Series | G Pro X TKL RGB V2 | 17 342
+Logitech | G Series | G Pro X TKL White | 16 212
+Logitech | G Series | G Pro X TKL White V2 | 16 860
+Razer | Huntsman | Huntsman V3 Pro TKL | 16 984
+Razer | Huntsman | Huntsman V3 Pro TKL V2 | 17 663
+Razer | Huntsman | Huntsman V3 Pro TKL RGB | 18 343
+Razer | Huntsman | Huntsman V3 Pro TKL RGB V2 | 19 077
+Razer | Huntsman | Huntsman V3 Pro TKL White | 17 833
+Razer | Huntsman | Huntsman V3 Pro TKL White V2 | 18 546
+Razer | BlackWidow | BlackWidow V4 Pro | 17 756
+Razer | BlackWidow | BlackWidow V4 Pro V2 | 18 466
+Razer | BlackWidow | BlackWidow V4 Pro RGB | 19 176
+Razer | BlackWidow | BlackWidow V4 Pro RGB V2 | 19 943
+Razer | BlackWidow | BlackWidow V4 Pro White | 18 644
+Razer | BlackWidow | BlackWidow V4 Pro White V2 | 19 390
+Razer | BlackWidow | BlackWidow V4 75% | 14 668
+Razer | BlackWidow | BlackWidow V4 75% V2 | 15 255
+Razer | BlackWidow | BlackWidow V4 75% RGB | 15 841
+Razer | BlackWidow | BlackWidow V4 75% RGB V2 | 16 475
+Razer | BlackWidow | BlackWidow V4 75% White | 15 401
+Razer | BlackWidow | BlackWidow V4 75% White V2 | 16 017
+Keychron | K Series | Keychron K2 Pro | 6 948
+Keychron | K Series | Keychron K2 Pro V2 | 7 226
+Keychron | K Series | Keychron K2 Pro RGB | 7 504
+Keychron | K Series | Keychron K2 Pro RGB V2 | 7 804
+Keychron | K Series | Keychron K2 Pro White | 7 295
+Keychron | K Series | Keychron K2 Pro White V2 | 7 587
+Keychron | K Series | Keychron K8 Pro | 8 492
+Keychron | K Series | Keychron K8 Pro V2 | 8 832
+Keychron | K Series | Keychron K8 Pro RGB | 9 171
+Keychron | K Series | Keychron K8 Pro RGB V2 | 9 538
+Keychron | K Series | Keychron K8 Pro White | 8 917
+Keychron | K Series | Keychron K8 Pro White V2 | 9 274
+Glorious | GMMK | GMMK 2 65% | 6 948
+Glorious | GMMK | GMMK 2 65% V2 | 7 226
+Glorious | GMMK | GMMK 2 65% RGB | 7 504
+Glorious | GMMK | GMMK 2 65% RGB V2 | 7 804
+Glorious | GMMK | GMMK 2 65% White | 7 295
+Glorious | GMMK | GMMK 2 65% White V2 | 7 587
+Glorious | GMMK | GMMK Pro 75% | 13 124
+Glorious | GMMK | GMMK Pro 75% V2 | 13 649
+Glorious | GMMK | GMMK Pro 75% RGB | 14 174
+Glorious | GMMK | GMMK Pro 75% RGB V2 | 14 741
+Glorious | GMMK | GMMK Pro 75% White | 13 780
+Glorious | GMMK | GMMK Pro 75% White V2 | 14 331
+Ducky | One 3 | Ducky One 3 TKL | 10 036
+Ducky | One 3 | Ducky One 3 TKL V2 | 10 437
+Ducky | One 3 | Ducky One 3 TKL RGB | 10 839
+Ducky | One 3 | Ducky One 3 TKL RGB V2 | 11 273
+Ducky | One 3 | Ducky One 3 TKL White | 10 538
+Ducky | One 3 | Ducky One 3 TKL White V2 | 10 960
+HyperX | Alloy | Alloy Origins | 7 720
+HyperX | Alloy | Alloy Origins V2 | 8 029
+HyperX | Alloy | Alloy Origins RGB | 8 338
+HyperX | Alloy | Alloy Origins RGB V2 | 8 672
+HyperX | Alloy | Alloy Origins White | 8 106
+HyperX | Alloy | Alloy Origins White V2 | 8 430
+HyperX | Alloy | Alloy Origins 60 | 6 948
+HyperX | Alloy | Alloy Origins 60 V2 | 7 226
+HyperX | Alloy | Alloy Origins 60 RGB | 7 504
+HyperX | Alloy | Alloy Origins 60 RGB V2 | 7 804
+HyperX | Alloy | Alloy Origins 60 White | 7 295
+HyperX | Alloy | Alloy Origins 60 White V2 | 7 587
+Redragon | K Series | K552 Kumara | 3 088
+Redragon | K Series | K552 Kumara V2 | 3 212
+Redragon | K Series | K552 Kumara RGB | 3 335
+Redragon | K Series | K552 Kumara RGB V2 | 3 468
+Redragon | K Series | K552 Kumara White | 3 242
+Redragon | K Series | K552 Kumara White V2 | 3 372
+Redragon | K Series | K628 Pollux 75% | 4 632
+Redragon | K Series | K628 Pollux 75% V2 | 4 817
+Redragon | K Series | K628 Pollux 75% RGB | 5 003
+Redragon | K Series | K628 Pollux 75% RGB V2 | 5 203
+Redragon | K Series | K628 Pollux 75% White | 4 864
+Redragon | K Series | K628 Pollux 75% White V2 | 5 059
+Akko | 3068B | 3068B Plus | 6 948
+Akko | 3068B | 3068B Plus V2 | 7 226
+Akko | 3068B | 3068B Plus RGB | 7 504
+Akko | 3068B | 3068B Plus RGB V2 | 7 804
+Akko | 3068B | 3068B Plus White | 7 295
+Akko | 3068B | 3068B Plus White V2 | 7 587
+Akko | MOD | MOD 007B HE | 14 668
+Akko | MOD | MOD 007B HE V2 | 15 255
+Akko | MOD | MOD 007B HE RGB | 15 841
+Akko | MOD | MOD 007B HE RGB V2 | 16 475
+Akko | MOD | MOD 007B HE White | 15 401
+Akko | MOD | MOD 007B HE White V2 | 16 017
+
+## Мыши
+Razer | DeathAdder | DeathAdder V4 Pro | 12 352
+Razer | DeathAdder | DeathAdder V4 Pro V2 | 12 846
+Razer | DeathAdder | DeathAdder V4 Pro RGB | 13 340
+Razer | DeathAdder | DeathAdder V4 Pro RGB V2 | 13 874
+Razer | DeathAdder | DeathAdder V4 Pro White | 12 970
+Razer | DeathAdder | DeathAdder V4 Pro White V2 | 13 489
+Razer | Viper | Viper V3 Pro | 12 352
+Razer | Viper | Viper V3 Pro V2 | 12 846
+Razer | Viper | Viper V3 Pro RGB | 13 340
+Razer | Viper | Viper V3 Pro RGB V2 | 13 874
+Razer | Viper | Viper V3 Pro White | 12 970
+Razer | Viper | Viper V3 Pro White V2 | 13 489
+Razer | Basilisk | Basilisk V3 Pro | 13 124
+Razer | Basilisk | Basilisk V3 Pro V2 | 13 649
+Razer | Basilisk | Basilisk V3 Pro RGB | 14 174
+Razer | Basilisk | Basilisk V3 Pro RGB V2 | 14 741
+Razer | Basilisk | Basilisk V3 Pro White | 13 780
+Razer | Basilisk | Basilisk V3 Pro White V2 | 14 331
+Logitech | G Series | G Pro X Superlight 2 | 12 352
+Logitech | G Series | G Pro X Superlight 2 V2 | 12 846
+Logitech | G Series | G Pro X Superlight 2 RGB | 13 340
+Logitech | G Series | G Pro X Superlight 2 RGB V2 | 13 874
+Logitech | G Series | G Pro X Superlight 2 White | 12 970
+Logitech | G Series | G Pro X Superlight 2 White V2 | 13 489
+Logitech | G Series | G305 Lightspeed | 3 860
+Logitech | G Series | G305 Lightspeed V2 | 4 014
+Logitech | G Series | G305 Lightspeed RGB | 4 169
+Logitech | G Series | G305 Lightspeed RGB V2 | 4 336
+Logitech | G Series | G305 Lightspeed White | 4 053
+Logitech | G Series | G305 Lightspeed White V2 | 4 215
+Logitech | G Series | G502 X Plus | 10 808
+Logitech | G Series | G502 X Plus V2 | 11 240
+Logitech | G Series | G502 X Plus RGB | 11 673
+Logitech | G Series | G502 X Plus RGB V2 | 12 140
+Logitech | G Series | G502 X Plus White | 11 348
+Logitech | G Series | G502 X Plus White V2 | 11 802
+Logitech | G Series | G203 Lightsync | 2 316
+Logitech | G Series | G203 Lightsync V2 | 2 409
+Logitech | G Series | G203 Lightsync RGB | 2 501
+Logitech | G Series | G203 Lightsync RGB V2 | 2 601
+Logitech | G Series | G203 Lightsync White | 2 432
+Logitech | G Series | G203 Lightsync White V2 | 2 529
+Corsair | M Series | M75 Wireless | 10 036
+Corsair | M Series | M75 Wireless V2 | 10 437
+Corsair | M Series | M75 Wireless RGB | 10 839
+Corsair | M Series | M75 Wireless RGB V2 | 11 273
+Corsair | M Series | M75 Wireless White | 10 538
+Corsair | M Series | M75 Wireless White V2 | 10 960
+Corsair | Scimitar | Scimitar Elite Wireless | 10 036
+Corsair | Scimitar | Scimitar Elite Wireless V2 | 10 437
+Corsair | Scimitar | Scimitar Elite Wireless RGB | 10 839
+Corsair | Scimitar | Scimitar Elite Wireless RGB V2 | 11 273
+Corsair | Scimitar | Scimitar Elite Wireless White | 10 538
+Corsair | Scimitar | Scimitar Elite Wireless White V2 | 10 960
+SteelSeries | Rival | Rival 600 | 6 176
+SteelSeries | Rival | Rival 600 V2 | 6 423
+SteelSeries | Rival | Rival 600 RGB | 6 670
+SteelSeries | Rival | Rival 600 RGB V2 | 6 937
+SteelSeries | Rival | Rival 600 White | 6 485
+SteelSeries | Rival | Rival 600 White V2 | 6 744
+SteelSeries | Aerox | Aerox 9 Wireless | 10 036
+SteelSeries | Aerox | Aerox 9 Wireless V2 | 10 437
+SteelSeries | Aerox | Aerox 9 Wireless RGB | 10 839
+SteelSeries | Aerox | Aerox 9 Wireless RGB V2 | 11 273
+SteelSeries | Aerox | Aerox 9 Wireless White | 10 538
+SteelSeries | Aerox | Aerox 9 Wireless White V2 | 10 960
+Glorious | Model O | Model O 2 Wireless | 7 720
+Glorious | Model O | Model O 2 Wireless V2 | 8 029
+Glorious | Model O | Model O 2 Wireless RGB | 8 338
+Glorious | Model O | Model O 2 Wireless RGB V2 | 8 672
+Glorious | Model O | Model O 2 Wireless White | 8 106
+Glorious | Model O | Model O 2 Wireless White V2 | 8 430
+Glorious | Model D | Model D 2 Wireless | 7 720
+Glorious | Model D | Model D 2 Wireless V2 | 8 029
+Glorious | Model D | Model D 2 Wireless RGB | 8 338
+Glorious | Model D | Model D 2 Wireless RGB V2 | 8 672
+Glorious | Model D | Model D 2 Wireless White | 8 106
+Glorious | Model D | Model D 2 Wireless White V2 | 8 430
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless | 6 948
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless V2 | 7 226
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless RGB | 7 504
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless RGB V2 | 7 804
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless White | 7 295
+HyperX | Pulsefire | Pulsefire Haste 2 Wireless White V2 | 7 587
+Zowie | EC Series | EC2-CW Wireless | 11 580
+Zowie | EC Series | EC2-CW Wireless V2 | 12 043
+Zowie | EC Series | EC2-CW Wireless RGB | 12 506
+Zowie | EC Series | EC2-CW Wireless RGB V2 | 13 006
+Zowie | EC Series | EC2-CW Wireless White | 12 159
+Zowie | EC Series | EC2-CW Wireless White V2 | 12 645
+Cooler Master | MM Series | MM731 Wireless | 6 176
+Cooler Master | MM Series | MM731 Wireless V2 | 6 423
+Cooler Master | MM Series | MM731 Wireless RGB | 6 670
+Cooler Master | MM Series | MM731 Wireless RGB V2 | 6 937
+Cooler Master | MM Series | MM731 Wireless White | 6 485
+Cooler Master | MM Series | MM731 Wireless White V2 | 6 744
+Keychron | M Series | M7 8K | 6 176
+Keychron | M Series | M7 8K V2 | 6 423
+Keychron | M Series | M7 8K RGB | 6 670
+Keychron | M Series | M7 8K RGB V2 | 6 937
+Keychron | M Series | M7 8K White | 6 485
+Keychron | M Series | M7 8K White V2 | 6 744
+MSI | Clutch | Clutch GM31 Wireless | 6 176
+MSI | Clutch | Clutch GM31 Wireless V2 | 6 423
+MSI | Clutch | Clutch GM31 Wireless RGB | 6 670
+MSI | Clutch | Clutch GM31 Wireless RGB V2 | 6 937
+MSI | Clutch | Clutch GM31 Wireless White | 6 485
+MSI | Clutch | Clutch GM31 Wireless White V2 | 6 744
+Razer | Naga | Naga V2 Pro | 13 896
+Razer | Naga | Naga V2 Pro V2 | 14 452
+Razer | Naga | Naga V2 Pro RGB | 15 008
+Razer | Naga | Naga V2 Pro RGB V2 | 15 608
+Razer | Naga | Naga V2 Pro White | 14 591
+Razer | Naga | Naga V2 Pro White V2 | 15 175
+Logitech | G Series | G Pro Wireless (2nd Gen) | 10 036
+Logitech | G Series | G Pro Wireless (2nd Gen) V2 | 10 437
+Logitech | G Series | G Pro Wireless (2nd Gen) RGB | 10 839
+Logitech | G Series | G Pro Wireless (2nd Gen) RGB V2 | 11 273
+Logitech | G Series | G Pro Wireless (2nd Gen) White | 10 538
+Logitech | G Series | G Pro Wireless (2nd Gen) White V2 | 10 960
+
+## Гарнитуры
+SteelSeries | Arctis Nova | Arctis Nova Pro Wireless | 27 020
+SteelSeries | Arctis Nova | Arctis Nova Pro Wireless V2 | 28 101
+SteelSeries | Arctis Nova | Arctis Nova Pro Wireless RGB | 29 182
+SteelSeries | Arctis Nova | Arctis Nova Pro Wireless RGB V2 | 30 349
+SteelSeries | Arctis Nova | Arctis Nova Pro Wireless White | 28 371
+SteelSeries | Arctis Nova | Arctis Nova Pro Wireless White V2 | 29 506
+SteelSeries | Arctis Nova | Arctis Nova 7 Wireless | 13 896
+SteelSeries | Arctis Nova | Arctis Nova 7 Wireless V2 | 14 452
+SteelSeries | Arctis Nova | Arctis Nova 7 Wireless RGB | 15 008
+SteelSeries | Arctis Nova | Arctis Nova 7 Wireless RGB V2 | 15 608
+SteelSeries | Arctis Nova | Arctis Nova 7 Wireless White | 14 591
+SteelSeries | Arctis Nova | Arctis Nova 7 Wireless White V2 | 15 175
+SteelSeries | Arctis Nova | Arctis Nova 3 | 7 720
+SteelSeries | Arctis Nova | Arctis Nova 3 V2 | 8 029
+SteelSeries | Arctis Nova | Arctis Nova 3 RGB | 8 338
+SteelSeries | Arctis Nova | Arctis Nova 3 RGB V2 | 8 672
+SteelSeries | Arctis Nova | Arctis Nova 3 White | 8 106
+SteelSeries | Arctis Nova | Arctis Nova 3 White V2 | 8 430
+HyperX | Cloud | Cloud III Wireless | 11 580
+HyperX | Cloud | Cloud III Wireless V2 | 12 043
+HyperX | Cloud | Cloud III Wireless RGB | 12 506
+HyperX | Cloud | Cloud III Wireless RGB V2 | 13 006
+HyperX | Cloud | Cloud III Wireless White | 12 159
+HyperX | Cloud | Cloud III Wireless White V2 | 12 645
+HyperX | Cloud | Cloud Alpha Wireless | 10 036
+HyperX | Cloud | Cloud Alpha Wireless V2 | 10 437
+HyperX | Cloud | Cloud Alpha Wireless RGB | 10 839
+HyperX | Cloud | Cloud Alpha Wireless RGB V2 | 11 273
+HyperX | Cloud | Cloud Alpha Wireless White | 10 538
+HyperX | Cloud | Cloud Alpha Wireless White V2 | 10 960
+Razer | BlackShark | BlackShark V2 Pro (2023) | 13 896
+Razer | BlackShark | BlackShark V2 Pro (2023) V2 | 14 452
+Razer | BlackShark | BlackShark V2 Pro (2023) RGB | 15 008
+Razer | BlackShark | BlackShark V2 Pro (2023) RGB V2 | 15 608
+Razer | BlackShark | BlackShark V2 Pro (2023) White | 14 591
+Razer | BlackShark | BlackShark V2 Pro (2023) White V2 | 15 175
+Razer | Kraken | Kraken V4 X | 6 948
+Razer | Kraken | Kraken V4 X V2 | 7 226
+Razer | Kraken | Kraken V4 X RGB | 7 504
+Razer | Kraken | Kraken V4 X RGB V2 | 7 804
+Razer | Kraken | Kraken V4 X White | 7 295
+Razer | Kraken | Kraken V4 X White V2 | 7 587
+Logitech | G Series | G Pro X 2 Lightspeed | 19 300
+Logitech | G Series | G Pro X 2 Lightspeed V2 | 20 072
+Logitech | G Series | G Pro X 2 Lightspeed RGB | 20 844
+Logitech | G Series | G Pro X 2 Lightspeed RGB V2 | 21 678
+Logitech | G Series | G Pro X 2 Lightspeed White | 20 265
+Logitech | G Series | G Pro X 2 Lightspeed White V2 | 21 076
+Logitech | G Series | G733 Lightspeed | 11 580
+Logitech | G Series | G733 Lightspeed V2 | 12 043
+Logitech | G Series | G733 Lightspeed RGB | 12 506
+Logitech | G Series | G733 Lightspeed RGB V2 | 13 006
+Logitech | G Series | G733 Lightspeed White | 12 159
+Logitech | G Series | G733 Lightspeed White V2 | 12 645
+Corsair | HS Series | HS80 RGB Wireless | 11 580
+Corsair | HS Series | HS80 RGB Wireless V2 | 12 043
+Corsair | HS Series | HS80 RGB Wireless RGB | 12 506
+Corsair | HS Series | HS80 RGB Wireless RGB V2 | 13 006
+Corsair | HS Series | HS80 RGB Wireless White | 12 159
+Corsair | HS Series | HS80 RGB Wireless White V2 | 12 645
+Corsair | Void | Void RGB Elite | 6 948
+Corsair | Void | Void RGB Elite V2 | 7 226
+Corsair | Void | Void RGB Elite RGB | 7 504
+Corsair | Void | Void RGB Elite RGB V2 | 7 804
+Corsair | Void | Void RGB Elite White | 7 295
+Corsair | Void | Void RGB Elite White V2 | 7 587
+Audeze | Maxwell | Maxwell Wireless | 23 083
+Audeze | Maxwell | Maxwell Wireless V2 | 24 006
+Audeze | Maxwell | Maxwell Wireless RGB | 24 930
+Audeze | Maxwell | Maxwell Wireless RGB V2 | 25 927
+Audeze | Maxwell | Maxwell Wireless White | 24 237
+Audeze | Maxwell | Maxwell Wireless White V2 | 25 206
+Sony | INZONE | INZONE H9 | 21 616
+Sony | INZONE | INZONE H9 V2 | 22 481
+Sony | INZONE | INZONE H9 RGB | 23 345
+Sony | INZONE | INZONE H9 RGB V2 | 24 279
+Sony | INZONE | INZONE H9 White | 22 697
+Sony | INZONE | INZONE H9 White V2 | 23 605
+EPOS | GSP | GSP 670 | 13 896
+EPOS | GSP | GSP 670 V2 | 14 452
+EPOS | GSP | GSP 670 RGB | 15 008
+EPOS | GSP | GSP 670 RGB V2 | 15 608
+EPOS | GSP | GSP 670 White | 14 591
+EPOS | GSP | GSP 670 White V2 | 15 175
+Beyerdynamic | MMX | MMX 300 (2nd Gen) | 20 072
+Beyerdynamic | MMX | MMX 300 (2nd Gen) V2 | 20 875
+Beyerdynamic | MMX | MMX 300 (2nd Gen) RGB | 21 678
+Beyerdynamic | MMX | MMX 300 (2nd Gen) RGB V2 | 22 545
+Beyerdynamic | MMX | MMX 300 (2nd Gen) White | 21 076
+Beyerdynamic | MMX | MMX 300 (2nd Gen) White V2 | 21 919
+Asus | ROG | ROG Delta S Wireless | 14 668
+Asus | ROG | ROG Delta S Wireless V2 | 15 255
+Asus | ROG | ROG Delta S Wireless RGB | 15 841
+Asus | ROG | ROG Delta S Wireless RGB V2 | 16 475
+Asus | ROG | ROG Delta S Wireless White | 15 401
+Asus | ROG | ROG Delta S Wireless White V2 | 16 017
+Cooler Master | CH Series | CH331 | 4 632
+Cooler Master | CH Series | CH331 V2 | 4 817
+Cooler Master | CH Series | CH331 RGB | 5 003
+Cooler Master | CH Series | CH331 RGB V2 | 5 203
+Cooler Master | CH Series | CH331 White | 4 864
+Cooler Master | CH Series | CH331 White V2 | 5 059
+SteelSeries | Arctis | Arctis 1 Wireless | 7 720
+SteelSeries | Arctis | Arctis 1 Wireless V2 | 8 029
+SteelSeries | Arctis | Arctis 1 Wireless RGB | 8 338
+SteelSeries | Arctis | Arctis 1 Wireless RGB V2 | 8 672
+SteelSeries | Arctis | Arctis 1 Wireless White | 8 106
+SteelSeries | Arctis | Arctis 1 Wireless White V2 | 8 430
+
+## Мониторы
+Dell | S Series | S3222DGM 32" QHD 165Hz | 25 476
+Dell | S Series | S3222DGM 32" QHD 165Hz V2 | 26 495
+Dell | S Series | S3222DGM 32" QHD 165Hz RGB | 27 514
+Dell | S Series | S3222DGM 32" QHD 165Hz RGB V2 | 28 615
+Dell | S Series | S3222DGM 32" QHD 165Hz White | 26 750
+Dell | S Series | S3222DGM 32" QHD 165Hz White V2 | 27 820
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz | 69 480
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz V2 | 72 259
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz RGB | 75 038
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz RGB V2 | 78 040
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz White | 72 954
+Dell | Alienware | AW3423DWF 34" QD‑OLED 165Hz White V2 | 75 872
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz | 61 760
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz V2 | 64 230
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz RGB | 66 701
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz RGB V2 | 69 369
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz White | 64 848
+LG | UltraGear | 27GR95QE-B 27" OLED 240Hz White V2 | 67 442
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz | 69 480
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz V2 | 72 259
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz RGB | 75 038
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz RGB V2 | 78 040
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz White | 72 954
+LG | UltraGear | 32GQ950-B 32" 4K 144Hz White V2 | 75 872
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz | 123 520
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz V2 | 128 461
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz RGB | 133 402
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz RGB V2 | 138 738
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz White | 129 696
+Samsung | Odyssey | Odyssey G9 Neo 49" 240Hz White V2 | 134 884
+Samsung | Odyssey | Odyssey G7 32" 240Hz | 46 320
+Samsung | Odyssey | Odyssey G7 32" 240Hz V2 | 48 173
+Samsung | Odyssey | Odyssey G7 32" 240Hz RGB | 50 026
+Samsung | Odyssey | Odyssey G7 32" 240Hz RGB V2 | 52 027
+Samsung | Odyssey | Odyssey G7 32" 240Hz White | 48 636
+Samsung | Odyssey | Odyssey G7 32" 240Hz White V2 | 50 581
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz | 69 480
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz V2 | 72 259
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz RGB | 75 038
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz RGB V2 | 78 040
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz White | 72 954
+ASUS | ROG Swift | ROG Swift PG27AQDM 27" OLED 240Hz White V2 | 75 872
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz | 23 160
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz V2 | 24 086
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz RGB | 25 013
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz RGB V2 | 26 014
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz White | 24 318
+ASUS | TUF Gaming | TUF Gaming VG27AQ3A 27" 180Hz White V2 | 25 291
+Acer | Predator | XB273K 27" 4K 144Hz | 54 040
+Acer | Predator | XB273K 27" 4K 144Hz V2 | 56 202
+Acer | Predator | XB273K 27" 4K 144Hz RGB | 58 363
+Acer | Predator | XB273K 27" 4K 144Hz RGB V2 | 60 698
+Acer | Predator | XB273K 27" 4K 144Hz White | 56 742
+Acer | Predator | XB273K 27" 4K 144Hz White V2 | 59 012
+Acer | Nitro | XV272U 27" QHD 170Hz | 21 616
+Acer | Nitro | XV272U 27" QHD 170Hz V2 | 22 481
+Acer | Nitro | XV272U 27" QHD 170Hz RGB | 23 345
+Acer | Nitro | XV272U 27" QHD 170Hz RGB V2 | 24 279
+Acer | Nitro | XV272U 27" QHD 170Hz White | 22 697
+Acer | Nitro | XV272U 27" QHD 170Hz White V2 | 23 605
+Gigabyte | AORUS | FI27Q-X 27" 240Hz | 46 320
+Gigabyte | AORUS | FI27Q-X 27" 240Hz V2 | 48 173
+Gigabyte | AORUS | FI27Q-X 27" 240Hz RGB | 50 026
+Gigabyte | AORUS | FI27Q-X 27" 240Hz RGB V2 | 52 027
+Gigabyte | AORUS | FI27Q-X 27" 240Hz White | 48 636
+Gigabyte | AORUS | FI27Q-X 27" 240Hz White V2 | 50 581
+Gigabyte | Gaming | M27Q 27" QHD 170Hz | 25 476
+Gigabyte | Gaming | M27Q 27" QHD 170Hz V2 | 26 495
+Gigabyte | Gaming | M27Q 27" QHD 170Hz RGB | 27 514
+Gigabyte | Gaming | M27Q 27" QHD 170Hz RGB V2 | 28 615
+Gigabyte | Gaming | M27Q 27" QHD 170Hz White | 26 750
+Gigabyte | Gaming | M27Q 27" QHD 170Hz White V2 | 27 820
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz | 30 880
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz V2 | 32 115
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz RGB | 33 350
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz RGB V2 | 34 684
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz White | 32 424
+MSI | Optix | MAG274QRF-QD 27" QHD 165Hz White V2 | 33 721
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz | 84 920
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz V2 | 88 317
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz RGB | 91 714
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz RGB V2 | 95 383
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz White | 89 166
+MSI | MEG | MEG 342C QD-OLED 34" 175Hz White V2 | 92 733
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz | 25 476
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz V2 | 26 495
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz RGB | 27 514
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz RGB V2 | 28 615
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz White | 26 750
+BenQ | MOBIUZ | EX2710Q 27" QHD 165Hz White V2 | 27 820
+BenQ | Zowie | XL2566K 24.5" 360Hz TN | 46 320
+BenQ | Zowie | XL2566K 24.5" 360Hz TN V2 | 48 173
+BenQ | Zowie | XL2566K 24.5" 360Hz TN RGB | 50 026
+BenQ | Zowie | XL2566K 24.5" 360Hz TN RGB V2 | 52 027
+BenQ | Zowie | XL2566K 24.5" 360Hz TN White | 48 636
+BenQ | Zowie | XL2566K 24.5" 360Hz TN White V2 | 50 581
+ViewSonic | Elite | XG2431 24" 240Hz | 21 616
+ViewSonic | Elite | XG2431 24" 240Hz V2 | 22 481
+ViewSonic | Elite | XG2431 24" 240Hz RGB | 23 345
+ViewSonic | Elite | XG2431 24" 240Hz RGB V2 | 24 279
+ViewSonic | Elite | XG2431 24" 240Hz White | 22 697
+ViewSonic | Elite | XG2431 24" 240Hz White V2 | 23 605
+ASUS | ROG Strix | XG259QN 24.5" 380Hz | 46 320
+ASUS | ROG Strix | XG259QN 24.5" 380Hz V2 | 48 173
+ASUS | ROG Strix | XG259QN 24.5" 380Hz RGB | 50 026
+ASUS | ROG Strix | XG259QN 24.5" 380Hz RGB V2 | 52 027
+ASUS | ROG Strix | XG259QN 24.5" 380Hz White | 48 636
+ASUS | ROG Strix | XG259QN 24.5" 380Hz White V2 | 50 581
+
+## Колонки
+Razer | Nommo | Nommo V2 | 11 580
+Razer | Nommo | Nommo V2 V2 | 12 043
+Razer | Nommo | Nommo V2 RGB | 12 506
+Razer | Nommo | Nommo V2 RGB V2 | 13 006
+Razer | Nommo | Nommo V2 White | 12 159
+Razer | Nommo | Nommo V2 White V2 | 12 645
+Razer | Nommo | Nommo V2 Pro 2.1 | 23 160
+Razer | Nommo | Nommo V2 Pro 2.1 V2 | 24 086
+Razer | Nommo | Nommo V2 Pro 2.1 RGB | 25 013
+Razer | Nommo | Nommo V2 Pro 2.1 RGB V2 | 26 014
+Razer | Nommo | Nommo V2 Pro 2.1 White | 24 318
+Razer | Nommo | Nommo V2 Pro 2.1 White V2 | 25 291
+SteelSeries | Arena | Arena 9 5.1 | 42 460
+SteelSeries | Arena | Arena 9 5.1 V2 | 44 158
+SteelSeries | Arena | Arena 9 5.1 RGB | 45 857
+SteelSeries | Arena | Arena 9 5.1 RGB V2 | 47 691
+SteelSeries | Arena | Arena 9 5.1 White | 44 583
+SteelSeries | Arena | Arena 9 5.1 White V2 | 46 366
+SteelSeries | Arena | Arena 7 2.1 | 23 160
+SteelSeries | Arena | Arena 7 2.1 V2 | 24 086
+SteelSeries | Arena | Arena 7 2.1 RGB | 25 013
+SteelSeries | Arena | Arena 7 2.1 RGB V2 | 26 014
+SteelSeries | Arena | Arena 7 2.1 White | 24 318
+SteelSeries | Arena | Arena 7 2.1 White V2 | 25 291
+Creative | T-Series | T100 2.0 | 6 948
+Creative | T-Series | T100 2.0 V2 | 7 226
+Creative | T-Series | T100 2.0 RGB | 7 504
+Creative | T-Series | T100 2.0 RGB V2 | 7 804
+Creative | T-Series | T100 2.0 White | 7 295
+Creative | T-Series | T100 2.0 White V2 | 7 587
+Creative | Pebble | Pebble Pro | 5 404
+Creative | Pebble | Pebble Pro V2 | 5 620
+Creative | Pebble | Pebble Pro RGB | 5 836
+Creative | Pebble | Pebble Pro RGB V2 | 6 069
+Creative | Pebble | Pebble Pro White | 5 674
+Creative | Pebble | Pebble Pro White V2 | 5 901
+Logitech | Z Series | Z407 2.1 Bluetooth | 9 264
+Logitech | Z Series | Z407 2.1 Bluetooth V2 | 9 635
+Logitech | Z Series | Z407 2.1 Bluetooth RGB | 10 005
+Logitech | Z Series | Z407 2.1 Bluetooth RGB V2 | 10 405
+Logitech | Z Series | Z407 2.1 Bluetooth White | 9 727
+Logitech | Z Series | Z407 2.1 Bluetooth White V2 | 10 116
+Logitech | G Series | G560 LIGHTSYNC 2.1 | 15 440
+Logitech | G Series | G560 LIGHTSYNC 2.1 V2 | 16 058
+Logitech | G Series | G560 LIGHTSYNC 2.1 RGB | 16 675
+Logitech | G Series | G560 LIGHTSYNC 2.1 RGB V2 | 17 342
+Logitech | G Series | G560 LIGHTSYNC 2.1 White | 16 212
+Logitech | G Series | G560 LIGHTSYNC 2.1 White V2 | 16 860
+Edifier | R-Series | R1280DB | 11 580
+Edifier | R-Series | R1280DB V2 | 12 043
+Edifier | R-Series | R1280DB RGB | 12 506
+Edifier | R-Series | R1280DB RGB V2 | 13 006
+Edifier | R-Series | R1280DB White | 12 159
+Edifier | R-Series | R1280DB White V2 | 12 645
+Edifier | S-Series | S350DB 2.1 | 23 160
+Edifier | S-Series | S350DB 2.1 V2 | 24 086
+Edifier | S-Series | S350DB 2.1 RGB | 25 013
+Edifier | S-Series | S350DB 2.1 RGB V2 | 26 014
+Edifier | S-Series | S350DB 2.1 White | 24 318
+Edifier | S-Series | S350DB 2.1 White V2 | 25 291
+Klipsch | ProMedia | ProMedia 2.1 THX | 14 668
+Klipsch | ProMedia | ProMedia 2.1 THX V2 | 15 255
+Klipsch | ProMedia | ProMedia 2.1 THX RGB | 15 841
+Klipsch | ProMedia | ProMedia 2.1 THX RGB V2 | 16 475
+Klipsch | ProMedia | ProMedia 2.1 THX White | 15 401
+Klipsch | ProMedia | ProMedia 2.1 THX White V2 | 16 017
+Audioengine | A-Series | A2+ Wireless | 20 844
+Audioengine | A-Series | A2+ Wireless V2 | 21 678
+Audioengine | A-Series | A2+ Wireless RGB | 22 512
+Audioengine | A-Series | A2+ Wireless RGB V2 | 23 412
+Audioengine | A-Series | A2+ Wireless White | 21 886
+Audioengine | A-Series | A2+ Wireless White V2 | 22 761
+Audioengine | A-Series | A5+ Wireless | 38 600
+Audioengine | A-Series | A5+ Wireless V2 | 40 144
+Audioengine | A-Series | A5+ Wireless RGB | 41 688
+Audioengine | A-Series | A5+ Wireless RGB V2 | 43 356
+Audioengine | A-Series | A5+ Wireless White | 40 530
+Audioengine | A-Series | A5+ Wireless White V2 | 42 151
+Mackie | CR Series | CR3-X | 8 492
+Mackie | CR Series | CR3-X V2 | 8 832
+Mackie | CR Series | CR3-X RGB | 9 171
+Mackie | CR Series | CR3-X RGB V2 | 9 538
+Mackie | CR Series | CR3-X White | 8 917
+Mackie | CR Series | CR3-X White V2 | 9 274
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) | 29 336
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) V2 | 30 509
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) RGB | 31 683
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) RGB V2 | 32 950
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) White | 30 803
+Mackie | CR Series | CR3.5BT + CR8SBT (2.1 kit) White V2 | 32 035
+
+## Микрофоны
+Shure | Motiv | MV7+ | 21 616
+Shure | Motiv | MV7+ V2 | 22 481
+Shure | Motiv | MV7+ RGB | 23 345
+Shure | Motiv | MV7+ RGB V2 | 24 279
+Shure | Motiv | MV7+ White | 22 697
+Shure | Motiv | MV7+ White V2 | 23 605
+Shure | Motiv | MV7 (USB/XLR) | 19 300
+Shure | Motiv | MV7 (USB/XLR) V2 | 20 072
+Shure | Motiv | MV7 (USB/XLR) RGB | 20 844
+Shure | Motiv | MV7 (USB/XLR) RGB V2 | 21 678
+Shure | Motiv | MV7 (USB/XLR) White | 20 265
+Shure | Motiv | MV7 (USB/XLR) White V2 | 21 076
+Rode | NT-USB | NT-USB+ | 13 124
+Rode | NT-USB | NT-USB+ V2 | 13 649
+Rode | NT-USB | NT-USB+ RGB | 14 174
+Rode | NT-USB | NT-USB+ RGB V2 | 14 741
+Rode | NT-USB | NT-USB+ White | 13 780
+Rode | NT-USB | NT-USB+ White V2 | 14 331
+Rode | X Series | XCM-50 | 11 580
+Rode | X Series | XCM-50 V2 | 12 043
+Rode | X Series | XCM-50 RGB | 12 506
+Rode | X Series | XCM-50 RGB V2 | 13 006
+Rode | X Series | XCM-50 White | 12 159
+Rode | X Series | XCM-50 White V2 | 12 645
+HyperX | QuadCast | QuadCast S | 12 352
+HyperX | QuadCast | QuadCast S V2 | 12 846
+HyperX | QuadCast | QuadCast S RGB | 13 340
+HyperX | QuadCast | QuadCast S RGB V2 | 13 874
+HyperX | QuadCast | QuadCast S White | 12 970
+HyperX | QuadCast | QuadCast S White V2 | 13 489
+HyperX | SoloCast | SoloCast | 4 632
+HyperX | SoloCast | SoloCast V2 | 4 817
+HyperX | SoloCast | SoloCast RGB | 5 003
+HyperX | SoloCast | SoloCast RGB V2 | 5 203
+HyperX | SoloCast | SoloCast White | 4 864
+HyperX | SoloCast | SoloCast White V2 | 5 059
+Elgato | Wave | Wave:3 | 12 352
+Elgato | Wave | Wave:3 V2 | 12 846
+Elgato | Wave | Wave:3 RGB | 13 340
+Elgato | Wave | Wave:3 RGB V2 | 13 874
+Elgato | Wave | Wave:3 White | 12 970
+Elgato | Wave | Wave:3 White V2 | 13 489
+Elgato | Wave | Wave:1 | 10 036
+Elgato | Wave | Wave:1 V2 | 10 437
+Elgato | Wave | Wave:1 RGB | 10 839
+Elgato | Wave | Wave:1 RGB V2 | 11 273
+Elgato | Wave | Wave:1 White | 10 538
+Elgato | Wave | Wave:1 White V2 | 10 960
+Blue | Yeti | Yeti X | 13 124
+Blue | Yeti | Yeti X V2 | 13 649
+Blue | Yeti | Yeti X RGB | 14 174
+Blue | Yeti | Yeti X RGB V2 | 14 741
+Blue | Yeti | Yeti X White | 13 780
+Blue | Yeti | Yeti X White V2 | 14 331
+Blue | Yeti | Yeti Nano | 6 948
+Blue | Yeti | Yeti Nano V2 | 7 226
+Blue | Yeti | Yeti Nano RGB | 7 504
+Blue | Yeti | Yeti Nano RGB V2 | 7 804
+Blue | Yeti | Yeti Nano White | 7 295
+Blue | Yeti | Yeti Nano White V2 | 7 587
+Razer | Seiren | Seiren V2 Pro | 11 580
+Razer | Seiren | Seiren V2 Pro V2 | 12 043
+Razer | Seiren | Seiren V2 Pro RGB | 12 506
+Razer | Seiren | Seiren V2 Pro RGB V2 | 13 006
+Razer | Seiren | Seiren V2 Pro White | 12 159
+Razer | Seiren | Seiren V2 Pro White V2 | 12 645
+Razer | Seiren | Seiren Mini | 3 860
+Razer | Seiren | Seiren Mini V2 | 4 014
+Razer | Seiren | Seiren Mini RGB | 4 169
+Razer | Seiren | Seiren Mini RGB V2 | 4 336
+Razer | Seiren | Seiren Mini White | 4 053
+Razer | Seiren | Seiren Mini White V2 | 4 215
+NZXT | Capsule | Capsule Mini | 5 404
+NZXT | Capsule | Capsule Mini V2 | 5 620
+NZXT | Capsule | Capsule Mini RGB | 5 836
+NZXT | Capsule | Capsule Mini RGB V2 | 6 069
+NZXT | Capsule | Capsule Mini White | 5 674
+NZXT | Capsule | Capsule Mini White V2 | 5 901
+Audio-Technica | AT | AT2020USB+ | 11 580
+Audio-Technica | AT | AT2020USB+ V2 | 12 043
+Audio-Technica | AT | AT2020USB+ RGB | 12 506
+Audio-Technica | AT | AT2020USB+ RGB V2 | 13 006
+Audio-Technica | AT | AT2020USB+ White | 12 159
+Audio-Technica | AT | AT2020USB+ White V2 | 12 645
+Beyerdynamic | Fox | FOX USB | 10 036
+Beyerdynamic | Fox | FOX USB V2 | 10 437
+Beyerdynamic | Fox | FOX USB RGB | 10 839
+Beyerdynamic | Fox | FOX USB RGB V2 | 11 273
+Beyerdynamic | Fox | FOX USB White | 10 538
+Beyerdynamic | Fox | FOX USB White V2 | 10 960
+
+## Веб-камеры
+Insta360 | Link | Link 2C 4K | 23 160
+Insta360 | Link | Link 2C 4K V2 | 24 086
+Insta360 | Link | Link 2C 4K RGB | 25 013
+Insta360 | Link | Link 2C 4K RGB V2 | 26 014
+Insta360 | Link | Link 2C 4K White | 24 318
+Insta360 | Link | Link 2C 4K White V2 | 25 291
+Logitech | Brio | Brio 4K Ultra HD | 13 124
+Logitech | Brio | Brio 4K Ultra HD V2 | 13 649
+Logitech | Brio | Brio 4K Ultra HD RGB | 14 174
+Logitech | Brio | Brio 4K Ultra HD RGB V2 | 14 741
+Logitech | Brio | Brio 4K Ultra HD White | 13 780
+Logitech | Brio | Brio 4K Ultra HD White V2 | 14 331
+Logitech | C Series | C920 HD Pro | 5 404
+Logitech | C Series | C920 HD Pro V2 | 5 620
+Logitech | C Series | C920 HD Pro RGB | 5 836
+Logitech | C Series | C920 HD Pro RGB V2 | 6 069
+Logitech | C Series | C920 HD Pro White | 5 674
+Logitech | C Series | C920 HD Pro White V2 | 5 901
+Logitech | StreamCam | StreamCam | 10 036
+Logitech | StreamCam | StreamCam V2 | 10 437
+Logitech | StreamCam | StreamCam RGB | 10 839
+Logitech | StreamCam | StreamCam RGB V2 | 11 273
+Logitech | StreamCam | StreamCam White | 10 538
+Logitech | StreamCam | StreamCam White V2 | 10 960
+Razer | Kiyo | Kiyo Pro Ultra | 23 160
+Razer | Kiyo | Kiyo Pro Ultra V2 | 24 086
+Razer | Kiyo | Kiyo Pro Ultra RGB | 25 013
+Razer | Kiyo | Kiyo Pro Ultra RGB V2 | 26 014
+Razer | Kiyo | Kiyo Pro Ultra White | 24 318
+Razer | Kiyo | Kiyo Pro Ultra White V2 | 25 291
+Razer | Kiyo | Kiyo X | 5 404
+Razer | Kiyo | Kiyo X V2 | 5 620
+Razer | Kiyo | Kiyo X RGB | 5 836
+Razer | Kiyo | Kiyo X RGB V2 | 6 069
+Razer | Kiyo | Kiyo X White | 5 674
+Razer | Kiyo | Kiyo X White V2 | 5 901
+Elgato | Facecam | Facecam Pro 4K | 23 160
+Elgato | Facecam | Facecam Pro 4K V2 | 24 086
+Elgato | Facecam | Facecam Pro 4K RGB | 25 013
+Elgato | Facecam | Facecam Pro 4K RGB V2 | 26 014
+Elgato | Facecam | Facecam Pro 4K White | 24 318
+Elgato | Facecam | Facecam Pro 4K White V2 | 25 291
+Elgato | Facecam | Facecam | 13 124
+Elgato | Facecam | Facecam V2 | 13 649
+Elgato | Facecam | Facecam RGB | 14 174
+Elgato | Facecam | Facecam RGB V2 | 14 741
+Elgato | Facecam | Facecam White | 13 780
+Elgato | Facecam | Facecam White V2 | 14 331
+Anker | PowerConf | PowerConf C300 | 10 036
+Anker | PowerConf | PowerConf C300 V2 | 10 437
+Anker | PowerConf | PowerConf C300 RGB | 10 839
+Anker | PowerConf | PowerConf C300 RGB V2 | 11 273
+Anker | PowerConf | PowerConf C300 White | 10 538
+Anker | PowerConf | PowerConf C300 White V2 | 10 960
+OBSbot | Tiny | Tiny 2 4K PTZ | 20 844
+OBSbot | Tiny | Tiny 2 4K PTZ V2 | 21 678
+OBSbot | Tiny | Tiny 2 4K PTZ RGB | 22 512
+OBSbot | Tiny | Tiny 2 4K PTZ RGB V2 | 23 412
+OBSbot | Tiny | Tiny 2 4K PTZ White | 21 886
+OBSbot | Tiny | Tiny 2 4K PTZ White V2 | 22 761
+AverMedia | PW Series | PW513 4K | 13 896
+AverMedia | PW Series | PW513 4K V2 | 14 452
+AverMedia | PW Series | PW513 4K RGB | 15 008
+AverMedia | PW Series | PW513 4K RGB V2 | 15 608
+AverMedia | PW Series | PW513 4K White | 14 591
+AverMedia | PW Series | PW513 4K White V2 | 15 175
+
+## Коврики для мыши
+SteelSeries | QcK | QcK Large | 1 544
+SteelSeries | QcK | QcK Large V2 | 1 606
+SteelSeries | QcK | QcK Large RGB | 1 668
+SteelSeries | QcK | QcK Large RGB V2 | 1 735
+SteelSeries | QcK | QcK Large White | 1 621
+SteelSeries | QcK | QcK Large White V2 | 1 686
+SteelSeries | QcK | QcK Heavy Large | 2 316
+SteelSeries | QcK | QcK Heavy Large V2 | 2 409
+SteelSeries | QcK | QcK Heavy Large RGB | 2 501
+SteelSeries | QcK | QcK Heavy Large RGB V2 | 2 601
+SteelSeries | QcK | QcK Heavy Large White | 2 432
+SteelSeries | QcK | QcK Heavy Large White V2 | 2 529
+SteelSeries | QcK | QcK XXL | 2 702
+SteelSeries | QcK | QcK XXL V2 | 2 810
+SteelSeries | QcK | QcK XXL RGB | 2 918
+SteelSeries | QcK | QcK XXL RGB V2 | 3 035
+SteelSeries | QcK | QcK XXL White | 2 837
+SteelSeries | QcK | QcK XXL White V2 | 2 950
+Razer | Goliathus | Goliathus Extended Chroma | 5 404
+Razer | Goliathus | Goliathus Extended Chroma V2 | 5 620
+Razer | Goliathus | Goliathus Extended Chroma RGB | 5 836
+Razer | Goliathus | Goliathus Extended Chroma RGB V2 | 6 069
+Razer | Goliathus | Goliathus Extended Chroma White | 5 674
+Razer | Goliathus | Goliathus Extended Chroma White V2 | 5 901
+Razer | Strider | Strider Chroma | 6 176
+Razer | Strider | Strider Chroma V2 | 6 423
+Razer | Strider | Strider Chroma RGB | 6 670
+Razer | Strider | Strider Chroma RGB V2 | 6 937
+Razer | Strider | Strider Chroma White | 6 485
+Razer | Strider | Strider Chroma White V2 | 6 744
+Corsair | MM | MM700 RGB Extended | 6 176
+Corsair | MM | MM700 RGB Extended V2 | 6 423
+Corsair | MM | MM700 RGB Extended RGB | 6 670
+Corsair | MM | MM700 RGB Extended RGB V2 | 6 937
+Corsair | MM | MM700 RGB Extended White | 6 485
+Corsair | MM | MM700 RGB Extended White V2 | 6 744
+Corsair | MM | MM350 PRO XL | 3 088
+Corsair | MM | MM350 PRO XL V2 | 3 212
+Corsair | MM | MM350 PRO XL RGB | 3 335
+Corsair | MM | MM350 PRO XL RGB V2 | 3 468
+Corsair | MM | MM350 PRO XL White | 3 242
+Corsair | MM | MM350 PRO XL White V2 | 3 372
+Logitech | G Series | G840 XL | 3 860
+Logitech | G Series | G840 XL V2 | 4 014
+Logitech | G Series | G840 XL RGB | 4 169
+Logitech | G Series | G840 XL RGB V2 | 4 336
+Logitech | G Series | G840 XL White | 4 053
+Logitech | G Series | G840 XL White V2 | 4 215
+Glorious | Helios | Helios XL | 2 702
+Glorious | Helios | Helios XL V2 | 2 810
+Glorious | Helios | Helios XL RGB | 2 918
+Glorious | Helios | Helios XL RGB V2 | 3 035
+Glorious | Helios | Helios XL White | 2 837
+Glorious | Helios | Helios XL White V2 | 2 950
+Glorious | Element | Element Ice | 2 702
+Glorious | Element | Element Ice V2 | 2 810
+Glorious | Element | Element Ice RGB | 2 918
+Glorious | Element | Element Ice RGB V2 | 3 035
+Glorious | Element | Element Ice White | 2 837
+Glorious | Element | Element Ice White V2 | 2 950
+Artisan | Hayate Otsu | Hayate Otsu L Soft | 4 632
+Artisan | Hayate Otsu | Hayate Otsu L Soft V2 | 4 817
+Artisan | Hayate Otsu | Hayate Otsu L Soft RGB | 5 003
+Artisan | Hayate Otsu | Hayate Otsu L Soft RGB V2 | 5 203
+Artisan | Hayate Otsu | Hayate Otsu L Soft White | 4 864
+Artisan | Hayate Otsu | Hayate Otsu L Soft White V2 | 5 059
+X-raypad | Aqua Control | Aqua Control 2 XL | 3 088
+X-raypad | Aqua Control | Aqua Control 2 XL V2 | 3 212
+X-raypad | Aqua Control | Aqua Control 2 XL RGB | 3 335
+X-raypad | Aqua Control | Aqua Control 2 XL RGB V2 | 3 468
+X-raypad | Aqua Control | Aqua Control 2 XL White | 3 242
+X-raypad | Aqua Control | Aqua Control 2 XL White V2 | 3 372
+
+## Геймпады и контроллеры
+Microsoft | Xbox | Xbox Elite Wireless Controller Series 2 | 13 896
+Microsoft | Xbox | Xbox Elite Wireless Controller Series 2 V2 | 14 452
+Microsoft | Xbox | Xbox Elite Wireless Controller Series 2 RGB | 15 008
+Microsoft | Xbox | Xbox Elite Wireless Controller Series 2 RGB V2 | 15 608
+Microsoft | Xbox | Xbox Elite Wireless Controller Series 2 White | 14 591
+Microsoft | Xbox | Xbox Elite Wireless Controller Series 2 White V2 | 15 175
+Sony | PlayStation | DualSense Wireless Controller | 5 404
+Sony | PlayStation | DualSense Wireless Controller V2 | 5 620
+Sony | PlayStation | DualSense Wireless Controller RGB | 5 836
+Sony | PlayStation | DualSense Wireless Controller RGB V2 | 6 069
+Sony | PlayStation | DualSense Wireless Controller White | 5 674
+Sony | PlayStation | DualSense Wireless Controller White V2 | 5 901
+Sony | PlayStation | DualSense Edge | 15 440
+Sony | PlayStation | DualSense Edge V2 | 16 058
+Sony | PlayStation | DualSense Edge RGB | 16 675
+Sony | PlayStation | DualSense Edge RGB V2 | 17 342
+Sony | PlayStation | DualSense Edge White | 16 212
+Sony | PlayStation | DualSense Edge White V2 | 16 860
+8BitDo | Pro | 8BitDo Pro 2 | 4 246
+8BitDo | Pro | 8BitDo Pro 2 V2 | 4 416
+8BitDo | Pro | 8BitDo Pro 2 RGB | 4 586
+8BitDo | Pro | 8BitDo Pro 2 RGB V2 | 4 769
+8BitDo | Pro | 8BitDo Pro 2 White | 4 458
+8BitDo | Pro | 8BitDo Pro 2 White V2 | 4 636
+8BitDo | Ultimate | Ultimate Bluetooth Controller | 5 404
+8BitDo | Ultimate | Ultimate Bluetooth Controller V2 | 5 620
+8BitDo | Ultimate | Ultimate Bluetooth Controller RGB | 5 836
+8BitDo | Ultimate | Ultimate Bluetooth Controller RGB V2 | 6 069
+8BitDo | Ultimate | Ultimate Bluetooth Controller White | 5 674
+8BitDo | Ultimate | Ultimate Bluetooth Controller White V2 | 5 901
+Razer | Wolverine | Wolverine V3 Chroma | 12 352
+Razer | Wolverine | Wolverine V3 Chroma V2 | 12 846
+Razer | Wolverine | Wolverine V3 Chroma RGB | 13 340
+Razer | Wolverine | Wolverine V3 Chroma RGB V2 | 13 874
+Razer | Wolverine | Wolverine V3 Chroma White | 12 970
+Razer | Wolverine | Wolverine V3 Chroma White V2 | 13 489
+SCUF | Instinct | Instinct Pro for Xbox | 16 984
+SCUF | Instinct | Instinct Pro for Xbox V2 | 17 663
+SCUF | Instinct | Instinct Pro for Xbox RGB | 18 343
+SCUF | Instinct | Instinct Pro for Xbox RGB V2 | 19 077
+SCUF | Instinct | Instinct Pro for Xbox White | 17 833
+SCUF | Instinct | Instinct Pro for Xbox White V2 | 18 546
+Nintendo | Switch | Switch Pro Controller | 5 404
+Nintendo | Switch | Switch Pro Controller V2 | 5 620
+Nintendo | Switch | Switch Pro Controller RGB | 5 836
+Nintendo | Switch | Switch Pro Controller RGB V2 | 6 069
+Nintendo | Switch | Switch Pro Controller White | 5 674
+Nintendo | Switch | Switch Pro Controller White V2 | 5 901
+PowerA | Spectra | Spectra Infinity Enhanced | 3 474
+PowerA | Spectra | Spectra Infinity Enhanced V2 | 3 613
+PowerA | Spectra | Spectra Infinity Enhanced RGB | 3 752
+PowerA | Spectra | Spectra Infinity Enhanced RGB V2 | 3 902
+PowerA | Spectra | Spectra Infinity Enhanced White | 3 648
+PowerA | Spectra | Spectra Infinity Enhanced White V2 | 3 794

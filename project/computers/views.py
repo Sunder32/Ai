@@ -1,11 +1,17 @@
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 from .models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 from .serializers import (
     CPUSerializer, GPUSerializer, MotherboardSerializer, RAMSerializer,
     StorageSerializer, PSUSerializer, CaseSerializer, CoolingSerializer
 )
+
+# Время кэширования для компонентов (15 минут)
+CACHE_TTL = 60 * 15
 
 
 class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
@@ -16,7 +22,23 @@ class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
         return request.user and request.user.is_staff
 
 
-class CPUViewSet(viewsets.ModelViewSet):
+class CachedModelViewSet(viewsets.ModelViewSet):
+    """Базовый ViewSet с кэшированием для списка и деталей"""
+    # Отключаем пагинацию для компонентов - нужно показывать все сразу
+    pagination_class = None
+    
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_headers('Authorization'))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+    
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_headers('Authorization'))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+
+class CPUViewSet(CachedModelViewSet):
     """ViewSet для процессоров. Чтение - авторизованным, изменение - только админам"""
     queryset = CPU.objects.all()
     serializer_class = CPUSerializer
@@ -27,7 +49,7 @@ class CPUViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'performance_score', 'cores']
 
 
-class GPUViewSet(viewsets.ModelViewSet):
+class GPUViewSet(CachedModelViewSet):
     """ViewSet для видеокарт. Чтение - авторизованным, изменение - только админам"""
     queryset = GPU.objects.all()
     serializer_class = GPUSerializer
@@ -38,7 +60,7 @@ class GPUViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'performance_score', 'memory']
 
 
-class MotherboardViewSet(viewsets.ModelViewSet):
+class MotherboardViewSet(CachedModelViewSet):
     """ViewSet для материнских плат. Чтение - авторизованным, изменение - только админам"""
     queryset = Motherboard.objects.all()
     serializer_class = MotherboardSerializer
@@ -49,7 +71,7 @@ class MotherboardViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class RAMViewSet(viewsets.ModelViewSet):
+class RAMViewSet(CachedModelViewSet):
     """ViewSet для оперативной памяти. Чтение - авторизованным, изменение - только админам"""
     queryset = RAM.objects.all()
     serializer_class = RAMSerializer
@@ -60,7 +82,7 @@ class RAMViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'capacity', 'speed']
 
 
-class StorageViewSet(viewsets.ModelViewSet):
+class StorageViewSet(CachedModelViewSet):
     """ViewSet для накопителей. Чтение - авторизованным, изменение - только админам"""
     queryset = Storage.objects.all()
     serializer_class = StorageSerializer
@@ -71,7 +93,7 @@ class StorageViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'capacity']
 
 
-class PSUViewSet(viewsets.ModelViewSet):
+class PSUViewSet(CachedModelViewSet):
     """ViewSet для блоков питания. Чтение - авторизованным, изменение - только админам"""
     queryset = PSU.objects.all()
     serializer_class = PSUSerializer
@@ -82,7 +104,7 @@ class PSUViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'wattage']
 
 
-class CaseViewSet(viewsets.ModelViewSet):
+class CaseViewSet(CachedModelViewSet):
     """ViewSet для корпусов. Чтение - авторизованным, изменение - только админам"""
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
@@ -93,7 +115,7 @@ class CaseViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price']
 
 
-class CoolingViewSet(viewsets.ModelViewSet):
+class CoolingViewSet(CachedModelViewSet):
     """ViewSet для систем охлаждения. Чтение - авторизованным, изменение - только админам"""
     queryset = Cooling.objects.all()
     serializer_class = CoolingSerializer

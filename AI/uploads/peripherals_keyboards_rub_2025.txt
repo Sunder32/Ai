@@ -1,0 +1,26 @@
+# Игровые и офисные клавиатуры — популярные модели и цены в рублях на 2025 год
+# Цена ориентировочная, рассчитана из долларовой цены по курсу 1 USD = 77.2 RUB
+# Формат: Бренд | Серия | Модель | Цена, RUB
+
+ASUS | ROG | ROG Strix Scope II 96 Wireless | 13 896
+Wooting | 60HE | Wooting 60HE v2 | 15 440
+SteelSeries | Apex | Apex Pro TKL Wireless (2023) | 17 756
+SteelSeries | Apex | Apex 9 TKL | 10 808
+Corsair | K70 | K70 RGB Pro | 13 124
+Corsair | K65 | K65 Plus Wireless | 11 580
+Logitech | G Series | G915 TKL Lightspeed | 16 984
+Logitech | G Series | G Pro X TKL | 15 440
+Razer | Huntsman | Huntsman V3 Pro TKL | 16 984
+Razer | BlackWidow | BlackWidow V4 Pro | 17 756
+Razer | BlackWidow | BlackWidow V4 75% | 14 668
+Keychron | K Series | Keychron K2 Pro | 6 948
+Keychron | K Series | Keychron K8 Pro | 8 492
+Glorious | GMMK | GMMK 2 65% | 6 948
+Glorious | GMMK | GMMK Pro 75% | 13 124
+Ducky | One 3 | Ducky One 3 TKL | 10 036
+HyperX | Alloy | Alloy Origins | 7 720
+HyperX | Alloy | Alloy Origins 60 | 6 948
+Redragon | K Series | K552 Kumara | 3 088
+Redragon | K Series | K628 Pollux 75% | 4 632
+Akko | 3068B | 3068B Plus | 6 948
+Akko | MOD | MOD 007B HE | 14 668
