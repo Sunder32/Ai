@@ -1,7 +1,4 @@
-"""
-Fine-tuning Data Preparation
-Подготовка данных для fine-tuning модели
-"""
+
 
 import os
 import json
@@ -10,40 +7,35 @@ from typing import List, Dict, Optional, Union
 
 
 def prepare_chat_format(data: Union[List[Dict], str], output_path: str) -> str:
-    """
-    Конвертировать данные в формат для fine-tuning (chat format)
-    Поддерживает форматы: Alpaca, ShareGPT, OpenAI, Product Catalog, TXT
-    """
-    
-    # Если это строка (текст из txt файла)
+
     if isinstance(data, str):
         return _prepare_text_data(data, output_path)
     
-    # Определяем тип данных
+
     if not data:
         raise ValueError("Пустой датасет")
     
     sample = data[0]
     
-    # Если это классификация (text + label)
+
     if "text" in sample and "label" in sample:
         return _prepare_classification_data(data, output_path)
     
-    # Если это Q&A (question + answer или input + output)
+
     elif ("question" in sample and "answer" in sample) or \
          ("input" in sample and "output" in sample) or \
          ("instruction" in sample):
         return _prepare_qa_data(data, output_path)
     
-    # Если это диалоги (messages или conversations)
+
     elif "messages" in sample or "conversations" in sample:
         return _prepare_conversation_data(data, output_path)
     
-    # Если это каталог продуктов (category, model, price и т.п.)
+
     elif "category" in sample and ("model" in sample or "name" in sample):
         return _prepare_product_catalog_data(data, output_path)
     
-    # Если есть поля description/specs - пробуем как продуктовые данные
+
     elif "description" in sample or "specs" in sample:
         return _prepare_product_catalog_data(data, output_path)
     
@@ -52,13 +44,13 @@ def prepare_chat_format(data: Union[List[Dict], str], output_path: str) -> str:
 
 
 def _prepare_classification_data(data: List[Dict], output_path: str) -> str:
-    """Подготовка данных классификации для fine-tuning"""
+
     
-    # Собираем уникальные лейблы
+
     labels = list(set(item.get("label", "") for item in data))
     labels_str = ", ".join(labels)
     
-    # Конвертируем в chat format
+
     formatted = []
     for item in data:
         text = item.get("text", "")
@@ -81,13 +73,13 @@ def _prepare_classification_data(data: List[Dict], output_path: str) -> str:
             ]
         })
     
-    # Сохраняем в JSONL формате (стандарт для fine-tuning)
+
     jsonl_path = output_path.replace(".json", "_finetune.jsonl")
     with open(jsonl_path, "w", encoding="utf-8") as f:
         for item in formatted:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
     
-    # Также создаем Alpaca format (для LLaMA-Factory и подобных)
+
     alpaca_data = []
     for item in data:
         alpaca_data.append({
@@ -104,11 +96,11 @@ def _prepare_classification_data(data: List[Dict], output_path: str) -> str:
 
 
 def _prepare_qa_data(data: List[Dict], output_path: str) -> str:
-    """Подготовка Q&A данных для fine-tuning"""
+
     
     formatted = []
     for item in data:
-        # Поддержка разных форматов
+
         instruction = item.get("instruction", item.get("question", ""))
         input_text = item.get("input", "")
         output_text = item.get("output", item.get("answer", ""))
@@ -133,19 +125,19 @@ def _prepare_qa_data(data: List[Dict], output_path: str) -> str:
 
 
 def _prepare_conversation_data(data: List[Dict], output_path: str) -> str:
-    """Подготовка диалоговых данных"""
+
     
     formatted = []
     for item in data:
         messages = item.get("messages", item.get("conversations", []))
         
-        # Нормализуем формат сообщений
+
         normalized = []
         for msg in messages:
             role = msg.get("role", msg.get("from", "user"))
             content = msg.get("content", msg.get("value", ""))
             
-            # Приводим роли к стандарту
+
             if role in ["human", "user"]:
                 role = "user"
             elif role in ["gpt", "assistant", "bot"]:
@@ -165,11 +157,11 @@ def _prepare_conversation_data(data: List[Dict], output_path: str) -> str:
 
 
 def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
-    """Подготовка данных каталога продуктов для fine-tuning"""
+
     
     formatted = []
     
-    # Группируем по категориям для более разнообразных вопросов
+
     from collections import defaultdict
     by_category = defaultdict(list)
     for item in data:
@@ -184,10 +176,10 @@ def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
         specs = item.get("specs", item.get("specifications", ""))
         description = item.get("description", "")
         
-        # Создаём несколько вариантов вопросов-ответов
+
         product_name = f"{manufacturer} {model}".strip()
         
-        # Вопрос о характеристиках
+
         if specs:
             formatted.append({
                 "messages": [
@@ -202,7 +194,7 @@ def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
                 ]
             })
         
-        # Вопрос о цене
+
         if price:
             formatted.append({
                 "messages": [
@@ -217,7 +209,7 @@ def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
                 ]
             })
         
-        # Общий вопрос о продукте
+
         full_info = f"{product_name}"
         if category:
             full_info = f"{category}: {full_info}"
@@ -241,7 +233,7 @@ def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
             ]
         })
     
-    # Добавляем вопросы по категориям
+
     for category, items in by_category.items():
         if len(items) >= 2:
             items_list = ", ".join([
@@ -266,7 +258,7 @@ def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
         for item in formatted:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
     
-    # Также создаем Alpaca format
+
     alpaca_data = []
     for item in data:
         product_name = f"{item.get('manufacturer', '')} {item.get('model', item.get('name', ''))}".strip()
@@ -294,14 +286,14 @@ def _prepare_product_catalog_data(data: List[Dict], output_path: str) -> str:
 
 
 def _prepare_text_data(text: str, output_path: str) -> str:
-    """Подготовка текстовых данных из TXT файла для fine-tuning"""
+
     
     formatted = []
     
-    # Разбиваем текст на строки и обрабатываем
+
     lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
     
-    # Пробуем парсить как список товаров (формат: "Название — описание цена")
+
     product_pattern = re.compile(r'^(.+?)\s*[—–-]\s*(.+?)\s+([\d.,]+)\s*р\.?$', re.IGNORECASE)
     
     products = []
@@ -319,10 +311,10 @@ def _prepare_text_data(text: str, output_path: str) -> str:
         else:
             other_lines.append(line)
     
-    # Если нашли товары - создаём Q&A по ним
+
     if products:
         for product in products:
-            # Вопрос о цене
+
             formatted.append({
                 "messages": [
                     {"role": "user", "content": f"Сколько стоит {product['name']}?"},
@@ -330,7 +322,7 @@ def _prepare_text_data(text: str, output_path: str) -> str:
                 ]
             })
             
-            # Вопрос о характеристиках
+
             formatted.append({
                 "messages": [
                     {"role": "user", "content": f"Расскажи про {product['name']}"},
@@ -338,15 +330,14 @@ def _prepare_text_data(text: str, output_path: str) -> str:
                 ]
             })
     
-    # Если есть другие строки - обрабатываем как обычный текст
     if other_lines and not products:
-        # Разбиваем на чанки для обучения
+
         chunk_size = 500
         full_text = "\n".join(other_lines)
         
         for i in range(0, len(full_text), chunk_size):
             chunk = full_text[i:i+chunk_size]
-            if len(chunk) > 50:  # Минимальная длина
+            if len(chunk) > 50:  
                 formatted.append({
                     "messages": [
                         {"role": "system", "content": "Используй эту информацию для ответов на вопросы."},
@@ -355,7 +346,7 @@ def _prepare_text_data(text: str, output_path: str) -> str:
                     ]
                 })
     
-    # Сохраняем результат
+
     jsonl_path = output_path.replace(".txt", "_finetune.jsonl")
     with open(jsonl_path, "w", encoding="utf-8") as f:
         for item in formatted:
@@ -371,25 +362,22 @@ def create_ollama_training_modelfile(
     dataset_path: str = None,
     output_path: str = "Modelfile.train"
 ) -> str:
-    """
-    Создать Modelfile с примерами из датасета (few-shot learning)
-    Ollama не поддерживает настоящий fine-tuning, но можно добавить примеры в промпт
-    """
+
     
     examples = []
     if dataset_path and os.path.exists(dataset_path):
         file_ext = os.path.splitext(dataset_path)[1].lower()
         
         if file_ext == '.txt':
-            # Обработка текстового файла
+
             with open(dataset_path, "r", encoding="utf-8") as f:
                 text = f.read()
             
-            # Парсим как товары
+
             lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
             product_pattern = re.compile(r'^(.+?)\s*[—–-]\s*(.+?)\s+([\d.,]+)\s*р\.?$', re.IGNORECASE)
             
-            for line in lines[:15]:  # Максимум 15 примеров
+            for line in lines[:15]:  
                 match = product_pattern.match(line)
                 if match:
                     name, description, price = match.groups()
@@ -404,7 +392,7 @@ def create_ollama_training_modelfile(
             if isinstance(data, list) and data:
                 sample = data[0]
                 
-                # Если это классификация
+
                 if "text" in sample and "label" in sample:
                     from collections import defaultdict
                     by_label = defaultdict(list)
@@ -417,7 +405,7 @@ def create_ollama_training_modelfile(
                         for item in items:
                             examples.append(f"Текст: {item['text']}\nКатегория: {label}")
                 
-                # Если это каталог продуктов
+
                 elif "category" in sample or "model" in sample or "manufacturer" in sample:
                     for item in data[:15]:
                         product_name = f"{item.get('manufacturer', '')} {item.get('model', item.get('name', ''))}".strip()
@@ -432,9 +420,9 @@ def create_ollama_training_modelfile(
                             info += f"\nОписание: {item['description']}"
                         examples.append(info)
     
-    examples_text = "\n\n".join(examples[:15])  # Максимум 15 примеров
+    examples_text = "\n\n".join(examples[:15])  
     
-    # Определяем тип контента для system prompt
+
     if examples and ("Товар:" in examples[0] or "Категория:" in examples[0]):
         system_prompt = """Ты эксперт-консультант по компьютерной технике и периферии.
 
@@ -468,21 +456,21 @@ SYSTEM """{system_prompt}"""
 
 
 def get_dataset_info(file_path: str) -> dict:
-    """Получить информацию о датасете (JSON или TXT)"""
+
     
     if not os.path.exists(file_path):
         return {"error": "Файл не найден"}
     
     file_ext = os.path.splitext(file_path)[1].lower()
     
-    # Обработка TXT файлов
+
     if file_ext == '.txt':
         with open(file_path, "r", encoding="utf-8") as f:
             text = f.read()
         
         lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
         
-        # Пробуем парсить как товары
+
         product_pattern = re.compile(r'^(.+?)\s*[—–-]\s*(.+?)\s+([\d.,]+)\s*р\.?$', re.IGNORECASE)
         products = []
         for line in lines:
@@ -512,7 +500,7 @@ def get_dataset_info(file_path: str) -> dict:
                 "sample": {"text": lines[0][:100] + "..." if lines else ""}
             }
     
-    # Обработка JSON файлов
+
     elif file_ext == '.json':
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -525,7 +513,7 @@ def get_dataset_info(file_path: str) -> dict:
         
         sample = data[0]
         
-        # Определяем формат
+
         if "text" in sample and "label" in sample:
             format_type = "classification"
         elif "category" in sample or ("model" in sample and "manufacturer" in sample):
@@ -537,14 +525,14 @@ def get_dataset_info(file_path: str) -> dict:
         else:
             format_type = "unknown"
         
-        # Статистика по лейблам
+
         labels = {}
         if "label" in sample:
             for item in data:
                 label = item.get("label", "unknown")
                 labels[label] = labels.get(label, 0) + 1
         
-        # Статистика по категориям для продуктов
+
         if "category" in sample:
             for item in data:
                 cat = item.get("category", "unknown")

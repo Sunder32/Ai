@@ -20,7 +20,7 @@ class RecommendationSerializer(serializers.ModelSerializer):
 
 
 class WorkspaceSetupDetailSerializer(serializers.ModelSerializer):
-    """Сериализатор для workspace без вложенной конфигурации (для избежания циклической зависимости)"""
+
     monitor_primary_detail = MonitorSerializer(source='monitor_primary', read_only=True)
     monitor_secondary_detail = MonitorSerializer(source='monitor_secondary', read_only=True)
     keyboard_detail = KeyboardSerializer(source='keyboard', read_only=True)
@@ -65,7 +65,7 @@ class PCConfigurationSerializer(serializers.ModelSerializer):
     cooling_detail = CoolingSerializer(source='cooling', read_only=True)
     recommendations = RecommendationSerializer(many=True, read_only=True)
     
-    # Workspace - берём первый (обычно один на конфигурацию)
+
     workspace = serializers.SerializerMethodField()
     
     class Meta:
@@ -74,7 +74,7 @@ class PCConfigurationSerializer(serializers.ModelSerializer):
         read_only_fields = ['total_price', 'created_at', 'updated_at']
     
     def get_workspace(self, obj):
-        """Получить workspace setup для этой конфигурации"""
+
         workspace = obj.workspace_setups.first()
         if workspace:
             return WorkspaceSetupDetailSerializer(workspace).data
@@ -105,7 +105,7 @@ class WorkspaceSetupSerializer(serializers.ModelSerializer):
     desk_detail = DeskSerializer(source='desk', read_only=True)
     chair_detail = ChairSerializer(source='chair', read_only=True)
     
-    # Дополнительная периферия
+
     speakers_detail = SpeakersSerializer(source='speakers', read_only=True)
     mousepad_detail = MousepadSerializer(source='mousepad', read_only=True)
     monitor_arm_detail = MonitorArmSerializer(source='monitor_arm', read_only=True)
@@ -135,7 +135,7 @@ class WorkspaceSetupSerializer(serializers.ModelSerializer):
 
 
 class ConfigurationRequestSerializer(serializers.Serializer):
-    """Сериализатор для запроса на подбор конфигурации"""
+
     user_type = serializers.ChoiceField(choices=[
         ('designer', 'Дизайнер'),
         ('programmer', 'Программист'),
@@ -161,7 +161,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     has_existing_components = serializers.BooleanField(default=False)
     existing_components_description = serializers.CharField(required=False, allow_blank=True, max_length=2000)
     
-    # Параметры периферии
+
     include_workspace = serializers.BooleanField(default=False)
     use_ai = serializers.BooleanField(default=False)
     ai_generation_mode = serializers.ChoiceField(
@@ -176,17 +176,16 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     peripheral_budget_percent = serializers.IntegerField(default=30, min_value=10, max_value=50)
     
     def validate(self, attrs):
-        """Комплексная валидация данных"""
+
         min_budget = attrs.get('min_budget')
         max_budget = attrs.get('max_budget')
         
-        # Проверка бюджета
+
         if min_budget and max_budget and min_budget > max_budget:
             raise serializers.ValidationError({
                 'min_budget': 'Минимальный бюджет не может быть больше максимального'
             })
         
-        # Проверка разницы бюджетов
         if min_budget and max_budget and (max_budget - min_budget) < 5000:
             raise serializers.ValidationError({
                 'max_budget': 'Разница между минимальным и максимальным бюджетом должна быть не менее 5000₽'
@@ -195,30 +194,30 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         return attrs
     
     def validate_min_cpu_cores(self, value):
-        """Валидация количества ядер процессора"""
+
         if value and (value < 2 or value > 64):
             raise serializers.ValidationError('Количество ядер должно быть от 2 до 64')
         return value
     
     def validate_min_gpu_vram(self, value):
-        """Валидация объема видеопамяти"""
+
         if value and (value < 2 or value > 48):
             raise serializers.ValidationError('Объем видеопамяти должен быть от 2 до 48 ГБ')
         return value
     
     def validate_min_ram_capacity(self, value):
-        """Валидация объема оперативной памяти"""
+
         if value and (value < 4 or value > 256):
             raise serializers.ValidationError('Объем ОЗУ должен быть от 4 до 256 ГБ')
         return value
     
     def validate_min_storage_capacity(self, value):
-        """Валидация объема накопителя"""
+
         if value and (value < 128 or value > 8192):
             raise serializers.ValidationError('Объем накопителя должен быть от 128 до 8192 ГБ')
         return value
     
-    # Расширенные параметры PC
+
     preferred_cpu_manufacturer = serializers.ChoiceField(
         choices=[('any', 'Любой'), ('Intel', 'Intel'), ('intel', 'Intel'), ('AMD', 'AMD'), ('amd', 'AMD')],
         default='any',
@@ -251,7 +250,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     )
     overclocking_support = serializers.BooleanField(default=False, required=False)
     
-    # Выбор устройств
+
     need_monitor = serializers.BooleanField(default=True)
     need_keyboard = serializers.BooleanField(default=True)
     need_mouse = serializers.BooleanField(default=True)
@@ -261,7 +260,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     need_desk = serializers.BooleanField(default=True)
     need_chair = serializers.BooleanField(default=True)
     
-    # Требования к периферии - Мониторы
+
     monitor_min_refresh_rate = serializers.IntegerField(default=60, required=False)
     monitor_min_resolution = serializers.CharField(default='1080p', required=False)
     monitor_size_preference = serializers.IntegerField(default=24, required=False)
@@ -271,7 +270,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         required=False
     )
     
-    # Клавиатура
+
     keyboard_type_preference = serializers.ChoiceField(
         choices=[('any', 'Любая'), ('mechanical', 'Механическая'), ('membrane', 'Мембранная')],
         default='any',
@@ -284,7 +283,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     )
     keyboard_rgb = serializers.BooleanField(default=False, required=False)
     
-    # Мышь
+
     mouse_min_dpi = serializers.IntegerField(default=1000, required=False)
     mouse_sensor_type = serializers.ChoiceField(
         choices=[('any', 'Любой'), ('optical', 'Оптический'), ('laser', 'Лазерный')],
@@ -293,11 +292,11 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     )
     mouse_wireless = serializers.BooleanField(default=False, required=False)
     
-    # Наушники
+
     headset_wireless = serializers.BooleanField(default=False, required=False)
     headset_noise_cancellation = serializers.BooleanField(default=False, required=False)
     
-    # Веб-камера и микрофон
+
     webcam_min_resolution = serializers.ChoiceField(
         choices=[('any', 'Любое'), ('720p', '720p'), ('1080p', '1080p'), ('4k', '4K')],
         default='any',
@@ -309,7 +308,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         required=False
     )
     
-    # Рабочее место - Стол
+
     desk_min_width = serializers.IntegerField(default=120, required=False)
     desk_min_depth = serializers.IntegerField(default=60, required=False)
     desk_height_adjustable = serializers.BooleanField(default=False, required=False)
@@ -320,7 +319,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
     )
     desk_cable_management = serializers.BooleanField(default=True, required=False)
     
-    # Кресло
+
     chair_ergonomic = serializers.BooleanField(default=True, required=False)
     chair_lumbar_support = serializers.BooleanField(default=True, required=False)
     chair_armrests_adjustable = serializers.BooleanField(default=False, required=False)
@@ -331,7 +330,7 @@ class ConfigurationRequestSerializer(serializers.Serializer):
         required=False
     )
     
-    # Освещение и аксессуары
+
     workspace_rgb_lighting = serializers.BooleanField(default=False, required=False)
     workspace_lighting_type = serializers.ChoiceField(
         choices=[('any', 'Любой'), ('warm', 'Теплый'), ('neutral', 'Нейтральный'), ('cold', 'Холодный'), ('adjustable', 'Регулируемый')],
@@ -344,10 +343,10 @@ class ConfigurationRequestSerializer(serializers.Serializer):
 
 
 class BuilderConfigurationSerializer(serializers.Serializer):
-    """Сериализатор для сохранения конфигурации из Build Yourself"""
+
     name = serializers.CharField(max_length=255)
     
-    # PC компоненты (ID)
+
     cpu = serializers.IntegerField(required=False, allow_null=True)
     gpu = serializers.IntegerField(required=False, allow_null=True)
     motherboard = serializers.IntegerField(required=False, allow_null=True)
@@ -358,7 +357,7 @@ class BuilderConfigurationSerializer(serializers.Serializer):
     case = serializers.IntegerField(required=False, allow_null=True)
     cooling = serializers.IntegerField(required=False, allow_null=True)
     
-    # Периферия и рабочее место (ID)
+
     monitor_primary = serializers.IntegerField(required=False, allow_null=True)
     monitor_secondary = serializers.IntegerField(required=False, allow_null=True)
     keyboard = serializers.IntegerField(required=False, allow_null=True)
@@ -369,7 +368,7 @@ class BuilderConfigurationSerializer(serializers.Serializer):
     desk = serializers.IntegerField(required=False, allow_null=True)
     chair = serializers.IntegerField(required=False, allow_null=True)
     
-    # Дополнительная периферия
+
     speakers = serializers.IntegerField(required=False, allow_null=True)
     mousepad = serializers.IntegerField(required=False, allow_null=True)
     monitor_arm = serializers.IntegerField(required=False, allow_null=True)
@@ -380,12 +379,12 @@ class BuilderConfigurationSerializer(serializers.Serializer):
     gamepad = serializers.IntegerField(required=False, allow_null=True)
     headphone_stand = serializers.IntegerField(required=False, allow_null=True)
     
-    # Публичность сборки
+
     is_public = serializers.BooleanField(default=False)
 
 
 class PublicConfigurationSerializer(serializers.ModelSerializer):
-    """Сериализатор для публичного просмотра конфигурации"""
+
     cpu_detail = CPUSerializer(source='cpu', read_only=True)
     gpu_detail = GPUSerializer(source='gpu', read_only=True)
     motherboard_detail = MotherboardSerializer(source='motherboard', read_only=True)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiSettings, FiCpu, FiList, FiUser, FiMenu, FiX, FiTool } from 'react-icons/fi';
+import { FiHome, FiSettings, FiList, FiUser, FiMenu, FiX, FiTool } from 'react-icons/fi';
+import brandMark from '../assets/brand/mark.svg';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -44,12 +45,15 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 flex items-center justify-center bg-primary transition-all duration-200 group-hover:shadow-glow">
-              <span className="text-lg font-heading font-bold text-white">AI</span>
-            </div>
+            <img
+              src={brandMark}
+              alt="AI PC Configurator"
+              className="w-10 h-10 transition-all duration-200 group-hover:shadow-glow"
+              draggable={false}
+            />
             <div className="hidden sm:flex flex-col">
               <span className="text-lg font-heading font-semibold text-white">
-                PC Configurator
+                AI PC Configurator
               </span>
             </div>
           </Link>

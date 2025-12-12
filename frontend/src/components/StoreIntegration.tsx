@@ -169,7 +169,7 @@ export const PriceHistory: React.FC<PriceHistoryProps> = ({
   const fetchPriceHistory = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await api.get(`/api/configurations/${configurationId}/price-history/`, {
+      const response = await api.get(`/recommendations/configurations/${configurationId}/price-history/`, {
         params: { days },
       });
       setHistory(response.data.price_history || {});

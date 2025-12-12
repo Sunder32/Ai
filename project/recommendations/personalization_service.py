@@ -1,6 +1,4 @@
-"""
-Сервис персонализации и рекомендаций на основе истории пользователя.
-"""
+
 import logging
 from typing import Dict, List, Optional, Any
 from decimal import Decimal
@@ -12,24 +10,24 @@ logger = logging.getLogger(__name__)
 
 
 class UserBuildHistory(models.Model):
-    """История сборок пользователя для анализа предпочтений"""
+    
     
     user_id = models.IntegerField(db_index=True)
     configuration_id = models.IntegerField()
     
-    # Статистика
+   
     user_type = models.CharField(max_length=50)
     budget_used = models.DecimalField(max_digits=10, decimal_places=2)
     
-    # Предпочтения по производителям
+    
     cpu_manufacturer = models.CharField(max_length=50, blank=True)
     gpu_manufacturer = models.CharField(max_length=50, blank=True)
     
-    # Приоритеты
-    priority = models.CharField(max_length=50)  # performance, balanced, budget
+   
+    priority = models.CharField(max_length=50)  
     
-    # Оценка пользователя
-    user_rating = models.IntegerField(null=True)  # 1-5
+    
+    user_rating = models.IntegerField(null=True)  
     user_feedback = models.TextField(blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -45,18 +43,16 @@ class UserBuildHistory(models.Model):
 
 
 class PersonalizationService:
-    """Сервис персонализации рекомендаций"""
+    
     
     def __init__(self, user):
         self.user = user
     
     def get_user_preferences(self) -> Dict[str, Any]:
-        """
-        Анализ предпочтений пользователя на основе истории.
-        """
+
         from .models import PCConfiguration
         
-        # Получаем все сборки пользователя
+        
         configurations = PCConfiguration.objects.filter(
             user=self.user
         ).select_related('cpu', 'gpu', 'motherboard', 'ram')
@@ -78,7 +74,7 @@ class PersonalizationService:
             'budget_range': {'min': 0, 'max': 0}
         }
         
-        # Анализ бюджета
+       
         budgets = [float(c.total_price) for c in configurations if c.total_price]
         if budgets:
             preferences['avg_budget'] = sum(budgets) / len(budgets)
@@ -87,7 +83,7 @@ class PersonalizationService:
                 'max': max(budgets)
             }
         
-        # Анализ производителей CPU
+        
         cpu_manufacturers = {}
         for config in configurations:
             if config.cpu:
@@ -97,7 +93,7 @@ class PersonalizationService:
         if cpu_manufacturers:
             preferences['preferred_cpu_manufacturer'] = max(cpu_manufacturers, key=cpu_manufacturers.get)
         
-        # Анализ производителей GPU
+        
         gpu_manufacturers = {}
         for config in configurations:
             if config.gpu:
@@ -110,9 +106,7 @@ class PersonalizationService:
         return preferences
     
     def get_upgrade_recommendations(self, current_config_id: int) -> Dict[str, Any]:
-        """
-        Рекомендации по апгрейду существующей системы.
-        """
+
         from .models import PCConfiguration
         from computers.models import CPU, GPU, RAM, Storage
         
@@ -125,7 +119,7 @@ class PersonalizationService:
         
         upgrades = []
         
-        # Рекомендации по CPU
+
         if config.cpu and config.motherboard:
             better_cpus = CPU.objects.filter(
                 socket=config.motherboard.socket,
@@ -149,11 +143,11 @@ class PersonalizationService:
                     ]
                 })
         
-        # Рекомендации по GPU
+
         if config.gpu:
             better_gpus = GPU.objects.filter(
                 performance_score__gt=config.gpu.performance_score,
-                price__lte=config.gpu.price * 2  # Не более чем в 2 раза дороже
+                price__lte=config.gpu.price * 2  
             ).order_by('-performance_score')[:3]
             
             if better_gpus:
@@ -173,9 +167,9 @@ class PersonalizationService:
                     ]
                 })
         
-        # Рекомендации по RAM
+
         if config.ram and config.motherboard:
-            # Можно добавить больше RAM или быстрее
+
             more_ram = RAM.objects.filter(
                 memory_type=config.motherboard.memory_type,
                 capacity__gt=config.ram.capacity
@@ -196,7 +190,7 @@ class PersonalizationService:
                     ]
                 })
         
-        # Рекомендации по накопителю
+        
         if config.storage_primary:
             faster_storage = Storage.objects.filter(
                 storage_type='ssd_nvme',
@@ -228,19 +222,17 @@ class PersonalizationService:
         }
     
     def get_similar_builds(self, config_id: int = None, budget: float = None, user_type: str = None) -> List[Dict]:
-        """
-        Получить похожие сборки других пользователей.
-        """
+
         from .models import PCConfiguration
         
-        # Базовый запрос - только публичные сборки
+
         queryset = PCConfiguration.objects.filter(
             is_public=True
         ).exclude(user=self.user).select_related(
             'cpu', 'gpu', 'motherboard', 'ram'
         )
         
-        # Если указан ID конфигурации - ищем похожие
+
         if config_id:
             try:
                 reference = PCConfiguration.objects.get(id=config_id)
@@ -248,7 +240,7 @@ class PersonalizationService:
             except PCConfiguration.DoesNotExist:
                 pass
         
-        # Фильтр по бюджету (±30%)
+
         if budget:
             min_budget = Decimal(str(budget * 0.7))
             max_budget = Decimal(str(budget * 1.3))
@@ -257,7 +249,7 @@ class PersonalizationService:
                 total_price__lte=max_budget
             )
         
-        # Ограничиваем выборку
+        
         similar = queryset.order_by('-created_at')[:10]
         
         return [

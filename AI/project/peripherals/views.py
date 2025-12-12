@@ -9,7 +9,7 @@ from .serializers import (
 
 
 class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
-    """Разрешает чтение всем авторизованным, создание/изменение только админам"""
+
     def has_permission(self, request, view):
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return request.user and request.user.is_authenticated
@@ -17,7 +17,7 @@ class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
 
 
 class MonitorViewSet(viewsets.ModelViewSet):
-    """ViewSet для мониторов. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Monitor.objects.all()
     serializer_class = MonitorSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -28,7 +28,7 @@ class MonitorViewSet(viewsets.ModelViewSet):
 
 
 class KeyboardViewSet(viewsets.ModelViewSet):
-    """ViewSet для клавиатур. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Keyboard.objects.all()
     serializer_class = KeyboardSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -39,7 +39,7 @@ class KeyboardViewSet(viewsets.ModelViewSet):
 
 
 class MouseViewSet(viewsets.ModelViewSet):
-    """ViewSet для мышей. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Mouse.objects.all()
     serializer_class = MouseSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -50,7 +50,7 @@ class MouseViewSet(viewsets.ModelViewSet):
 
 
 class HeadsetViewSet(viewsets.ModelViewSet):
-    """ViewSet для гарнитур. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Headset.objects.all()
     serializer_class = HeadsetSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -61,7 +61,7 @@ class HeadsetViewSet(viewsets.ModelViewSet):
 
 
 class WebcamViewSet(viewsets.ModelViewSet):
-    """ViewSet для веб-камер. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Webcam.objects.all()
     serializer_class = WebcamSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -72,7 +72,7 @@ class WebcamViewSet(viewsets.ModelViewSet):
 
 
 class MicrophoneViewSet(viewsets.ModelViewSet):
-    """ViewSet для микрофонов. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Microphone.objects.all()
     serializer_class = MicrophoneSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -83,7 +83,7 @@ class MicrophoneViewSet(viewsets.ModelViewSet):
 
 
 class DeskViewSet(viewsets.ModelViewSet):
-    """ViewSet для столов. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Desk.objects.all()
     serializer_class = DeskSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -94,7 +94,7 @@ class DeskViewSet(viewsets.ModelViewSet):
 
 
 class ChairViewSet(viewsets.ModelViewSet):
-    """ViewSet для кресел. Чтение - авторизованным, изменение - только админам"""
+
     queryset = Chair.objects.all()
     serializer_class = ChairSerializer
     permission_classes = [ReadOnlyOrAdminPermission]

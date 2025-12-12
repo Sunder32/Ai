@@ -1,6 +1,4 @@
-// Автоматически определяем адрес сервера с правильным протоколом
-// Для локального использования - localhost:5050
-// Для внешнего доступа - используем текущий домен и порт
+
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5050/api'
     : (window.location.port 
@@ -9,12 +7,12 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
 
 console.log('[DEBUG] API_URL:', API_URL);
 
-// ===== CHAT MANAGEMENT =====
+
 let chats = [];
 let activeChat = null;
 let uploadedFiles = [];
 
-// Initialize on load
+
 document.addEventListener('DOMContentLoaded', () => {
     loadChatsFromStorage();
     loadFilesFromStorage();
@@ -22,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFileDisplay();
     checkStatus();
 
-    // If no chats exist, create first one
+
     if (chats.length === 0) {
         createNewChat();
     } else {
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Chat Management Functions
+
 function createNewChat() {
     const newChat = {
         id: Date.now().toString(),
@@ -53,11 +51,11 @@ function switchChat(chatId) {
     activeChat = chats.find(c => c.id === chatId);
     if (!activeChat) return;
 
-    // Update UI
+
     updateChatList();
     renderChatMessages();
 
-    // Auto-scroll to bottom
+
     const chatContainer = document.getElementById('chat-container');
     setTimeout(() => {
         chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -78,7 +76,7 @@ function deleteChat(chatId, event) {
     chats.splice(index, 1);
     saveChatsToStorage();
 
-    // Switch to another chat if deleted current
+ 
     if (activeChat && activeChat.id === chatId) {
         switchChat(chats[0].id);
     }
@@ -127,7 +125,7 @@ function renderChatMessages() {
     });
 }
 
-// LocalStorage Functions
+
 function saveChatsToStorage() {
     try {
         localStorage.setItem('deepseek_chats', JSON.stringify(chats));
@@ -168,7 +166,7 @@ function loadFilesFromStorage() {
     }
 }
 
-// ===== TAB SWITCHING =====
+
 function switchTab(tabName) {
     document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -181,13 +179,13 @@ function switchTab(tabName) {
     if (tabName === 'finetune') buttons[3].classList.add('active');
     if (tabName === 'learning') buttons[4].classList.add('active');
     
-    // Load data for specific tabs
+
     if (tabName === 'rag') loadRAGStats();
     if (tabName === 'finetune') loadFinetuneInfo();
     if (tabName === 'learning') loadLearningStats();
 }
 
-// ===== CHAT FUNCTIONALITY =====
+
 const userInput = document.getElementById('user-input');
 
 userInput.addEventListener('keypress', (e) => {
@@ -200,12 +198,12 @@ async function sendMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
-    // Add user message
+
     activeChat.messages.push({ role: 'user', content: text });
     appendMessage(text, 'user', true);
     userInput.value = '';
 
-    // Show loading indicator
+
     const loadingId = appendMessage('Thinking...', 'system', true, true);
 
     try {
@@ -222,17 +220,16 @@ async function sendMessage() {
 
         const data = await response.json();
 
-        // Remove loading message
+
         removeMessage(loadingId);
 
-        // Add bot response
+
         activeChat.messages.push({ role: 'system', content: data.response });
         appendMessage(data.response, 'system', true);
 
-        // Update context
         activeChat.context = data.context;
 
-        // Save to storage
+
         saveChatsToStorage();
 
     } catch (error) {
@@ -253,7 +250,7 @@ function appendMessage(text, sender, shouldSave = false, isLoading = false) {
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
     
-    // Рендерим Markdown для ответов ИИ
+
     if (sender === 'system' && !isLoading) {
         bubble.innerHTML = renderMarkdown(text);
     } else {
@@ -262,7 +259,7 @@ function appendMessage(text, sender, shouldSave = false, isLoading = false) {
 
     msgDiv.appendChild(bubble);
     
-    // Добавляем кнопки для ответов ИИ (не для загрузки)
+
     if (sender === 'system' && !isLoading) {
         const actions = document.createElement('div');
         actions.className = 'message-actions';
@@ -294,7 +291,7 @@ function appendMessage(text, sender, shouldSave = false, isLoading = false) {
         `;
         msgDiv.appendChild(actions);
         
-        // Сохраняем оригинальный текст для редактирования
+
         msgDiv.dataset.originalText = text;
         msgDiv.dataset.prompt = activeChat?.messages[activeChat.messages.length - 2]?.content || '';
     }
@@ -310,42 +307,42 @@ function appendMessage(text, sender, shouldSave = false, isLoading = false) {
     return msgId;
 }
 
-// Простой Markdown рендерер
+
 function renderMarkdown(text) {
-    // Экранируем HTML
+
     let html = text
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
     
-    // Блоки кода
+
     html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
         return `<pre class="code-block" data-lang="${lang || 'text'}"><code>${code.trim()}</code></pre>`;
     });
     
-    // Инлайн код
+
     html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
-    
-    // Заголовки
+
+
     html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>');
     html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>');
     html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
     
-    // Жирный и курсив
+
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
     
-    // Списки
+
     html = html.replace(/^\- (.+)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
     
-    // Переносы строк
+
     html = html.replace(/\n/g, '<br>');
     
     return html;
 }
 
-// Лайк сообщения
+
 async function likeMessage(btn) {
     const msgDiv = btn.closest('.message');
     const text = msgDiv.dataset.originalText;
@@ -368,14 +365,14 @@ async function likeMessage(btn) {
     }
 }
 
-// Редактирование сообщения
+
 function editMessage(btn) {
     const msgDiv = btn.closest('.message');
     const bubble = msgDiv.querySelector('.bubble');
     const originalText = msgDiv.dataset.originalText;
     const prompt = msgDiv.dataset.prompt;
     
-    // Создаём редактор
+
     const editor = document.createElement('div');
     editor.className = 'message-editor';
     editor.innerHTML = `
@@ -395,7 +392,7 @@ function editMessage(btn) {
     msgDiv.appendChild(editor);
 }
 
-// Сохранить исправление
+
 async function saveEdit(btn) {
     const editor = btn.closest('.message-editor');
     const msgDiv = editor.closest('.message');
@@ -419,18 +416,18 @@ async function saveEdit(btn) {
         });
         
         if (res.ok) {
-            // Обновляем сообщение
+
             bubble.innerHTML = renderMarkdown(correctedText);
             msgDiv.dataset.originalText = correctedText;
             
-            // Убираем редактор
+
             editor.remove();
             bubble.style.display = 'block';
             msgDiv.querySelector('.message-actions').style.display = 'flex';
             
             showToast('✅ Исправление сохранено! ИИ учтёт это в будущем.');
             
-            // Обновляем в localStorage
+
             if (activeChat) {
                 const lastMsgIndex = activeChat.messages.length - 1;
                 if (activeChat.messages[lastMsgIndex]) {
@@ -445,7 +442,7 @@ async function saveEdit(btn) {
     }
 }
 
-// Отмена редактирования
+
 function cancelEdit(btn) {
     const editor = btn.closest('.message-editor');
     const msgDiv = editor.closest('.message');
@@ -456,7 +453,7 @@ function cancelEdit(btn) {
     msgDiv.querySelector('.message-actions').style.display = 'flex';
 }
 
-// Копировать сообщение
+
 function copyMessage(btn) {
     const msgDiv = btn.closest('.message');
     const text = msgDiv.dataset.originalText;
@@ -466,12 +463,12 @@ function copyMessage(btn) {
     });
 }
 
-// Скачать как файл
+
 function downloadMessage(btn) {
     const msgDiv = btn.closest('.message');
     const text = msgDiv.dataset.originalText;
     
-    // Определяем расширение
+
     let ext = 'md';
     if (text.includes('```python')) ext = 'py';
     else if (text.includes('```javascript')) ext = 'js';
@@ -490,7 +487,7 @@ function downloadMessage(btn) {
     showToast('📥 Файл скачан!');
 }
 
-// Toast уведомления
+
 function showToast(message) {
     const toast = document.createElement('div');
     toast.className = 'toast';
@@ -509,7 +506,7 @@ function removeMessage(id) {
     if (el) el.remove();
 }
 
-// ===== FILE UPLOAD =====
+
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-upload');
 
@@ -566,7 +563,7 @@ async function handleFiles(e) {
         }
     }
 
-    // Reset input
+
     fileInput.value = '';
 }
 
@@ -583,7 +580,7 @@ function updateFileDisplay() {
 
     fileCountEl.textContent = uploadedFiles.length;
 
-    // Enable/disable train button
+
     trainBtn.disabled = uploadedFiles.length === 0;
 
     fileListEl.innerHTML = '';
@@ -614,7 +611,7 @@ function updateFileDisplay() {
     });
 }
 
-// ===== TRAINING =====
+
 async function startTraining() {
     if (uploadedFiles.length === 0) {
         alert('Please upload files first');
@@ -670,7 +667,6 @@ async function startTraining() {
     }
 }
 
-// ===== STATUS CHECK =====
 async function checkStatus() {
     try {
         const res = await fetch(`${API_URL}/models`);
@@ -691,7 +687,7 @@ async function checkStatus() {
         document.querySelector('.indicator').style.backgroundColor = '#ef4444';
         document.querySelector('.indicator').style.boxShadow = '0 0 10px #ef4444';
         
-        // Показываем подсказку пользователю
+
         if (window.location.protocol === 'https:' && API_URL.startsWith('http:')) {
             console.warn('[ВНИМАНИЕ] Mixed Content! HTTPS страница пытается подключиться к HTTP API.');
             console.warn('[РЕШЕНИЕ] Используйте Cloudflare Tunnel или локальную сеть.');
@@ -700,7 +696,7 @@ async function checkStatus() {
 }
 
 
-// ===== RAG FUNCTIONS =====
+
 
 async function loadRAGStats() {
     try {
@@ -752,11 +748,11 @@ async function sendRAGMessage() {
     
     const container = document.getElementById('rag-chat-container');
     
-    // Add user message
+
     container.innerHTML += `<div class="message user"><div class="bubble">${text}</div></div>`;
     input.value = '';
     
-    // Add loading
+
     const loadingId = 'rag-loading-' + Date.now();
     container.innerHTML += `<div class="message system" id="${loadingId}"><div class="bubble">🔍 Поиск в документах...</div></div>`;
     container.scrollTop = container.scrollHeight;
@@ -770,10 +766,10 @@ async function sendRAGMessage() {
         
         const data = await res.json();
         
-        // Remove loading
+
         document.getElementById(loadingId)?.remove();
         
-        // Add response
+
         const ragBadge = data.rag_context_used ? '<span class="rag-badge">📚 RAG</span>' : '';
         container.innerHTML += `<div class="message system"><div class="bubble">${ragBadge}${data.response}</div></div>`;
         container.scrollTop = container.scrollHeight;
@@ -785,7 +781,7 @@ async function sendRAGMessage() {
 }
 
 
-// ===== FINE-TUNING FUNCTIONS =====
+
 
 function addLog(message, type = 'info') {
     const logContent = document.getElementById('log-content');
@@ -864,7 +860,7 @@ async function createFinetunedModel() {
 }
 
 
-// ===== SELF-LEARNING FUNCTIONS =====
+
 
 async function loadLearningStats() {
     try {
@@ -890,7 +886,7 @@ async function exportLearningData() {
         console.log('Export data:', data);
         
         if (data.examples && data.examples.length > 0) {
-            // Create JSONL file
+
             const jsonl = data.examples.map(ex => JSON.stringify(ex)).join('\n');
             const blob = new Blob([jsonl], { type: 'application/jsonl' });
             const url = URL.createObjectURL(blob);

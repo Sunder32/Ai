@@ -1,6 +1,4 @@
-"""
-Сервис чата с AI для уточнения требований и объяснения выбора компонентов.
-"""
+
 import logging
 import requests
 import json
@@ -12,22 +10,22 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-# Конфигурация AI сервера
+
 AI_SERVER_URL = os.environ.get('AI_SERVER_URL', 'http://localhost:5050')
 OLLAMA_API_URL = os.environ.get('OLLAMA_API_URL', 'http://localhost:11434/api/generate')
 
 
 class ChatSession(models.Model):
-    """Сессия чата с AI"""
+
     
     user_id = models.IntegerField(db_index=True)
     session_id = models.CharField(max_length=64, unique=True)
     
-    # Контекст сессии
+
     configuration_id = models.IntegerField(null=True)
     context_data = models.JSONField(default=dict)
     
-    # История сообщений хранится в ChatMessage
+
     
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -41,7 +39,7 @@ class ChatSession(models.Model):
 
 
 class ChatMessage(models.Model):
-    """Сообщение в чате"""
+
     
     ROLE_CHOICES = [
         ('user', 'Пользователь'),
@@ -53,7 +51,7 @@ class ChatMessage(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     content = models.TextField()
     
-    # Метаданные
+
     tokens_used = models.IntegerField(null=True)
     response_time_ms = models.IntegerField(null=True)
     
@@ -67,14 +65,7 @@ class ChatMessage(models.Model):
 
 
 class AIChatService:
-    """
-    Сервис чата с AI для:
-    - Уточнения требований пользователя
-    - Объяснения выбора компонентов
-    - Помощь в оптимизации бюджета
-    """
-    
-    # Системный промпт для чата
+
     SYSTEM_PROMPT = """Ты - эксперт по сборке компьютеров и периферии. 
 Твоя задача - помочь пользователю подобрать оптимальную конфигурацию ПК.
 
@@ -95,7 +86,7 @@ class AIChatService:
         self.session = None
     
     def create_session(self, configuration_id: int = None) -> str:
-        """Создать новую сессию чата"""
+        
         import secrets
         
         session_id = secrets.token_urlsafe(32)
@@ -103,7 +94,7 @@ class AIChatService:
         context = {}
         if configuration_id:
             context['configuration_id'] = configuration_id
-            # Загружаем данные конфигурации
+            
             context['configuration'] = self._load_configuration_context(configuration_id)
         
         self.session = ChatSession.objects.create(
@@ -116,7 +107,7 @@ class AIChatService:
         return session_id
     
     def _load_configuration_context(self, config_id: int) -> Dict:
-        """Загрузить контекст конфигурации"""
+        
         from .models import PCConfiguration
         
         try:
@@ -142,7 +133,7 @@ class AIChatService:
             return {}
     
     def get_or_create_session(self, session_id: str = None) -> ChatSession:
-        """Получить или создать сессию"""
+        
         if session_id:
             try:
                 self.session = ChatSession.objects.get(
@@ -157,38 +148,36 @@ class AIChatService:
         return self.session
     
     def send_message(self, message: str, session_id: str = None) -> Dict[str, Any]:
-        """
-        Отправить сообщение в чат и получить ответ AI.
-        """
+       
         import time
         
-        # Получаем сессию
+        
         session = self.get_or_create_session(session_id)
         
-        # Сохраняем сообщение пользователя
+        
         ChatMessage.objects.create(
             session=session,
             role='user',
             content=message
         )
         
-        # Формируем контекст
+        
         context = self._build_context(session)
         
-        # Формируем промпт
+        
         system_prompt = self.SYSTEM_PROMPT.format(context=json.dumps(context, ensure_ascii=False, indent=2))
         
-        # Получаем историю сообщений
+        
         history = self._get_chat_history(session)
         
-        # Отправляем запрос к AI
+        
         start_time = time.time()
         
         try:
             response_text = self._call_ai(system_prompt, history, message)
             response_time = int((time.time() - start_time) * 1000)
             
-            # Сохраняем ответ
+            
             ChatMessage.objects.create(
                 session=session,
                 role='assistant',
@@ -196,7 +185,7 @@ class AIChatService:
                 response_time_ms=response_time
             )
             
-            session.save()  # Обновляем updated_at
+            session.save()  
             
             return {
                 'session_id': session.session_id,
@@ -207,7 +196,7 @@ class AIChatService:
         except Exception as e:
             logger.error(f"AI chat error: {e}")
             
-            # Fallback ответ
+            
             fallback = self._get_fallback_response(message)
             
             ChatMessage.objects.create(
@@ -223,10 +212,10 @@ class AIChatService:
             }
     
     def _build_context(self, session: ChatSession) -> Dict:
-        """Построить контекст для AI"""
+        
         context = session.context_data.copy()
         
-        # Добавляем информацию о пользователе
+        
         if self.user:
             context['user'] = {
                 'username': self.user.username,
@@ -236,7 +225,7 @@ class AIChatService:
         return context
     
     def _get_chat_history(self, session: ChatSession, limit: int = 10) -> List[Dict]:
-        """Получить историю чата"""
+        
         messages = session.messages.order_by('-created_at')[:limit]
         return [
             {'role': m.role, 'content': m.content}
@@ -244,18 +233,18 @@ class AIChatService:
         ]
     
     def _call_ai(self, system_prompt: str, history: List[Dict], user_message: str) -> str:
-        """Вызов AI сервера"""
         
-        # Формируем полный промпт с историей
+        
+        
         full_prompt = f"{system_prompt}\n\n"
         
-        for msg in history[-6:]:  # Последние 6 сообщений
+        for msg in history[-6:]:  
             role = "Пользователь" if msg['role'] == 'user' else "Ассистент"
             full_prompt += f"{role}: {msg['content']}\n"
         
         full_prompt += f"\nПользователь: {user_message}\nАссистент:"
         
-        # Пробуем FastAPI сервер
+        
         try:
             response = requests.post(
                 f"{AI_SERVER_URL}/api/chat",
@@ -272,7 +261,7 @@ class AIChatService:
         except requests.exceptions.RequestException:
             pass
         
-        # Fallback на прямой Ollama
+        
         try:
             response = requests.post(
                 OLLAMA_API_URL,
@@ -293,7 +282,7 @@ class AIChatService:
         raise Exception("All AI services unavailable")
     
     def _get_fallback_response(self, message: str) -> str:
-        """Fallback ответ если AI недоступен"""
+        
         message_lower = message.lower()
         
         if 'почему' in message_lower and ('gpu' in message_lower or 'видеокарт' in message_lower):
@@ -343,9 +332,7 @@ class AIChatService:
 Чем могу помочь?"""
     
     def explain_component_choice(self, component_type: str, component_id: int, configuration_id: int = None) -> str:
-        """
-        Объяснить выбор конкретного компонента.
-        """
+
         from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
         
         model_map = {
@@ -363,7 +350,7 @@ class AIChatService:
         except model.DoesNotExist:
             return "Компонент не найден"
         
-        # Формируем объяснение
+
         prompt = f"""Объясни почему {component_type} "{component}" - хороший выбор для сборки ПК.
 Укажи:
 1. Основные преимущества
@@ -387,7 +374,7 @@ class AIChatService:
         return self._get_component_fallback(component_type, component)
     
     def _get_component_fallback(self, component_type: str, component) -> str:
-        """Fallback объяснение для компонента"""
+
         explanations = {
             'cpu': f"{component} - отличный процессор с {component.cores} ядрами и частотой до {component.boost_clock}ГГц. Подходит для {component.cores >= 8 and 'многозадачности и тяжёлых приложений' or 'повседневных задач и игр'}.",
             'gpu': f"{component} с {component.memory}ГБ видеопамяти {component.memory_type}. {component.performance_score > 15000 and 'Топовый выбор для 4K гейминга' or 'Хороший баланс цены и производительности'}.",
@@ -397,7 +384,7 @@ class AIChatService:
         return explanations.get(component_type, f"{component} - качественный выбор в своей категории.")
     
     def get_chat_history(self, session_id: str) -> List[Dict]:
-        """Получить историю чата"""
+
         try:
             session = ChatSession.objects.get(
                 session_id=session_id,

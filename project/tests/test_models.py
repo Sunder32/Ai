@@ -1,11 +1,11 @@
 import pytest
 import time
 from django.test import TestCase
-from accounts.models import User  # Используем кастомную модель
+from accounts.models import User  
 
 class TestBasicModels(TestCase):
     def test_user_creation(self):
-        """Тест создания пользователя"""
+
         user = User.objects.create_user(
             username='testuser',
             email='test@example.com',
@@ -17,7 +17,7 @@ class TestBasicModels(TestCase):
         print("✅ Пользователь создан успешно")
     
     def test_database_connection(self):
-        """Тест подключения к БД"""
+
         from django.db import connection
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
@@ -26,7 +26,7 @@ class TestBasicModels(TestCase):
         print("✅ Подключение к базе данных работает")
     
     def test_bulk_create_performance(self):
-        """Тест производительности массового создания"""
+
         start = time.time()
         
         users = []

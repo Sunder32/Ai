@@ -1,12 +1,4 @@
-"""
-Celery tasks for PC Configurator.
 
-Tasks:
-- Async AI configuration generation
-- Scheduled price updates
-- Price alert notifications
-- Analytics and cleanup
-"""
 import logging
 from celery import shared_task
 from celery.exceptions import SoftTimeLimitExceeded
@@ -19,22 +11,11 @@ from datetime import timedelta
 logger = logging.getLogger(__name__)
 
 
-# ============================================================================
-# AI GENERATION TASKS
-# ============================================================================
+
 
 @shared_task(bind=True, max_retries=2, default_retry_delay=30)
 def generate_ai_configuration(self, user_id: int, config_params: dict):
-    """
-    Async AI configuration generation task.
-    
-    Args:
-        user_id: User ID requesting the configuration
-        config_params: Dictionary with configuration parameters
-    
-    Returns:
-        dict with configuration_id and status
-    """
+
     from accounts.models import User
     from .models import PCConfiguration, AILog
     from .ai_full_config_service import AIFullConfigService
@@ -44,7 +25,7 @@ def generate_ai_configuration(self, user_id: int, config_params: dict):
     try:
         user = User.objects.get(id=user_id)
         
-        # Create AI service
+
         ai_service = AIFullConfigService(
             user_type=config_params.get('user_type', 'gaming'),
             min_budget=float(config_params.get('min_budget', 50000)),
@@ -58,7 +39,7 @@ def generate_ai_configuration(self, user_id: int, config_params: dict):
             include_workspace=config_params.get('include_workspace', True),
         )
         
-        # Generate configuration
+
         import time
         start_time = time.time()
         
@@ -67,7 +48,7 @@ def generate_ai_configuration(self, user_id: int, config_params: dict):
         response_time = int((time.time() - start_time) * 1000)
         
         if configuration:
-            # Log success
+
             AILog.log_response(
                 user=user,
                 prompt=str(config_params),
@@ -88,7 +69,7 @@ def generate_ai_configuration(self, user_id: int, config_params: dict):
                 'response_time_ms': response_time
             }
         else:
-            # Log failure
+
             AILog.log_response(
                 user=user,
                 prompt=str(config_params),
@@ -114,7 +95,7 @@ def generate_ai_configuration(self, user_id: int, config_params: dict):
     except Exception as e:
         logger.exception(f"[CELERY] AI generation error: {e}")
         
-        # Retry on transient errors
+
         if self.request.retries < self.max_retries:
             raise self.retry(exc=e)
         
@@ -124,16 +105,10 @@ def generate_ai_configuration(self, user_id: int, config_params: dict):
         }
 
 
-# ============================================================================
-# PRICE UPDATE TASKS
-# ============================================================================
 
 @shared_task(bind=True)
 def update_all_prices(self):
-    """
-    Update prices for all components from external sources.
-    Scheduled to run every 6 hours.
-    """
+
     from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
     from .price_service import PriceParserService
     
@@ -143,7 +118,7 @@ def update_all_prices(self):
     updated_count = 0
     error_count = 0
     
-    # Component types to update
+
     component_models = [
         ('cpu', CPU),
         ('gpu', GPU),
@@ -156,7 +131,7 @@ def update_all_prices(self):
     ]
     
     for component_type, model in component_models:
-        components = model.objects.all()[:50]  # Limit to 50 per type
+        components = model.objects.all()[:50]  
         
         for component in components:
             try:
@@ -178,7 +153,7 @@ def update_all_prices(self):
 
 @shared_task
 def update_component_price(component_type: str, component_id: int):
-    """Update price for a single component."""
+
     from .price_service import PriceParserService
     
     service = PriceParserService()
@@ -191,16 +166,10 @@ def update_component_price(component_type: str, component_id: int):
     }
 
 
-# ============================================================================
-# NOTIFICATION TASKS
-# ============================================================================
 
 @shared_task
 def check_price_alerts():
-    """
-    Check all wishlists for price drops and send notifications.
-    Scheduled to run every hour.
-    """
+
     from .models import Wishlist
     from accounts.models import User
     
@@ -208,7 +177,7 @@ def check_price_alerts():
     
     alerts_sent = 0
     
-    # Get all wishlists with price thresholds
+
     wishlists = Wishlist.objects.filter(
         price_alert_threshold__isnull=False,
         notifications_enabled=True
@@ -218,7 +187,7 @@ def check_price_alerts():
         price_info = wishlist_item.check_price_change()
         
         if price_info and price_info.get('below_threshold'):
-            # Send notification
+            
             send_price_alert_email.delay(
                 user_id=wishlist_item.user.id,
                 component_type=wishlist_item.component_type,
@@ -237,7 +206,7 @@ def check_price_alerts():
 @shared_task
 def send_price_alert_email(user_id: int, component_type: str, component_id: int,
                             current_price: float, threshold_price: float, original_price: float):
-    """Send email notification about price drop."""
+    
     from accounts.models import User
     
     try:
@@ -247,7 +216,7 @@ def send_price_alert_email(user_id: int, component_type: str, component_id: int,
             logger.warning(f"[CELERY] User {user_id} has no email")
             return {'status': 'skipped', 'reason': 'no email'}
         
-        # Get component name
+        
         component_name = f"{component_type.upper()} #{component_id}"
         
         subject = f"🔔 Цена снизилась! {component_name}"
@@ -289,21 +258,16 @@ https://pckonfai.ru
         return {'status': 'error', 'reason': str(e)}
 
 
-# ============================================================================
-# MAINTENANCE TASKS
-# ============================================================================
+
 
 @shared_task
 def cleanup_old_logs(days: int = 30):
-    """
-    Clean up old AI logs.
-    Scheduled to run weekly.
-    """
+
     from .models import AILog
     
     cutoff_date = timezone.now() - timedelta(days=days)
     
-    # Keep successful logs, delete old error logs
+
     deleted_count, _ = AILog.objects.filter(
         created_at__lt=cutoff_date,
         status__in=['error', 'validation_failed']
@@ -316,13 +280,10 @@ def cleanup_old_logs(days: int = 30):
 
 @shared_task
 def generate_ai_analytics_report():
-    """
-    Generate daily AI analytics report.
-    Scheduled to run daily at 6:00 AM.
-    """
+
     from .models import AILog
     
-    # Get yesterday's stats
+
     yesterday = timezone.now() - timedelta(days=1)
     today_start = yesterday.replace(hour=0, minute=0, second=0, microsecond=0)
     today_end = today_start + timedelta(days=1)
@@ -356,13 +317,10 @@ def generate_ai_analytics_report():
     return report
 
 
-# ============================================================================
-# UTILITY TASKS
-# ============================================================================
 
 @shared_task
 def send_configuration_ready_notification(user_id: int, configuration_id: int):
-    """Send SSE/WebSocket notification that configuration is ready."""
+
     from django_eventstream import send_event
     
     try:

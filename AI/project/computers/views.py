@@ -9,7 +9,6 @@ from .serializers import (
 
 
 class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
-    """Разрешает чтение всем авторизованным, создание/изменение только админам"""
     def has_permission(self, request, view):
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return request.user and request.user.is_authenticated
@@ -17,7 +16,7 @@ class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
 
 
 class CPUViewSet(viewsets.ModelViewSet):
-    """ViewSet для процессоров. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = CPU.objects.all()
     serializer_class = CPUSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -28,7 +27,7 @@ class CPUViewSet(viewsets.ModelViewSet):
 
 
 class GPUViewSet(viewsets.ModelViewSet):
-    """ViewSet для видеокарт. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = GPU.objects.all()
     serializer_class = GPUSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -39,7 +38,7 @@ class GPUViewSet(viewsets.ModelViewSet):
 
 
 class MotherboardViewSet(viewsets.ModelViewSet):
-    """ViewSet для материнских плат. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Motherboard.objects.all()
     serializer_class = MotherboardSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -50,7 +49,7 @@ class MotherboardViewSet(viewsets.ModelViewSet):
 
 
 class RAMViewSet(viewsets.ModelViewSet):
-    """ViewSet для оперативной памяти. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = RAM.objects.all()
     serializer_class = RAMSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -61,7 +60,7 @@ class RAMViewSet(viewsets.ModelViewSet):
 
 
 class StorageViewSet(viewsets.ModelViewSet):
-    """ViewSet для накопителей. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Storage.objects.all()
     serializer_class = StorageSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -72,7 +71,7 @@ class StorageViewSet(viewsets.ModelViewSet):
 
 
 class PSUViewSet(viewsets.ModelViewSet):
-    """ViewSet для блоков питания. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = PSU.objects.all()
     serializer_class = PSUSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -83,7 +82,7 @@ class PSUViewSet(viewsets.ModelViewSet):
 
 
 class CaseViewSet(viewsets.ModelViewSet):
-    """ViewSet для корпусов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -94,7 +93,7 @@ class CaseViewSet(viewsets.ModelViewSet):
 
 
 class CoolingViewSet(viewsets.ModelViewSet):
-    """ViewSet для систем охлаждения. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Cooling.objects.all()
     serializer_class = CoolingSerializer
     permission_classes = [ReadOnlyOrAdminPermission]

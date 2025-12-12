@@ -23,7 +23,7 @@
 }
 
 @layer components {
-  /* Glassmorphism styles */
+
   .glass {
     @apply backdrop-blur-xl bg-white/5 border border-white/10;
   }
@@ -32,7 +32,7 @@
     @apply hover:border-white/30 transition-all duration-300;
   }
   
-  /* Gradient text */
+ 
   .gradient-text {
     @apply bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
   }
@@ -41,7 +41,7 @@
     @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
   }
   
-  /* Gradient buttons */
+  
   .btn-gradient {
     @apply bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600;
     @apply text-white font-semibold px-6 py-3 rounded-xl;
@@ -54,13 +54,13 @@
     @apply transition-all duration-300;
   }
   
-  /* Card styles */
+  
   .card-glass {
     @apply backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6;
     @apply hover:border-white/30 transition-all duration-300 hover:scale-[1.02];
   }
   
-  /* Input styles */
+  
   .input-glass {
     @apply w-full px-4 py-3 rounded-xl;
     @apply backdrop-blur-sm bg-white/5 border border-white/20;
@@ -79,7 +79,7 @@
 }
 
 @layer utilities {
-  /* Custom animations */
+  
   @keyframes float {
     0%, 100% {
       transform: translateY(0px);
@@ -141,7 +141,7 @@
     animation: fadeIn 0.5s ease-out forwards;
   }
   
-  /* Scrollbar styling */
+  
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -159,7 +159,7 @@
     @apply bg-white/40;
   }
   
-  /* Selection styling */
+  
   ::selection {
     @apply bg-blue-500/30 text-white;
   }
@@ -168,7 +168,7 @@
     @apply bg-blue-500/30 text-white;
   }
 
-  /* Magic Bento Card Effects */
+  
   .magic-component-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -195,7 +195,7 @@
     will-change: transform, opacity;
   }
 
-  /* Glow animations for cards */
+  
   @keyframes card-glow-pulse {
     0%, 100% {
       box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
@@ -209,7 +209,7 @@
     animation: card-glow-pulse 2s ease-in-out infinite;
   }
 
-  /* Custom slider styles */
+  
   input[type="range"].slider-purple::-webkit-slider-thumb {
     @apply appearance-none w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 cursor-pointer;
     box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);

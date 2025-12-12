@@ -1,17 +1,15 @@
-"""
-Быстрые тесты для проверки
-"""
+
 import pytest
 
 @pytest.mark.django_db
 def test_simple():
-    """Простейший тест"""
+
     assert 1 + 1 == 2
     print("✅ Базовый тест работает")
 
 @pytest.mark.django_db 
 def test_database():
-    """Тест базы данных"""
+
     from django.db import connection
     with connection.cursor() as cursor:
         cursor.execute("SELECT 1")
@@ -21,7 +19,7 @@ def test_database():
 
 @pytest.mark.django_db
 def test_create_user():
-    """Тест создания пользователя"""
+
     try:
         from accounts.models import User
         user = User.objects.create_user(

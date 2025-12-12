@@ -1,6 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { chatAPI } from '../services/api';
-import { FiSend, FiMessageSquare, FiUser, FiCpu, FiHelpCircle } from 'react-icons/fi';
+import { FiSend, FiMessageSquare, FiUser, FiCpu, FiHelpCircle, FiDownload } from 'react-icons/fi';
+import ReactMarkdown, { type Components } from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -13,6 +16,62 @@ interface AIChatProps {
     configName?: string;
 }
 
+const markdownComponents: Components = {
+    p: ({ children }) => (
+        <p className="m-0 text-sm leading-relaxed whitespace-pre-wrap break-words">{children}</p>
+    ),
+    ul: ({ children }) => (
+        <ul className="my-2 pl-5 list-disc space-y-1">{children}</ul>
+    ),
+    ol: ({ children }) => (
+        <ol className="my-2 pl-5 list-decimal space-y-1">{children}</ol>
+    ),
+    li: ({ children }) => (
+        <li className="text-sm leading-relaxed break-words">{children}</li>
+    ),
+    strong: ({ children }) => (
+        <strong className="font-semibold text-white">{children}</strong>
+    ),
+    em: ({ children }) => (
+        <em className="italic">{children}</em>
+    ),
+    a: ({ href, children }) => (
+        <a
+            href={href}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-primary underline hover:text-primary-light break-words"
+        >
+            {children}
+        </a>
+    ),
+    pre: ({ children }) => (
+        <pre className="my-2 p-3 overflow-x-auto bg-black/30 border border-gray-800 text-xs">
+            {children}
+        </pre>
+    ),
+    code: (props: any) => {
+        const { inline, className, children, ...rest } = props;
+
+        if (inline) {
+            return (
+                <code
+                    className="px-1 py-0.5 rounded bg-black/30 border border-gray-800 text-xs font-mono"
+                    {...rest}
+                >
+                    {children}
+                </code>
+            );
+        }
+
+        return (
+            <code className={className} {...rest}>
+                {children}
+            </code>
+        );
+    },
+};
+
 const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
@@ -24,6 +83,48 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
     // Ключ для localStorage
     const storageKey = `ai_chat_session_${configurationId}`;
 
+    const exportChatToMarkdown = () => {
+        const exportDate = new Date();
+        const pad2 = (n: number) => String(n).padStart(2, '0');
+        const stamp = `${exportDate.getFullYear()}-${pad2(exportDate.getMonth() + 1)}-${pad2(exportDate.getDate())}_${pad2(exportDate.getHours())}-${pad2(exportDate.getMinutes())}`;
+
+        const safeName = (configName || `config-${configurationId}`)
+            .replace(/[<>:"/\\|?*]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 80) || `config-${configurationId}`;
+
+        const filename = `ai-consultant_${safeName}_${stamp}.md`;
+        const headerTitle = configName ? `AI Консультант — ${configName}` : 'AI Консультант';
+
+        const md: string[] = [
+            `# ${headerTitle}`,
+            '',
+            `Экспорт: ${exportDate.toLocaleString('ru-RU')}`,
+            sessionId ? `Session: ${sessionId}` : '',
+            '',
+            '---',
+            '',
+        ].filter(Boolean);
+
+        for (const msg of messages) {
+            const roleTitle = msg.role === 'user' ? 'Пользователь' : 'AI';
+            md.push(`## ${roleTitle}`);
+            if (msg.timestamp) md.push(`*${msg.timestamp.toLocaleString('ru-RU')}*`, '');
+            md.push((msg.content || '').trimEnd(), '', '---', '');
+        }
+
+        const blob = new Blob([md.join('\n')], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    };
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -32,26 +133,8 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
         scrollToBottom();
     }, [messages]);
 
-    // Загрузка сессии и истории при монтировании
-    useEffect(() => {
-        const savedSessionId = localStorage.getItem(storageKey);
-
-        if (savedSessionId) {
-            setSessionId(savedSessionId);
-            // Загружаем историю
-            loadHistory(savedSessionId);
-        } else {
-            // Показываем приветственное сообщение
-            setMessages([{
-                role: 'assistant',
-                content: `Привет! Я AI-консультант по вашей сборке${configName ? ` "${configName}"` : ''}. Задавайте любые вопросы о компонентах, совместимости, производительности или возможных улучшениях.`,
-                timestamp: new Date()
-            }]);
-        }
-    }, [configurationId, configName, storageKey]);
-
     // Загрузка истории чата
-    const loadHistory = async (sid: string) => {
+    const loadHistory = useCallback(async (sid: string) => {
         try {
             const response = await chatAPI.getHistory(sid);
             if (response.data.history && response.data.history.length > 0) {
@@ -77,7 +160,25 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
                 timestamp: new Date()
             }]);
         }
-    };
+    }, [configName]);
+
+    // Загрузка сессии и истории при монтировании
+    useEffect(() => {
+        const savedSessionId = localStorage.getItem(storageKey);
+
+        if (savedSessionId) {
+            setSessionId(savedSessionId);
+            // Загружаем историю
+            loadHistory(savedSessionId);
+        } else {
+            // Показываем приветственное сообщение
+            setMessages([{
+                role: 'assistant',
+                content: `Привет! Я AI-консультант по вашей сборке${configName ? ` "${configName}"` : ''}. Задавайте любые вопросы о компонентах, совместимости, производительности или возможных улучшениях.`,
+                timestamp: new Date()
+            }]);
+        }
+    }, [storageKey, loadHistory, configName]);
 
     const sendMessage = async () => {
         if (!input.trim() || loading) return;
@@ -129,7 +230,7 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
         }
     };
 
-    const handleKeyPress = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
@@ -155,7 +256,7 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
     ];
 
     return (
-        <div className="card p-0 overflow-hidden flex flex-col" style={{ height: '600px' }}>
+        <div className="card p-0 overflow-hidden flex flex-col min-h-[520px] h-[70vh] max-h-[740px]">
             {/* Header */}
             <div className="px-5 py-4 border-b border-border-dark bg-bg-card flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -167,7 +268,16 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
                         <p className="text-xs text-gray-500">Задавайте вопросы о сборке</p>
                     </div>
                 </div>
-                {messages.length > 1 && (
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={exportChatToMarkdown}
+                        className="text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition-colors flex items-center gap-2"
+                        title="Экспортировать чат в .md"
+                    >
+                        {React.createElement(FiDownload as any, { className: "w-4 h-4" })}
+                        Экспорт .md
+                    </button>
+                    {messages.length > 1 && (
                     <button
                         onClick={clearChat}
                         className="text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition-colors"
@@ -175,6 +285,7 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
                         Новый чат
                     </button>
                 )}
+                </div>
             </div>
 
             {/* Messages */}
@@ -195,7 +306,16 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
                             ? 'bg-primary/20 text-white'
                             : 'bg-bg-card-hover text-gray-300'
                             }`}>
-                            <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                            {msg.role === 'assistant' ? (
+                                <ReactMarkdown
+                                    remarkPlugins={[remarkGfm, remarkBreaks]}
+                                    components={markdownComponents}
+                                >
+                                    {msg.content}
+                                </ReactMarkdown>
+                            ) : (
+                                <p className="text-sm leading-relaxed whitespace-pre-wrap break-words m-0">{msg.content}</p>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -253,7 +373,7 @@ const AIChat: React.FC<AIChatProps> = ({ configurationId, configName }) => {
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyDown}
                         placeholder="Напишите вопрос..."
                         disabled={loading}
                         style={{

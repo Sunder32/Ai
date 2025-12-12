@@ -23,14 +23,14 @@ from peripherals.models import (
     CaptureCard, Gamepad, Headphonestand
 )
 
-# Import export services
+
 try:
     from .export_service import ConfigurationExportService, PowerCalculatorService, CompatibilityChecker
     EXPORT_SERVICE_AVAILABLE = True
 except ImportError:
     EXPORT_SERVICE_AVAILABLE = False
 
-# Import AI enhancement services
+
 try:
     from .price_service import PriceParserService
     PRICE_SERVICE_AVAILABLE = True
@@ -99,13 +99,13 @@ except ImportError:
 
 
 class PCConfigurationViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления конфигурациями ПК"""
+
     queryset = PCConfiguration.objects.all()
     serializer_class = PCConfigurationSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои конфигурации"""
+
         base_queryset = PCConfiguration.objects.select_related(
             'user',
             'cpu',
@@ -124,12 +124,12 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         return base_queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        """Автоматически привязываем конфигурацию к текущему пользователю"""
+
         serializer.save(user=self.request.user)
     
     @action(detail=True, methods=['post'])
     def check_compatibility(self, request, pk=None):
-        """Проверка совместимости компонентов конфигурации"""
+
         configuration = self.get_object()
         service = ConfigurationService({
             'user_type': request.user.user_type or 'student',
@@ -149,26 +149,20 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     @method_decorator(ratelimit(key='user', rate='3/m', method='POST'))
     @action(detail=False, methods=['post'])
     def generate(self, request):
-        """
-        Генерация конфигурации с помощью AI
-        Rate limit: 3 запроса в минуту на пользователя
-        
-        AI создаёт полную конфигурацию: ПК + периферия + рабочее место
-        на основе актуальных данных о комплектующих.
-        """
+
         serializer = ConfigurationRequestSerializer(data=request.data)
         
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        # Получаем параметры
+
         data = serializer.validated_data
         include_workspace = data.get('include_workspace', True)
         
         logger.info(f"AI Configuration generation request: user_type={data.get('user_type')}, budget={data.get('min_budget')}-{data.get('max_budget')}, include_workspace={include_workspace}")
         
         try:
-            # Всегда используем AI генерацию
+
             if not AIFullConfigService:
                 return Response(
                     {'error': 'AI сервис недоступен'},
@@ -177,7 +171,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             
             logger.info("Using AI generation mode (PC + Peripherals + Workspace)")
             
-            # Создаем сервис AI генерации
+
             full_ai_service = AIFullConfigService(
                 user_type=data.get('user_type', 'gaming'),
                 min_budget=float(data.get('min_budget', 50000)),
@@ -220,11 +214,11 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                     'need_chair': data.get('need_chair', True),
                     'chair_ergonomic': data.get('chair_ergonomic', True),
                 },
-                include_peripherals=True,  # Всегда включаем периферию
+                include_peripherals=True,  
                 include_workspace=include_workspace,
             )
             
-            # Генерируем полную конфигурацию
+            
             configuration, workspace, ai_info = full_ai_service.generate_full_configuration(request.user)
             
             if not configuration:
@@ -233,7 +227,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
             
-            # Формируем ответ
+           
             result_serializer = PCConfigurationSerializer(configuration)
             response_data = result_serializer.data
             response_data['ai_info'] = ai_info
@@ -256,13 +250,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     @method_decorator(ratelimit(key='user', rate='5/m', method='POST'))
     @action(detail=False, methods=['post'])
     def generate_async(self, request):
-        """
-        Асинхронная генерация конфигурации с помощью Celery.
-        Возвращает task_id для отслеживания прогресса.
-        
-        Используйте для длительных AI запросов.
-        Статус можно проверить через /api/recommendations/configurations/task_status/?task_id=XXX
-        """
+
         serializer = ConfigurationRequestSerializer(data=request.data)
         
         if not serializer.is_valid():
@@ -270,7 +258,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         
         data = serializer.validated_data
         
-        # Prepare config params for Celery task
+
         config_params = {
             'user_type': data.get('user_type', 'gaming'),
             'min_budget': float(data.get('min_budget', 50000)),
@@ -310,7 +298,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         try:
             from .tasks import generate_ai_configuration
             
-            # Start async task
+
             task = generate_ai_configuration.delay(request.user.id, config_params)
             
             logger.info(f"Started async AI generation task: {task.id}")
@@ -323,7 +311,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_202_ACCEPTED)
             
         except ImportError:
-            # Fallback to sync if Celery not available
+
             logger.warning("Celery not available, falling back to sync generation")
             return self.generate(request)
         except Exception as e:
@@ -335,12 +323,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def task_status(self, request):
-        """
-        Проверить статус асинхронной задачи генерации.
-        
-        Query params:
-        - task_id: ID задачи Celery
-        """
+
         task_id = request.query_params.get('task_id')
         
         if not task_id:
@@ -378,7 +361,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     @method_decorator(ratelimit(key='ip', rate='10/m', method='GET'))
     @action(detail=False, methods=['get'])
     def ai_status(self, request):
-        """Проверить статус ИИ сервиса. Rate limit: 10 запросов/мин на IP"""
+        
         ai_service = AIConfigurationService({})
         available = ai_service.check_ollama_available()
         return Response({
@@ -388,7 +371,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def save_build(self, request):
-        """Сохранение сборки из Build Yourself"""
+        
         serializer = BuilderConfigurationSerializer(data=request.data)
         
         if not serializer.is_valid():
@@ -397,7 +380,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         data = serializer.validated_data
         
         try:
-            # Получаем компоненты по ID
+            
             config_data = {
                 'user': request.user,
                 'name': data.get('name', 'Моя сборка'),
@@ -405,7 +388,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 'is_public': data.get('is_public', False),
             }
             
-            # PC компоненты
+            
             if data.get('cpu'):
                 config_data['cpu'] = CPU.objects.get(id=data['cpu'])
             if data.get('gpu'):
@@ -425,17 +408,17 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             if data.get('cooling'):
                 config_data['cooling'] = Cooling.objects.get(id=data['cooling'])
             
-            # Создаем конфигурацию
+            
             configuration = PCConfiguration.objects.create(**config_data)
             configuration.calculate_total_price()
             
-            # Генерируем share_code если публичная
+            
             if data.get('is_public'):
                 configuration.share_code = secrets.token_urlsafe(16)
             
             configuration.save()
             
-            # Создаем workspace setup если есть периферия
+            
             has_peripherals = any([
                 data.get('monitor_primary'), data.get('monitor_secondary'),
                 data.get('keyboard'), data.get('mouse'), data.get('headset'),
@@ -454,7 +437,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                     'name': f"Рабочее место: {data.get('name', 'Моя сборка')}",
                 }
                 
-                # Базовая периферия
+                
                 if data.get('monitor_primary'):
                     workspace_data['monitor_primary'] = Monitor.objects.get(id=data['monitor_primary'])
                 if data.get('monitor_secondary'):
@@ -474,7 +457,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 if data.get('chair'):
                     workspace_data['chair'] = Chair.objects.get(id=data['chair'])
                 
-                # Дополнительная периферия
+                
                 if data.get('speakers'):
                     workspace_data['speakers'] = Speakers.objects.get(id=data['speakers'])
                 if data.get('mousepad'):
@@ -498,7 +481,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 workspace.calculate_total_price()
                 workspace.save()
             
-            # Формируем ответ
+            
             result = PCConfigurationSerializer(configuration).data
             if workspace:
                 result['workspace'] = WorkspaceSetupSerializer(workspace).data
@@ -516,7 +499,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], url_path='public/(?P<share_code>[^/.]+)', permission_classes=[AllowAny])
     def public_build(self, request, share_code=None):
-        """Получение публичной сборки по share_code"""
+        
         try:
             configuration = PCConfiguration.objects.select_related(
                 'cpu', 'gpu', 'motherboard', 'ram', 'storage_primary',
@@ -533,7 +516,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def my_builds(self, request):
-        """Получение всех сохраненных сборок пользователя"""
+        
         configurations = PCConfiguration.objects.filter(
             user=request.user, is_saved=True
         ).select_related(
@@ -545,10 +528,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'], url_path='store-links')
     def store_links(self, request, pk=None):
-        """
-        Получение ссылок на магазины для всех компонентов конфигурации.
-        Возвращает ссылки на DNS, Citilink, М.Видео и др.
-        """
+
         configuration = self.get_object()
         
         if not STORE_SERVICE_AVAILABLE:
@@ -572,10 +552,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'], url_path='performance-analysis')
     def performance_analysis(self, request, pk=None):
-        """
-        Анализ производительности конфигурации.
-        Включает бенчмарки, предсказание FPS в играх, анализ bottleneck.
-        """
+
         configuration = self.get_object()
         
         if not BENCHMARK_SERVICE_AVAILABLE:
@@ -599,9 +576,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], url_path='benchmarks')
     def benchmarks(self, request, pk=None):
-        """
-        Получение бенчмарков для CPU и GPU конфигурации.
-        """
+
         configuration = self.get_object()
         
         if not BENCHMARK_SERVICE_AVAILABLE:
@@ -636,12 +611,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], url_path='fps-prediction')
     def fps_prediction(self, request, pk=None):
-        """
-        Предсказание FPS в играх для конфигурации.
-        
-        Query params:
-        - resolution: разрешение экрана (1080p, 1440p, 4k). По умолчанию 1080p.
-        """
+
         configuration = self.get_object()
         resolution = request.query_params.get('resolution', '1080p')
         
@@ -652,7 +622,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             )
         
         try:
-            # Получаем список игр
+
             games = get_available_games()
             predictions = []
             
@@ -684,15 +654,10 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def compare(self, request):
-        """
-        Детальное сравнение нескольких сборок ПК.
-        Показывает разницу в характеристиках и ценах.
-        
-        Параметры: ?ids=1,2,3 или ?ids=1&ids=2&ids=3
-        """
+
         ids = request.query_params.getlist('ids')
         
-        # Поддержка формата ids=1,2,3
+
         if len(ids) == 1 and ',' in ids[0]:
             ids = ids[0].split(',')
         
@@ -708,7 +673,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # Проверяем кэш
+
         cache_key = f"compare_{'_'.join(sorted(ids))}"
         cached_result = cache.get(cache_key)
         if cached_result:
@@ -722,7 +687,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 'storage_secondary', 'psu', 'case', 'cooling'
             )
             
-            # Проверяем доступ
+
             for config in configurations:
                 if config.user != request.user and not config.is_public and not request.user.is_staff:
                     return Response(
@@ -730,7 +695,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                         status=status.HTTP_403_FORBIDDEN
                     )
             
-            # Формируем детальное сравнение
+
             builds = []
             for config in configurations:
                 build_data = {
@@ -771,7 +736,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 }
                 builds.append(build_data)
             
-            # Вычисляем сравнительные метрики
+
             comparison = {
                 'builds': builds,
                 'summary': {
@@ -807,7 +772,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
-            # Кэшируем результат на 5 минут
+
             cache.set(cache_key, comparison, 300)
             
             return Response(comparison)
@@ -821,10 +786,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'], url_path='export/(?P<export_format>csv|excel|pdf)')
     def export(self, request, pk=None, export_format='csv'):
-        """
-        Экспорт конфигурации в различные форматы.
-        Форматы: csv, excel, pdf
-        """
+
         if not EXPORT_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис экспорта недоступен. Установите openpyxl и reportlab.'},
@@ -869,7 +831,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def shop_links(self, request, pk=None):
-        """Получить ссылки на магазины для всех компонентов конфигурации"""
+
         if not EXPORT_SERVICE_AVAILABLE:
             return Response({'error': 'Сервис недоступен'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         
@@ -892,10 +854,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def power_calculator(self, request, pk=None):
-        """
-        Калькулятор энергопотребления для конфигурации.
-        Параметры: hours_per_day (int), load_percent (float 0-1)
-        """
+
         if not EXPORT_SERVICE_AVAILABLE:
             return Response({'error': 'Сервис недоступен'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         
@@ -913,9 +872,9 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def compatibility_check(self, request, pk=None):
-        """Расширенная проверка совместимости компонентов"""
+
         if not EXPORT_SERVICE_AVAILABLE:
-            # Fallback to basic check
+            
             configuration = self.get_object()
             service = ConfigurationService({
                 'user_type': request.user.user_type if hasattr(request.user, 'user_type') else 'student',
@@ -937,7 +896,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
 
 
 class WishlistViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления избранными компонентами"""
+
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
@@ -979,7 +938,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def add_component(self, request):
-        """Добавить компонент в избранное"""
+
         component_type = request.data.get('component_type')
         component_id = request.data.get('component_id')
         
@@ -989,7 +948,6 @@ class WishlistViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # Получаем текущую цену компонента
         model_map = {
             'cpu': CPU, 'gpu': GPU, 'motherboard': Motherboard,
             'ram': RAM, 'storage': Storage, 'psu': PSU,
@@ -1007,7 +965,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
         except model.DoesNotExist:
             return Response({'error': 'Компонент не найден'}, status=status.HTTP_404_NOT_FOUND)
         
-        # Создаём или обновляем запись
+
         wishlist_item, created = Wishlist.objects.update_or_create(
             user=request.user,
             component_type=component_type,
@@ -1029,7 +987,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['delete'])
     def remove_component(self, request):
-        """Удалить компонент из избранного"""
+        
         component_type = request.data.get('component_type')
         component_id = request.data.get('component_id')
         
@@ -1045,7 +1003,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def price_alerts(self, request):
-        """Получить список компонентов с изменившейся ценой"""
+        
         wishlist = self.get_queryset().filter(notify_on_price_drop=True)
         
         alerts = []
@@ -1064,14 +1022,14 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def add_to_build(self, request):
-        """Добавить компоненты из избранного в сборку"""
+        
         wishlist_ids = request.data.get('wishlist_ids', [])
         build_id = request.data.get('build_id')
         
         if not wishlist_ids:
             return Response({'error': 'Укажите wishlist_ids'}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Получаем или создаём сборку
+        
         if build_id:
             try:
                 configuration = PCConfiguration.objects.get(id=build_id, user=request.user)
@@ -1084,7 +1042,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
                 is_saved=True
             )
         
-        # Добавляем компоненты
+        
         added = []
         for item in Wishlist.objects.filter(id__in=wishlist_ids, user=request.user):
             component = item.get_component()
@@ -1110,13 +1068,11 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
 
 
-    # ==================== Store Integration ====================
+    
     
     @action(detail=True, methods=['get'], url_path='store-links')
     def store_links(self, request, pk=None):
-        """
-        Получение ссылок на магазины для всех компонентов конфигурации
-        """
+
         if not STORE_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис магазинов недоступен'},
@@ -1142,13 +1098,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'], url_path='price-history')
     def price_history(self, request, pk=None):
-        """
-        История цен компонентов конфигурации
-        
-        Query params:
-            days: количество дней (default: 30)
-            component: конкретный компонент (cpu, gpu, etc.)
-        """
+
         if not STORE_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис недоступен'},
@@ -1192,13 +1142,11 @@ class WishlistViewSet(viewsets.ModelViewSet):
             'price_history': result,
         })
 
-    # ==================== Benchmarks & Performance ====================
+
     
     @action(detail=True, methods=['get'], url_path='benchmarks')
     def benchmarks(self, request, pk=None):
-        """
-        Получение бенчмарков для компонентов конфигурации
-        """
+
         if not BENCHMARK_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис бенчмарков недоступен'},
@@ -1230,14 +1178,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'], url_path='fps-prediction')
     def fps_prediction(self, request, pk=None):
-        """
-        Предсказание FPS в играх для конфигурации
-        
-        Query params:
-            game: название игры (optional)
-            resolution: 1080p, 1440p, 4k (default: 1080p)
-            ray_tracing: true/false (default: false)
-        """
+
         if not BENCHMARK_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис недоступен'},
@@ -1265,7 +1206,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
         fps_service = FPSPredictionService()
         
         if game:
-            # Предсказание для конкретной игры
+            
             prediction = predict_game_fps(
                 config.gpu.name,
                 config.cpu.name,
@@ -1285,7 +1226,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
                 'prediction': prediction,
             })
         else:
-            # Предсказание для всех игр
+            
             predictions = fps_service.predict_all_games(
                 config.gpu.name,
                 config.cpu.name,
@@ -1302,9 +1243,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'], url_path='performance-analysis')
     def performance_analysis(self, request, pk=None):
-        """
-        Полный анализ производительности конфигурации
-        """
+
         if not BENCHMARK_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис недоступен'},
@@ -1329,7 +1268,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], url_path='available-games')
     def available_games(self, request):
-        """Список доступных игр для FPS предсказания"""
+        
         if not BENCHMARK_SERVICE_AVAILABLE:
             return Response({'games': []})
         
@@ -1339,13 +1278,12 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
 
 class WorkspaceSetupViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления рабочими местами"""
+    
     queryset = WorkspaceSetup.objects.all()
     serializer_class = WorkspaceSetupSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои рабочие места"""
         base_queryset = WorkspaceSetup.objects.select_related(
             'user',
             'configuration',
@@ -1365,44 +1303,31 @@ class WorkspaceSetupViewSet(viewsets.ModelViewSet):
         return base_queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        """Автоматически привязываем настройку к текущему пользователю"""
+        
         serializer.save(user=self.request.user)
 
 
 class RecommendationViewSet(viewsets.ReadOnlyModelViewSet):
-    """ViewSet для просмотра рекомендаций"""
+
     queryset = Recommendation.objects.all()
     serializer_class = RecommendationSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои рекомендации"""
+        
         if self.request.user.is_staff:
             return Recommendation.objects.all()
         return Recommendation.objects.filter(configuration__user=self.request.user)
 
 
-# ============================================================================
-# AI CHAT VIEWSET
-# ============================================================================
 
 class AIChatViewSet(viewsets.ViewSet):
-    """
-    ViewSet для чата с AI ассистентом.
-    Позволяет уточнять требования и получать объяснения по выбору компонентов.
-    """
+
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['post'])
     def send(self, request):
-        """
-        Отправить сообщение в чат с AI.
-        
-        Request body:
-        - message: текст сообщения
-        - session_id: ID сессии (опционально)
-        - configuration_id: ID конфигурации для контекста (опционально)
-        """
+
         if not CHAT_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис чата недоступен'},
@@ -1421,7 +1346,7 @@ class AIChatViewSet(viewsets.ViewSet):
         
         chat_service = AIChatService(user=request.user)
         
-        # Создаём сессию с контекстом конфигурации если указана
+        
         if not session_id and configuration_id:
             session_id = chat_service.create_session(configuration_id=configuration_id)
         
@@ -1431,7 +1356,7 @@ class AIChatViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def history(self, request):
-        """Получить историю чата"""
+        
         if not CHAT_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис чата недоступен'},
@@ -1452,14 +1377,7 @@ class AIChatViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['post'])
     def explain(self, request):
-        """
-        Объяснить выбор конкретного компонента.
-        
-        Request body:
-        - component_type: тип компонента (cpu, gpu, etc.)
-        - component_id: ID компонента
-        - configuration_id: ID конфигурации (опционально)
-        """
+
         if not CHAT_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис чата недоступен'},
@@ -1485,25 +1403,14 @@ class AIChatViewSet(viewsets.ViewSet):
         return Response({'explanation': explanation})
 
 
-# ============================================================================
-# PRICE PARSER VIEWSET
-# ============================================================================
 
 class PriceParserViewSet(viewsets.ViewSet):
-    """
-    ViewSet для получения актуальных цен с магазинов (DNS, Citilink, Regard).
-    """
+
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['get'])
     def component_prices(self, request):
-        """
-        Получить цены на компонент из разных магазинов.
-        
-        Query params:
-        - component_type: тип компонента (cpu, gpu, etc.)
-        - component_id: ID компонента
-        """
+
         if not PRICE_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис парсинга цен недоступен'},
@@ -1526,12 +1433,7 @@ class PriceParserViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['post'])
     def update_prices(self, request):
-        """
-        Обновить цены для списка компонентов.
-        
-        Request body:
-        - components: список {component_type, component_id}
-        """
+
         if not PRICE_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис парсинга цен недоступен'},
@@ -1548,7 +1450,7 @@ class PriceParserViewSet(viewsets.ViewSet):
         service = PriceParserService()
         results = []
         
-        for comp in components:  # Обрабатываем все компоненты
+        for comp in components:  
             updated = service.update_component_price(
                 comp.get('component_type'),
                 comp.get('component_id')
@@ -1563,12 +1465,7 @@ class PriceParserViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def compare_prices(self, request):
-        """
-        Сравнить цены на все компоненты конфигурации.
-        
-        Query params:
-        - configuration_id: ID конфигурации
-        """
+
         if not PRICE_SERVICE_AVAILABLE:
             return Response(
                 {'error': 'Сервис парсинга цен недоступен'},
@@ -1599,19 +1496,14 @@ class PriceParserViewSet(viewsets.ViewSet):
         return Response(comparison)
 
 
-# ============================================================================
-# PERSONALIZATION VIEWSET
-# ============================================================================
 
 class PersonalizationViewSet(viewsets.ViewSet):
-    """
-    ViewSet для персонализированных рекомендаций на основе истории пользователя.
-    """
+
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['get'])
     def preferences(self, request):
-        """Получить проанализированные предпочтения пользователя"""
+    
         if not PERSONALIZATION_AVAILABLE:
             return Response(
                 {'error': 'Сервис персонализации недоступен'},
@@ -1625,12 +1517,7 @@ class PersonalizationViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def suggested_upgrades(self, request):
-        """
-        Получить рекомендуемые апгрейды для существующей конфигурации.
-        
-        Query params:
-        - configuration_id: ID конфигурации
-        """
+
         if not PERSONALIZATION_AVAILABLE:
             return Response(
                 {'error': 'Сервис персонализации недоступен'},
@@ -1662,7 +1549,7 @@ class PersonalizationViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def similar_builds(self, request):
-        """Найти похожие сборки от других пользователей"""
+
         if not PERSONALIZATION_AVAILABLE:
             return Response(
                 {'error': 'Сервис персонализации недоступен'},
@@ -1676,7 +1563,7 @@ class PersonalizationViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def personalized_recommendations(self, request):
-        """Получить персонализированные рекомендации компонентов"""
+
         if not PERSONALIZATION_AVAILABLE:
             return Response(
                 {'error': 'Сервис персонализации недоступен'},
@@ -1701,19 +1588,14 @@ class PersonalizationViewSet(viewsets.ViewSet):
         return Response({'recommendations': recommendations})
 
 
-# ============================================================================
-# AI ANALYTICS VIEWSET
-# ============================================================================
 
 class AIAnalyticsViewSet(viewsets.ViewSet):
-    """
-    ViewSet для аналитики AI ответов (только для staff).
-    """
+
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['get'])
     def stats(self, request):
-        """Получить статистику AI ответов"""
+
         if not request.user.is_staff:
             return Response(
                 {'error': 'Доступ запрещён'},
@@ -1725,7 +1607,7 @@ class AIAnalyticsViewSet(viewsets.ViewSet):
         success_rate = AILog.get_success_rate(days=days)
         common_errors = AILog.get_common_errors(days=days)
         
-        # Общая статистика
+
         from datetime import timedelta
         from django.utils import timezone
         
@@ -1750,7 +1632,7 @@ class AIAnalyticsViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def recent_logs(self, request):
-        """Получить последние логи AI"""
+  
         if not request.user.is_staff:
             return Response(
                 {'error': 'Доступ запрещён'},

@@ -1,6 +1,4 @@
-"""
-Learning Engine - Самообучение на основе обратной связи пользователей
-"""
+
 
 import os
 import json
@@ -16,7 +14,7 @@ os.makedirs(LEARNING_DIR, exist_ok=True)
 
 
 class LearningEngine:
-    """Движок самообучения на основе обратной связи"""
+
     
     def __init__(self):
         self.corrections: List[Dict] = []
@@ -24,8 +22,7 @@ class LearningEngine:
         self._load_data()
     
     def _load_data(self):
-        """Загрузить данные обучения"""
-        # Загружаем исправления
+
         if os.path.exists(CORRECTIONS_FILE):
             try:
                 with open(CORRECTIONS_FILE, 'r', encoding='utf-8') as f:
@@ -33,7 +30,7 @@ class LearningEngine:
             except:
                 self.corrections = []
         
-        # Загружаем хорошие ответы
+
         if os.path.exists(GOOD_RESPONSES_FILE):
             try:
                 with open(GOOD_RESPONSES_FILE, 'r', encoding='utf-8') as f:
@@ -43,10 +40,7 @@ class LearningEngine:
     
     def add_correction(self, prompt: str, original_response: str, corrected_response: str, 
                        feedback: str = "") -> dict:
-        """
-        Добавить исправление от пользователя
-        Это учит ИИ не повторять ошибки
-        """
+
         correction = {
             "id": f"corr_{datetime.now().timestamp()}",
             "timestamp": datetime.now().isoformat(),
@@ -58,20 +52,17 @@ class LearningEngine:
         
         self.corrections.append(correction)
         
-        # Сохраняем
+
         with open(CORRECTIONS_FILE, 'a', encoding='utf-8') as f:
             f.write(json.dumps(correction, ensure_ascii=False) + "\n")
         
-        # Обновляем контекст обучения
+
         self._update_learning_context()
         
         return correction
     
     def add_good_response(self, prompt: str, response: str) -> dict:
-        """
-        Пометить ответ как хороший (лайк)
-        Это усиливает подобные ответы
-        """
+
         good = {
             "id": f"good_{datetime.now().timestamp()}",
             "timestamp": datetime.now().isoformat(),
@@ -89,13 +80,10 @@ class LearningEngine:
         return good
     
     def get_learning_context(self, max_examples: int = 10) -> str:
-        """
-        Получить контекст обучения для добавления в промпт
-        Включает примеры исправлений и хороших ответов
-        """
+
         context_parts = []
         
-        # Добавляем последние исправления
+
         if self.corrections:
             context_parts.append("=== ВАЖНО: Учти эти исправления от пользователя ===")
             for corr in self.corrections[-max_examples:]:
@@ -106,7 +94,7 @@ class LearningEngine:
 {f"Комментарий: {corr['feedback']}" if corr.get('feedback') else ""}
 """)
         
-        # Добавляем примеры хороших ответов
+
         if self.good_responses:
             context_parts.append("\n=== Примеры хороших ответов (делай так же) ===")
             for good in self.good_responses[-max_examples//2:]:
@@ -118,7 +106,7 @@ class LearningEngine:
         return "\n".join(context_parts)
     
     def _update_learning_context(self):
-        """Обновить файл контекста обучения"""
+
         context = {
             "last_updated": datetime.now().isoformat(),
             "total_corrections": len(self.corrections),
@@ -130,7 +118,7 @@ class LearningEngine:
             json.dump(context, f, ensure_ascii=False, indent=2)
     
     def get_stats(self) -> dict:
-        """Статистика обучения"""
+
         return {
             "corrections_count": len(self.corrections),
             "good_responses_count": len(self.good_responses),
@@ -140,14 +128,11 @@ class LearningEngine:
         }
     
     def export_training_data(self) -> str:
-        """
-        Экспортировать данные для fine-tuning
-        Формат: JSONL с исправлениями
-        """
+
         export_file = os.path.join(LEARNING_DIR, "training_export.jsonl")
         
         with open(export_file, 'w', encoding='utf-8') as f:
-            # Экспортируем исправления как обучающие примеры
+
             for corr in self.corrections:
                 item = {
                     "messages": [
@@ -157,7 +142,7 @@ class LearningEngine:
                 }
                 f.write(json.dumps(item, ensure_ascii=False) + "\n")
             
-            # Экспортируем хорошие ответы
+
             for good in self.good_responses:
                 item = {
                     "messages": [
@@ -170,7 +155,7 @@ class LearningEngine:
         return export_file
 
 
-# Singleton
+
 _learning_engine = None
 
 def get_learning_engine() -> LearningEngine:

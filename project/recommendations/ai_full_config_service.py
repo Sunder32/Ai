@@ -1,9 +1,4 @@
-"""
-AI Full Configuration Service
-Сервис для генерации полных сборок ПК + периферия + рабочее место
-используя обученную модель DeepSeek с данными из pc_components_dec_2025.json
-и файлов периферии
-"""
+
 import json
 import logging
 import re
@@ -16,19 +11,14 @@ from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
-# Ollama API configuration - обращаемся к AI серверу
+
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
-AI_SERVER_URL = "http://localhost:5050/api/chat"  # AI сервер с обученной моделью
+AI_SERVER_URL = "http://localhost:5050/api/chat"  
 MODEL_NAME = "deepseek-project-model"
 
 
 class AIFullConfigService:
-    """
-    Сервис для полной генерации конфигурации с использованием обученной AI модели.
-    Генерирует: ПК компоненты + периферию + рабочее место
-    """
-    
-    # Маппинг типов пользователей из frontend в профили
+
     USER_TYPE_MAPPING = {
         'gamer': 'gaming',
         'gaming': 'gaming',
@@ -41,9 +31,8 @@ class AIFullConfigService:
         'streamer': 'streamer',
     }
     
-    # Ценовые диапазоны для всех типов компонентов
     PRICE_RANGES = {
-        # ПК компоненты
+
         'cpu': (5000, 150000),
         'gpu': (10000, 350000),
         'motherboard': (5000, 80000),
@@ -52,7 +41,7 @@ class AIFullConfigService:
         'psu': (3000, 40000),
         'case': (2000, 50000),
         'cooling': (1000, 30000),
-        # Периферия
+
         'monitor': (8000, 250000),
         'keyboard': (1000, 30000),
         'mouse': (500, 25000),
@@ -61,12 +50,12 @@ class AIFullConfigService:
         'speakers': (2000, 50000),
         'webcam': (1500, 30000),
         'microphone': (2000, 40000),
-        # Рабочее место
+
         'desk': (5000, 80000),
         'chair': (5000, 100000),
     }
     
-    # Профили использования с рекомендуемыми характеристиками
+
     USER_PROFILES = {
         'gaming': {
             'pc_budget_ratio': 0.6,
@@ -153,22 +142,22 @@ class AIFullConfigService:
         self.include_peripherals = include_peripherals
         self.include_workspace = include_workspace
         
-        # Маппируем тип пользователя в профиль - ДОЛЖНО БЫТЬ ДО _get_default_pc_preferences()
+
         mapped_type = self.USER_TYPE_MAPPING.get(user_type, 'gaming')
         
-        # Получаем профиль пользователя - ДОЛЖНО БЫТЬ ДО _get_default_pc_preferences()
+
         self.profile = self.USER_PROFILES.get(mapped_type, self.USER_PROFILES['gaming'])
         
-        # Теперь можно безопасно вызвать _get_default_pc_preferences()
+ 
         self.pc_preferences = pc_preferences or self._get_default_pc_preferences()
         self.peripherals_preferences = peripherals_preferences or {}
         self.workspace_preferences = workspace_preferences or {}
         
-        # Рассчитываем бюджеты на каждую категорию
+
         self._calculate_budgets()
         
     def _calculate_budgets(self):
-        """Рассчитать бюджеты для каждой категории"""
+
         total = self.max_budget
         
         if self.include_peripherals and self.include_workspace:
@@ -187,7 +176,7 @@ class AIFullConfigService:
         logger.info(f"Budget allocation: PC={self.pc_budget:.0f}, Peripherals={self.peripherals_budget:.0f}, Workspace={self.workspace_budget:.0f}")
     
     def _get_default_pc_preferences(self) -> Dict:
-        """Дефолтные настройки для ПК"""
+
         return {
             'preferred_cpu_manufacturer': 'any',
             'preferred_gpu_manufacturer': 'any',
@@ -201,26 +190,26 @@ class AIFullConfigService:
         }
     
     def _generate_default_peripherals(self) -> Dict:
-        """Генерация периферии из базы знаний AI"""
+
         from peripherals.models import Monitor, Keyboard, Mouse, Headset, Mousepad
         from decimal import Decimal
         
         peripherals = {}
         budget = self.peripherals_budget
         
-        # Распределение бюджета: монитор 50%, клавиатура 15%, мышь 12%, гарнитура 15%, коврик 8%
+
         monitor_budget = budget * 0.50
         keyboard_budget = budget * 0.15
         mouse_budget = budget * 0.12
         headset_budget = budget * 0.15
         mousepad_budget = budget * 0.08
         
-        # Определяем характеристики по профилю
+
         profile = self.profile
         is_gaming = self.user_type in ['gamer', 'gaming', 'streamer']
         is_creator = self.user_type in ['designer', 'content_creator']
         
-        # Монитор
+
         monitor_specs = {
             'name': 'ASUS ProArt PA279CV' if is_creator else ('ASUS VG27AQ1A' if is_gaming else 'Dell S2722QC'),
             'manufacturer': 'ASUS' if is_creator or is_gaming else 'Dell',
@@ -237,7 +226,7 @@ class AIFullConfigService:
         peripherals['monitor'] = Monitor.objects.create(**monitor_specs)
         logger.info(f"Generated monitor: {peripherals['monitor'].name}")
         
-        # Клавиатура
+
         keyboard_specs = {
             'name': 'Keychron K8 Pro' if is_creator else ('Logitech G Pro X' if is_gaming else 'Logitech MX Keys'),
             'manufacturer': 'Keychron' if is_creator else 'Logitech',
@@ -252,7 +241,7 @@ class AIFullConfigService:
         peripherals['keyboard'] = Keyboard.objects.create(**keyboard_specs)
         logger.info(f"Generated keyboard: {peripherals['keyboard'].name}")
         
-        # Мышь
+ 
         mouse_specs = {
             'name': 'Logitech MX Master 3S' if is_creator else ('Logitech G Pro X Superlight' if is_gaming else 'Logitech M720'),
             'manufacturer': 'Logitech',
@@ -268,7 +257,7 @@ class AIFullConfigService:
         peripherals['mouse'] = Mouse.objects.create(**mouse_specs)
         logger.info(f"Generated mouse: {peripherals['mouse'].name}")
         
-        # Гарнитура
+    
         headset_specs = {
             'name': 'Sony WH-1000XM5' if is_creator else ('SteelSeries Arctis Nova Pro' if is_gaming else 'Jabra Evolve2 75'),
             'manufacturer': 'Sony' if is_creator else ('SteelSeries' if is_gaming else 'Jabra'),
@@ -283,7 +272,7 @@ class AIFullConfigService:
         peripherals['headset'] = Headset.objects.create(**headset_specs)
         logger.info(f"Generated headset: {peripherals['headset'].name}")
         
-        # Коврик
+
         mousepad_specs = {
             'name': 'SteelSeries QcK Heavy XXL' if is_gaming else 'Logitech Desk Mat',
             'manufacturer': 'SteelSeries' if is_gaming else 'Logitech',
@@ -301,20 +290,20 @@ class AIFullConfigService:
         return peripherals
     
     def _generate_default_workspace(self) -> Dict:
-        """Генерация рабочего места из базы знаний AI"""
+
         from peripherals.models import Desk, Chair
         from decimal import Decimal
         
         workspace = {}
         budget = self.workspace_budget
         
-        # Распределение бюджета: стол 45%, кресло 55%
+        
         desk_budget = budget * 0.45
         chair_budget = budget * 0.55
         
         is_pro = self.user_type in ['designer', 'content_creator', 'programmer', 'developer']
         
-        # Стол
+       
         desk_specs = {
             'name': 'IKEA BEKANT с регулировкой' if is_pro else 'IKEA LAGKAPTEN/ALEX',
             'manufacturer': 'IKEA',
@@ -330,7 +319,7 @@ class AIFullConfigService:
         workspace['desk'] = Desk.objects.create(**desk_specs)
         logger.info(f"Generated desk: {workspace['desk'].name}")
         
-        # Кресло
+    
         chair_specs = {
             'name': 'Herman Miller Aeron' if is_pro and budget > 80000 else ('IKEA JÄRVFJÄLLET' if is_pro else 'IKEA MARKUS'),
             'manufacturer': 'Herman Miller' if is_pro and budget > 80000 else 'IKEA',
@@ -349,9 +338,7 @@ class AIFullConfigService:
         return workspace
     
     def _build_full_prompt(self) -> str:
-        """Создать промпт для полной генерации конфигурации из обученных данных AI"""
         
-        # Собираем требования
         requirements_list = []
         if self.requirements.get('gaming'):
             requirements_list.append("игры")
@@ -374,7 +361,7 @@ class AIFullConfigService:
         
         pref = self.pc_preferences
         
-        # Простой промпт для AI чтобы она использовала свои обученные данные
+        
         prompt = f"""Собери компьютер для профиля "{self.user_type}" с бюджетом {self.min_budget:.0f}-{self.max_budget:.0f} рублей.
 
 Задачи: {requirements_text}
@@ -417,9 +404,7 @@ class AIFullConfigService:
         return prompt
     
     def _call_ai_model(self, prompt: str) -> Optional[str]:
-        """Вызвать AI модель - сначала через AI сервер, потом напрямую в Ollama"""
         
-        # Способ 1: Через AI сервер (с обученной моделью)
         try:
             logger.info("Trying AI server at localhost:5050...")
             payload = {
@@ -441,7 +426,7 @@ class AIFullConfigService:
         except Exception as e:
             logger.warning(f"AI server error: {e}, trying Ollama directly...")
         
-        # Способ 2: Напрямую в Ollama
+        
         try:
             payload = {
                 "model": MODEL_NAME,
@@ -502,20 +487,20 @@ class AIFullConfigService:
             return None
     
     def _parse_ai_response(self, response: str) -> Optional[Dict[str, Any]]:
-        """Распарсить ответ AI"""
+        
         try:
-            # Ищем JSON в ответе
+            
             json_match = re.search(r'\{[\s\S]*\}', response)
             if json_match:
                 json_str = json_match.group()
                 
-                # Пробуем очистить JSON от комментариев
+               
                 json_str = re.sub(r'//.*?\n', '\n', json_str)
                 json_str = re.sub(r'/\*.*?\*/', '', json_str, flags=re.DOTALL)
                 
                 parsed = json.loads(json_str)
                 
-                # Логируем найденные компоненты
+                
                 pc_components = [k for k in ['cpu', 'gpu', 'motherboard', 'ram', 'storage', 'psu', 'case', 'cooling'] if k in parsed]
                 peripheral_components = [k for k in ['monitor', 'keyboard', 'mouse', 'headset', 'mousepad', 'webcam', 'microphone', 'speakers'] if k in parsed]
                 workspace_components = [k for k in ['desk', 'chair'] if k in parsed]
@@ -534,10 +519,10 @@ class AIFullConfigService:
             return None
     
     def _validate_component_spec(self, component_type: str, spec: dict) -> Tuple[bool, List[str]]:
-        """Валидировать спецификацию компонента"""
+        
         issues = []
         
-        # Проверяем обязательные поля
+        
         if 'name' not in spec or not spec['name']:
             issues.append(f"Missing required field: name")
             
@@ -556,10 +541,10 @@ class AIFullConfigService:
         return is_valid, issues
     
     def _check_compatibility(self, parsed: Dict) -> Tuple[bool, List[str]]:
-        """Проверить совместимость компонентов"""
+        
         issues = []
         
-        # Проверяем совместимость сокета CPU и материнской платы
+        
         cpu = parsed.get('cpu', {})
         mb = parsed.get('motherboard', {})
         
@@ -570,7 +555,7 @@ class AIFullConfigService:
             if cpu_socket and mb_socket and cpu_socket != mb_socket:
                 issues.append(f"[ERROR] CPU socket ({cpu_socket}) != MB socket ({mb_socket})")
         
-        # Проверяем тип памяти
+        
         ram = parsed.get('ram', {})
         
         if ram and mb:
@@ -580,7 +565,7 @@ class AIFullConfigService:
             if ram_type and mb_mem_type and ram_type != mb_mem_type:
                 issues.append(f"[ERROR] RAM type ({ram_type}) != MB memory type ({mb_mem_type})")
         
-        # Проверяем мощность БП
+        
         gpu = parsed.get('gpu', {})
         psu = parsed.get('psu', {})
         
@@ -589,11 +574,11 @@ class AIFullConfigService:
             cpu_tdp = int(cpu.get('tdp', 0)) if cpu else 0
             psu_wattage = int(psu.get('wattage', 0))
             
-            min_wattage = recommended_psu + cpu_tdp + 100  # Запас 100Вт
+            min_wattage = recommended_psu + cpu_tdp + 100  
             if psu_wattage < min_wattage:
                 issues.append(f"[WARN] PSU wattage ({psu_wattage}W) may be insufficient (recommended: {min_wattage}W)")
         
-        # Проверяем охлаждение
+        
         cooling = parsed.get('cooling', {})
         
         if cpu and cooling:
@@ -603,16 +588,16 @@ class AIFullConfigService:
             if max_tdp and cpu_tdp > max_tdp:
                 issues.append(f"[WARN] CPU TDP ({cpu_tdp}W) exceeds cooling capacity ({max_tdp}W)")
         
-        # Проверяем общий бюджет
+        
         total = self._calculate_total_price(parsed)
-        if total > float(self.max_budget) * 1.1:  # Допускаем 10% превышения
+        if total > float(self.max_budget) * 1.1:  
             issues.append(f"[WARN] Total price ({total:.0f} RUB) exceeds budget ({self.max_budget:.0f} RUB)")
         
         is_compatible = not any("[ERROR]" in issue for issue in issues)
         return is_compatible, issues
     
     def _calculate_total_price(self, parsed: Dict) -> float:
-        """Рассчитать общую стоимость"""
+        
         total = 0
         
         for key in ['cpu', 'gpu', 'motherboard', 'ram', 'storage', 'psu', 'case', 'cooling',
@@ -624,27 +609,24 @@ class AIFullConfigService:
         return total
     
     def _normalize_price(self, value) -> int:
-        """Нормализовать цену в целое число"""
+       
         if isinstance(value, str):
             value = ''.join(c for c in value if c.isdigit() or c == '.')
             return int(float(value)) if value else 0
         return int(float(value)) if value else 0
     
     def _generate_from_trained_data(self) -> Dict[str, Any]:
-        """
-        Генерирует сборку из обученных данных AI (pc_components_dec_2025.json и txt файлы)
-        Используется когда AI модель не отвечает или отвечает некорректно
-        """
+        
         logger.info("Generating configuration from trained data...")
         
-        # Определяем профиль и бюджет
+        
         is_gaming = self.user_type in ['gamer', 'gaming', 'streamer']
         is_office = self.user_type in ['office', 'student']
         is_creator = self.user_type in ['designer', 'content_creator', 'developer']
         
         pc_budget = float(self.pc_budget)
         
-        # Распределение бюджета ПК
+        
         if is_gaming:
             budget_split = {'cpu': 0.18, 'gpu': 0.40, 'motherboard': 0.12, 'ram': 0.08, 'storage': 0.08, 'psu': 0.06, 'case': 0.05, 'cooling': 0.03}
         elif is_creator:
@@ -652,10 +634,10 @@ class AIFullConfigService:
         else:  # office
             budget_split = {'cpu': 0.25, 'gpu': 0.15, 'motherboard': 0.15, 'ram': 0.15, 'storage': 0.15, 'psu': 0.07, 'case': 0.05, 'cooling': 0.03}
         
-        # Подбираем компоненты под бюджет (из обученных данных)
+        
         result = {}
         
-        # CPU - из pc_components_dec_2025.json
+       
         cpu_budget = pc_budget * budget_split['cpu']
         if is_gaming or is_creator:
             if cpu_budget >= 35000:
@@ -672,7 +654,7 @@ class AIFullConfigService:
             else:
                 result['cpu'] = {"name": "Core i3-12100F", "manufacturer": "Intel", "socket": "LGA1700", "cores": 4, "threads": 8, "base_clock": 3.3, "boost_clock": 4.3, "tdp": 58, "price": 7500}
         
-        # Материнская плата - совместимая с CPU
+        
         cpu_socket = result['cpu']['socket']
         mb_budget = pc_budget * budget_split['motherboard']
         
@@ -686,7 +668,7 @@ class AIFullConfigService:
         else:  # AM4
             result['motherboard'] = {"name": "B550M Pro-VDH WiFi", "manufacturer": "MSI", "socket": "AM4", "chipset": "B550", "form_factor": "mATX", "memory_slots": 4, "max_memory": 128, "memory_type": "DDR4", "pcie_slots": 2, "m2_slots": 1, "price": 8500}
         
-        # RAM - совместимая с материнкой
+        
         ram_type = result['motherboard']['memory_type']
         ram_budget = pc_budget * budget_split['ram']
         
@@ -701,7 +683,7 @@ class AIFullConfigService:
             else:
                 result['ram'] = {"name": "FURY Beast DDR4", "manufacturer": "Kingston", "memory_type": "DDR4", "capacity": 16, "speed": 3200, "modules": 2, "price": 4999}
         
-        # GPU - добавляем core_clock
+        
         gpu_budget = pc_budget * budget_split['gpu']
         if is_gaming:
             if gpu_budget >= 80000:
@@ -717,7 +699,7 @@ class AIFullConfigService:
                 result['gpu'] = {"name": "GeForce RTX 4070", "manufacturer": "NVIDIA", "chipset": "RTX 4070", "memory": 12, "memory_type": "GDDR6X", "core_clock": 1920, "boost_clock": 2475, "tdp": 200, "recommended_psu": 650, "price": 55000}
             else:
                 result['gpu'] = {"name": "GeForce RTX 4060", "manufacturer": "NVIDIA", "chipset": "RTX 4060", "memory": 8, "memory_type": "GDDR6", "core_clock": 1830, "boost_clock": 2460, "tdp": 115, "recommended_psu": 450, "price": 28000}
-        else:  # office - можно без GPU или встроенная
+        else: 
             if gpu_budget >= 20000:
                 result['gpu'] = {"name": "GeForce GTX 1650", "manufacturer": "NVIDIA", "chipset": "GTX 1650", "memory": 4, "memory_type": "GDDR6", "core_clock": 1485, "boost_clock": 1665, "tdp": 75, "recommended_psu": 350, "price": 15000}
             else:
@@ -732,7 +714,7 @@ class AIFullConfigService:
         else:
             result['storage'] = {"name": "Blue SN570", "manufacturer": "WD", "storage_type": "ssd_nvme", "capacity": 500, "read_speed": 3500, "write_speed": 2300, "price": 5999}
         
-        # PSU
+        
         gpu_psu = result.get('gpu', {}).get('recommended_psu', 350)
         cpu_tdp = result['cpu']['tdp']
         min_psu = gpu_psu + cpu_tdp + 100
@@ -744,54 +726,54 @@ class AIFullConfigService:
         else:
             result['psu'] = {"name": "CV550", "manufacturer": "Corsair", "wattage": 550, "efficiency_rating": "80+ Bronze", "modular": False, "price": 5000}
         
-        # Case
+        
         case_budget = pc_budget * budget_split['case']
         if case_budget >= 8000 or is_gaming:
             result['case'] = {"name": "4000D Airflow", "manufacturer": "Corsair", "form_factor": "Mid-Tower", "max_gpu_length": 360, "rgb": is_gaming, "price": 8500}
         else:
             result['case'] = {"name": "NR600", "manufacturer": "Cooler Master", "form_factor": "Mid-Tower", "max_gpu_length": 330, "rgb": False, "price": 5500}
         
-        # Cooling
+        
         cpu_tdp = result['cpu']['tdp']
         if cpu_tdp >= 125:
             result['cooling'] = {"name": "Hyper 212 RGB", "manufacturer": "Cooler Master", "cooling_type": "air", "max_tdp": 180, "price": 4500}
         else:
             result['cooling'] = {"name": "Gammaxx 400 V2", "manufacturer": "DeepCool", "cooling_type": "air", "max_tdp": 130, "price": 2500}
         
-        # Периферия (из txt файлов обучения)
+        
         if self.include_peripherals:
             periph_budget = float(self.peripherals_budget)
             
-            # Monitor
+            
             if is_gaming:
                 result['monitor'] = {"name": "VG27AQ1A", "manufacturer": "ASUS", "screen_size": 27, "resolution": "2560x1440", "refresh_rate": 165, "panel_type": "IPS", "price": 32000}
             else:
                 result['monitor'] = {"name": "S2722QC", "manufacturer": "Dell", "screen_size": 27, "resolution": "2560x1440", "refresh_rate": 75, "panel_type": "IPS", "price": 28000}
             
-            # Keyboard (из keyboards.txt)
+            
             if is_gaming:
                 result['keyboard'] = {"name": "G Pro X", "manufacturer": "Logitech", "switch_type": "mechanical", "rgb": True, "wireless": False, "price": 12000}
             else:
                 result['keyboard'] = {"name": "MX Keys", "manufacturer": "Logitech", "switch_type": "membrane", "rgb": False, "wireless": True, "price": 9500}
             
-            # Mouse (из mouses.txt)
+            
             if is_gaming:
                 result['mouse'] = {"name": "G Pro X Superlight", "manufacturer": "Logitech", "dpi": 25600, "wireless": True, "price": 12000}
             else:
                 result['mouse'] = {"name": "MX Master 3S", "manufacturer": "Logitech", "dpi": 8000, "wireless": True, "price": 10000}
             
-            # Headset (из headphones.txt)
+           
             result['headset'] = {"name": "Cloud II", "manufacturer": "HyperX", "wireless": False, "microphone": True, "price": 7000}
             
-            # Mousepad
+            
             result['mousepad'] = {"name": "QcK Heavy XXL", "manufacturer": "SteelSeries", "size": "XXL", "price": 3000}
         
-        # Рабочее место
+        
         if self.include_workspace:
-            # Desk (из tables.txt)
+            
             result['desk'] = {"name": "BEKANT", "manufacturer": "IKEA", "width": 160, "depth": 80, "adjustable_height": False, "price": 15000}
             
-            # Chair (из chairs.txt)
+           
             result['chair'] = {"name": "MARKUS", "manufacturer": "IKEA", "ergonomic": True, "lumbar_support": True, "price": 18000}
         
         result['confidence'] = 0.85
@@ -801,40 +783,40 @@ class AIFullConfigService:
         return result
     
     def _get_model_fields(self, model_class) -> set:
-        """Получить список допустимых полей модели"""
+        
         return {field.name for field in model_class._meta.get_fields() 
                 if hasattr(field, 'column') and field.column is not None}
     
     def _create_component_from_spec(self, model_class, spec: dict, ai_confidence: float):
-        """Создать компонент в БД из спецификации AI"""
+       
         try:
             valid_fields = self._get_model_fields(model_class)
             
-            # Маппинг полей AI -> DB (AI может возвращать другие названия)
+            
             field_mapping = {
-                'noise_cancellation': 'noise_cancelling',  # Headset
-                'surround_sound': 'surround',  # Headset
-                'height_adjustable': 'adjustable_height',  # Desk
-                'mic_type': 'microphone_type',  # Microphone
-                'connection_type': 'connection',  # Microphone (если нужно)
+                'noise_cancellation': 'noise_cancelling',  
+                'surround_sound': 'surround',  
+                'height_adjustable': 'adjustable_height',  
+                'mic_type': 'microphone_type',  
+                'connection_type': 'connection', 
             }
             
-            # Применяем маппинг полей
+           
             mapped_spec = {}
             for key, value in spec.items():
                 mapped_key = field_mapping.get(key, key)
                 mapped_spec[mapped_key] = value
             
-            # Фильтруем только валидные поля
+            
             filtered_spec = {k: v for k, v in mapped_spec.items() if k in valid_fields}
             
-            # Добавляем дефолтные значения для обязательных полей разных моделей
+            
             model_name = model_class.__name__
             
-            # GPU defaults
+            
             if model_name == 'GPU':
                 if 'core_clock' not in filtered_spec:
-                    filtered_spec['core_clock'] = 1500  # MHz
+                    filtered_spec['core_clock'] = 1500  
                 if 'boost_clock' not in filtered_spec:
                     filtered_spec['boost_clock'] = filtered_spec.get('core_clock', 1500) + 200
                 if 'recommended_psu' not in filtered_spec:
@@ -842,19 +824,19 @@ class AIFullConfigService:
                 if 'performance_score' not in filtered_spec:
                     filtered_spec['performance_score'] = 50
             
-            # Motherboard defaults
+            
             if model_name == 'Motherboard':
                 if 'pcie_slots' not in filtered_spec:
                     filtered_spec['pcie_slots'] = 2
                 if 'm2_slots' not in filtered_spec:
                     filtered_spec['m2_slots'] = 2
             
-            # CPU defaults
+            
             if model_name == 'CPU':
                 if 'performance_score' not in filtered_spec:
                     filtered_spec['performance_score'] = 50
             
-            # Monitor defaults
+            
             if model_name == 'Monitor':
                 if 'response_time' not in filtered_spec:
                     filtered_spec['response_time'] = Decimal('5')
@@ -863,12 +845,12 @@ class AIFullConfigService:
                 if 'curved' not in filtered_spec:
                     filtered_spec['curved'] = False
             
-            # Keyboard defaults
+           
             if model_name == 'Keyboard':
                 if 'form_factor' not in filtered_spec:
                     filtered_spec['form_factor'] = 'Full-size'
             
-            # Mouse defaults  
+           
             if model_name == 'Mouse':
                 if 'sensor_type' not in filtered_spec:
                     filtered_spec['sensor_type'] = 'optical'
@@ -877,7 +859,7 @@ class AIFullConfigService:
                 if 'weight' not in filtered_spec:
                     filtered_spec['weight'] = Decimal('100')
             
-            # Headset defaults
+            
             if model_name == 'Headset':
                 if 'connection_type' not in filtered_spec:
                     filtered_spec['connection_type'] = 'USB' if filtered_spec.get('wireless') else '3.5mm'
@@ -888,7 +870,7 @@ class AIFullConfigService:
                 if 'microphone' not in filtered_spec:
                     filtered_spec['microphone'] = True
             
-            # Mousepad defaults
+         
             if model_name == 'Mousepad':
                 if 'width' not in filtered_spec:
                     filtered_spec['width'] = 400
@@ -901,7 +883,7 @@ class AIFullConfigService:
                 if 'material' not in filtered_spec:
                     filtered_spec['material'] = 'Ткань'
                 if 'size' not in filtered_spec:
-                    # Определяем размер по ширине
+                    
                     width = filtered_spec.get('width', 400)
                     if width < 300:
                         filtered_spec['size'] = 'small'
@@ -912,7 +894,7 @@ class AIFullConfigService:
                     else:
                         filtered_spec['size'] = 'xl'
             
-            # Desk defaults
+            
             if model_name == 'Desk':
                 if 'width' not in filtered_spec:
                     filtered_spec['width'] = 140
@@ -921,14 +903,14 @@ class AIFullConfigService:
                 if 'adjustable_height' not in filtered_spec:
                     filtered_spec['adjustable_height'] = False
             
-            # Chair defaults
+            
             if model_name == 'Chair':
                 if 'adjustable_armrests' not in filtered_spec:
                     filtered_spec['adjustable_armrests'] = True
                 if 'max_weight' not in filtered_spec:
                     filtered_spec['max_weight'] = 120
             
-            # Добавляем AI метаданные если поля есть в модели
+            
             if 'is_ai_generated' in valid_fields:
                 filtered_spec['is_ai_generated'] = True
             if 'ai_generation_date' in valid_fields:
@@ -936,7 +918,7 @@ class AIFullConfigService:
             if 'ai_confidence' in valid_fields:
                 filtered_spec['ai_confidence'] = ai_confidence
             
-            # Преобразуем price в Decimal
+            
             if 'price' in filtered_spec:
                 filtered_spec['price'] = Decimal(str(self._normalize_price(filtered_spec['price'])))
             
@@ -951,13 +933,7 @@ class AIFullConfigService:
             return None
     
     def generate_full_configuration(self, user) -> Tuple[Optional[Any], Optional[Any], Dict]:
-        """
-        Генерация полной конфигурации: ПК + периферия + рабочее место
-        AI генерирует ВСЁ из своих обученных данных (без fallback в БД)
-        
-        Returns:
-            tuple: (PCConfiguration или None, WorkspaceSetup или None, dict с info)
-        """
+    
         from recommendations.models import PCConfiguration, Recommendation, WorkspaceSetup
         from peripherals.models import Monitor, Keyboard, Mouse, Headset, Mousepad, Webcam, Microphone, Speakers, Desk, Chair
         from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
@@ -966,23 +942,23 @@ class AIFullConfigService:
         logger.info(f"Profile: {self.user_type}, Budget: {self.min_budget}-{self.max_budget}")
         logger.info(f"Include peripherals: {self.include_peripherals}, Include workspace: {self.include_workspace}")
         
-        # Генерируем промпт и вызываем AI
+        
         prompt = self._build_full_prompt()
         ai_response = self._call_ai_model(prompt)
         
-        # Парсим ответ AI
+        
         parsed = {}
         if ai_response:
             parsed = self._parse_ai_response(ai_response) or {}
         
-        # Если AI не ответил или не распарсился - генерируем из обученных данных
+       
         if not parsed:
             logger.warning("AI response empty or failed to parse, generating from trained data")
             parsed = self._generate_from_trained_data()
         
         confidence = parsed.get('confidence', 0.85) if parsed else 0.7
         
-        # Проверяем совместимость
+        
         is_compatible, compat_issues = True, []
         if parsed:
             is_compatible, compat_issues = self._check_compatibility(parsed)
@@ -990,7 +966,7 @@ class AIFullConfigService:
                 logger.warning(f"Compatibility issues: {compat_issues}")
         
         try:
-            # 1. Создаем ПК компоненты из данных AI
+            
             pc_components = {}
             pc_mapping = [
                 ('cpu', CPU, 'cpu'),
@@ -1012,16 +988,16 @@ class AIFullConfigService:
                         if component:
                             pc_components[component_key] = component
             
-            # Проверяем обязательные компоненты
+            
             required = ['cpu', 'motherboard', 'ram', 'storage_primary']
             missing = [c for c in required if c not in pc_components]
             
             if missing:
                 logger.warning(f"Missing required components: {missing}")
-                # Если чего-то не хватает - генерируем недостающее из обученных данных
+                
                 default_specs = self._generate_from_trained_data()
                 
-                # Создаём маппинг для быстрого поиска
+                
                 pc_mapping_dict = {ck: (sk, mc) for sk, mc, ck in pc_mapping}
                 
                 for component_key in missing:
@@ -1035,12 +1011,12 @@ class AIFullConfigService:
                                 pc_components[component_key] = component
                                 logger.info(f"Generated missing {component_key} from trained data")
             
-            # Финальная проверка
+            
             still_missing = [c for c in required if c not in pc_components]
             if still_missing:
                 return None, None, {"error": f"AI не смогла сгенерировать компоненты: {', '.join(still_missing)}. Попробуйте ещё раз."}
             
-            # Добавляем опциональные компоненты если их нет
+           
             optional = ['gpu', 'psu', 'case', 'cooling']
             for component_key in optional:
                 if component_key not in pc_components:
@@ -1054,7 +1030,7 @@ class AIFullConfigService:
                                     pc_components[component_key] = component
                                 break
             
-            # Создаем PCConfiguration
+            
             config = PCConfiguration.objects.create(
                 user=user,
                 name=f"AI-сборка для {self.user_type}",
@@ -1065,7 +1041,7 @@ class AIFullConfigService:
             config.compatibility_notes = "\n".join(compat_issues) if compat_issues else "[OK] Все компоненты совместимы"
             config.save()
             
-            # Сохраняем обоснования
+            
             reasoning = parsed.get('reasoning', {})
             for component_type, reason in reasoning.items():
                 if component_type in pc_components:
@@ -1077,7 +1053,7 @@ class AIFullConfigService:
                         reason=str(reason)
                     )
             
-            # 2. Создаем периферию
+            
             peripherals = {}
             workspace_setup = None
             
@@ -1102,12 +1078,12 @@ class AIFullConfigService:
                             if component:
                                 peripherals[spec_key] = component
                 
-                # Fallback: генерируем периферию из своих знаний если AI не создал
+                
                 if not peripherals:
                     logger.info("No peripherals from AI, generating from knowledge base")
                     peripherals = self._generate_default_peripherals()
             
-            # 3. Создаем рабочее место
+            
             workspace_components = {}
             if self.include_workspace:
                 workspace_mapping = [
@@ -1124,12 +1100,12 @@ class AIFullConfigService:
                             if component:
                                 workspace_components[spec_key] = component
                 
-                # Fallback: генерируем рабочее место из своих знаний если AI не создал
+                
                 if not workspace_components:
                     logger.info("No workspace from AI, generating from knowledge base")
                     workspace_components = self._generate_default_workspace()
             
-            # 4. Создаем WorkspaceSetup если есть периферия или рабочее место
+            
             if peripherals or workspace_components:
                 workspace_data = {
                     'user': user,
@@ -1137,7 +1113,7 @@ class AIFullConfigService:
                     'configuration': config,
                 }
                 
-                # Добавляем периферию
+                
                 if 'monitor' in peripherals:
                     workspace_data['monitor_primary'] = peripherals['monitor']
                 if 'keyboard' in peripherals:
@@ -1155,7 +1131,7 @@ class AIFullConfigService:
                 if 'speakers' in peripherals:
                     workspace_data['speakers'] = peripherals['speakers']
                 
-                # Добавляем рабочее место
+                
                 if 'desk' in workspace_components:
                     workspace_data['desk'] = workspace_components['desk']
                 if 'chair' in workspace_components:
@@ -1165,7 +1141,7 @@ class AIFullConfigService:
                 workspace_setup.calculate_total_price()
                 logger.info(f"[OK] Created WorkspaceSetup: {workspace_setup.name}")
             
-            # Рассчитываем итоговые цены
+            
             pc_price = float(config.total_price)
             peripherals_price = sum(float(p.price) for p in peripherals.values())
             workspace_price = sum(float(w.price) for w in workspace_components.values())

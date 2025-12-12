@@ -87,12 +87,14 @@ AI_SERVER_URL=http://localhost:5050
 ## 🔗 Ссылки
 
 - **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:8000/api
+- **Backend API:** http://localhost:8001/api
 - **AI Server:** http://localhost:5050
-- **API Documentation:** http://localhost:8000/api/docs
-- **Health Check:** http://localhost:8000/api/health/
-- **Admin Panel:** http://localhost:8000/admin
-- **Public URL:** https://legally-matchless-bulldog.cloudpub.ru
+- **API Documentation:** http://localhost:8001/api/docs
+- **Health Check:** http://localhost:8001/api/health/
+- **Admin Panel:** http://localhost:8001/admin
+- **Public Frontend:** https://impulsively-visionary-fieldfare.cloudpub.ru
+- **Public Backend:** https://inanely-visionary-ibis.cloudpub.ru
+- **Public AI Server:** https://smoothly-shrewd-trembler.cloudpub.ru
 
 ## 📋 Статус задач
 

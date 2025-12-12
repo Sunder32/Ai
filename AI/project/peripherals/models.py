@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Monitor(models.Model):
-    """Монитор"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     screen_size = models.FloatField(verbose_name='Диагональ (дюймы)')
@@ -29,7 +29,7 @@ class Monitor(models.Model):
 
 
 class Keyboard(models.Model):
-    """Клавиатура"""
+
     SWITCH_TYPE_CHOICES = [
         ('mechanical', 'Механическая'),
         ('membrane', 'Мембранная'),
@@ -59,7 +59,7 @@ class Keyboard(models.Model):
 
 
 class Mouse(models.Model):
-    """Мышь"""
+
     SENSOR_TYPE_CHOICES = [
         ('optical', 'Оптический'),
         ('laser', 'Лазерный'),
@@ -89,7 +89,7 @@ class Mouse(models.Model):
 
 
 class Headset(models.Model):
-    """Наушники"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     connection_type = models.CharField(max_length=50, verbose_name='Тип подключения')
@@ -110,7 +110,7 @@ class Headset(models.Model):
 
 
 class Webcam(models.Model):
-    """Веб-камера"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     resolution = models.CharField(max_length=50, verbose_name='Разрешение')
@@ -154,7 +154,7 @@ class Microphone(models.Model):
 
 
 class Desk(models.Model):
-    """Стол"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     width = models.IntegerField(verbose_name='Ширина (см)')
@@ -173,7 +173,7 @@ class Desk(models.Model):
 
 
 class Chair(models.Model):
-    """Кресло"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     ergonomic = models.BooleanField(default=False, verbose_name='Эргономичное')

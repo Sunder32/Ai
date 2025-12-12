@@ -1,4 +1,4 @@
-// Типы для пользователей
+
 export interface User {
   id: number;
   username: string;
@@ -29,7 +29,7 @@ export interface UserProfile {
   updated_at: string;
 }
 
-// Типы для компонентов ПК
+
 export interface CPU {
   id: number;
   name: string;
@@ -145,7 +145,7 @@ export interface Cooling {
   updated_at: string;
 }
 
-// Типы для периферии
+
 export interface Monitor {
   id: number;
   name: string;
@@ -285,7 +285,7 @@ export interface WorkspaceSetup {
   updated_at: string;
 }
 
-// Типы для конфигураций
+
 export interface PCConfiguration {
   id: number;
   user: number;
@@ -352,7 +352,7 @@ export interface ConfigurationRequest {
   include_workspace?: boolean;
   use_ai?: boolean;
   
-  // Расширенные параметры PC
+ 
   preferred_cpu_manufacturer?: 'intel' | 'amd' | 'any';
   preferred_gpu_manufacturer?: 'nvidia' | 'amd' | 'any';
   min_cpu_cores?: number;
@@ -365,7 +365,7 @@ export interface ConfigurationRequest {
   case_size_preference?: 'mini' | 'mid' | 'full' | 'any';
   overclocking_support?: boolean;
   
-  // Настройки периферии
+
   peripheral_budget_percent?: number;
   need_monitor?: boolean;
   need_keyboard?: boolean;
@@ -376,7 +376,7 @@ export interface ConfigurationRequest {
   need_desk?: boolean;
   need_chair?: boolean;
   
-  // Расширенные параметры периферии
+
   monitor_min_refresh_rate?: number;
   monitor_min_resolution?: string;
   monitor_size_preference?: number;
@@ -392,7 +392,7 @@ export interface ConfigurationRequest {
   webcam_min_resolution?: '720p' | '1080p' | '4k' | 'any';
   microphone_type?: 'condenser' | 'dynamic' | 'usb' | 'any';
   
-  // Расширенные параметры workspace
+
   desk_min_width?: number;
   desk_min_depth?: number;
   desk_height_adjustable?: boolean;

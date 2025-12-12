@@ -2,7 +2,7 @@ from django.db import models
 
 
 class CPU(models.Model):
-    """Процессор"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     socket = models.CharField(max_length=50, verbose_name='Сокет')
@@ -14,7 +14,7 @@ class CPU(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     performance_score = models.IntegerField(verbose_name='Оценка производительности', default=0)
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -38,7 +38,7 @@ class CPU(models.Model):
 
 
 class GPU(models.Model):
-    """Видеокарта"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     chipset = models.CharField(max_length=100, verbose_name='Чипсет')
@@ -51,7 +51,7 @@ class GPU(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     performance_score = models.IntegerField(verbose_name='Оценка производительности', default=0)
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -75,7 +75,7 @@ class GPU(models.Model):
 
 
 class Motherboard(models.Model):
-    """Материнская плата"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     socket = models.CharField(max_length=50, verbose_name='Сокет')
@@ -88,7 +88,7 @@ class Motherboard(models.Model):
     m2_slots = models.IntegerField(verbose_name='Количество M.2 слотов', default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -109,7 +109,7 @@ class Motherboard(models.Model):
 
 
 class RAM(models.Model):
-    """Оперативная память"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     memory_type = models.CharField(max_length=50, verbose_name='Тип памяти')
@@ -119,7 +119,7 @@ class RAM(models.Model):
     cas_latency = models.CharField(max_length=50, verbose_name='CAS латентность', blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -140,7 +140,7 @@ class RAM(models.Model):
 
 
 class Storage(models.Model):
-    """Накопитель"""
+    
     STORAGE_TYPE_CHOICES = [
         ('ssd_nvme', 'SSD NVMe'),
         ('ssd_sata', 'SSD SATA'),
@@ -155,7 +155,7 @@ class Storage(models.Model):
     write_speed = models.IntegerField(verbose_name='Скорость записи (МБ/с)', null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -172,7 +172,7 @@ class Storage(models.Model):
 
 
 class PSU(models.Model):
-    """Блок питания"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     wattage = models.IntegerField(verbose_name='Мощность (Вт)')
@@ -180,7 +180,7 @@ class PSU(models.Model):
     modular = models.BooleanField(default=False, verbose_name='Модульный')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -197,7 +197,7 @@ class PSU(models.Model):
 
 
 class Case(models.Model):
-    """Корпус"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     form_factor = models.CharField(max_length=50, verbose_name='Форм-фактор')
@@ -206,7 +206,7 @@ class Case(models.Model):
     rgb = models.BooleanField(default=False, verbose_name='RGB подсветка')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')
@@ -223,7 +223,7 @@ class Case(models.Model):
 
 
 class Cooling(models.Model):
-    """Система охлаждения"""
+    
     COOLING_TYPE_CHOICES = [
         ('air', 'Воздушное'),
         ('aio', 'Водяное (AIO)'),
@@ -238,7 +238,7 @@ class Cooling(models.Model):
     noise_level = models.IntegerField(verbose_name='Уровень шума (дБ)', null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     
-    # AI Generation fields
+    
     is_ai_generated = models.BooleanField(default=False, verbose_name='Сгенерировано AI')
     ai_generation_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата генерации AI')
     ai_confidence = models.FloatField(null=True, blank=True, verbose_name='Уверенность AI (0-1)')

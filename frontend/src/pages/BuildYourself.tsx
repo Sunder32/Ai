@@ -788,15 +788,15 @@ const BuildYourself: React.FC = () => {
       <div
         key={component.id}
         onClick={onSelect}
-        className={`p-4 rounded-lg cursor-pointer transition-all duration-200 border-2 ${isSelected
+        className={`min-w-0 p-4 rounded-lg cursor-pointer transition-all duration-200 border-2 overflow-hidden ${isSelected
           ? 'border-emerald-500 bg-emerald-500/10'
           : 'border-gray-700 bg-gray-800/50 hover:border-gray-600 hover:bg-gray-800'
           }`}
       >
         <div className="flex justify-between items-start mb-2">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <h4 className="font-medium text-white text-sm truncate">{component.name}</h4>
-            <p className="text-xs text-gray-400">{component.manufacturer}</p>
+            <p className="text-xs text-gray-400 truncate">{component.manufacturer}</p>
           </div>
           {isSelected && (
             <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 ml-2">
@@ -804,7 +804,7 @@ const BuildYourself: React.FC = () => {
             </div>
           )}
         </div>
-        <p className="text-xs text-gray-500 mb-2">{getComponentSpecs()}</p>
+        <p className="text-xs text-gray-500 mb-2 break-words">{getComponentSpecs()}</p>
         <p className="text-emerald-400 font-semibold">
           {parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽
         </p>
@@ -836,7 +836,7 @@ const BuildYourself: React.FC = () => {
           </div>
           <div className="flex items-center gap-3">
             {selected ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 min-w-0">
                 <span className="text-sm text-emerald-400 truncate max-w-[200px]">{selected.name}</span>
                 <button
                   onClick={(e) => {
@@ -965,7 +965,7 @@ const BuildYourself: React.FC = () => {
                 {compatibleCount === 0 ? 'Нет совместимых компонентов' : 'Ничего не найдено по вашим фильтрам'}
               </p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto overflow-x-hidden min-w-0">
                 {filteredComponents.map((component: any) =>
                   renderComponentCard(
                     component,
@@ -1134,18 +1134,21 @@ const BuildYourself: React.FC = () => {
                   </div>
                   <ul className="text-xs text-emerald-400/80 space-y-1">
                     {compatibilityInfo.map((info, i) => (
-                      <li key={i}>• {info}</li>
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-emerald-400/90 mt-0.5">•</span>
+                        <span className="flex-1 min-w-0 break-words">{info}</span>
+                      </li>
                     ))}
                   </ul>
                 </div>
               )}
 
               {/* Список выбранных компонентов */}
-              <div className="space-y-2 mb-4 max-h-[400px] overflow-y-auto">
+              <div className="space-y-2 mb-4 max-h-[400px] overflow-y-auto overflow-x-hidden">
                 {/* PC */}
                 {Object.entries(selectedPC).map(([key, component]) => component && (
                   <div key={key} className="flex justify-between items-center text-sm p-2 bg-gray-900/50 rounded">
-                    <span className="text-gray-400 truncate flex-1">{component.name}</span>
+                    <span className="text-gray-400 truncate flex-1 min-w-0">{component.name}</span>
                     <span className="text-emerald-400 ml-2">{parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽</span>
                   </div>
                 ))}
@@ -1153,7 +1156,7 @@ const BuildYourself: React.FC = () => {
                 {/* Периферия */}
                 {Object.entries(selectedPeripherals).map(([key, component]) => component && (
                   <div key={key} className="flex justify-between items-center text-sm p-2 bg-gray-900/50 rounded">
-                    <span className="text-gray-400 truncate flex-1">{component.name}</span>
+                    <span className="text-gray-400 truncate flex-1 min-w-0">{component.name}</span>
                     <span className="text-emerald-400 ml-2">{parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽</span>
                   </div>
                 ))}
@@ -1161,7 +1164,7 @@ const BuildYourself: React.FC = () => {
                 {/* Рабочее место */}
                 {Object.entries(selectedWorkspace).map(([key, component]) => component && (
                   <div key={key} className="flex justify-between items-center text-sm p-2 bg-gray-900/50 rounded">
-                    <span className="text-gray-400 truncate flex-1">{component.name}</span>
+                    <span className="text-gray-400 truncate flex-1 min-w-0">{component.name}</span>
                     <span className="text-emerald-400 ml-2">{parseFloat(String(component.price)).toLocaleString('ru-RU')} ₽</span>
                   </div>
                 ))}
@@ -1353,7 +1356,7 @@ const BuildYourself: React.FC = () => {
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-3">
+              <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-3">
                 {savedBuilds.length === 0 ? (
                   <p className="text-gray-500 text-center py-8">
                     У вас пока нет сохраненных сборок

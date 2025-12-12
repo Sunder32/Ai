@@ -69,8 +69,37 @@ export const getComponentLabel = (key: string): string => {
   return componentLabels[key] || key;
 };
 
+const readBlobAsDataUrl = (blob: Blob): Promise<string | null> =>
+  new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : null);
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(blob);
+  });
+
+const getCurrentFaviconDataUrl = async (): Promise<string | null> => {
+  if (typeof document === 'undefined') return null;
+
+  const link =
+    (document.querySelector('link[rel="icon"]') as HTMLLinkElement | null) ||
+    (document.querySelector('link[rel="shortcut icon"]') as HTMLLinkElement | null) ||
+    (document.querySelector('link[rel="apple-touch-icon"]') as HTMLLinkElement | null);
+
+  const href = link?.href;
+  if (!href) return null;
+
+  try {
+    const response = await fetch(href, { cache: 'force-cache' });
+    if (!response.ok) return null;
+    const blob = await response.blob();
+    return await readBlobAsDataUrl(blob);
+  } catch {
+    return null;
+  }
+};
+
 // Генерация HTML для PDF
-const generatePDFHTML = (data: PDFBuildData): string => {
+const generatePDFHTML = (data: PDFBuildData, brandMarkDataUrl?: string): string => {
   const currentDate = new Date().toLocaleDateString('ru-RU', {
     day: 'numeric',
     month: 'long',
@@ -83,6 +112,7 @@ const generatePDFHTML = (data: PDFBuildData): string => {
     id: data.id,
     date: currentDate,
     createdAt: data.createdAt,
+    brandMarkDataUrl,
     pcComponents: data.pcComponents.map(c => ({
       label: c.label,
       name: c.name,
@@ -93,12 +123,14 @@ const generatePDFHTML = (data: PDFBuildData): string => {
     peripherals: data.peripherals.map(c => ({
       label: c.label,
       name: c.name,
+      specs: c.specs,
       price: c.price,
       manufacturer: c.manufacturer
     })),
     workspace: data.workspace.map(c => ({
       label: c.label,
       name: c.name,
+      specs: c.specs,
       price: c.price
     })),
     totals: {
@@ -114,22 +146,24 @@ const generatePDFHTML = (data: PDFBuildData): string => {
 
 // Сохранение в PDF
 export const saveToPDF = async (data: PDFBuildData): Promise<void> => {
+  const brandMarkDataUrl = await getCurrentFaviconDataUrl();
   const container = document.createElement('div');
   container.style.position = 'absolute';
   container.style.left = '-9999px';
   container.style.top = '0';
-  container.innerHTML = generatePDFHTML(data);
+  container.innerHTML = generatePDFHTML(data, brandMarkDataUrl || undefined);
   document.body.appendChild(container);
 
   const element = container.querySelector('.document') as HTMLElement;
 
   const opt = {
-    margin: [5, 5, 5, 5] as [number, number, number, number],
+    margin: [0, 0, 0, 0] as [number, number, number, number],
     filename: `Сборка_${data.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '_')}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.pdf`,
-    image: { type: 'jpeg' as const, quality: 0.98 },
+    image: { type: 'jpeg' as const, quality: 0.97 },
     html2canvas: {
       scale: 2,
       useCORS: true,
+      backgroundColor: '#ffffff',
       letterRendering: true,
       logging: false,
     },
@@ -138,11 +172,34 @@ export const saveToPDF = async (data: PDFBuildData): Promise<void> => {
       format: 'a4' as const,
       orientation: 'portrait' as const
     },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    pagebreak: { mode: ['css', 'legacy'] }
   };
 
   try {
-    await html2pdf().set(opt).from(element).save();
+    const worker: any = html2pdf().set(opt).from(element).toPdf();
+    const pdf: any = await worker.get('pdf');
+
+    if (pdf?.internal?.getNumberOfPages) {
+      const totalPages: number = pdf.internal.getNumberOfPages();
+      if (totalPages > 1) {
+        const detailsPages = totalPages - 1;
+
+        pdf.setFontSize(9);
+        pdf.setTextColor(130);
+
+        for (let page = 2; page <= totalPages; page += 1) {
+          pdf.setPage(page);
+          const pageSize = pdf.internal.pageSize;
+          const pageWidth = typeof pageSize.getWidth === 'function' ? pageSize.getWidth() : pageSize.width;
+          const pageHeight = typeof pageSize.getHeight === 'function' ? pageSize.getHeight() : pageSize.height;
+
+          const label = `AI PC Configurator  Page ${page - 1}/${detailsPages}`;
+          pdf.text(label, pageWidth - 10, pageHeight - 6, { align: 'right' });
+        }
+      }
+    }
+
+    await worker.save();
   } finally {
     document.body.removeChild(container);
   }

@@ -5,7 +5,7 @@ from peripherals.models import Monitor, Keyboard, Mouse, Headset, Webcam, Microp
 
 
 class PCConfiguration(models.Model):
-    """Конфигурация ПК"""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -15,7 +15,7 @@ class PCConfiguration(models.Model):
     
     name = models.CharField(max_length=255, verbose_name='Название конфигурации')
     
-    # Компоненты
+
     cpu = models.ForeignKey(CPU, on_delete=models.SET_NULL, null=True, verbose_name='Процессор')
     gpu = models.ForeignKey(GPU, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Видеокарта')
     motherboard = models.ForeignKey(Motherboard, on_delete=models.SET_NULL, null=True, verbose_name='Материнская плата')
@@ -39,7 +39,7 @@ class PCConfiguration(models.Model):
     case = models.ForeignKey(Case, on_delete=models.SET_NULL, null=True, verbose_name='Корпус')
     cooling = models.ForeignKey(Cooling, on_delete=models.SET_NULL, null=True, verbose_name='Охлаждение')
     
-    # Общая информация
+
     total_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -63,7 +63,7 @@ class PCConfiguration(models.Model):
         return f'{self.name} - {self.user.username}'
     
     def calculate_total_price(self):
-        """Рассчитать общую стоимость конфигурации"""
+
         total = 0
         if self.cpu:
             total += self.cpu.price
@@ -89,7 +89,7 @@ class PCConfiguration(models.Model):
 
 
 class WorkspaceSetup(models.Model):
-    """Настройка рабочего места"""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -106,7 +106,7 @@ class WorkspaceSetup(models.Model):
     
     name = models.CharField(max_length=255, verbose_name='Название')
     
-    # Периферия
+
     monitor_primary = models.ForeignKey(
         Monitor,
         on_delete=models.SET_NULL,
@@ -150,7 +150,7 @@ class WorkspaceSetup(models.Model):
         return f'{self.name} - {self.user.username}'
     
     def calculate_total_price(self):
-        """Рассчитать общую стоимость рабочего места"""
+
         total = self.configuration.total_price
         
         if self.monitor_primary:
@@ -177,7 +177,7 @@ class WorkspaceSetup(models.Model):
 
 
 class Recommendation(models.Model):
-    """Рекомендация с обоснованием"""
+
     configuration = models.ForeignKey(
         PCConfiguration,
         on_delete=models.CASCADE,

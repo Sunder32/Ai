@@ -1,15 +1,12 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""Export Django data to JSON with proper UTF-8 encoding."""
 
 import os
 import sys
 import json
 
-# Set UTF-8 encoding
+
 os.environ['PYTHONIOENCODING'] = 'utf-8'
 
-# Setup Django
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 import django
@@ -19,7 +16,7 @@ from django.core import serializers
 from django.apps import apps
 
 def export_data():
-    """Export all data to JSON file."""
+
     exclude_models = [
         'auth.permission',
         'contenttypes.contenttype',
@@ -42,7 +39,7 @@ def export_data():
             except Exception as e:
                 print(f"Error exporting {model_label}: {e}")
     
-    # Write to file with proper encoding
+    
     output_file = 'data_backup_clean.json'
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(all_objects, f, indent=2, ensure_ascii=False, default=str)

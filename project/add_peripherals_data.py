@@ -1,11 +1,9 @@
-"""
-Скрипт для добавления примеров периферийных устройств в базу данных
-"""
+
 import os
 import sys
 import django
 
-# Добавляем путь к проекту
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
@@ -19,7 +17,7 @@ from peripherals.models import (
 def add_sample_data():
     print("Добавление периферийных устройств...")
     
-    # Колонки
+
     speakers_data = [
         {'name': 'Pebble V3', 'manufacturer': 'Logitech', 'speaker_type': '2.0', 'total_power': 8, 'bluetooth': True, 'rgb': False, 'price': 4990},
         {'name': 'Z333', 'manufacturer': 'Logitech', 'speaker_type': '2.1', 'total_power': 40, 'bluetooth': False, 'rgb': False, 'price': 7990},
@@ -35,7 +33,7 @@ def add_sample_data():
         Speakers.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено колонок: {len(speakers_data)}")
     
-    # Коврики для мыши
+
     mousepad_data = [
         {'name': 'QcK Large', 'manufacturer': 'SteelSeries', 'size': 'large', 'width': 450, 'height': 400, 'thickness': 2, 'rgb': False, 'material': 'Ткань', 'price': 1990},
         {'name': 'QcK Prism XL', 'manufacturer': 'SteelSeries', 'size': 'xl', 'width': 900, 'height': 300, 'thickness': 4, 'rgb': True, 'material': 'Ткань', 'price': 5990},
@@ -51,7 +49,7 @@ def add_sample_data():
         Mousepad.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено ковриков: {len(mousepad_data)}")
     
-    # Кронштейны для мониторов
+
     monitor_arm_data = [
         {'name': 'LX Desk Mount', 'manufacturer': 'Ergotron', 'mount_type': 'single', 'max_screen_size': 34, 'max_weight': 11.3, 'vesa_pattern': '75x75, 100x100', 'gas_spring': True, 'cable_management': True, 'price': 16990},
         {'name': 'LX Dual Side-by-Side', 'manufacturer': 'Ergotron', 'mount_type': 'dual', 'max_screen_size': 27, 'max_weight': 9.1, 'vesa_pattern': '75x75, 100x100', 'gas_spring': True, 'cable_management': True, 'price': 24990},
@@ -65,7 +63,7 @@ def add_sample_data():
         MonitorArm.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено кронштейнов: {len(monitor_arm_data)}")
     
-    # USB-хабы
+
     usb_hub_data = [
         {'name': 'UH-700', 'manufacturer': 'Anker', 'usb3_ports': 7, 'usbc_ports': 0, 'usb2_ports': 0, 'card_reader': False, 'hdmi_port': False, 'ethernet_port': False, 'power_delivery': None, 'price': 4990},
         {'name': 'USB-C Hub 8-in-1', 'manufacturer': 'Ugreen', 'usb3_ports': 3, 'usbc_ports': 1, 'usb2_ports': 0, 'card_reader': True, 'hdmi_port': True, 'ethernet_port': True, 'power_delivery': 100, 'price': 6990},
@@ -79,7 +77,7 @@ def add_sample_data():
         USBHub.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено USB-хабов: {len(usb_hub_data)}")
     
-    # Освещение
+  
     lighting_data = [
         {'name': 'ScreenBar Halo', 'manufacturer': 'BenQ', 'lighting_type': 'monitor_bar', 'rgb': False, 'dimmable': True, 'color_temperature': '2700K-6500K', 'smart_control': True, 'price': 12990},
         {'name': 'ScreenBar Plus', 'manufacturer': 'BenQ', 'lighting_type': 'monitor_bar', 'rgb': False, 'dimmable': True, 'color_temperature': '2700K-6500K', 'smart_control': False, 'price': 9990},
@@ -95,7 +93,7 @@ def add_sample_data():
         DeskLighting.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено освещения: {len(lighting_data)}")
     
-    # Стрим-пульты
+
     stream_deck_data = [
         {'name': 'Stream Deck MK.2', 'manufacturer': 'Elgato', 'keys_count': 15, 'lcd_keys': True, 'dials': 0, 'touchscreen': False, 'price': 14990},
         {'name': 'Stream Deck XL', 'manufacturer': 'Elgato', 'keys_count': 32, 'lcd_keys': True, 'dials': 0, 'touchscreen': False, 'price': 24990},
@@ -109,7 +107,7 @@ def add_sample_data():
         StreamDeck.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено стрим-пультов: {len(stream_deck_data)}")
     
-    # Карты захвата
+
     capture_card_data = [
         {'name': 'HD60 S+', 'manufacturer': 'Elgato', 'max_resolution': '4K60', 'max_fps': 60, 'connection': 'USB 3.0', 'passthrough': True, 'internal': False, 'price': 17990},
         {'name': '4K60 Pro MK.2', 'manufacturer': 'Elgato', 'max_resolution': '4K60', 'max_fps': 60, 'connection': 'PCIe x4', 'passthrough': True, 'internal': True, 'price': 24990},
@@ -123,7 +121,7 @@ def add_sample_data():
         CaptureCard.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено карт захвата: {len(capture_card_data)}")
     
-    # Геймпады
+
     gamepad_data = [
         {'name': 'Xbox Wireless Controller', 'manufacturer': 'Microsoft', 'platform': 'universal', 'wireless': True, 'vibration': True, 'rgb': False, 'extra_buttons': 0, 'price': 5990},
         {'name': 'Xbox Elite Series 2', 'manufacturer': 'Microsoft', 'platform': 'universal', 'wireless': True, 'vibration': True, 'rgb': False, 'extra_buttons': 4, 'price': 16990},
@@ -139,7 +137,7 @@ def add_sample_data():
         Gamepad.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено геймпадов: {len(gamepad_data)}")
     
-    # Подставки для наушников
+ 
     headphone_stand_data = [
         {'name': 'Base Station V2 Chroma', 'manufacturer': 'Razer', 'usb_hub': True, 'usb_ports': 2, 'rgb': True, 'wireless_charging': False, 'price': 7990},
         {'name': 'ST100 RGB', 'manufacturer': 'Corsair', 'usb_hub': True, 'usb_ports': 2, 'rgb': True, 'wireless_charging': False, 'price': 5990},
@@ -153,7 +151,7 @@ def add_sample_data():
         Headphonestand.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено подставок для наушников: {len(headphone_stand_data)}")
     
-    # Дополнительные мониторы
+ 
     monitor_data = [
         {'name': 'PG27AQDM', 'manufacturer': 'ASUS ROG Swift', 'screen_size': 27, 'resolution': '2560x1440', 'refresh_rate': 240, 'panel_type': 'OLED', 'response_time': 0.03, 'hdr': True, 'curved': False, 'price': 109990},
         {'name': 'Odyssey G9', 'manufacturer': 'Samsung', 'screen_size': 49, 'resolution': '5120x1440', 'refresh_rate': 240, 'panel_type': 'VA', 'response_time': 1, 'hdr': True, 'curved': True, 'price': 129990},
@@ -166,7 +164,7 @@ def add_sample_data():
         Monitor.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено мониторов: {len(monitor_data)}")
     
-    # Дополнительные клавиатуры
+  
     keyboard_data = [
         {'name': 'Huntsman V3 Pro', 'manufacturer': 'Razer', 'switch_type': 'optical', 'switch_model': 'Razer Analog Optical', 'rgb': True, 'wireless': False, 'form_factor': 'Full-size', 'price': 24990},
         {'name': 'G915 TKL', 'manufacturer': 'Logitech', 'switch_type': 'mechanical', 'switch_model': 'GL Low Profile', 'rgb': True, 'wireless': True, 'form_factor': 'TKL', 'price': 22990},
@@ -179,7 +177,7 @@ def add_sample_data():
         Keyboard.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено клавиатур: {len(keyboard_data)}")
     
-    # Дополнительные мыши
+
     mouse_data = [
         {'name': 'DeathAdder V3 Pro', 'manufacturer': 'Razer', 'sensor_type': 'optical', 'dpi': 30000, 'buttons': 5, 'wireless': True, 'rgb': False, 'weight': 63, 'price': 14990},
         {'name': 'G Pro X Superlight 2', 'manufacturer': 'Logitech', 'sensor_type': 'optical', 'dpi': 32000, 'buttons': 5, 'wireless': True, 'rgb': False, 'weight': 60, 'price': 15990},
@@ -192,7 +190,7 @@ def add_sample_data():
         Mouse.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено мышей: {len(mouse_data)}")
     
-    # Дополнительные наушники
+
     headset_data = [
         {'name': 'BlackShark V2 Pro', 'manufacturer': 'Razer', 'connection_type': 'USB-C / 2.4GHz', 'wireless': True, 'microphone': True, 'surround': True, 'noise_cancelling': True, 'price': 17990},
         {'name': 'Arctis Nova Pro', 'manufacturer': 'SteelSeries', 'connection_type': 'USB-C / 2.4GHz / Bluetooth', 'wireless': True, 'microphone': True, 'surround': True, 'noise_cancelling': True, 'price': 34990},
@@ -205,7 +203,7 @@ def add_sample_data():
         Headset.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено наушников: {len(headset_data)}")
     
-    # Дополнительные веб-камеры
+
     webcam_data = [
         {'name': 'Facecam Pro', 'manufacturer': 'Elgato', 'resolution': '4K', 'fps': 60, 'autofocus': True, 'price': 34990},
         {'name': 'Brio 500', 'manufacturer': 'Logitech', 'resolution': '4K', 'fps': 30, 'autofocus': True, 'price': 14990},
@@ -218,7 +216,7 @@ def add_sample_data():
         Webcam.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено веб-камер: {len(webcam_data)}")
     
-    # Дополнительные микрофоны
+
     microphone_data = [
         {'name': 'Wave:3', 'manufacturer': 'Elgato', 'microphone_type': 'condenser', 'connection': 'USB-C', 'polar_pattern': 'Кардиоида', 'price': 14990},
         {'name': 'Blue Yeti X', 'manufacturer': 'Logitech', 'microphone_type': 'condenser', 'connection': 'USB', 'polar_pattern': 'Многорежимный', 'price': 16990},
@@ -231,7 +229,7 @@ def add_sample_data():
         Microphone.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено микрофонов: {len(microphone_data)}")
     
-    # Дополнительные столы
+
     desk_data = [
         {'name': 'UPPSPEL', 'manufacturer': 'IKEA', 'width': 180, 'depth': 80, 'adjustable_height': True, 'price': 39990},
         {'name': 'BEKANT', 'manufacturer': 'IKEA', 'width': 160, 'depth': 80, 'adjustable_height': True, 'price': 34990},
@@ -244,7 +242,7 @@ def add_sample_data():
         Desk.objects.get_or_create(name=data['name'], manufacturer=data['manufacturer'], defaults=data)
     print(f"  Добавлено столов: {len(desk_data)}")
     
-    # Дополнительные кресла
+
     chair_data = [
         {'name': 'TITAN Evo 2022', 'manufacturer': 'Secretlab', 'ergonomic': True, 'adjustable_armrests': True, 'lumbar_support': True, 'max_weight': 130, 'price': 49990},
         {'name': 'Embody', 'manufacturer': 'Herman Miller', 'ergonomic': True, 'adjustable_armrests': True, 'lumbar_support': True, 'max_weight': 136, 'price': 169990},

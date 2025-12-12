@@ -1,14 +1,9 @@
-"""
-Middleware для обработки Rate Limiting
-"""
+
 from django.http import JsonResponse
 
 
 class RateLimitMiddleware:
-    """
-    Middleware для корректной обработки превышения rate limit
-    Возвращает JSON ответ вместо стандартной HTML страницы
-    """
+
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -17,7 +12,6 @@ class RateLimitMiddleware:
         return response
 
     def process_exception(self, request, exception):
-        """Обработка исключения rate limit"""
         from django_ratelimit.exceptions import Ratelimited
         
         if isinstance(exception, Ratelimited):

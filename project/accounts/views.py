@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 @method_decorator(ratelimit(key='ip', rate='3/m', method='POST'), name='create')
 class UserViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления пользователями. Rate limit: 3 регистрации/мин на IP"""
+    
     queryset = User.objects.all()
     serializer_class = UserSerializer
     
@@ -31,26 +31,26 @@ class UserViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def me(self, request):
-        """Получить информацию о текущем пользователе"""
+        
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления профилями пользователей"""
+    
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свой профиль"""
+       
         if self.request.user.is_staff:
             return UserProfile.objects.all()
         return UserProfile.objects.filter(user=self.request.user)
     
     @action(detail=False, methods=['get', 'put', 'patch'], permission_classes=[IsAuthenticated])
     def my_profile(self, request):
-        """Получить или обновить профиль текущего пользователя"""
+        
         try:
             profile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist:
@@ -73,7 +73,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 @permission_classes([AllowAny])
 @ratelimit(key='ip', rate='5/m', method='POST')
 def login_view(request):
-    """Вход пользователя. Rate limit: 5 попыток/мин на IP"""
+    
     username = request.data.get('username')
     password = request.data.get('password')
     
@@ -108,14 +108,14 @@ def login_view(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_view(request):
-    """Регистрация нового пользователя"""
+    
     serializer = UserRegistrationSerializer(data=request.data)
     
     if serializer.is_valid():
         user = serializer.save()
         token, _ = Token.objects.get_or_create(user=user)
         
-        # Создаем профиль пользователя
+        
         UserProfile.objects.get_or_create(user=user)
         
         return Response({
@@ -135,7 +135,7 @@ def register_view(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_view(request):
-    """Выход пользователя"""
+    
     try:
         request.user.auth_token.delete()
         return Response({'message': 'Успешный выход'})

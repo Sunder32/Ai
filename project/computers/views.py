@@ -10,12 +10,12 @@ from .serializers import (
     StorageSerializer, PSUSerializer, CaseSerializer, CoolingSerializer
 )
 
-# Время кэширования для компонентов (15 минут)
+
 CACHE_TTL = 60 * 15
 
 
 class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
-    """Разрешает чтение всем авторизованным, создание/изменение только админам"""
+    
     def has_permission(self, request, view):
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return request.user and request.user.is_authenticated
@@ -23,8 +23,7 @@ class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
 
 
 class CachedModelViewSet(viewsets.ModelViewSet):
-    """Базовый ViewSet с кэшированием для списка и деталей"""
-    # Отключаем пагинацию для компонентов - нужно показывать все сразу
+    
     pagination_class = None
     
     @method_decorator(cache_page(CACHE_TTL))
@@ -39,7 +38,7 @@ class CachedModelViewSet(viewsets.ModelViewSet):
 
 
 class CPUViewSet(CachedModelViewSet):
-    """ViewSet для процессоров. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = CPU.objects.all()
     serializer_class = CPUSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -50,7 +49,7 @@ class CPUViewSet(CachedModelViewSet):
 
 
 class GPUViewSet(CachedModelViewSet):
-    """ViewSet для видеокарт. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = GPU.objects.all()
     serializer_class = GPUSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -61,7 +60,7 @@ class GPUViewSet(CachedModelViewSet):
 
 
 class MotherboardViewSet(CachedModelViewSet):
-    """ViewSet для материнских плат. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Motherboard.objects.all()
     serializer_class = MotherboardSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -72,7 +71,7 @@ class MotherboardViewSet(CachedModelViewSet):
 
 
 class RAMViewSet(CachedModelViewSet):
-    """ViewSet для оперативной памяти. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = RAM.objects.all()
     serializer_class = RAMSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -83,7 +82,7 @@ class RAMViewSet(CachedModelViewSet):
 
 
 class StorageViewSet(CachedModelViewSet):
-    """ViewSet для накопителей. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Storage.objects.all()
     serializer_class = StorageSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -94,7 +93,7 @@ class StorageViewSet(CachedModelViewSet):
 
 
 class PSUViewSet(CachedModelViewSet):
-    """ViewSet для блоков питания. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = PSU.objects.all()
     serializer_class = PSUSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -105,7 +104,7 @@ class PSUViewSet(CachedModelViewSet):
 
 
 class CaseViewSet(CachedModelViewSet):
-    """ViewSet для корпусов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -116,7 +115,7 @@ class CaseViewSet(CachedModelViewSet):
 
 
 class CoolingViewSet(CachedModelViewSet):
-    """ViewSet для систем охлаждения. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Cooling.objects.all()
     serializer_class = CoolingSerializer
     permission_classes = [ReadOnlyOrAdminPermission]

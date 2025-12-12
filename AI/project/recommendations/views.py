@@ -22,13 +22,13 @@ except ImportError:
 
 
 class PCConfigurationViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления конфигурациями ПК"""
+
     queryset = PCConfiguration.objects.all()
     serializer_class = PCConfigurationSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои конфигурации"""
+
         base_queryset = PCConfiguration.objects.select_related(
             'user',
             'cpu',
@@ -47,12 +47,12 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         return base_queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        """Автоматически привязываем конфигурацию к текущему пользователю"""
+
         serializer.save(user=self.request.user)
     
     @action(detail=True, methods=['post'])
     def check_compatibility(self, request, pk=None):
-        """Проверка совместимости компонентов конфигурации"""
+
         configuration = self.get_object()
         service = ConfigurationService({
             'user_type': request.user.user_type or 'student',
@@ -72,20 +72,13 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     @method_decorator(ratelimit(key='user', rate='3/m', method='POST'))
     @action(detail=False, methods=['post'])
     def generate(self, request):
-        """
-        Генерация конфигурации на основе профиля пользователя
-        Rate limit: 3 запроса в минуту на пользователя
-        
-        Параметры:
-        - include_workspace: bool - включить ли подбор периферии и рабочего места (по умолчанию False)
-        - use_ai: bool - использовать ли AI для подбора (по умолчанию False)
-        """
+
         serializer = ConfigurationRequestSerializer(data=request.data)
         
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        # Получаем дополнительные параметры
+
         include_workspace = serializer.validated_data.get('include_workspace', False)
         use_ai = serializer.validated_data.get('use_ai', False)
         peripheral_budget_percent = serializer.validated_data.get('peripheral_budget_percent', 30)
@@ -93,7 +86,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
         logger.info(f"Configuration generation request: include_workspace={include_workspace}, use_ai={use_ai}, peripheral_budget={peripheral_budget_percent}%")
         
         try:
-            # Используем правило-основанный сервис с опциональным AI
+
             service = ConfigurationService(serializer.validated_data, use_ai=use_ai)
             configuration, workspace = service.generate_configuration(
                 request.user, 
@@ -101,7 +94,6 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
             )
             service.check_compatibility(configuration)
             
-            # Формируем ответ
             result_serializer = PCConfigurationSerializer(configuration)
             response_data = result_serializer.data
             
@@ -127,7 +119,7 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
     @method_decorator(ratelimit(key='ip', rate='10/m', method='GET'))
     @action(detail=False, methods=['get'])
     def ai_status(self, request):
-        """Проверить статус ИИ сервиса. Rate limit: 10 запросов/мин на IP"""
+
         ai_service = AIConfigurationService({})
         available = ai_service.check_ollama_available()
         return Response({
@@ -137,13 +129,13 @@ class PCConfigurationViewSet(viewsets.ModelViewSet):
 
 
 class WorkspaceSetupViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления рабочими местами"""
+
     queryset = WorkspaceSetup.objects.all()
     serializer_class = WorkspaceSetupSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои рабочие места"""
+        
         base_queryset = WorkspaceSetup.objects.select_related(
             'user',
             'configuration',
@@ -163,18 +155,18 @@ class WorkspaceSetupViewSet(viewsets.ModelViewSet):
         return base_queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        """Автоматически привязываем настройку к текущему пользователю"""
+
         serializer.save(user=self.request.user)
 
 
 class RecommendationViewSet(viewsets.ReadOnlyModelViewSet):
-    """ViewSet для просмотра рекомендаций"""
+
     queryset = Recommendation.objects.all()
     serializer_class = RecommendationSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Пользователи видят только свои рекомендации"""
+
         if self.request.user.is_staff:
             return Recommendation.objects.all()
         return Recommendation.objects.filter(configuration__user=self.request.user)

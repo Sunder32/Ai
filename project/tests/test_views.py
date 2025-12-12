@@ -7,7 +7,7 @@ class TestAPIEndpoints(TestCase):
         self.client = Client()
     
     def test_api_endpoints(self):
-        """Тест доступности API"""
+
         endpoints = [
             '/api/computers/cpu/',
             '/api/computers/gpu/',
@@ -17,11 +17,11 @@ class TestAPIEndpoints(TestCase):
         
         for url in endpoints:
             response = self.client.get(url)
-            # 200, 401, 403 - OK, 404 - не найден
+
             self.assertIn(response.status_code, [200, 401, 403, 404])
     
     def test_api_response_time(self):
-        """Тест времени ответа API"""
+
         import time
         
         start = time.time()

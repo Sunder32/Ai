@@ -11,11 +11,11 @@ class PerformanceTests(TestCase):
         self.client = Client()
     
     def test_memory_usage(self):
-        """Тест использования памяти"""
+
         process = psutil.Process(os.getpid())
         mem_before = process.memory_info().rss / 1024 / 1024
         
-        # Делаем запросы
+
         for _ in range(20):
             self.client.get('/api/computers/cpu/')
         
@@ -26,7 +26,7 @@ class PerformanceTests(TestCase):
         self.assertLess(increase, 50)
     
     def test_concurrent_requests(self):
-        """Тест конкурентных запросов"""
+
         def make_request():
             from django.test import Client
             client = Client()

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiGithub, FiMail, FiMessageSquare } from 'react-icons/fi';
+import brandMark from '../assets/brand/mark.svg';
 
 const Footer: React.FC = () => {
   return (
@@ -10,11 +11,14 @@ const Footer: React.FC = () => {
           {/* Brand Section */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 flex items-center justify-center bg-primary">
-                <span className="text-sm font-heading font-bold text-white">AI</span>
-              </div>
+              <img
+                src={brandMark}
+                alt="AI PC Configurator"
+                className="w-8 h-8"
+                draggable={false}
+              />
               <span className="text-lg font-heading font-semibold text-white">
-                PC Configurator
+                AI PC Configurator
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">
@@ -80,7 +84,9 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="https://t.me/" 
+                  target="_blank"
+                  rel="noreferrer noopener"
                   className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
                 >
                   {React.createElement(FiMessageSquare as any, { className: "text-lg" })}
@@ -89,7 +95,9 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="https://github.com/" 
+                  target="_blank"
+                  rel="noreferrer noopener"
                   className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors duration-200 text-sm"
                 >
                   {React.createElement(FiGithub as any, { className: "text-lg" })}

@@ -16,7 +16,7 @@ from .serializers import (
 
 
 class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
-    """Разрешает чтение всем авторизованным, создание/изменение только админам"""
+
     def has_permission(self, request, view):
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return request.user and request.user.is_authenticated
@@ -24,13 +24,12 @@ class ReadOnlyOrAdminPermission(IsAuthenticatedOrReadOnly):
 
 
 class PeripheralViewSet(viewsets.ModelViewSet):
-    """Базовый ViewSet для периферийных устройств без пагинации"""
-    # Отключаем пагинацию - нужно показывать все компоненты сразу
+
     pagination_class = None
 
 
 class MonitorViewSet(PeripheralViewSet):
-    """ViewSet для мониторов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Monitor.objects.all()
     serializer_class = MonitorSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -41,7 +40,7 @@ class MonitorViewSet(PeripheralViewSet):
 
 
 class KeyboardViewSet(PeripheralViewSet):
-    """ViewSet для клавиатур. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Keyboard.objects.all()
     serializer_class = KeyboardSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -52,7 +51,7 @@ class KeyboardViewSet(PeripheralViewSet):
 
 
 class MouseViewSet(PeripheralViewSet):
-    """ViewSet для мышей. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Mouse.objects.all()
     serializer_class = MouseSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -63,7 +62,7 @@ class MouseViewSet(PeripheralViewSet):
 
 
 class HeadsetViewSet(PeripheralViewSet):
-    """ViewSet для гарнитур. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Headset.objects.all()
     serializer_class = HeadsetSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -74,7 +73,7 @@ class HeadsetViewSet(PeripheralViewSet):
 
 
 class WebcamViewSet(PeripheralViewSet):
-    """ViewSet для веб-камер. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Webcam.objects.all()
     serializer_class = WebcamSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -85,7 +84,7 @@ class WebcamViewSet(PeripheralViewSet):
 
 
 class MicrophoneViewSet(PeripheralViewSet):
-    """ViewSet для микрофонов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Microphone.objects.all()
     serializer_class = MicrophoneSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -96,7 +95,7 @@ class MicrophoneViewSet(PeripheralViewSet):
 
 
 class DeskViewSet(PeripheralViewSet):
-    """ViewSet для столов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Desk.objects.all()
     serializer_class = DeskSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -107,7 +106,7 @@ class DeskViewSet(PeripheralViewSet):
 
 
 class ChairViewSet(PeripheralViewSet):
-    """ViewSet для кресел. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Chair.objects.all()
     serializer_class = ChairSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -118,7 +117,7 @@ class ChairViewSet(PeripheralViewSet):
 
 
 class SpeakersViewSet(PeripheralViewSet):
-    """ViewSet для колонок. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Speakers.objects.all()
     serializer_class = SpeakersSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -129,7 +128,7 @@ class SpeakersViewSet(PeripheralViewSet):
 
 
 class MousepadViewSet(PeripheralViewSet):
-    """ViewSet для ковриков. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Mousepad.objects.all()
     serializer_class = MousepadSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -140,7 +139,7 @@ class MousepadViewSet(PeripheralViewSet):
 
 
 class MonitorArmViewSet(PeripheralViewSet):
-    """ViewSet для кронштейнов. Чтение - авторизованным, изменение - только админам"""
+   
     queryset = MonitorArm.objects.all()
     serializer_class = MonitorArmSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -151,7 +150,7 @@ class MonitorArmViewSet(PeripheralViewSet):
 
 
 class USBHubViewSet(PeripheralViewSet):
-    """ViewSet для USB-хабов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = USBHub.objects.all()
     serializer_class = USBHubSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -162,7 +161,7 @@ class USBHubViewSet(PeripheralViewSet):
 
 
 class DeskLightingViewSet(PeripheralViewSet):
-    """ViewSet для освещения. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = DeskLighting.objects.all()
     serializer_class = DeskLightingSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -173,7 +172,7 @@ class DeskLightingViewSet(PeripheralViewSet):
 
 
 class StreamDeckViewSet(PeripheralViewSet):
-    """ViewSet для стрим-пультов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = StreamDeck.objects.all()
     serializer_class = StreamDeckSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -184,7 +183,7 @@ class StreamDeckViewSet(PeripheralViewSet):
 
 
 class CaptureCardViewSet(PeripheralViewSet):
-    """ViewSet для карт захвата. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = CaptureCard.objects.all()
     serializer_class = CaptureCardSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -195,7 +194,7 @@ class CaptureCardViewSet(PeripheralViewSet):
 
 
 class GamepadViewSet(PeripheralViewSet):
-    """ViewSet для геймпадов. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Gamepad.objects.all()
     serializer_class = GamepadSerializer
     permission_classes = [ReadOnlyOrAdminPermission]
@@ -206,7 +205,7 @@ class GamepadViewSet(PeripheralViewSet):
 
 
 class HeadphonestandViewSet(PeripheralViewSet):
-    """ViewSet для подставок для наушников. Чтение - авторизованным, изменение - только админам"""
+    
     queryset = Headphonestand.objects.all()
     serializer_class = HeadphonestandSerializer
     permission_classes = [ReadOnlyOrAdminPermission]

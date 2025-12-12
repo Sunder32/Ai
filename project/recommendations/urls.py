@@ -12,7 +12,7 @@ router.register(r'workspace-setups', WorkspaceSetupViewSet, basename='workspace-
 router.register(r'recommendations', RecommendationViewSet, basename='recommendation')
 router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 
-# AI Chat & Personalization
+
 router.register(r'chat', AIChatViewSet, basename='ai-chat')
 router.register(r'prices', PriceParserViewSet, basename='price-parser')
 router.register(r'personalization', PersonalizationViewSet, basename='personalization')

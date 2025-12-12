@@ -2,7 +2,7 @@ from django.db import models
 
 
 class CPU(models.Model):
-    """Процессор"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     socket = models.CharField(max_length=50, verbose_name='Сокет')
@@ -32,7 +32,7 @@ class CPU(models.Model):
 
 
 class GPU(models.Model):
-    """Видеокарта"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     chipset = models.CharField(max_length=100, verbose_name='Чипсет')
@@ -63,7 +63,7 @@ class GPU(models.Model):
 
 
 class Motherboard(models.Model):
-    """Материнская плата"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     socket = models.CharField(max_length=50, verbose_name='Сокет')
@@ -91,7 +91,7 @@ class Motherboard(models.Model):
 
 
 class RAM(models.Model):
-    """Оперативная память"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     memory_type = models.CharField(max_length=50, verbose_name='Тип памяти')
@@ -116,7 +116,7 @@ class RAM(models.Model):
 
 
 class Storage(models.Model):
-    """Накопитель"""
+
     STORAGE_TYPE_CHOICES = [
         ('ssd_nvme', 'SSD NVMe'),
         ('ssd_sata', 'SSD SATA'),
@@ -142,7 +142,7 @@ class Storage(models.Model):
 
 
 class PSU(models.Model):
-    """Блок питания"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     wattage = models.IntegerField(verbose_name='Мощность (Вт)')
@@ -161,7 +161,7 @@ class PSU(models.Model):
 
 
 class Case(models.Model):
-    """Корпус"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     form_factor = models.CharField(max_length=50, verbose_name='Форм-фактор')
@@ -181,7 +181,7 @@ class Case(models.Model):
 
 
 class Cooling(models.Model):
-    """Система охлаждения"""
+
     COOLING_TYPE_CHOICES = [
         ('air', 'Воздушное'),
         ('aio', 'Водяное (AIO)'),

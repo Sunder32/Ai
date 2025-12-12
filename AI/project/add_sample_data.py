@@ -1,10 +1,9 @@
-# Скрипт для добавления тестовых данных в базу
-# Запустите: python manage.py shell < add_sample_data.py
+
 
 from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 from peripherals.models import Monitor, Keyboard, Mouse, Headset
 
-# Процессоры
+
 print("Добавление процессоров...")
 CPU.objects.get_or_create(
     name="Ryzen 5 5600X",
@@ -51,7 +50,7 @@ CPU.objects.get_or_create(
     }
 )
 
-# Видеокарты
+
 print("Добавление видеокарт...")
 GPU.objects.get_or_create(
     name="RTX 4060",
@@ -101,7 +100,7 @@ GPU.objects.get_or_create(
     }
 )
 
-# Материнские платы
+
 print("Добавление материнских плат...")
 Motherboard.objects.get_or_create(
     name="B550 AORUS ELITE",
@@ -135,7 +134,7 @@ Motherboard.objects.get_or_create(
     }
 )
 
-# Оперативная память
+
 print("Добавление оперативной памяти...")
 RAM.objects.get_or_create(
     name="Vengeance RGB 16GB",
@@ -163,7 +162,6 @@ RAM.objects.get_or_create(
     }
 )
 
-# Накопители
 print("Добавление накопителей...")
 Storage.objects.get_or_create(
     name="970 EVO Plus",
@@ -189,7 +187,7 @@ Storage.objects.get_or_create(
     }
 )
 
-# Блоки питания
+
 print("Добавление блоков питания...")
 PSU.objects.get_or_create(
     name="RM750x",
@@ -213,7 +211,7 @@ PSU.objects.get_or_create(
     }
 )
 
-# Корпуса
+
 print("Добавление корпусов...")
 Case.objects.get_or_create(
     name="4000D Airflow",
@@ -239,7 +237,7 @@ Case.objects.get_or_create(
     }
 )
 
-# Охлаждение
+
 print("Добавление систем охлаждения...")
 Cooling.objects.get_or_create(
     name="NH-D15",
@@ -265,7 +263,7 @@ Cooling.objects.get_or_create(
     }
 )
 
-# Мониторы
+
 print("Добавление мониторов...")
 Monitor.objects.get_or_create(
     name="27GL850",
@@ -297,7 +295,7 @@ Monitor.objects.get_or_create(
     }
 )
 
-# Клавиатуры
+
 print("Добавление клавиатур...")
 Keyboard.objects.get_or_create(
     name="K70 RGB",
@@ -312,7 +310,7 @@ Keyboard.objects.get_or_create(
     }
 )
 
-# Мыши
+
 print("Добавление мышей...")
 Mouse.objects.get_or_create(
     name="G Pro Wireless",
@@ -328,7 +326,7 @@ Mouse.objects.get_or_create(
     }
 )
 
-# Наушники
+
 print("Добавление наушников...")
 Headset.objects.get_or_create(
     name="Cloud II",

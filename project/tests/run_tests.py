@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 import os
 import sys
 import json
@@ -9,7 +9,7 @@ print("🚀 Запуск тестов для MVP-7")
 print(f"📅 {datetime.now().strftime('%d.%m.%Y %H:%M')}")
 print("=" * 60)
 
-# Запускаем тесты
+
 test_files = ['test_models.py', 'test_views.py', 'test_performance.py']
 
 results = []
@@ -34,7 +34,7 @@ for test_file in test_files:
     else:
         print(f"❌ {test_file}: FAILED (код: {result.returncode})")
 
-# Создаем отчет
+
 report = {
     'project': 'Aicfgpc Backend',
     'mvp': 'MVP-7',

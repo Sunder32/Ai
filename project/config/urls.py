@@ -1,19 +1,4 @@
-"""
-URL configuration for config project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
@@ -30,12 +15,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# AI Server configuration
+
 AI_SERVER_URL = os.environ.get('AI_SERVER_URL', 'http://localhost:5050')
 
 
 def serve_react_app(request):
-    """Serve React SPA index.html for all frontend routes"""
+
     index_path = os.path.join(settings.BASE_DIR, 'static', 'frontend', 'index.html')
     try:
         with open(index_path, 'r', encoding='utf-8') as f:
@@ -47,10 +32,7 @@ def serve_react_app(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def health_check(request):
-    """
-    Health check endpoint - проверка состояния всех сервисов
-    Проверяет: Django API, База данных, AI-сервер (FastAPI/Ollama)
-    """
+
     from django.db import connection
     
     health_status = {
@@ -63,7 +45,7 @@ def health_check(request):
         }
     }
     
-    # Check database connection
+
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
@@ -79,7 +61,7 @@ def health_check(request):
         }
         health_status['status'] = 'degraded'
     
-    # Check AI server (FastAPI)
+
     try:
         response = requests.get(f'{AI_SERVER_URL}/', timeout=5)
         if response.status_code == 200:
@@ -116,7 +98,7 @@ def health_check(request):
         }
         health_status['status'] = 'degraded'
     
-    # Check Ollama service
+
     try:
         ollama_response = requests.get('http://localhost:11434/api/version', timeout=5)
         if ollama_response.status_code == 200:
@@ -150,9 +132,7 @@ def health_check(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def api_root(request):
-    """
-    API Root endpoint - список всех доступных API endpoints
-    """
+
     return Response({
         'message': 'AI PC Configurator API',
         'version': '1.0',
@@ -175,25 +155,25 @@ def api_root(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Health check endpoint
+
     path('api/health/', health_check, name='health-check'),
     
-    # API root
+
     path('api/', api_root, name='api-root'),
     
-    # API endpoints
+
     path('api/accounts/', include('accounts.urls')),
     path('api/computers/', include('computers.urls')),
     path('api/peripherals/', include('peripherals.urls')),
     path('api/recommendations/', include('recommendations.urls')),
     
-    # SSE events for real-time updates
+ 
     path('api/events/', include('django_eventstream.urls'), {'channels': ['tasks']}),
     
-    # API authentication
+
     path('api-auth/', include('rest_framework.urls')),
     
-    # API documentation
+
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
@@ -202,8 +182,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Serve React app for all non-API routes (must be last!)
-# This catches all routes that don't match API or static files
+
 urlpatterns += [
-    re_path(r'^(?!api|admin|static|media).*$', serve_react_app, name='react-app'),
+    re_path(r'^(?!api|admin|static|media|manifest.json).*$', serve_react_app, name='react-app'),
 ]

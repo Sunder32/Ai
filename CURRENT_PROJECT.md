@@ -78,7 +78,7 @@ python manage.py populate_db
 python manage.py runserver
 ```
 
-Backend будет доступен на: **http://localhost:8000**
+Backend будет доступен на: **http://localhost:8001**
 
 ### 2. Frontend (React)
 
@@ -132,8 +132,8 @@ Frontend будет доступен на: **http://localhost:3000**
 - `POST /api/recommendations/configurations/{id}/check_compatibility/` - проверка совместимости
 
 ### Документация API
-- **Swagger UI:** http://localhost:8000/api/docs/
-- **OpenAPI Schema:** http://localhost:8000/api/schema/
+- **Swagger UI:** http://localhost:8001/api/docs/
+- **OpenAPI Schema:** http://localhost:8001/api/schema/
 
 ## 🎨 Особенности дизайна
 

@@ -3,7 +3,7 @@ from .models import User, UserProfile
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Сериализатор для пользователя"""
+    
     
     class Meta:
         model = User
@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    """Сериализатор для профиля пользователя"""
+    
     user = UserSerializer(read_only=True)
     
     class Meta:
@@ -23,7 +23,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    """Сериализатор для регистрации пользователя"""
+    
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
     password2 = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
     

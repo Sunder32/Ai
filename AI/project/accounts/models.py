@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    """Расширенная модель пользователя"""
+    
     
     USER_TYPE_CHOICES = [
         ('designer', 'Дизайнер'),
@@ -41,7 +41,7 @@ class User(AbstractUser):
 
 
 class UserProfile(models.Model):
-    """Профиль пользователя с предпочтениями"""
+    
     
     PRIORITY_CHOICES = [
         ('performance', 'Производительность'),
@@ -57,7 +57,7 @@ class UserProfile(models.Model):
         verbose_name='Пользователь'
     )
     
-    # Бюджет
+    
     min_budget = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -71,7 +71,7 @@ class UserProfile(models.Model):
         verbose_name='Максимальный бюджет'
     )
     
-    # Приоритеты
+    
     priority = models.CharField(
         max_length=20,
         choices=PRIORITY_CHOICES,
@@ -79,7 +79,7 @@ class UserProfile(models.Model):
         verbose_name='Приоритет'
     )
     
-    # Специфические требования
+
     multitasking = models.BooleanField(default=False, verbose_name='Многозадачность')
     work_with_4k = models.BooleanField(default=False, verbose_name='Работа с 4K')
     vr_support = models.BooleanField(default=False, verbose_name='Поддержка VR')
@@ -87,7 +87,7 @@ class UserProfile(models.Model):
     gaming = models.BooleanField(default=False, verbose_name='Гейминг')
     streaming = models.BooleanField(default=False, verbose_name='Стриминг')
     
-    # Существующие компоненты для апгрейда
+
     has_existing_components = models.BooleanField(
         default=False,
         verbose_name='Есть существующие компоненты'

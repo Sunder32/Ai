@@ -1,8 +1,3 @@
-"""
-RAG Engine - Retrieval-Augmented Generation
-Простая реализация без внешних зависимостей (без ChromaDB)
-Использует TF-IDF для векторного поиска
-"""
 
 import os
 import json
@@ -11,12 +6,12 @@ import math
 from typing import List, Optional, Dict
 from collections import Counter
 
-# Директория для хранения индекса
+
 INDEX_DIR = os.path.join(os.path.dirname(__file__), "..", "rag_index")
 
 
 class SimpleRAGEngine:
-    """Простой RAG движок на основе TF-IDF"""
+
     
     def __init__(self):
         os.makedirs(INDEX_DIR, exist_ok=True)
@@ -26,22 +21,22 @@ class SimpleRAGEngine:
         self._load_index()
     
     def _tokenize(self, text: str) -> List[str]:
-        """Простая токенизация"""
+
         text = text.lower()
-        # Убираем спецсимволы, оставляем буквы и цифры
+
         text = re.sub(r'[^\w\s]', ' ', text)
         tokens = text.split()
-        # Убираем короткие слова
+
         return [t for t in tokens if len(t) > 2]
     
     def _compute_tf(self, tokens: List[str]) -> Dict[str, float]:
-        """Term Frequency"""
+
         counter = Counter(tokens)
         total = len(tokens)
         return {word: count / total for word, count in counter.items()}
     
     def _compute_idf(self):
-        """Inverse Document Frequency"""
+
         doc_count = len(self.documents)
         if doc_count == 0:
             return
@@ -58,7 +53,7 @@ class SimpleRAGEngine:
         }
     
     def _compute_tfidf(self, tokens: List[str]) -> Dict[str, float]:
-        """TF-IDF вектор"""
+
         tf = self._compute_tf(tokens)
         return {
             word: tf_val * self.idf.get(word, 0)
@@ -66,7 +61,7 @@ class SimpleRAGEngine:
         }
     
     def _cosine_similarity(self, vec1: Dict[str, float], vec2: Dict[str, float]) -> float:
-        """Косинусное сходство"""
+
         common_words = set(vec1.keys()) & set(vec2.keys())
         if not common_words:
             return 0.0
@@ -81,7 +76,7 @@ class SimpleRAGEngine:
         return dot_product / (norm1 * norm2)
     
     def add_documents(self, texts: List[str], metadatas: Optional[List[dict]] = None, chunk_size: int = 200):
-        """Добавить документы"""
+
         for doc_idx, text in enumerate(texts):
             chunks = self._split_text(text, chunk_size)
             
@@ -98,10 +93,10 @@ class SimpleRAGEngine:
                 }
                 self.documents.append(doc)
         
-        # Пересчитываем IDF
+
         self._compute_idf()
         
-        # Вычисляем TF-IDF для каждого документа
+
         for doc in self.documents:
             doc['tfidf'] = self._compute_tfidf(doc['tokens'])
         
@@ -109,7 +104,7 @@ class SimpleRAGEngine:
         return len(self.documents)
     
     def search(self, query: str, n_results: int = 5) -> List[dict]:
-        """Поиск по запросу"""
+
         if not self.documents:
             return []
         
@@ -119,7 +114,7 @@ class SimpleRAGEngine:
         
         query_tfidf = self._compute_tfidf(query_tokens)
         
-        # Вычисляем сходство с каждым документом
+
         results = []
         for doc in self.documents:
             similarity = self._cosine_similarity(query_tfidf, doc.get('tfidf', {}))
@@ -130,12 +125,12 @@ class SimpleRAGEngine:
                     "score": similarity
                 })
         
-        # Сортируем по релевантности
+
         results.sort(key=lambda x: x['score'], reverse=True)
         return results[:n_results]
     
     def get_context_for_query(self, query: str, max_tokens: int = 2000) -> str:
-        """Получить контекст для запроса"""
+
         results = self.search(query, n_results=10)
         
         context_parts = []
@@ -151,13 +146,13 @@ class SimpleRAGEngine:
         return "\n\n".join(context_parts)
     
     def clear(self):
-        """Очистить индекс"""
+
         self.documents = []
         self.idf = {}
         self._save_index()
     
     def _split_text(self, text: str, chunk_size: int = 200) -> List[str]:
-        """Разбить текст на чанки"""
+
         words = text.split()
         chunks = []
         overlap = chunk_size // 4
@@ -173,8 +168,7 @@ class SimpleRAGEngine:
         return chunks if chunks else [text]
     
     def _save_index(self):
-        """Сохранить индекс"""
-        # Сохраняем без tokens и tfidf для экономии места
+
         save_data = {
             "documents": [
                 {"id": d["id"], "text": d["text"], "metadata": d.get("metadata", {})}
@@ -186,7 +180,7 @@ class SimpleRAGEngine:
             json.dump(save_data, f, ensure_ascii=False)
     
     def _load_index(self):
-        """Загрузить индекс"""
+
         if not os.path.exists(self.index_file):
             return
         
@@ -196,7 +190,7 @@ class SimpleRAGEngine:
             
             self.idf = data.get('idf', {})
             
-            # Восстанавливаем документы с токенами и TF-IDF
+
             for doc_data in data.get('documents', []):
                 tokens = self._tokenize(doc_data['text'])
                 doc = {
@@ -221,7 +215,7 @@ class SimpleRAGEngine:
         }
 
 
-# Singleton
+
 _rag_engine = None
 
 def get_rag_engine() -> SimpleRAGEngine:

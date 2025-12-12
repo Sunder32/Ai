@@ -25,7 +25,7 @@ body {
     align-items: center;
 }
 
-/* Background Effects */
+
 .background-orb {
     position: absolute;
     width: 500px;
@@ -60,7 +60,7 @@ body {
     }
 }
 
-/* Layout */
+
 .container {
     display: flex;
     width: 90vw;
@@ -73,7 +73,7 @@ body {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* Sidebar */
+
 .sidebar {
     width: 260px;
     background: rgba(15, 23, 42, 0.6);
@@ -132,7 +132,7 @@ body {
     box-shadow: 0 0 10px #22c55e;
 }
 
-/* Chat Management Styles */
+
 .chat-section {
     flex: 1;
     display: flex;
@@ -267,7 +267,7 @@ body {
     background: rgba(239, 68, 68, 0.1);
 }
 
-/* Main Content */
+
 .main-content {
     flex: 1;
     position: relative;
@@ -299,7 +299,7 @@ body {
     }
 }
 
-/* Chat View */
+
 .chat-container {
     flex: 1;
     padding: 2rem;
@@ -330,7 +330,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* Markdown стили в bubble */
+
 .bubble h2, .bubble h3, .bubble h4 {
     margin: 0.75rem 0 0.5rem 0;
     color: var(--text-color);
@@ -389,7 +389,7 @@ body {
     border-bottom-left-radius: 4px;
 }
 
-/* Кнопки действий сообщения */
+
 .message-actions {
     display: flex;
     gap: 6px;
@@ -425,7 +425,7 @@ body {
     color: #22c55e;
 }
 
-/* Редактор сообщений */
+
 .message-editor {
     margin-top: 10px;
     width: 100%;
@@ -493,7 +493,7 @@ body {
     background: #dc2626;
 }
 
-/* Toast уведомления */
+
 .toast {
     position: fixed;
     bottom: 30px;
@@ -558,7 +558,7 @@ input[type="text"]:focus {
     transform: scale(1.05);
 }
 
-/* Training View */
+
 .train-container {
     padding: 2rem 3rem;
     display: flex;
@@ -609,7 +609,7 @@ input[type="text"]:focus {
     color: var(--secondary-color);
 }
 
-/* File Management */
+
 .file-stats {
     margin-top: 1.5rem;
     padding: 1rem;
@@ -625,7 +625,7 @@ input[type="text"]:focus {
     font-size: 1.1rem;
 }
 
-/* File List with Scroll - ИСПРАВЛЕНО */
+
 .file-list {
     margin-top: 2rem;
     width: 100%;
@@ -639,7 +639,7 @@ input[type="text"]:focus {
     scrollbar-color: rgba(59, 130, 246, 0.4) rgba(30, 41, 59, 0.3);
 }
 
-/* Scrollbar styling for file list */
+
 .file-list::-webkit-scrollbar {
     width: 6px;
 }
@@ -705,7 +705,7 @@ input[type="text"]:focus {
     background: rgba(239, 68, 68, 0.1);
 }
 
-/* Train Button - УЛУЧШЕННАЯ ВИДИМОСТЬ */
+
 .train-btn {
     margin-top: 2rem;
     padding: 1.25rem 2.5rem;
@@ -742,7 +742,7 @@ input[type="text"]:focus {
     color: rgba(255, 255, 255, 0.7);
 }
 
-/* Training Progress */
+
 .training-progress {
     margin-top: 2rem;
     width: 100%;
@@ -784,7 +784,7 @@ input[type="text"]:focus {
     font-size: 0.9rem;
 }
 
-/* RAG Chat Styles */
+
 .rag-stats {
     margin-bottom: 1rem;
     padding: 0.75rem 1.5rem;
@@ -822,7 +822,7 @@ input[type="text"]:focus {
     margin-right: 0.5rem;
 }
 
-/* Fine-tuning Styles */
+
 .finetune-info {
     width: 100%;
     max-width: 600px;
@@ -914,7 +914,7 @@ input[type="text"]:focus {
     font-style: italic;
 }
 
-/* Self-Learning Styles */
+
 .learning-stats {
     display: flex;
     gap: 1.5rem;

@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI PC Configurator">
+  <defs>
+    <linearGradient id="brandGradient" x1="10" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10b981" />
+      <stop offset="1" stop-color="#34d399" />
+    </linearGradient>
+  </defs>
+  <path d="M12 8H42L56 22V56H12V8Z" fill="url(#brandGradient)" />
+  <path d="M42 8V22H56" fill="#000000" opacity="0.1" />
+  <path d="M12 8H42L56 22V56H12V8Z" stroke="#064e3b" stroke-width="2" />
+  <path d="M22 44L32 20L42 44" stroke="#0a0a0a" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" />
+  <path d="M26 34H38" stroke="#0a0a0a" stroke-width="6" stroke-linecap="square" />
+  <path d="M48 20V44" stroke="#0a0a0a" stroke-width="6" stroke-linecap="square" />
+  <circle cx="48" cy="44" r="3" fill="#0a0a0a" />
+</svg>

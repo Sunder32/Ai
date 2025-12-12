@@ -127,7 +127,7 @@ const ConfigurationCompare: React.FC<ConfigurationCompareProps> = ({
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/api/configurations/compare/', {
+      const response = await api.get('/recommendations/configurations/compare/', {
         params: { ids: selectedIds.join(',') },
       });
       setComparison(response.data);

@@ -1,6 +1,4 @@
-"""
-Сервис для подбора конфигурации компьютера на основе профиля пользователя
-"""
+
 import logging
 from decimal import Decimal
 from django.db import transaction
@@ -18,15 +16,15 @@ logger = logging.getLogger(__name__)
 
 
 class ConfigurationError(Exception):
-    """Кастомное исключение для ошибок конфигурации"""
+
     pass
 
 
 class ConfigurationService:
-    """Сервис для подбора и проверки конфигурации"""
+
     
     def __init__(self, user_profile_data, use_ai=False):
-        self.user_profile_data = user_profile_data  # Сохраняем для использования в generate_configuration
+        self.user_profile_data = user_profile_data  
         self.user_type = user_profile_data.get('user_type')
         self.min_budget = Decimal(user_profile_data.get('min_budget', 0))
         self.max_budget = Decimal(user_profile_data.get('max_budget', 0))
@@ -40,7 +38,7 @@ class ConfigurationService:
             'streaming': user_profile_data.get('streaming', False),
         }
         
-        # AI integration
+        
         self.ai_service = None
         self.ai_analysis = None
         if use_ai and AIRecommendationService:
@@ -56,7 +54,7 @@ class ConfigurationService:
                 logger.warning(f"AI service initialization failed: {e}. Falling back to rule-based system.")
     
     def get_budget_distribution(self):
-        """Распределение бюджета по компонентам в зависимости от типа пользователя"""
+
         distributions = {
             'designer': {
                 'cpu': 0.25,
@@ -123,11 +121,11 @@ class ConfigurationService:
         return distributions.get(self.user_type, distributions['student'])
     
     def select_cpu(self, budget):
-        """Подбор процессора"""
+        
         try:
             query = CPU.objects.filter(price__lte=budget)
             
-            # Применяем фильтры на основе пользовательских предпочтений
+            
             preferred_manufacturer = self.user_profile_data.get('preferred_cpu_manufacturer')
             if preferred_manufacturer and preferred_manufacturer != 'any':
                 query = query.filter(manufacturer__icontains=preferred_manufacturer)
@@ -158,7 +156,7 @@ class ConfigurationService:
             raise ConfigurationError(f"Ошибка при подборе процессора: {str(e)}")
     
     def select_gpu(self, budget):
-        """Подбор видеокарты"""
+        
         if self.user_type == 'office' and not self.requirements['gaming']:
             return None, "Интегрированной графики достаточно для офисных задач"
         
@@ -180,7 +178,7 @@ class ConfigurationService:
         return gpu, reason
     
     def select_motherboard(self, cpu, budget):
-        """Подбор материнской платы"""
+        
         if not cpu:
             return None, "Не выбран процессор"
         
@@ -197,7 +195,7 @@ class ConfigurationService:
         return motherboard, reason
     
     def select_ram(self, budget):
-        """Подбор оперативной памяти"""
+        
         min_capacity = 8
         
         if self.user_type in ['designer', 'content_creator'] or self.requirements['video_editing']:
@@ -217,7 +215,7 @@ class ConfigurationService:
         return ram, reason
     
     def select_storage(self, budget, is_primary=True):
-        """Подбор накопителя"""
+        
         if is_primary:
             query = Storage.objects.filter(
                 storage_type='ssd_nvme',
@@ -238,7 +236,7 @@ class ConfigurationService:
         return storage, reason
     
     def select_psu(self, cpu, gpu, budget):
-        """Подбор блока питания"""
+        
         total_tdp = 0
         if cpu:
             total_tdp += cpu.tdp
@@ -257,7 +255,7 @@ class ConfigurationService:
         return psu, reason
     
     def select_cooling(self, cpu, budget):
-        """Подбор системы охлаждения"""
+        
         if not cpu:
             return None, "Не выбран процессор"
         
@@ -278,7 +276,7 @@ class ConfigurationService:
         return cooling, reason
     
     def select_case(self, budget):
-        """Подбор корпуса"""
+        
         query = Case.objects.filter(price__lte=budget)
         
         if self.priority == 'compactness':
@@ -292,25 +290,13 @@ class ConfigurationService:
     
     @transaction.atomic
     def generate_configuration(self, user, include_workspace=False):
-        """
-        Генерация полной конфигурации ПК с опциональным подбором рабочего места
-        
-        Args:
-            user: User - пользователь, для которого создается конфигурации
-            include_workspace: bool - включить ли подбор периферии и рабочего места
-            
-        Returns:
-            tuple: (PCConfiguration, WorkspaceSetup или None)
-            
-        Raises:
-            ConfigurationError: Если не удалось подобрать конфигурацию
-        """
+
         logger.info(f"Starting configuration generation for user {user.username}, type: {self.user_type}")
         
         try:
             budget_dist = self.get_budget_distribution()
             
-            # Распределяем бюджет с учетом пользовательских настроек
+            
             if include_workspace:
                 peripheral_percent = self.user_profile_data.get('peripheral_budget_percent', 30)
                 pc_percent = 100 - peripheral_percent
@@ -325,55 +311,55 @@ class ConfigurationService:
             components = {}
             reasons = {}
             
-            # Подбор процессора
+            
             cpu_budget = pc_budget * Decimal(str(budget_dist['cpu']))
             cpu, cpu_reason = self.select_cpu(cpu_budget)
             components['cpu'] = cpu
             reasons['cpu'] = cpu_reason
             
-            # Подбор видеокарты
+            
             gpu_budget = pc_budget * Decimal(str(budget_dist['gpu']))
             gpu, gpu_reason = self.select_gpu(gpu_budget)
             components['gpu'] = gpu
             reasons['gpu'] = gpu_reason
             
-            # Подбор материнской платы
+            
             mb_budget = pc_budget * Decimal(str(budget_dist['motherboard']))
             motherboard, mb_reason = self.select_motherboard(cpu, mb_budget)
             components['motherboard'] = motherboard
             reasons['motherboard'] = mb_reason
             
-            # Подбор оперативной памяти
+            
             ram_budget = pc_budget * Decimal(str(budget_dist['ram']))
             ram, ram_reason = self.select_ram(ram_budget)
             components['ram'] = ram
             reasons['ram'] = ram_reason
             
-            # Подбор накопителей
+            
             storage_budget = pc_budget * Decimal(str(budget_dist['storage']))
             storage_primary, storage1_reason = self.select_storage(storage_budget, True)
             components['storage_primary'] = storage_primary
             reasons['storage_primary'] = storage1_reason
             
-            # Подбор блока питания
+            
             psu_budget = pc_budget * Decimal(str(budget_dist['psu']))
             psu, psu_reason = self.select_psu(cpu, gpu, psu_budget)
             components['psu'] = psu
             reasons['psu'] = psu_reason
             
-            # Подбор охлаждения
+            
             cooling_budget = pc_budget * Decimal(str(budget_dist['cooling']))
             cooling, cooling_reason = self.select_cooling(cpu, cooling_budget)
             components['cooling'] = cooling
             reasons['cooling'] = cooling_reason
             
-            # Подбор корпуса
+            
             case_budget = pc_budget * Decimal(str(budget_dist['case']))
             case, case_reason = self.select_case(case_budget)
             components['case'] = case
             reasons['case'] = case_reason
         
-            # Создание конфигурации ПК
+            
             config = PCConfiguration.objects.create(
                 user=user,
                 name=f"Конфигурация для {self.user_type}",
@@ -384,7 +370,7 @@ class ConfigurationService:
             config.save()
             logger.info(f"PC Configuration created: {config.name} ({config.total_price} RUB)")
             
-            # Сохранение обоснований для компонентов ПК
+            
             for component_type, reason in reasons.items():
                 component = components.get(component_type)
                 if component:
@@ -395,11 +381,11 @@ class ConfigurationService:
                         reason=reason
                     )
             
-            # Опционально: подбор рабочего места и периферии
+           
             workspace = None
             if include_workspace and peripheral_budget:
                 logger.info("Starting workspace peripheral selection...")
-                # Передаем предпочтения пользователя в select_workspace_peripherals
+               
                 peripheral_preferences = {
                 'need_monitor': self.user_profile_data.get('need_monitor', True),
                 'need_keyboard': self.user_profile_data.get('need_keyboard', True),
@@ -444,26 +430,26 @@ class ConfigurationService:
             raise ConfigurationError(f"Не удалось создать конфигурацию: {str(e)}")
     
     def check_compatibility(self, configuration):
-        """Проверка совместимости компонентов"""
+        
         issues = []
         
-        # Проверка совместимости CPU и материнской платы
+        
         if configuration.cpu and configuration.motherboard:
             if configuration.cpu.socket != configuration.motherboard.socket:
                 issues.append(f"Процессор (сокет {configuration.cpu.socket}) не совместим с материнской платой (сокет {configuration.motherboard.socket})")
         
-        # Проверка мощности БП
+        
         if configuration.psu and configuration.cpu and configuration.gpu:
             total_tdp = configuration.cpu.tdp + (configuration.gpu.tdp if configuration.gpu else 0)
             if configuration.psu.wattage < total_tdp * 1.3:
                 issues.append(f"Мощность БП ({configuration.psu.wattage}Вт) может быть недостаточной для системы (рекомендуется {int(total_tdp * 1.5)}Вт)")
         
-        # Проверка охлаждения
+        
         if configuration.cooling and configuration.cpu:
             if configuration.cooling.max_tdp < configuration.cpu.tdp:
                 issues.append(f"Система охлаждения может не справиться с TDP процессора ({configuration.cpu.tdp}Вт)")
         
-        # Проверка памяти и материнской платы
+        
         if configuration.ram and configuration.motherboard:
             if configuration.ram.memory_type != configuration.motherboard.memory_type:
                 issues.append(f"Тип оперативной памяти ({configuration.ram.memory_type}) не совместим с материнской платой ({configuration.motherboard.memory_type})")
@@ -475,7 +461,7 @@ class ConfigurationService:
         return configuration.compatibility_check, issues
     
     def _generate_cpu_reason(self, cpu):
-        """Генерация обоснования выбора процессора"""
+        
         if not cpu:
             return "Процессор не найден в базе данных"
         
@@ -493,7 +479,7 @@ class ConfigurationService:
         return ". ".join(reasons)
     
     def _generate_gpu_reason(self, gpu):
-        """Генерация обоснования выбора видеокарты"""
+        
         if not gpu:
             return "Видеокарта не требуется для данного профиля"
         
@@ -508,22 +494,13 @@ class ConfigurationService:
         
         return ". ".join(reasons)
 
-    # ==================== WORKSPACE & PERIPHERALS SELECTION ====================
+ 
     
     def select_workspace_peripherals(self, peripheral_budget, peripheral_preferences=None):
-        """
-        Полный подбор периферии и оборудования рабочего места
-        
-        Args:
-            peripheral_budget: Decimal - бюджет на периферию
-            peripheral_preferences: dict - настройки пользователя (что нужно, требования)
-            
-        Returns:
-            dict: Словарь с подобранными компонентами и рекомендациями
-        """
+
         logger.info(f"Starting workspace peripheral selection with budget: {peripheral_budget}")
         
-        # Парсим настройки пользователя
+
         if peripheral_preferences is None:
             peripheral_preferences = {}
         
@@ -536,7 +513,7 @@ class ConfigurationService:
         need_desk = peripheral_preferences.get('need_desk', True)
         need_chair = peripheral_preferences.get('need_chair', True)
         
-        # Подсчет количества выбранных устройств
+
         selected_count = sum([
             need_monitor, need_keyboard, need_mouse, need_headset,
             need_webcam, need_microphone, need_desk, need_chair
@@ -558,7 +535,7 @@ class ConfigurationService:
         
         budget_distribution = self._get_peripheral_budget_distribution()
         
-        # Подбираем каждый компонент с учетом распределения бюджета
+
         monitor = None
         if need_monitor:
             monitor = self.select_monitor(
@@ -584,7 +561,7 @@ class ConfigurationService:
         if need_headset:
             headset = self.select_headset(peripheral_budget * Decimal(str(budget_distribution['headset'])))
         
-        # Опционально: вебкамера и микрофон
+
         webcam = None
         microphone = None
         if need_webcam:
@@ -622,32 +599,27 @@ class ConfigurationService:
         return result
     
     def _get_peripheral_budget_distribution(self):
-        """
-        Распределение бюджета на периферию в зависимости от типа пользователя
-        
-        Returns:
-            dict: Проценты распределения бюджета на каждый тип периферии
-        """
+
         distributions = {
             'gamer': {
-                'monitor': 0.40,  # Высокая частота обновления критична
-                'keyboard': 0.15,  # Механика с быстрым откликом
-                'mouse': 0.15,    # Точность и высокий DPI
-                'headset': 0.10,  # Объемный звук
+                'monitor': 0.40,  
+                'keyboard': 0.15,  
+                'mouse': 0.15,    
+                'headset': 0.10,  
                 'desk': 0.10,
                 'chair': 0.10,
             },
             'designer': {
-                'monitor': 0.45,  # Цветопередача и разрешение - приоритет
+                'monitor': 0.45,  
                 'keyboard': 0.10,
-                'mouse': 0.10,    # Точность для работы в редакторах
+                'mouse': 0.10,    
                 'headset': 0.05,
-                'desk': 0.15,     # Большая рабочая поверхность
-                'chair': 0.15,    # Долгое сидение - нужна эргономика
+                'desk': 0.15,     
+                'chair': 0.15,    
             },
             'programmer': {
                 'monitor': 0.35,
-                'keyboard': 0.20,  # Удобство набора кода - приоритет
+                'keyboard': 0.20,  
                 'mouse': 0.10,
                 'headset': 0.05,
                 'desk': 0.15,
@@ -658,8 +630,8 @@ class ConfigurationService:
                 'keyboard': 0.10,
                 'mouse': 0.10,
                 'headset': 0.10,
-                'webcam': 0.10,   # Для стриминга/записи
-                'microphone': 0.10,  # Качество звука критично
+                'webcam': 0.10,   
+                'microphone': 0.10,  
                 'desk': 0.10,
                 'chair': 0.10,
             },
@@ -669,7 +641,7 @@ class ConfigurationService:
                 'mouse': 0.10,
                 'headset': 0.10,
                 'desk': 0.15,
-                'chair': 0.20,    # Здоровье спины - приоритет
+                'chair': 0.20,    
             },
             'student': {
                 'monitor': 0.35,
@@ -684,22 +656,13 @@ class ConfigurationService:
         return distributions.get(self.user_type, distributions['office'])
     
     def select_monitor(self, budget, preferences=None):
-        """
-        Подбор монитора с учетом требований пользователя
-        
-        Args:
-            budget: Decimal - бюджет на монитор
-            preferences: dict - предпочтения пользователя
-            
-        Returns:
-            Monitor or None: Подобранный монитор
-        """
+
         if preferences is None:
             preferences = {}
         
         monitors = Monitor.objects.filter(price__lte=budget).order_by('-price')
         
-        # Применяем пользовательские требования
+
         min_refresh_rate = preferences.get('monitor_min_refresh_rate', 60)
         min_resolution = preferences.get('monitor_min_resolution', '1920x1080')
         
@@ -711,7 +674,7 @@ class ConfigurationService:
             monitors = monitors.filter(resolution=min_resolution)
             logger.info(f"Filtering monitors with resolution: {min_resolution}")
         
-        # Критерии выбора в зависимости от требований (если не заданы пользователем)
+
         if not preferences.get('monitor_min_resolution'):
             if self.requirements.get('work_with_4k'):
                 monitors = monitors.filter(resolution='3840x2160')
@@ -736,22 +699,13 @@ class ConfigurationService:
         return monitor
     
     def select_keyboard(self, budget, preferences=None):
-        """
-        Подбор клавиатуры с учетом типа пользователя
-        
-        Args:
-            budget: Decimal - бюджет на клавиатуру
-            preferences: dict - предпочтения пользователя
-            
-        Returns:
-            Keyboard or None: Подобранная клавиатура
-        """
+
         if preferences is None:
             preferences = {}
         
         keyboards = Keyboard.objects.filter(price__lte=budget).order_by('-price')
         
-        # Применяем пользовательские предпочтения
+
         keyboard_type = preferences.get('keyboard_type_preference', 'any')
         
         if keyboard_type == 'mechanical':
@@ -761,7 +715,7 @@ class ConfigurationService:
             keyboards = keyboards.filter(switch_type='membrane')
             logger.info("User requested membrane keyboard")
         elif keyboard_type == 'any':
-            # Автоматический выбор по типу пользователя
+
             if self.user_type == 'gamer':
                 keyboards = keyboards.filter(switch_type='mechanical')
                 logger.info("Auto-selecting mechanical keyboard for gamer")
@@ -782,29 +736,20 @@ class ConfigurationService:
         return keyboard
     
     def select_mouse(self, budget, preferences=None):
-        """
-        Подбор мыши с учетом требований к точности
-        
-        Args:
-            budget: Decimal - бюджет на мышь
-            preferences: dict - предпочтения пользователя
-            
-        Returns:
-            Mouse or None: Подобранная мышь
-        """
+
         if preferences is None:
             preferences = {}
         
         mice = Mouse.objects.filter(price__lte=budget).order_by('-price')
         
-        # Применяем пользовательские требования
+
         min_dpi = preferences.get('mouse_min_dpi', 1000)
         
         if min_dpi:
             mice = mice.filter(dpi__gte=min_dpi)
             logger.info(f"Filtering mice with DPI >= {min_dpi}")
         
-        # Автоматический выбор по типу пользователя (если не задано)
+
         if not preferences.get('mouse_min_dpi'):
             if self.user_type == 'gamer':
                 mice = mice.filter(dpi__gte=12000, sensor_type='optical')
@@ -823,23 +768,15 @@ class ConfigurationService:
         return mouse
     
     def select_headset(self, budget):
-        """
-        Подбор гарнитуры с учетом использования
-        
-        Args:
-            budget: Decimal - бюджет на гарнитуру
-            
-        Returns:
-            Headset or None: Подобранная гарнитура
-        """
+
         headsets = Headset.objects.filter(price__lte=budget).order_by('-price')
         
         if self.user_type == 'gamer':
-            # Геймерам - объемный звук
+            
             headsets = headsets.filter(surround_sound=True)
             logger.info("Filtering surround sound headsets for gaming")
         elif self.user_type == 'content_creator':
-            # Контент-криейторам - шумоподавление
+            
             headsets = headsets.filter(noise_cancellation=True)
             logger.info("Filtering noise-cancelling headsets for content creation")
         
@@ -853,15 +790,7 @@ class ConfigurationService:
         return headset
     
     def select_webcam(self, budget):
-        """
-        Подбор вебкамеры для стримеров и контент-криейторов
-        
-        Args:
-            budget: Decimal - бюджет на вебкамеру
-            
-        Returns:
-            Webcam or None: Подобранная вебкамера
-        """
+
         webcams = Webcam.objects.filter(price__lte=budget).order_by('-price')
         
         if self.requirements.get('streaming') or self.user_type == 'content_creator':
@@ -880,19 +809,11 @@ class ConfigurationService:
         return webcam
     
     def select_microphone(self, budget):
-        """
-        Подбор микрофона для контент-криейторов
-        
-        Args:
-            budget: Decimal - бюджет на микрофон
-            
-        Returns:
-            Microphone or None: Подобранный микрофон
-        """
+
         microphones = Microphone.objects.filter(price__lte=budget).order_by('-price')
         
         if self.user_type == 'content_creator':
-            # Конденсаторные микрофоны для студийного качества
+            
             microphones = microphones.filter(mic_type='condenser')
             logger.info("Filtering condenser microphones for content creation")
         
@@ -906,18 +827,10 @@ class ConfigurationService:
         return microphone
     
     def select_desk(self, budget):
-        """
-        Подбор стола с приоритетом на регулировку по высоте
-        
-        Args:
-            budget: Decimal - бюджет на стол
-            
-        Returns:
-            Desk or None: Подобранный стол
-        """
+
         desks = Desk.objects.filter(price__lte=budget).order_by('-price')
         
-        # Приоритет столам с регулировкой высоты (для здоровья спины)
+       
         adjustable = desks.filter(height_adjustable=True).first()
         if adjustable:
             logger.info(f"Selected height-adjustable desk: {adjustable.name} at ${adjustable.price}")
@@ -932,18 +845,10 @@ class ConfigurationService:
         return desk
     
     def select_chair(self, budget):
-        """
-        Подбор кресла с приоритетом на эргономику
-        
-        Args:
-            budget: Decimal - бюджет на кресло
-            
-        Returns:
-            Chair or None: Подобранное кресло
-        """
+
         chairs = Chair.objects.filter(price__lte=budget).order_by('-price')
         
-        # Приоритет эргономичным креслам с поддержкой поясницы
+
         ergonomic = chairs.filter(ergonomic=True, lumbar_support=True).first()
         if ergonomic:
             logger.info(f"Selected ergonomic chair: {ergonomic.name} at ${ergonomic.price}")
@@ -958,13 +863,7 @@ class ConfigurationService:
         return chair
     
     def _get_lighting_recommendation(self):
-        """
-        Генерация рекомендаций по освещению рабочего места
-        
-        Returns:
-            str: Детальные рекомендации по освещению
-        """
-        # Попытка получить рекомендации через AI
+
         if self.ai_service and self.ai_analysis:
             try:
                 recommendation = self.ai_service.generate_workspace_recommendation(
@@ -978,7 +877,7 @@ class ConfigurationService:
             except Exception as e:
                 logger.warning(f"Failed to get AI lighting recommendation: {e}")
         
-        # Fallback: правила на основе типа пользователя
+
         lighting_recommendations = {
             'designer': (
                 "Рекомендуется нейтральное белое освещение (4000-5000K) с высоким индексом "

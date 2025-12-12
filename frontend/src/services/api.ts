@@ -58,8 +58,8 @@ api.interceptors.request.use(
       }
       // Для CloudPub фронтенда - используем CloudPub бэкенд
       else if (hostname.includes('cloudpub.ru')) {
-        // Бэкенд на legally-matchless-bulldog.cloudpub.ru
-        baseURL = 'https://legally-matchless-bulldog.cloudpub.ru/api';
+        // Бэкенд на illicitly-frank-bulbul.cloudpub.ru (порт 8001)
+        baseURL = 'https://illicitly-frank-bulbul.cloudpub.ru/api';
       }
     }
 

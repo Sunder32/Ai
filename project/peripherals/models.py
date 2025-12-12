@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Monitor(models.Model):
-    """Монитор"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     screen_size = models.FloatField(verbose_name='Диагональ (дюймы)')
@@ -29,7 +29,7 @@ class Monitor(models.Model):
 
 
 class Keyboard(models.Model):
-    """Клавиатура"""
+
     SWITCH_TYPE_CHOICES = [
         ('mechanical', 'Механическая'),
         ('membrane', 'Мембранная'),
@@ -59,7 +59,7 @@ class Keyboard(models.Model):
 
 
 class Mouse(models.Model):
-    """Мышь"""
+
     SENSOR_TYPE_CHOICES = [
         ('optical', 'Оптический'),
         ('laser', 'Лазерный'),
@@ -110,7 +110,7 @@ class Headset(models.Model):
 
 
 class Webcam(models.Model):
-    """Веб-камера"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     resolution = models.CharField(max_length=50, verbose_name='Разрешение')
@@ -129,7 +129,7 @@ class Webcam(models.Model):
 
 
 class Microphone(models.Model):
-    """Микрофон"""
+
     MICROPHONE_TYPE_CHOICES = [
         ('condenser', 'Конденсаторный'),
         ('dynamic', 'Динамический'),
@@ -154,7 +154,7 @@ class Microphone(models.Model):
 
 
 class Desk(models.Model):
-    """Стол"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     width = models.IntegerField(verbose_name='Ширина (см)')
@@ -173,7 +173,7 @@ class Desk(models.Model):
 
 
 class Chair(models.Model):
-    """Кресло"""
+
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     ergonomic = models.BooleanField(default=False, verbose_name='Эргономичное')
@@ -193,7 +193,7 @@ class Chair(models.Model):
 
 
 class Speakers(models.Model):
-    """Колонки"""
+
     SPEAKER_TYPE_CHOICES = [
         ('2.0', '2.0 Стерео'),
         ('2.1', '2.1 с сабвуфером'),
@@ -221,7 +221,7 @@ class Speakers(models.Model):
 
 
 class Mousepad(models.Model):
-    """Коврик для мыши"""
+
     SIZE_CHOICES = [
         ('small', 'Маленький (до 30 см)'),
         ('medium', 'Средний (30-45 см)'),
@@ -251,7 +251,7 @@ class Mousepad(models.Model):
 
 
 class MonitorArm(models.Model):
-    """Кронштейн для монитора"""
+    
     MOUNT_TYPE_CHOICES = [
         ('single', 'Для одного монитора'),
         ('dual', 'Для двух мониторов'),
@@ -280,7 +280,7 @@ class MonitorArm(models.Model):
 
 
 class USBHub(models.Model):
-    """USB-хаб"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     usb3_ports = models.IntegerField(verbose_name='USB 3.0 портов', default=0)
@@ -303,7 +303,7 @@ class USBHub(models.Model):
 
 
 class DeskLighting(models.Model):
-    """Освещение рабочего места"""
+    
     LIGHTING_TYPE_CHOICES = [
         ('led_strip', 'LED лента'),
         ('desk_lamp', 'Настольная лампа'),
@@ -332,7 +332,7 @@ class DeskLighting(models.Model):
 
 
 class StreamDeck(models.Model):
-    """Стрим-пульт"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     keys_count = models.IntegerField(verbose_name='Количество клавиш')
@@ -352,7 +352,7 @@ class StreamDeck(models.Model):
 
 
 class CaptureCard(models.Model):
-    """Карта захвата видео"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     max_resolution = models.CharField(max_length=50, verbose_name='Макс. разрешение')
@@ -373,7 +373,7 @@ class CaptureCard(models.Model):
 
 
 class Gamepad(models.Model):
-    """Геймпад"""
+   
     PLATFORM_CHOICES = [
         ('pc', 'PC'),
         ('xbox', 'Xbox'),
@@ -401,7 +401,7 @@ class Gamepad(models.Model):
 
 
 class Headphonestand(models.Model):
-    """Подставка для наушников"""
+    
     name = models.CharField(max_length=255, verbose_name='Название')
     manufacturer = models.CharField(max_length=100, verbose_name='Производитель')
     usb_hub = models.BooleanField(default=False, verbose_name='Встроенный USB-хаб')

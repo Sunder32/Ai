@@ -1,9 +1,4 @@
-"""
-Интеграция с магазинами: DNS, Citilink, и др.
-- Отслеживание наличия товаров
-- История цен
-- Affiliate ссылки
-"""
+
 
 import asyncio
 import aiohttp
@@ -34,12 +29,12 @@ class Store(Enum):
 
 @dataclass
 class StoreProduct:
-    """Товар из магазина"""
+ 
     store: str
     product_id: str
     name: str
     price: float
-    original_price: Optional[float]  # Цена без скидки
+    original_price: Optional[float]  
     url: str
     affiliate_url: str
     in_stock: bool
@@ -58,7 +53,7 @@ class StoreProduct:
 
 @dataclass
 class PriceHistoryPoint:
-    """Точка истории цен"""
+    
     date: datetime
     price: float
     store: str
@@ -74,9 +69,7 @@ class PriceHistoryPoint:
 
 
 class StoreIntegrationService:
-    """Сервис интеграции с магазинами"""
-    
-    # Affiliate параметры (заполнить реальными)
+
     AFFILIATE_CONFIG = {
         Store.DNS: {
             'base_url': 'https://www.dns-shop.ru',
@@ -104,7 +97,7 @@ class StoreIntegrationService:
         },
     }
     
-    # Категории товаров для поиска
+
     CATEGORY_MAPPING = {
         'cpu': {
             Store.DNS: 'processors',
@@ -161,7 +154,7 @@ class StoreIntegrationService:
             await self.session.close()
     
     def generate_affiliate_url(self, store: Store, product_url: str) -> str:
-        """Генерация affiliate ссылки"""
+
         config = self.AFFILIATE_CONFIG.get(store, {})
         affiliate_param = config.get('affiliate_param', '')
         
@@ -169,7 +162,7 @@ class StoreIntegrationService:
         return f"{product_url}{separator}{affiliate_param}"
     
     def generate_search_url(self, store: Store, query: str, category: Optional[str] = None) -> str:
-        """Генерация ссылки поиска"""
+
         config = self.AFFILIATE_CONFIG.get(store, {})
         search_url = config.get('search_url', '')
         affiliate_param = config.get('affiliate_param', '')
@@ -193,13 +186,11 @@ class StoreIntegrationService:
         stores: Optional[List[Store]] = None,
         category: Optional[str] = None
     ) -> Dict[str, List[StoreProduct]]:
-        """
-        Поиск товара во всех магазинах
-        """
+
         if stores is None:
             stores = [Store.DNS, Store.CITILINK, Store.REGARD]
         
-        # Проверяем кэш
+
         cache_key = f"store_search_{hashlib.md5(f'{query}_{stores}'.encode()).hexdigest()}"
         cached = cache.get(cache_key)
         if cached:
@@ -220,7 +211,7 @@ class StoreIntegrationService:
             else:
                 results[store.value] = result
         
-        # Кэшируем на 15 минут
+
         cache.set(cache_key, results, 900)
         
         return results
@@ -231,17 +222,14 @@ class StoreIntegrationService:
         query: str, 
         category: Optional[str]
     ) -> List[StoreProduct]:
-        """Поиск в конкретном магазине"""
-        
-        # Для демо - генерируем ссылки поиска
-        # В production здесь будет реальный API или парсинг
+
         
         search_url = self.generate_search_url(store, query, category)
         
-        # Симуляция результатов (в реальности - API запрос)
+
         products = []
         
-        # Генерируем демо-продукт
+
         demo_product = StoreProduct(
             store=store.value,
             product_id=f"{store.value}_{hashlib.md5(query.encode()).hexdigest()[:8]}",
@@ -264,7 +252,7 @@ class StoreIntegrationService:
     
     def _estimate_price(self, query: str, store: Store) -> float:
         """Оценка цены (для демо)"""
-        # В реальности - берем из API
+
         base_prices = {
             'rtx 4090': 180000,
             'rtx 4080': 120000,
@@ -281,14 +269,14 @@ class StoreIntegrationService:
         query_lower = query.lower()
         for key, price in base_prices.items():
             if key in query_lower:
-                # Разброс цен по магазинам ±5%
+
                 multiplier = 1 + (hash(store.value) % 10 - 5) / 100
                 return round(price * multiplier, -2)
         
-        return 10000  # Базовая цена
+        return 10000  
     
     def _estimate_delivery(self, store: Store) -> int:
-        """Оценка доставки"""
+
         delivery_days = {
             Store.DNS: 1,
             Store.CITILINK: 1,
@@ -302,9 +290,7 @@ class StoreIntegrationService:
         product_name: str,
         stores: Optional[List[Store]] = None
     ) -> Dict[str, Dict]:
-        """
-        Проверка наличия товара в магазинах
-        """
+
         if stores is None:
             stores = list(Store)
         
@@ -325,9 +311,7 @@ class StoreIntegrationService:
         return results
     
     def get_component_store_links(self, component: Any) -> Dict[str, str]:
-        """
-        Получение ссылок на магазины для компонента
-        """
+
         if not component or not hasattr(component, 'name'):
             return {}
         
@@ -339,9 +323,7 @@ class StoreIntegrationService:
         return links
     
     def get_configuration_store_links(self, configuration) -> Dict[str, Dict[str, str]]:
-        """
-        Получение всех ссылок на магазины для конфигурации
-        """
+
         components = {
             'cpu': getattr(configuration, 'cpu', None),
             'gpu': getattr(configuration, 'gpu', None),
@@ -365,7 +347,7 @@ class StoreIntegrationService:
 
 
 class PriceHistoryService:
-    """Сервис отслеживания истории цен"""
+
     
     def __init__(self):
         self.store_service = StoreIntegrationService()
@@ -375,10 +357,7 @@ class PriceHistoryService:
         component_name: str,
         days: int = 30
     ) -> List[PriceHistoryPoint]:
-        """
-        Получение истории цен компонента
-        В реальности - из БД, здесь симуляция
-        """
+
         from datetime import date
         import random
         
@@ -388,18 +367,17 @@ class PriceHistoryService:
         for i in range(days, -1, -1):
             point_date = datetime.now() - timedelta(days=i)
             
-            # Симуляция колебаний цены ±10%
             variation = random.uniform(-0.1, 0.1)
             price = base_price * (1 + variation)
             
-            # Тренд снижения цен со временем
+
             price *= (1 - i * 0.001)
             
             history.append(PriceHistoryPoint(
                 date=point_date,
                 price=round(price, -2),
                 store=Store.DNS.value,
-                in_stock=random.random() > 0.1  # 90% в наличии
+                in_stock=random.random() > 0.1  
             ))
         
         return history
@@ -409,9 +387,7 @@ class PriceHistoryService:
         component_name: str,
         days: int = 30
     ) -> Dict:
-        """
-        Данные для графика цен
-        """
+
         history = self.get_price_history(component_name, days)
         
         if not history:
@@ -436,9 +412,7 @@ class PriceHistoryService:
         component_name: str,
         target_price: float
     ) -> Dict:
-        """
-        Проверка достижения целевой цены
-        """
+
         history = self.get_price_history(component_name, 7)
         current_price = history[-1].price if history else 0
         
@@ -452,20 +426,20 @@ class PriceHistoryService:
         }
 
 
-# Вспомогательные функции для views
+
 def get_store_links_for_component(component) -> Dict[str, str]:
-    """Быстрое получение ссылок для компонента"""
+
     service = StoreIntegrationService()
     return service.get_component_store_links(component)
 
 
 def get_store_links_for_configuration(configuration) -> Dict:
-    """Быстрое получение ссылок для конфигурации"""
+    
     service = StoreIntegrationService()
     return service.get_configuration_store_links(configuration)
 
 
 def get_price_history_data(component_name: str, days: int = 30) -> Dict:
-    """Быстрое получение истории цен"""
+
     service = PriceHistoryService()
     return service.get_price_chart_data(component_name, days)

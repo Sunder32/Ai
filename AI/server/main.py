@@ -9,7 +9,7 @@ from typing import List, Optional
 import shutil
 import subprocess
 
-# Импорт RAG и Fine-tuning модулей
+
 from rag_engine import get_rag_engine
 from finetune_prepare import prepare_chat_format, create_ollama_training_modelfile, get_dataset_info
 from learning_engine import get_learning_engine
@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
-# Allow overriding the model via env var so you can point to a finetuned model
+
 MODEL_NAME = os.getenv("PROJECT_MODEL_NAME", "deepseek-project-model")
 UPLOAD_DIR = "uploads"
 DATASET_FILE = "dataset.jsonl"
@@ -36,7 +36,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 class ChatRequest(BaseModel):
     prompt: str
     context: Optional[List[int]] = []
-    use_learning: Optional[bool] = True  # Использовать контекст обучения
+    use_learning: Optional[bool] = True  
 
 class ChatResponse(BaseModel):
     response: str
@@ -59,13 +59,13 @@ async def chat(request: ChatRequest):
     try:
         print(f"\n[CHAT] Получен запрос: {request.prompt[:50]}...")
         
-        # Получаем контекст обучения если включено
+
         learning_context = ""
         if request.use_learning:
             learning = get_learning_engine()
             learning_context = learning.get_learning_context(max_examples=5)
         
-        # Формируем промпт с контекстом обучения
+
         enhanced_prompt = request.prompt
         if learning_context:
             enhanced_prompt = f"""{learning_context}
@@ -231,12 +231,12 @@ async def start_training():
                         with open(file_path, 'r', encoding='utf-8') as f:
                             data = json.load(f)
                         
-                        # Если это список объектов (датасет)
+                        
                         if isinstance(data, list):
                             text_parts = []
                             for item in data:
                                 if isinstance(item, dict):
-                                    # Извлекаем текстовые поля
+                                    
                                     for key in ['text', 'content', 'input', 'output', 'question', 'answer', 'instruction']:
                                         if key in item and item[key]:
                                             text_parts.append(str(item[key]))
@@ -291,10 +291,9 @@ async def start_training():
         
         context_snippet = combined_text[:6000] if len(combined_text) > 6000 else combined_text
         
-        # Escape special characters and format context for SYSTEM prompt
-        # Replace newlines with spaces and remove problematic characters
+        
         clean_context = context_snippet.replace('\n', ' ').replace('\r', ' ').replace('"', "'")
-        # Remove multiple spaces
+        
         import re
         clean_context = re.sub(r'\s+', ' ', clean_context).strip()
         
@@ -315,11 +314,11 @@ Based on this context and your general knowledge, respond helpfully and accurate
             f.write(modelfile_content)
         print(f"[TRAINING] Updated Modelfile at: {modelfile_path}")
         
-        # Verify Modelfile exists
+        
         if not os.path.exists(modelfile_path):
             raise HTTPException(status_code=500, detail="Failed to create Modelfile")
         
-        # Recreate model with Ollama
+        
         print("[TRAINING] Attempting to delete old model...")
         try:
             delete_response = requests.delete(
@@ -333,15 +332,15 @@ Based on this context and your general knowledge, respond helpfully and accurate
         
         print("[TRAINING] Creating new model...")
         try:
-            # Use subprocess to create model via ollama CLI (more reliable)
+            
             print(f"[TRAINING] Using Modelfile at: {modelfile_path}")
             
-            # Run ollama create command
+            
             result = subprocess.run(
                 ["ollama", "create", MODEL_NAME, "-f", modelfile_path],
                 capture_output=True,
                 text=True,
-                timeout=600  # 10 minutes timeout
+                timeout=600  
             )
             
             print(f"[TRAINING] Ollama create stdout: {result.stdout}")
@@ -393,7 +392,7 @@ Based on this context and your general knowledge, respond helpfully and accurate
         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
 
 
-# ============== RAG API ==============
+
 
 class RAGSearchRequest(BaseModel):
     query: str
@@ -401,7 +400,7 @@ class RAGSearchRequest(BaseModel):
 
 @app.post("/api/rag/index")
 async def rag_index_documents():
-    """Индексировать все документы в RAG (векторную БД)"""
+
     import traceback
     
     try:
@@ -411,7 +410,7 @@ async def rag_index_documents():
             raise HTTPException(status_code=400, detail="Нет файлов для индексации")
         
         rag = get_rag_engine()
-        rag.clear()  # Очищаем старые данные
+        rag.clear()  
         
         all_texts = []
         all_metadatas = []
@@ -459,7 +458,7 @@ async def rag_index_documents():
         if not all_texts:
             raise HTTPException(status_code=400, detail="Не удалось извлечь текст из файлов")
         
-        # Индексируем
+
         chunks_count = rag.add_documents(all_texts, all_metadatas)
         
         print(f"[RAG] ✅ Индексация завершена: {chunks_count} чанков")
@@ -479,7 +478,7 @@ async def rag_index_documents():
 
 @app.post("/api/rag/search")
 async def rag_search(request: RAGSearchRequest):
-    """Поиск по документам через RAG"""
+
     try:
         rag = get_rag_engine()
         results = rag.search(request.query, request.n_results)
@@ -494,7 +493,7 @@ async def rag_search(request: RAGSearchRequest):
 
 @app.get("/api/rag/stats")
 async def rag_stats():
-    """Статистика RAG базы"""
+
     try:
         rag = get_rag_engine()
         return rag.get_stats()
@@ -504,17 +503,17 @@ async def rag_stats():
 
 @app.post("/api/chat/rag")
 async def chat_with_rag(request: ChatRequest):
-    """Чат с использованием RAG (поиск контекста перед ответом)"""
+
     import traceback
     
     try:
         print(f"\n[RAG-CHAT] Получен запрос: {request.prompt[:50]}...")
         
-        # Получаем релевантный контекст из RAG
+
         rag = get_rag_engine()
         context = rag.get_context_for_query(request.prompt, max_tokens=2000)
         
-        # Формируем промпт с контекстом
+
         if context:
             enhanced_prompt = f"""Используй следующий контекст для ответа на вопрос:
 
@@ -549,11 +548,11 @@ async def chat_with_rag(request: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ============== FINE-TUNING API ==============
+
 
 @app.post("/api/finetune/prepare")
 async def prepare_finetune_data():
-    """Подготовить данные для fine-tuning из JSON и TXT файлов"""
+
     try:
         print("\n[FINETUNE] Подготовка данных для fine-tuning...")
         
@@ -562,14 +561,14 @@ async def prepare_finetune_data():
         for filename in os.listdir(UPLOAD_DIR):
             file_ext = os.path.splitext(filename)[1].lower()
             
-            # Поддерживаем JSON и TXT файлы
+
             if file_ext not in ['.json', '.txt']:
                 continue
                 
             file_path = os.path.join(UPLOAD_DIR, filename)
             
             try:
-                # Получаем информацию о датасете
+
                 info = get_dataset_info(file_path)
                 print(f"[FINETUNE] Датасет {filename}: {info}")
                 
@@ -577,7 +576,7 @@ async def prepare_finetune_data():
                     print(f"[FINETUNE] Пропуск {filename}: {info['error']}")
                     continue
                 
-                # Подготавливаем данные в зависимости от типа файла
+
                 if file_ext == '.json':
                     with open(file_path, 'r', encoding='utf-8') as f:
                         data = json.load(f)
@@ -624,11 +623,11 @@ async def prepare_finetune_data():
 
 @app.post("/api/finetune/create-model")
 async def create_finetuned_model():
-    """Создать модель с few-shot примерами из датасета"""
+
     try:
         print("\n[FINETUNE] Создание модели с примерами...")
         
-        # Ищем JSON или TXT датасет
+
         dataset_path = None
         for filename in os.listdir(UPLOAD_DIR):
             file_ext = os.path.splitext(filename)[1].lower()
@@ -641,7 +640,7 @@ async def create_finetuned_model():
         
         print(f"[FINETUNE] Используем датасет: {dataset_path}")
         
-        # Создаём Modelfile с примерами
+
         modelfile_path = os.path.abspath("Modelfile.finetune")
         result_path = create_ollama_training_modelfile(
             base_model="deepseek-r1:8b",
@@ -651,7 +650,7 @@ async def create_finetuned_model():
         
         print(f"[FINETUNE] Создан Modelfile: {result_path}")
         
-        # Создаём модель в Ollama
+
         model_name = "deepseek-finetuned"
         
         result = subprocess.run(
@@ -684,7 +683,7 @@ async def create_finetuned_model():
 
 @app.get("/api/finetune/info")
 async def get_finetune_info():
-    """Информация о датасетах для fine-tuning (JSON и TXT)"""
+
     try:
         datasets = []
         
@@ -694,7 +693,7 @@ async def get_finetune_info():
         for filename in os.listdir(UPLOAD_DIR):
             file_ext = os.path.splitext(filename)[1].lower()
             
-            # Поддерживаем JSON, TXT и JSONL
+
             if file_ext not in ['.json', '.txt', '.jsonl']:
                 continue
                 
@@ -719,14 +718,11 @@ async def get_finetune_info():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ============== LEARNING API (Самообучение) ==============
+
 
 @app.post("/api/learning/correct")
 async def submit_correction(request: CorrectionRequest):
-    """
-    Отправить исправление ответа ИИ
-    ИИ запомнит ошибку и не будет её повторять
-    """
+
     try:
         learning = get_learning_engine()
         result = learning.add_correction(
@@ -748,10 +744,7 @@ async def submit_correction(request: CorrectionRequest):
 
 @app.post("/api/learning/like")
 async def like_response(request: LikeRequest):
-    """
-    Лайкнуть хороший ответ ИИ
-    ИИ будет стараться отвечать похожим образом
-    """
+
     try:
         learning = get_learning_engine()
         result = learning.add_good_response(
@@ -771,7 +764,7 @@ async def like_response(request: LikeRequest):
 
 @app.get("/api/learning/stats")
 async def get_learning_stats():
-    """Статистика обучения"""
+
     try:
         learning = get_learning_engine()
         return learning.get_stats()
@@ -781,12 +774,12 @@ async def get_learning_stats():
 
 @app.get("/api/learning/export")
 async def export_learning_data():
-    """Экспортировать данные обучения для fine-tuning"""
+
     try:
         learning = get_learning_engine()
         examples = []
         
-        # Добавляем исправления
+
         for corr in learning.corrections:
             examples.append({
                 "messages": [
@@ -795,7 +788,7 @@ async def export_learning_data():
                 ]
             })
         
-        # Добавляем хорошие ответы
+
         for good in learning.good_responses:
             examples.append({
                 "messages": [
@@ -812,18 +805,16 @@ async def export_learning_data():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ============== FILE RESPONSES ==============
+
 
 @app.post("/api/chat/file")
 async def chat_with_file_response(request: ChatRequest):
-    """
-    Чат с возможностью ответа файлом (Markdown, код и т.п.)
-    """
+
     import traceback
     import re
     
     try:
-        # Добавляем инструкцию для файловых ответов
+
         enhanced_prompt = f"""Ты можешь отвечать в формате Markdown. 
 Используй:
 - Заголовки (# ## ###)
@@ -836,7 +827,7 @@ async def chat_with_file_response(request: ChatRequest):
 
 Вопрос пользователя: {request.prompt}"""
 
-        # Получаем контекст обучения
+
         learning = get_learning_engine()
         learning_context = learning.get_learning_context(max_examples=3)
         
@@ -856,11 +847,11 @@ async def chat_with_file_response(request: ChatRequest):
         
         response_text = data.get("response", "")
         
-        # Определяем тип контента
+
         content_type = "text"
         file_extension = None
         
-        # Проверяем, есть ли блоки кода
+
         code_blocks = re.findall(r'```(\w+)?\n(.*?)```', response_text, re.DOTALL)
         
         if code_blocks:
@@ -873,7 +864,7 @@ async def chat_with_file_response(request: ChatRequest):
                 "bash": "sh", "shell": "sh", "yaml": "yaml", "yml": "yaml"
             }.get(lang.lower(), lang.lower())
         
-        # Проверяем, похоже ли на Markdown документ
+
         if re.search(r'^#{1,3}\s', response_text, re.MULTILINE):
             content_type = "markdown"
             file_extension = "md"

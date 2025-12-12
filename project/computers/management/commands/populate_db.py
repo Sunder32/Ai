@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.stdout.write('Начало заполнения базы данных...')
 
-        # Удаляем существующие данные
+ 
         self.stdout.write('Удаление существующих данных...')
         PCConfiguration.objects.all().delete()
         CPU.objects.all().delete()
@@ -20,10 +20,10 @@ class Command(BaseCommand):
         RAM.objects.all().delete()
         Storage.objects.all().delete()
 
-        # Создаем процессоры
+   
         self.stdout.write('Создание процессоров...')
         cpus_data = [
-            # Intel
+            
             {
                 'name': 'Intel Core i9-14900K',
                 'manufacturer': 'Intel',
@@ -129,10 +129,10 @@ class Command(BaseCommand):
             cpus.append(cpu)
             self.stdout.write(f'  ✓ {cpu.name}')
 
-        # Создаем видеокарты
+        
         self.stdout.write('Создание видеокарт...')
         gpus_data = [
-            # NVIDIA
+            
             {
                 'name': 'NVIDIA GeForce RTX 4090',
                 'manufacturer': 'NVIDIA',
@@ -193,7 +193,7 @@ class Command(BaseCommand):
                 'price': Decimal('34999.00'),
                 'performance_score': 65,
             },
-            # AMD
+            
             {
                 'name': 'AMD Radeon RX 7900 XTX',
                 'manufacturer': 'AMD',
@@ -238,7 +238,7 @@ class Command(BaseCommand):
             gpus.append(gpu)
             self.stdout.write(f'  ✓ {gpu.name}')
 
-        # Создаем оперативную память
+        
         self.stdout.write('Создание оперативной памяти...')
         ram_data = [
             {
@@ -309,10 +309,10 @@ class Command(BaseCommand):
             rams.append(ram)
             self.stdout.write(f'  ✓ {ram.name}')
 
-        # Создаем накопители
+        
         self.stdout.write('Создание накопителей...')
         storage_data = [
-            # NVMe SSD
+            
             {
                 'name': 'Samsung 990 Pro',
                 'manufacturer': 'Samsung',
@@ -349,7 +349,7 @@ class Command(BaseCommand):
                 'write_speed': 6000,
                 'price': Decimal('9999.00'),
             },
-            # SATA SSD
+           
             {
                 'name': 'Samsung 870 EVO',
                 'manufacturer': 'Samsung',
@@ -368,7 +368,7 @@ class Command(BaseCommand):
                 'write_speed': 510,
                 'price': Decimal('6999.00'),
             },
-            # HDD
+            
             {
                 'name': 'Seagate BarraCuda',
                 'manufacturer': 'Seagate',
@@ -395,7 +395,7 @@ class Command(BaseCommand):
             storages.append(storage)
             self.stdout.write(f'  ✓ {storage.name}')
 
-        # Создаем тестового пользователя
+        
         self.stdout.write('Создание тестового пользователя...')
         user, created = User.objects.get_or_create(
             username='testuser',
@@ -412,7 +412,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write('  ℹ testuser уже существует')
 
-        # Создаем примеры конфигураций
+        
         self.stdout.write('Создание конфигураций...')
         
         configurations_data = [
@@ -421,10 +421,10 @@ class Command(BaseCommand):
                 'user_type': 'gamer',
                 'budget': Decimal('250000.00'),
                 'components': {
-                    'cpu': cpus[0],  # i9-14900K
-                    'gpu': gpus[0],  # RTX 4090
-                    'ram': rams[0],  # 32GB DDR5 6000MHz
-                    'storage': storages[0],  # Samsung 990 Pro 2TB
+                    'cpu': cpus[0], 
+                    'gpu': gpus[0],  
+                    'ram': rams[0],  
+                    'storage': storages[0],  
                 }
             },
             {
@@ -432,10 +432,10 @@ class Command(BaseCommand):
                 'user_type': 'designer',
                 'budget': Decimal('180000.00'),
                 'components': {
-                    'cpu': cpus[4],  # Ryzen 9 7950X
-                    'gpu': gpus[5],  # RX 7900 XTX
-                    'ram': rams[1],  # 32GB DDR5 6400MHz
-                    'storage': storages[1],  # WD Black 2TB
+                    'cpu': cpus[4],  
+                    'gpu': gpus[5],  
+                    'ram': rams[1],  
+                    'storage': storages[1],  
                 }
             },
             {
@@ -443,10 +443,10 @@ class Command(BaseCommand):
                 'user_type': 'programmer',
                 'budget': Decimal('120000.00'),
                 'components': {
-                    'cpu': cpus[2],  # i5-14600K
-                    'gpu': gpus[6],  # RX 7800 XT
-                    'ram': rams[3],  # 32GB DDR4 3200MHz
-                    'storage': storages[2],  # Samsung 980 Pro 1TB
+                    'cpu': cpus[2],  
+                    'gpu': gpus[6],  
+                    'ram': rams[3],  
+                    'storage': storages[2],  
                 }
             },
             {
@@ -454,10 +454,10 @@ class Command(BaseCommand):
                 'user_type': 'gamer',
                 'budget': Decimal('70000.00'),
                 'components': {
-                    'cpu': cpus[7],  # Ryzen 5 5600
-                    'gpu': gpus[4],  # RTX 3060
-                    'ram': rams[5],  # 16GB DDR4 3200MHz
-                    'storage': storages[5],  # Crucial MX500 1TB
+                    'cpu': cpus[7],  
+                    'gpu': gpus[4],  
+                    'ram': rams[5],  
+                    'storage': storages[5],  
                 }
             },
             {
@@ -465,10 +465,10 @@ class Command(BaseCommand):
                 'user_type': 'office',
                 'budget': Decimal('50000.00'),
                 'components': {
-                    'cpu': cpus[3],  # i5-13400F
+                    'cpu': cpus[3],  
                     'gpu': None,
-                    'ram': rams[4],  # 16GB DDR4 3600MHz
-                    'storage': storages[4],  # Samsung 870 EVO 1TB
+                    'ram': rams[4],  
+                    'storage': storages[4],  
                 }
             },
         ]
@@ -486,7 +486,7 @@ class Command(BaseCommand):
                 is_saved=True
             )
 
-            # Рассчитываем общую стоимость
+           
             config.calculate_total_price()
             config.save()
 

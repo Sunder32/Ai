@@ -9,7 +9,7 @@ from peripherals.models import (
 
 
 class PCConfiguration(models.Model):
-    """Конфигурация ПК"""
+    
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -19,7 +19,7 @@ class PCConfiguration(models.Model):
     
     name = models.CharField(max_length=255, verbose_name='Название конфигурации')
     
-    # Компоненты
+    
     cpu = models.ForeignKey(CPU, on_delete=models.SET_NULL, null=True, verbose_name='Процессор')
     gpu = models.ForeignKey(GPU, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Видеокарта')
     motherboard = models.ForeignKey(Motherboard, on_delete=models.SET_NULL, null=True, verbose_name='Материнская плата')
@@ -43,7 +43,7 @@ class PCConfiguration(models.Model):
     case = models.ForeignKey(Case, on_delete=models.SET_NULL, null=True, verbose_name='Корпус')
     cooling = models.ForeignKey(Cooling, on_delete=models.SET_NULL, null=True, verbose_name='Охлаждение')
     
-    # Общая информация
+   
     total_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -70,7 +70,7 @@ class PCConfiguration(models.Model):
         return f'{self.name} - {self.user.username}'
     
     def calculate_total_price(self):
-        """Рассчитать общую стоимость конфигурации"""
+        
         total = 0
         if self.cpu:
             total += self.cpu.price
@@ -96,7 +96,7 @@ class PCConfiguration(models.Model):
 
 
 class WorkspaceSetup(models.Model):
-    """Настройка рабочего места"""
+    
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -113,7 +113,7 @@ class WorkspaceSetup(models.Model):
     
     name = models.CharField(max_length=255, verbose_name='Название')
     
-    # Периферия
+    
     monitor_primary = models.ForeignKey(
         Monitor,
         on_delete=models.SET_NULL,
@@ -138,7 +138,7 @@ class WorkspaceSetup(models.Model):
     desk = models.ForeignKey(Desk, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Стол')
     chair = models.ForeignKey(Chair, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кресло')
     
-    # Дополнительная периферия
+   
     speakers = models.ForeignKey(Speakers, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Колонки')
     mousepad = models.ForeignKey(Mousepad, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Коврик')
     monitor_arm = models.ForeignKey(MonitorArm, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кронштейн')
@@ -149,7 +149,7 @@ class WorkspaceSetup(models.Model):
     gamepad = models.ForeignKey(Gamepad, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Геймпад')
     headphone_stand = models.ForeignKey(Headphonestand, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Подставка для наушников')
     
-    # Рекомендации
+    
     lighting_recommendation = models.TextField(blank=True, verbose_name='Рекомендации по освещению')
     
     total_price = models.DecimalField(
@@ -171,7 +171,7 @@ class WorkspaceSetup(models.Model):
         return f'{self.name} - {self.user.username}'
     
     def calculate_total_price(self):
-        """Рассчитать общую стоимость рабочего места"""
+        
         total = self.configuration.total_price if self.configuration else 0
         
         peripherals = [
@@ -191,7 +191,7 @@ class WorkspaceSetup(models.Model):
 
 
 class Recommendation(models.Model):
-    """Рекомендация с обоснованием"""
+    
     configuration = models.ForeignKey(
         PCConfiguration,
         on_delete=models.CASCADE,
@@ -214,7 +214,7 @@ class Recommendation(models.Model):
 
 
 class Wishlist(models.Model):
-    """Избранные компоненты пользователя"""
+    
     COMPONENT_TYPES = [
         ('cpu', 'Процессор'),
         ('gpu', 'Видеокарта'),
@@ -244,7 +244,7 @@ class Wishlist(models.Model):
     )
     component_id = models.IntegerField(verbose_name='ID компонента')
     
-    # Отслеживание цены
+    
     price_at_add = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -281,7 +281,7 @@ class Wishlist(models.Model):
         return f'{self.user.username} - {self.get_component_type_display()} #{self.component_id}'
     
     def get_component(self):
-        """Получить объект компонента"""
+        
         from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
         from peripherals.models import Monitor, Keyboard, Mouse, Headset
         
@@ -309,7 +309,7 @@ class Wishlist(models.Model):
         return None
     
     def check_price_change(self):
-        """Проверить изменение цены компонента"""
+        
         component = self.get_component()
         if component and hasattr(component, 'price'):
             current_price = component.price
@@ -328,7 +328,7 @@ class Wishlist(models.Model):
 
 
 class AILog(models.Model):
-    """Лог ответов AI для анализа и улучшения"""
+    
     
     STATUS_CHOICES = [
         ('success', 'Успешно'),
@@ -339,27 +339,27 @@ class AILog(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Пользователь')
     
-    # Входные данные
+    
     prompt = models.TextField(verbose_name='Промпт')
     user_requirements = models.JSONField(default=dict, verbose_name='Требования пользователя')
     
-    # Ответ AI
+    
     raw_response = models.TextField(blank=True, verbose_name='Сырой ответ AI')
     parsed_response = models.JSONField(default=dict, verbose_name='Распарсенный ответ')
     
-    # Валидация
+    
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='success', verbose_name='Статус')
     validation_errors = models.JSONField(default=list, verbose_name='Ошибки валидации')
     fallback_reason = models.TextField(blank=True, verbose_name='Причина fallback')
     
-    # Результат
+    
     configuration_id = models.IntegerField(null=True, verbose_name='ID созданной конфигурации')
     
-    # Метрики
+    
     response_time_ms = models.IntegerField(null=True, verbose_name='Время ответа (мс)')
     tokens_used = models.IntegerField(null=True, verbose_name='Использовано токенов')
     
-    # Обратная связь
+    
     user_approved = models.BooleanField(null=True, verbose_name='Одобрено пользователем')
     user_feedback = models.TextField(blank=True, verbose_name='Отзыв пользователя')
     
@@ -381,7 +381,7 @@ class AILog(models.Model):
     def log_response(cls, user, prompt, raw_response, parsed_response, 
                      status='success', validation_errors=None, response_time_ms=None,
                      configuration_id=None, fallback_reason=''):
-        """Создать запись лога"""
+        
         return cls.objects.create(
             user=user,
             prompt=prompt,
@@ -396,7 +396,7 @@ class AILog(models.Model):
     
     @classmethod
     def get_success_rate(cls, days=7):
-        """Получить процент успешных ответов за период"""
+        
         from datetime import timedelta
         from django.utils import timezone
         
@@ -410,7 +410,7 @@ class AILog(models.Model):
     
     @classmethod
     def get_common_errors(cls, days=7, limit=10):
-        """Получить самые частые ошибки валидации"""
+       
         from datetime import timedelta
         from django.utils import timezone
         from collections import Counter

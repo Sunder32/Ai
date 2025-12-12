@@ -1,7 +1,4 @@
-"""
-AI-сервис для генерации умных рекомендаций конфигураций ПК
-Использует Ollama с моделью DeepSeek для анализа требований пользователя
-"""
+
 import logging
 import requests
 import json
@@ -11,7 +8,7 @@ from typing import Optional, Tuple
 from computers.models import CPU, GPU, Motherboard, RAM, Storage, PSU, Case, Cooling
 
 
-# Настройки AI-сервера (читаются из переменных окружения)
+
 OLLAMA_API_URL = os.environ.get("OLLAMA_API_URL", "http://localhost:11434/api/generate")
 AI_SERVER_URL = os.environ.get("AI_SERVER_URL", "http://localhost:5050")
 NOVA_API_URL = f"{AI_SERVER_URL}/api/chat"
@@ -23,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class AIConfigurationService:
-    """Сервис подбора конфигурации ПК с использованием ИИ"""
+    
     
     def __init__(self, user_profile_data: dict):
         self.user_type = user_profile_data.get('user_type', 'gamer')
@@ -40,7 +37,7 @@ class AIConfigurationService:
         }
     
     def _get_available_components(self) -> dict:
-        """Получить доступные компоненты из базы данных"""
+        
         return {
             'cpus': list(CPU.objects.filter(price__lte=self.max_budget * Decimal('0.3')).values(
                 'id', 'name', 'manufacturer', 'socket', 'cores', 'threads', 
@@ -76,13 +73,11 @@ class AIConfigurationService:
         }
     
     def _build_ai_prompt(self, components: dict) -> str:
-        """Создать промпт для ИИ"""
-        
-        # Формируем требования пользователя
+    
         active_requirements = [k for k, v in self.requirements.items() if v]
         requirements_text = ", ".join(active_requirements) if active_requirements else "стандартное использование"
         
-        # Преобразуем компоненты в текст
+        
         components_text = json.dumps(components, ensure_ascii=False, indent=2, default=str)
         
         prompt = f"""Ты - эксперт по сборке компьютеров. Подбери оптимальную конфигурацию ПК.
@@ -129,14 +124,14 @@ class AIConfigurationService:
         return prompt
     
     def _call_ollama(self, prompt: str) -> Optional[str]:
-        """Вызвать Ollama API"""
+       
         try:
             payload = {
                 "model": MODEL_NAME,
                 "prompt": prompt,
                 "stream": False,
                 "options": {
-                    "temperature": 0.3,  # Низкая температура для более точных ответов
+                    "temperature": 0.3,  
                     "top_p": 0.9
                 }
             }
@@ -161,12 +156,12 @@ class AIConfigurationService:
             return None
     
     def _parse_ai_response(self, response: str) -> Optional[dict]:
-        """Распарсить ответ ИИ"""
+        
         try:
-            # Ищем JSON в ответе
+            
             import re
             
-            # Пробуем найти JSON блок
+            
             json_match = re.search(r'\{[\s\S]*\}', response)
             if json_match:
                 json_str = json_match.group()
@@ -178,20 +173,17 @@ class AIConfigurationService:
             return None
     
     def generate_ai_configuration(self, user) -> Tuple[Optional[dict], dict]:
-        """
-        Генерация конфигурации с помощью ИИ
-        Возвращает: (конфигурация, reasoning)
-        """
+   
         from recommendations.models import PCConfiguration, Recommendation
         
-        # Получаем доступные компоненты
+      
         components = self._get_available_components()
         
-        # Если компонентов нет, возвращаем ошибку
+        
         if not any(components.values()):
             return None, {"error": "Нет доступных компонентов в базе данных"}
         
-        # Строим промпт и вызываем ИИ
+        
         prompt = self._build_ai_prompt(components)
         logger.info("Sending request to Ollama...")
         
@@ -201,14 +193,14 @@ class AIConfigurationService:
             logger.warning("No response from Ollama, falling back to rule-based selection")
             return None, {"error": "ИИ недоступен, используется алгоритмический подбор"}
         
-        # Парсим ответ
+        
         parsed = self._parse_ai_response(ai_response)
         
         if not parsed:
             logger.error(f"Failed to parse AI response: {ai_response[:200]}...")
             return None, {"error": "Не удалось распознать ответ ИИ"}
         
-        # Получаем компоненты из базы
+        
         try:
             cpu = CPU.objects.filter(id=parsed.get('cpu_id')).first()
             gpu = GPU.objects.filter(id=parsed.get('gpu_id')).first() if parsed.get('gpu_id') else None
@@ -219,7 +211,7 @@ class AIConfigurationService:
             case = Case.objects.filter(id=parsed.get('case_id')).first()
             cooling = Cooling.objects.filter(id=parsed.get('cooling_id')).first()
             
-            # Создаём конфигурацию
+            
             config = PCConfiguration.objects.create(
                 user=user,
                 name=f"AI-сборка для {self.user_type}",
@@ -236,7 +228,7 @@ class AIConfigurationService:
             config.calculate_total_price()
             config.save()
             
-            # Сохраняем обоснования от ИИ
+            
             reasoning = parsed.get('reasoning', {})
             for component_type, reason in reasoning.items():
                 component = locals().get(component_type)
@@ -259,7 +251,7 @@ class AIConfigurationService:
             return None, {"error": f"Ошибка создания конфигурации: {str(e)}"}
     
     def check_ollama_available(self) -> bool:
-        """Проверить доступность Ollama"""
+       
         try:
             response = requests.get("http://localhost:11434/api/tags", timeout=5)
             return response.status_code == 200

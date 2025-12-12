@@ -6,10 +6,11 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { StoreIntegrationPanel } from '../components/StoreIntegration';
 import PerformanceAnalysisPanel from '../components/PerformanceAnalysis';
 import AIChat from '../components/AIChat';
+import { saveToPDF, type PDFBuildData } from '../services/pdfGenerator';
 import type { PCConfiguration } from '../types';
-import { FiCpu, FiMonitor, FiDatabase, FiHardDrive, FiZap, FiBox, FiThermometer, FiCheck, FiAlertTriangle, FiArrowLeft, FiHeadphones, FiMic, FiGrid, FiShoppingCart, FiActivity, FiEye, FiMessageSquare } from 'react-icons/fi';
+import { FiCpu, FiMonitor, FiDatabase, FiHardDrive, FiZap, FiBox, FiThermometer, FiCheck, FiAlertTriangle, FiArrowLeft, FiHeadphones, FiMic, FiShoppingCart, FiActivity, FiMessageSquare, FiDownload } from 'react-icons/fi';
 import { BsKeyboard, BsMouse2, BsDisplay } from 'react-icons/bs';
-import { MdChair, MdDesk, MdSpeaker } from 'react-icons/md';
+import { MdChair, MdDesk } from 'react-icons/md';
 
 
 
@@ -18,6 +19,7 @@ const ConfigurationDetail: React.FC = () => {
   const [config, setConfig] = useState<PCConfiguration | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'pc' | 'peripherals' | 'workspace' | 'performance' | 'store' | 'chat'>('pc');
+  const [savingPdf, setSavingPdf] = useState(false);
 
 
   useEffect(() => {
@@ -72,6 +74,128 @@ const ConfigurationDetail: React.FC = () => {
   // Getters для рабочего места
   const getDesk = () => getWorkspace()?.desk_detail;
   const getChair = () => getWorkspace()?.chair_detail;
+
+  const safeNumber = (value: unknown): number => {
+    const num = typeof value === 'string' ? parseFloat(value) : typeof value === 'number' ? value : 0;
+    return Number.isFinite(num) ? num : 0;
+  };
+
+  const preparePDFData = (): PDFBuildData => {
+    const pcComponents: PDFBuildData['pcComponents'] = [];
+    const peripherals: PDFBuildData['peripherals'] = [];
+    const workspace: PDFBuildData['workspace'] = [];
+
+    const push = (
+      target: Array<{ label: string; name: string; price: number; manufacturer?: string; specs?: string }>,
+      label: string,
+      item: any,
+      specs?: string
+    ) => {
+      if (!item) return;
+      const price = safeNumber(item.price);
+      target.push({
+        label,
+        name: item.name || '-',
+        manufacturer: item.manufacturer || undefined,
+        specs: specs || undefined,
+        price,
+      });
+    };
+
+    const cpu = getCPU();
+    push(pcComponents, 'CPU', cpu, cpu ? `${cpu.cores ?? '-'}C/${cpu.threads ?? '-'}T • ${cpu.base_clock ?? '-'}GHz` : undefined);
+
+    const gpu = getGPU();
+    push(pcComponents, 'GPU', gpu, gpu ? `${gpu.memory ?? '-'}GB ${gpu.memory_type ?? ''}`.trim() : undefined);
+
+    const mb = getMB();
+    push(pcComponents, 'Материнская плата', mb, mb ? `${mb.socket ?? ''} • ${mb.chipset ?? ''}`.trim() : undefined);
+
+    const ram = getRAM();
+    push(pcComponents, 'RAM', ram, ram ? `${ram.capacity ?? '-'}GB • ${ram.speed ?? '-'}MHz` : undefined);
+
+    const storagePrimary = getStorage();
+    push(
+      pcComponents,
+      'Накопитель (основной)',
+      storagePrimary,
+      storagePrimary ? `${storagePrimary.capacity ?? '-'}GB • ${storagePrimary.storage_type ?? ''}`.trim() : undefined
+    );
+
+    const storageSecondary = config.storage_secondary_detail;
+    push(
+      pcComponents,
+      'Накопитель (доп.)',
+      storageSecondary,
+      storageSecondary ? `${storageSecondary.capacity ?? '-'}GB • ${storageSecondary.storage_type ?? ''}`.trim() : undefined
+    );
+
+    const psu = getPSU();
+    push(pcComponents, 'Блок питания', psu, psu ? `${psu.wattage ?? '-'}W • ${psu.efficiency_rating ?? ''}`.trim() : undefined);
+
+    const pcCase = getCase();
+    push(pcComponents, 'Корпус', pcCase, pcCase ? `${pcCase.form_factor ?? ''}`.trim() : undefined);
+
+    const cooling = getCooling();
+    push(pcComponents, 'Охлаждение', cooling, cooling ? `${cooling.cooling_type ?? ''}`.trim() : undefined);
+
+    const monitor1 = getMonitor();
+    push(
+      peripherals,
+      'Монитор (основной)',
+      monitor1,
+      monitor1 ? `${monitor1.screen_size ?? '-'}" • ${monitor1.resolution ?? ''}`.trim() : undefined
+    );
+
+    const monitor2 = getMonitorSecondary();
+    push(
+      peripherals,
+      'Монитор (доп.)',
+      monitor2,
+      monitor2 ? `${monitor2.screen_size ?? '-'}" • ${monitor2.resolution ?? ''}`.trim() : undefined
+    );
+
+    push(peripherals, 'Клавиатура', getKeyboard(), undefined);
+    push(peripherals, 'Мышь', getMouse(), undefined);
+    push(peripherals, 'Гарнитура', getHeadset(), undefined);
+    push(peripherals, 'Веб-камера', getWebcam(), undefined);
+    push(peripherals, 'Микрофон', getMicrophone(), undefined);
+
+    push(workspace, 'Стол', getDesk(), undefined);
+    push(workspace, 'Кресло', getChair(), undefined);
+
+    const pcTotal = pcComponents.reduce((sum, c) => sum + safeNumber(c.price), 0);
+    const peripheralsTotal = peripherals.reduce((sum, c) => sum + safeNumber(c.price), 0);
+    const workspaceTotal = workspace.reduce((sum, c) => sum + safeNumber(c.price), 0);
+
+    const computedGrandTotal = pcTotal + peripheralsTotal + workspaceTotal;
+    const savedTotal = safeNumber(config.total_price);
+    const grandTotal = savedTotal > 0 ? savedTotal : computedGrandTotal;
+
+    return {
+      name: config.name || `Сборка #${config.id}`,
+      id: config.id,
+      createdAt: config.created_at ? new Date(config.created_at).toLocaleString('ru-RU') : undefined,
+      pcComponents,
+      peripherals,
+      workspace,
+      pcTotal,
+      peripheralsTotal,
+      workspaceTotal,
+      grandTotal,
+    };
+  };
+
+  const handleSavePDF = async () => {
+    try {
+      setSavingPdf(true);
+      await saveToPDF(preparePDFData());
+    } catch (err) {
+      console.error('Failed to save PDF:', err);
+    } finally {
+      setSavingPdf(false);
+    }
+  };
 
   const chartData = [
     { name: 'CPU', value: parseFloat(String(getCPU()?.price || 0)), color: '#10b981' },
@@ -377,6 +501,14 @@ const ConfigurationDetail: React.FC = () => {
                   </div>
                 ))}
               </div>
+              <button
+                onClick={handleSavePDF}
+                disabled={savingPdf}
+                className={`mt-5 w-full btn-primary flex items-center justify-center gap-2 ${savingPdf ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {React.createElement(FiDownload as any, { className: "text-lg" })}
+                <span>{savingPdf ? 'Сохранение...' : 'Сохранить в PDF'}</span>
+              </button>
             </div>
 
             {/* AI Notes */}
@@ -721,7 +853,7 @@ const ConfigurationDetail: React.FC = () => {
 
       {/* AI Chat Tab */}
       {activeTab === 'chat' && (
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-4xl">
           <AIChat configurationId={config.id} configName={config.name} />
         </div>
       )}

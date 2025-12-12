@@ -31,7 +31,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Добавляем токен к каждому запросу
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -45,12 +45,12 @@ api.interceptors.request.use(
   }
 );
 
-// Обработка ответов и ошибок
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Удаляем токен и перенаправляем на страницу логина
+      
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
@@ -59,7 +59,7 @@ api.interceptors.response.use(
   }
 );
 
-// API методы для компонентов ПК
+
 export const computerAPI = {
   getCPUs: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<CPU>>('/computers/cpu/', { params }),
@@ -86,7 +86,7 @@ export const computerAPI = {
     api.get<PaginatedResponse<Cooling>>('/computers/cooling/', { params }),
 };
 
-// API методы для периферии
+
 export const peripheralAPI = {
   getMonitors: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<Monitor>>('/peripherals/monitors/', { params }),
@@ -101,7 +101,7 @@ export const peripheralAPI = {
     api.get<PaginatedResponse<Headset>>('/peripherals/headsets/', { params }),
 };
 
-// API методы для конфигураций
+
 export const configurationAPI = {
   getConfigurations: (params?: Record<string, any>) =>
     api.get<PaginatedResponse<PCConfiguration>>('/recommendations/configurations/', { params }),
@@ -130,7 +130,7 @@ export const configurationAPI = {
     api.delete(`/recommendations/configurations/${id}/`),
 };
 
-// API методы для пользователей
+
 export const userAPI = {
   register: (data: {
     username: string;
@@ -150,7 +150,7 @@ export const userAPI = {
     api.patch<UserProfile>('/accounts/profiles/my_profile/', data),
 };
 
-// API методы для аутентификации
+
 export const authAPI = {
   login: (data: { username: string; password: string }) =>
     api.post<{ token: string; user: User }>('/accounts/login/', data),
